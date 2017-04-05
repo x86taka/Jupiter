@@ -1,5 +1,5 @@
 
-![jupiter](https://github.com/itsu020402/Jupiter/blob/master/Banner.jpg)
+![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Introduction
 -------------

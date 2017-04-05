@@ -377,10 +377,6 @@ public class Server {
                 put("auto-save", true);
                 put("force-resources", false);
                 put("blockbreak-particle", true);
-                put("joinmessage", "サーバーへようこそ!");
-                put("quitmessage", "また来てね!");
-                put("sendjoinmessage", true);
-                put("sendquitmessage", true);
                 put("senddefaultjoinmessage", true);
             }
         });

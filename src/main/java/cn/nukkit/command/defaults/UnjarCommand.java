@@ -1,3 +1,9 @@
+/**
+ * @author Jupiter Development Team
+ * @author Itsu
+ */
+
+
 package cn.nukkit.command.defaults;
 
 import static java.nio.file.StandardCopyOption.*;
@@ -115,7 +121,17 @@ public class UnjarCommand extends VanillaCommand{
 		return true;
 	}
 
-	public static List<File> unZip(final File zipFile, final File outputDir) throws FileNotFoundException, ZipException,
+	/**
+	 * unZip(File, File)下記サイト様より引用、改変
+	 * http://yonchu.hatenablog.com/entry/20100727/1280239709
+	 *
+	 * @param zipFile 解凍するzipファイル
+	 * @param outputDir 解凍先
+	 *
+	 * @return void
+	 */
+
+	public static void unZip(final File zipFile, final File outputDir) throws FileNotFoundException, ZipException,
 			IOException {
 			if (zipFile == null) {
 				throw new IllegalArgumentException("引数(zipFile)がnullです。");
@@ -212,7 +228,7 @@ public class UnjarCommand extends VanillaCommand{
 								} catch (IOException e1) {
 									sender.sendMessage(TextFormat.RED + "エラーが発生しました。(IOException)");
 									e1.printStackTrace();
-									return null;
+									return;
 								}
 							}
 							if (is != null) {
@@ -221,7 +237,7 @@ public class UnjarCommand extends VanillaCommand{
 								} catch (IOException e1) {
 									sender.sendMessage(TextFormat.RED + "エラーが発生しました。(IOException)");
 									e1.printStackTrace();
-									return null;
+									return;
 								}
 							}
 						}
@@ -240,7 +256,7 @@ public class UnjarCommand extends VanillaCommand{
 					} catch (IOException e) {
 						sender.sendMessage(TextFormat.RED + "エラーが発生しました。(IOException)");
 						e.printStackTrace();
-						return null;
+						return;
 					}
 				}
 			}
@@ -249,9 +265,15 @@ public class UnjarCommand extends VanillaCommand{
 			// ソート
 			Collections.sort(retList);
 
-			return retList;
+			return;
 		}
 
+	/**
+	 * getRootDir(File, File)下記サイト様より引用、改変
+	 * http://yonchu.hatenablog.com/entry/20100727/1280239709
+	 *
+	 * @return 親ディレクトリ(File)
+	 */
 	private static File getRootDir(final File dir, final File file) {
 		assert dir != null;
 		assert !dir.exists() || dir.exists() && dir.isDirectory();

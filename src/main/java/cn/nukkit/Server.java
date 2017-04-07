@@ -1986,8 +1986,28 @@ public class Server {
         this.properties.save();
     }
 
+    public String getJupiterConfigString(String key){
+    	return this.jupiterconfig.getString(key);
+    }
+
+    public void setJupiterConfigString(String key, String value){
+    	this.jupiterconfig.set(key, value);
+    }
+
+    public int getJupiterConfigInt(String key){
+    	return this.jupiterconfig.getInt(key);
+    }
+
+    public void setJupiterConfigInt(String key, int value){
+    	this.jupiterconfig.set(key, value);
+    }
+
     public Boolean getJupiterConfigBoolean(String key){
     	return this.jupiterconfig.getBoolean(key);
+    }
+
+    public void setJupiterConfig(String key, boolean value){
+    	this.jupiterconfig.set(key, value);
     }
 
     public PluginIdentifiableCommand getPluginCommand(String name) {

@@ -2006,7 +2006,7 @@ public class Server {
     	return this.jupiterconfig.getBoolean(key);
     }
 
-    public void setJupiterConfig(String key, boolean value){
+    public void setJupiterConfigBoolean(String key, boolean value){
     	this.jupiterconfig.set(key, value);
     }
 

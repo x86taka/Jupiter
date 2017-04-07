@@ -1,19 +1,20 @@
 package cn.nukkit.item;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Level;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.ClientboundMapItemDataPacket;
 import cn.nukkit.utils.MainLogger;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by CreeperFace on 18.3.2017.
@@ -64,7 +65,7 @@ public class ItemMap extends Item {
         }
     }
 
-    protected BufferedImage loadImageFromNBT() {
+    public BufferedImage loadImageFromNBT() {
         try {
             byte[] data = getNamedTag().getByteArray("Colors");
             return ImageIO.read(new ByteArrayInputStream(data));

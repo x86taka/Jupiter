@@ -1,5 +1,6 @@
 package cn.nukkit;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteOrder;
@@ -157,6 +158,7 @@ import cn.nukkit.network.protocol.BlockEntityDataPacket;
 import cn.nukkit.network.protocol.BossEventPacket;
 import cn.nukkit.network.protocol.ChangeDimensionPacket;
 import cn.nukkit.network.protocol.ChunkRadiusUpdatedPacket;
+import cn.nukkit.network.protocol.ClientboundMapItemDataPacket;
 import cn.nukkit.network.protocol.CommandStepPacket;
 import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.ContainerSetContentPacket;
@@ -3927,6 +3929,22 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.stayTime = stayTime;
         pk.fadeOutTime = fadeOutTime;
         this.dataPacket(pk);
+    }
+
+	public void sendImage(String path, ItemMap item) throws IOException{
+    	item.setImage(new File(path));
+
+		ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
+    	pk.mapId = item.getMapId();
+    	pk.update = 2;
+    	pk.scale = 0;
+    	pk.width = 128;
+    	pk.height = 128;
+    	pk.offsetX = 0;
+    	pk.offsetZ = 0;
+    	pk.image = item.loadImageFromNBT();
+
+    	this.dataPacket(pk);
     }
 
     @Override

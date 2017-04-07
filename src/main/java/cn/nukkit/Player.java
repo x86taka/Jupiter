@@ -3947,6 +3947,22 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    public void sendImage(String path, ItemMap item, int width, int height) throws IOException{
+        item.setImage(new File(path));
+
+        ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
+        pk.mapId = item.getMapId();
+        pk.update = 2;
+        pk.scale = 0;
+        pk.width = width;
+        pk.height = height;
+        pk.offsetX = 0;
+        pk.offsetZ = 0;
+        pk.image = item.loadImageFromNBT();
+
+        this.dataPacket(pk);
+    }
+
     @Override
     public void close() {
         this.close("");

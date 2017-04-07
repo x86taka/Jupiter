@@ -59,8 +59,8 @@ abstract public class ItemArmor extends Item {
         return 0;
     }
 
-    public void setCustomColor(BlockColor color){
-    	CompoundTag tag;
+	public void setCustomColor(BlockColor color){
+		CompoundTag tag;
 		if(this.hasCompoundTag()){
 			tag = this.getNamedTag();
 		}else{

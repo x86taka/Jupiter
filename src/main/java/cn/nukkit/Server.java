@@ -341,14 +341,14 @@ public class Server {
 
         this.logger.info(TextFormat.AQUA + "====================================");
         this.logger.info(TextFormat.GREEN + "Jupiter - Nukkit Fork");
-        this.logger.info(TextFormat.YELLOW + "Developed by Itsu");
+        this.logger.info(TextFormat.YELLOW + "JupiterDevelopmentTeam 開発");
         this.logger.info(TextFormat.AQUA + "====================================");
 
 
-        this.logger.info("Loading " + TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "...");
+        this.logger.info(TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "を読み込んでいます...");
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        this.logger.info("Loading " + TextFormat.GREEN + "server properties" + TextFormat.WHITE + "...");
+        this.logger.info(TextFormat.GREEN + "server properties" + TextFormat.WHITE + "を読み込んでいます...");
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -396,7 +396,7 @@ public class Server {
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
         this.logger.info(this.getLanguage().translateString("language.selected", new String[]{getLanguage().getName(), getLanguage().getLang()}));
-        this.logger.info(getLanguage().translateString("nukkit.server.start", TextFormat.AQUA + this.getVersion() + TextFormat.WHITE));
+        this.logger.info(this.getLanguage().translateString("nukkit.server.start", TextFormat.AQUA + this.getVersion() + TextFormat.WHITE));
 
         Object poolSize = this.getConfig("settings.async-workers", "auto");
         if (!(poolSize instanceof Integer)) {
@@ -817,9 +817,9 @@ public class Server {
     }
 
     public void reload() {
-        this.logger.info("Reloading...");
+        this.logger.info("再読み込み中...");
 
-        this.logger.info("Saving levels...");
+        this.logger.info("ワールドを保存しています...");
 
         for (Level level : this.levels.values()) {
             level.save();
@@ -829,7 +829,7 @@ public class Server {
         this.pluginManager.clearPlugins();
         this.commandMap.clearCommands();
 
-        this.logger.info("Reloading properties...");
+        this.logger.info("server.propertiesを再読み込みしています...");
         this.properties.reload();
         this.maxPlayers = this.getPropertyInt("max-players", 20);
 
@@ -850,6 +850,13 @@ public class Server {
         this.pluginManager.loadPlugins(this.pluginPath);
         this.enablePlugins(PluginLoadOrder.STARTUP);
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
+
+        ArrayList<String> memory = new ArrayList<String>();
+        memory = MemoryChecker.getMemoryInfo();
+        for(int i=0; memory.size() > i;i++){
+        	this.logger.info(memory.get(i));
+        }
+
         Timings.reset();
     }
 
@@ -934,6 +941,12 @@ public class Server {
         this.tickCounter = 0;
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
+
+        ArrayList<String> memory = new ArrayList<String>();
+        memory = MemoryChecker.getMemoryInfo();
+        for(int i=0; memory.size() > i;i++){
+        	this.logger.info(memory.get(i));
+        }
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
 

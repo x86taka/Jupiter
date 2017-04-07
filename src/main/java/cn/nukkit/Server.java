@@ -1986,6 +1986,7 @@ public class Server {
         this.properties.save();
     }
 
+<<<<<<< HEAD
     public String getJupiterConfigString(String key){
     	return this.jupiterconfig.getString(key);
     }
@@ -2000,6 +2001,11 @@ public class Server {
 
     public void setJupiterConfigInt(String key, int value){
     	this.jupiterconfig.set(key, value);
+=======
+    public void setJupiterPropertyBoolean(String key, boolean value){
+    	this.jupiterconfig.set(key,  value ? "1" : "0");
+    	this.jupiterconfig.save();
+>>>>>>> 573d4b92b8d99051f555fe85c4d7e611d476443f
     }
 
     public Boolean getJupiterConfigBoolean(String key){

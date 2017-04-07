@@ -209,8 +209,6 @@ public class Level implements ChunkManager, Metadatable {
     private final Map<Long, BaseFullChunk> chunks = new HashMap<>();
 
     private Vector3 mutableBlock;
-    
-    public static boolean breakparticle = true;
 
     // Avoid OOM, gc'd references result in whole chunk being sent (possibly higher cpu)
     private Map<Long, SoftReference<Map<Short, Object>>> changedBlocks = new HashMap<>();
@@ -1815,7 +1813,8 @@ public class Level implements ChunkManager, Metadatable {
         if (createParticles) {
             Map<Integer, Player> players = this.getChunkPlayers((int) target.x >> 4, (int) target.z >> 4);
 
-            if(breakparticle == true)this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());
+            if(this.getServer().getJupiterConfigBoolean("DestroyBlockParticle"))
+                this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());
 
             if (player != null) {
                 players.remove(player.getLoaderId());
@@ -2924,6 +2923,9 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setRaining(boolean raining) {
+        if (!this.getServer().getJupiterConfigBoolean("Weather"))
+            return false
+;
         WeatherChangeEvent ev = new WeatherChangeEvent(this, raining);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -2963,6 +2965,9 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setThundering(boolean thundering) {
+    	if (!this.getServer().getJupiterConfigBoolean("Weather"))
+            return false;
+
         ThunderChangeEvent ev = new ThunderChangeEvent(this, thundering);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -3001,6 +3006,9 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void sendWeather(Player[] players) {
+    	if (!this.getServer().getJupiterConfigBoolean("Weather"))
+            return;
+
         if (players == null) {
             players = this.getPlayers().values().stream().toArray(Player[]::new);
         }

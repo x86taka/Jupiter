@@ -255,6 +255,7 @@ public class Server {
     private Level defaultLevel = null;
 
     private Thread currentThread;
+	private Config jupiterconfig;
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -376,13 +377,21 @@ public class Server {
                 put("rcon.password", Base64.getEncoder().encodeToString(UUID.randomUUID().toString().replace("-", "").getBytes()).substring(3, 13));
                 put("auto-save", true);
                 put("force-resources", false);
-                put("blockbreak-particle", true);
                 put("senddefaultjoinmessage", true);
             }
         });
 
-        if(this.getPropertyBoolean("blockbreak-particle") == true)Level.breakparticle = true;
-        else Level.breakparticle = false;
+        this.jupiterconfig = new Config(this.getDataPath() + "jupiter.yml");
+
+        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+        if (advacedConf == null)
+            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+
+        try {
+            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
@@ -1962,6 +1971,10 @@ public class Server {
     public void setPropertyBoolean(String variable, boolean value) {
         this.properties.set(variable, value ? "1" : "0");
         this.properties.save();
+    }
+
+    public Boolean getJupiterConfigBoolean(String key){
+    	return this.jupiterconfig.getBoolean(key);
     }
 
     public PluginIdentifiableCommand getPluginCommand(String name) {

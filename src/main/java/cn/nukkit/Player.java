@@ -2393,7 +2393,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
 
-                        if (item.getId() == Item.SNOWBALL) {
+                        if (item.getId() == Item.SNOWBALL && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2427,7 +2427,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 snowball.spawnToAll();
                             }
-                        } else if (item.getId() == Item.EGG) {
+                        } else if (item.getId() == Item.EGG && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2461,7 +2461,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 egg.spawnToAll();
                             }
-                        } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20) {
+                        } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2496,7 +2496,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 enderPearl.spawnToAll();
                             }
                             this.lastEnderPearl = this.server.getTick();
-                        } else if (item.getId() == Item.EXPERIENCE_BOTTLE) {
+                        } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2530,7 +2530,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                        } else if (item.getId() == Item.SPLASH_POTION) {
+                        } else if (item.getId() == Item.SPLASH_POTION && this.getServer().getJupiterConfigBoolean("AllowSplashPotion") && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2611,7 +2611,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                         case PlayerActionPacket.ACTION_RELEASE_ITEM:
                             if (this.startAction > -1 && this.getDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION)) {
-                                if (this.inventory.getItemInHand().getId() == Item.BOW) {
+                                if (this.inventory.getItemInHand().getId() == Item.BOW && this.getServer().getJupiterConfigBoolean("AllowProjectile")) {
 
                                     Item bow = this.inventory.getItemInHand();
                                     ItemArrow itemArrow = new ItemArrow();
@@ -4236,7 +4236,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         PlayerDeathEvent ev;
         this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
 
-        if (!ev.getKeepInventory()) {
+        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("KeepInventory"))) {
             for (Item item : ev.getDrops()) {
                 this.level.dropItem(this, item, null, true, 40);
             }
@@ -4246,7 +4246,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        if (!ev.getKeepExperience()) {
+        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("KeepExperience"))) {
             if (this.isSurvival() || this.isAdventure()) {
                 int exp = ev.getExperience() * 7;
                 if (exp > 100) exp = 100;

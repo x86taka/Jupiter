@@ -1,0 +1,11 @@
+#weather
+Weather: true
+
+#player
+KeepExperience: false
+KeepInventory: false
+AllowSplashPotion: true
+AllowProjectile: true
+
+#level
+DestroyBlockParticle: true

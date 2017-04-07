@@ -289,7 +289,7 @@ public class Server {
             new File(pluginPath).mkdirs();
             this.getLogger().info(TextFormat.AQUA + pluginPath + "  を作成しました。");
         }
-        
+
         if (!new File(dataPath + "unpackedPlugins/").exists()) {
             new File(dataPath + "unpackedPlugins/").mkdirs();
             this.getLogger().info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
@@ -603,6 +603,15 @@ public class Server {
         return recipients.size();
     }
 
+    public int broadcastPopup(String message) {
+        return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
+    }
+
+    public int broadcastTip(String message) {
+        return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
+    }
+
+
     public int broadcast(String message, String permissions) {
         Set<CommandSender> recipients = new HashSet<>();
 
@@ -634,6 +643,42 @@ public class Server {
 
         for (CommandSender recipient : recipients) {
             recipient.sendMessage(message);
+        }
+
+        return recipients.size();
+    }
+
+    public int broadcastPopup(String message, String permissions) {
+        Set<Player> recipients = new HashSet<>();
+
+        for (String permission : permissions.split(";")) {
+            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
+                if (permissible instanceof Player && permissible.hasPermission(permission)) {
+                    recipients.add((Player) permissible);
+                }
+            }
+        }
+
+        for (Player recipient : recipients) {
+            recipient.sendPopup(message);
+        }
+
+        return recipients.size();
+    }
+
+    public int broadcastTip(String message, String permissions) {
+        Set<Player> recipients = new HashSet<>();
+
+        for (String permission : permissions.split(";")) {
+            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
+                if (permissible instanceof Player && permissible.hasPermission(permission)) {
+                    recipients.add((Player) permissible);
+                }
+            }
+        }
+
+        for (Player recipient : recipients) {
+            recipient.sendTip(message);
         }
 
         return recipients.size();

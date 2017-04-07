@@ -86,6 +86,7 @@ public abstract class DefaultPermissions {
         registerPermission(new Permission(ROOT + ".command.gamemode.other", "Allows the user to change the gamemode of other players", Permission.DEFAULT_OP), gamemode);
         gamemode.recalculatePermissibles();
 
+        registerPermission(new Permission(ROOT + ".command.checkmemory", "Allows the user to check a using Java memory.", Permission.DEFAULT_TRUE), commands);
         registerPermission(new Permission(ROOT + ".command.me", "Allows the user to perform a chat action", Permission.DEFAULT_TRUE), commands);
         registerPermission(new Permission(ROOT + ".command.tell", "Allows the user to privately message another player", Permission.DEFAULT_TRUE), commands);
         registerPermission(new Permission(ROOT + ".command.say", "Allows the user to talk as the console", Permission.DEFAULT_OP), commands);

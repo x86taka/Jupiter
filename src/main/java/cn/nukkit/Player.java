@@ -3931,20 +3931,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
-	public void sendImage(String path, ItemMap item) throws IOException{
-    	item.setImage(new File(path));
+    public void sendImage(String path, ItemMap item) throws IOException{
+        item.setImage(new File(path));
 
-		ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
-    	pk.mapId = item.getMapId();
-    	pk.update = 2;
-    	pk.scale = 0;
-    	pk.width = 128;
-    	pk.height = 128;
-    	pk.offsetX = 0;
-    	pk.offsetZ = 0;
-    	pk.image = item.loadImageFromNBT();
+        ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
+        pk.mapId = item.getMapId();
+        pk.update = 2;
+        pk.scale = 0;
+        pk.width = 128;
+        pk.height = 128;
+        pk.offsetX = 0;
+        pk.offsetZ = 0;
+        pk.image = item.loadImageFromNBT();
 
-    	this.dataPacket(pk);
+        this.dataPacket(pk);
     }
 
     @Override

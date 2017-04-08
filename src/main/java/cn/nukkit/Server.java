@@ -385,17 +385,19 @@ public class Server {
 
         this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
 
-        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-        if (advacedConf == null)
-            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-
-        try {
-            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!new File(this.dataPath + "jupiter.yml").exists()) {
+	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+	        if (advacedConf == null)
+	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	
+	        try {
+	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
         }
 
-        loadJupiterConfig();
+        this.loadJupiterConfig();
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));

@@ -4826,6 +4826,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return !(this.isCreative() || this.isSpectator()) && this.foodEnabled;
     }
 
+    public void setFood(int food){
+    	this.foodData.setLevel(food);
+    }
+
     public void setFoodEnabled(boolean foodEnabled) {
         this.foodEnabled = foodEnabled;
     }

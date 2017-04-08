@@ -255,7 +255,7 @@ public class Server {
     private Level defaultLevel = null;
 
     private Thread currentThread;
-	private Config jupiterconfig;
+	private Map<String, Object> jupiterconfig;
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -348,7 +348,7 @@ public class Server {
         this.logger.info(TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "を読み込んでいます...");
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        this.logger.info(TextFormat.GREEN + "server properties" + TextFormat.WHITE + "を読み込んでいます...");
+        this.logger.info(TextFormat.GREEN + "server.properties" + TextFormat.WHITE + "を読み込んでいます...");
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -381,17 +381,23 @@ public class Server {
             }
         });
 
-        this.jupiterconfig = new Config(this.getDataPath() + "jupiter.yml");
+        new Config(this.getDataPath() + "jupiter.yml");
 
-        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-        if (advacedConf == null)
-            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+        this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
 
-        try {
-            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!new File(this.dataPath + "jupiter.yml").exists()) {
+	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+	        if (advacedConf == null)
+	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	
+	        try {
+	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
         }
+
+        this.loadJupiterConfig();
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
@@ -1986,28 +1992,24 @@ public class Server {
         this.properties.save();
     }
 
-    public String getJupiterConfigString(String key){
-    	return this.jupiterconfig.getString(key);
+    public Config getJupiterConfig(){
+    	return new Config(this.getDataPath() + "jupiter.yml");
     }
 
-    public void setJupiterConfigString(String key, String value){
-    	this.jupiterconfig.set(key, value);
+    public void loadJupiterConfig(){
+    	this.jupiterconfig = this.getJupiterConfig().getAll();
+    }
+
+    public String getJupiterConfigString(String key){
+    	return (String) this.jupiterconfig.get(key);
     }
 
     public int getJupiterConfigInt(String key){
-    	return this.jupiterconfig.getInt(key);
-    }
-
-    public void setJupiterConfigInt(String key, int value){
-    	this.jupiterconfig.set(key, value);
+    	return (int) this.jupiterconfig.get(key);
     }
 
     public Boolean getJupiterConfigBoolean(String key){
-    	return this.jupiterconfig.getBoolean(key);
-    }
-
-    public void setJupiterConfigBoolean(String key, boolean value){
-    	this.jupiterconfig.set(key, value);
+    	return (Boolean) this.jupiterconfig.get(key);
     }
 
     public PluginIdentifiableCommand getPluginCommand(String name) {

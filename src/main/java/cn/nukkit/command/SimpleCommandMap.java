@@ -78,6 +78,8 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     private void setDefaultCommands() {
+    	if (this.server.getJupiterConfigBoolean("DisableAllDefaultCommands"))
+    		return;
         this.register("nukkit", new VersionCommand("version"));
         this.register("nukkit", new PluginsCommand("plugins"));
         this.register("nukkit", new SeedCommand("seed"));

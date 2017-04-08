@@ -9,3 +9,7 @@ AllowProjectile: true
 
 #level
 DestroyBlockParticle: true
+
+#command
+#この設定をtrueにすると、プラグインで追加されたコマンド以外が全て無くなります
+DisableAllDefaultCommands: false

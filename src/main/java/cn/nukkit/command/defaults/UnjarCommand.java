@@ -30,6 +30,7 @@ import java.util.zip.ZipFile;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
+import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 
 public class UnjarCommand extends VanillaCommand{
@@ -103,8 +104,6 @@ public class UnjarCommand extends VanillaCommand{
 		File f = new File(path);
 		File f1 = new File(path + ".zip");
 
-		//f.renameTo(f1);
-
 		try {
 			unZip(f1, new File(path.replaceAll(".jar", "")));
 		} catch (IOException e) {
@@ -117,6 +116,13 @@ public class UnjarCommand extends VanillaCommand{
 		f1.delete();
 
         sender.sendMessage(TextFormat.GREEN + "解凍完了");
+
+        //メインクラスと開発者の取得
+        Config c = new Config(path.replaceAll(".jar", "") + "/plugin.yml");
+        String main = c.getString("main");
+        String author = c.getString(("author"));
+        sender.sendMessage(TextFormat.WHITE + "メインクラスは" + TextFormat.AQUA + main + TextFormat.WHITE + "です。");
+        sender.sendMessage(TextFormat.WHITE + "開発者は" + TextFormat.AQUA + author + TextFormat.WHITE + "です。");
 
 		return true;
 	}

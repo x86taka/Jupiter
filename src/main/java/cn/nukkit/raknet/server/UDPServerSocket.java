@@ -48,8 +48,8 @@ public class UDPServerSocket extends ChannelInboundHandlerAdapter {
                     .handler(this);
             channel = bootstrap.bind(interfaz, port).sync().channel();
         } catch (Exception e) {
-            this.logger.critical("**** FAILED TO BIND TO " + interfaz + ":" + port + "!");
-            this.logger.critical("Perhaps a server is already running on that port?");
+            this.logger.critical(interfaz + ":" + port + " 上でサーバーを開けませんでした。");
+            this.logger.critical("同じポートで別のサーバーを動かしている可能性があります。");
             System.exit(1);
         }
     }

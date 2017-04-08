@@ -1,9 +1,9 @@
 package cn.nukkit.raknet.server;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import cn.nukkit.Server;
 import cn.nukkit.utils.ThreadedLogger;
-
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * author: MagicDroidX
@@ -87,7 +87,7 @@ public class RakNetServer extends Thread {
     private class ShutdownHandler extends Thread {
         public void run() {
             if (!shutdown) {
-                logger.emergency("RakNet crashed!");
+                logger.emergency("RakNet(サーバー)がクラッシュしました。");
             }
         }
     }

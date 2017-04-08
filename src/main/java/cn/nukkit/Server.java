@@ -625,6 +625,15 @@ public class Server {
     public int broadcastTip(String message) {
         return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
     }
+    
+    public int broadcastTitle(String message) {
+        return this.broadcastTitle(message, BROADCAST_CHANNEL_USERS);
+    }
+    
+    public int broadcastSubtitle(String message) {
+        return this.broadcastSubtitle(message, BROADCAST_CHANNEL_USERS);
+    }
+
 
 
     public int broadcast(String message, String permissions) {
@@ -694,6 +703,42 @@ public class Server {
 
         for (Player recipient : recipients) {
             recipient.sendTip(message);
+        }
+
+        return recipients.size();
+    }
+    
+    public int broadcastTitle(String message, String permissions) {
+        Set<Player> recipients = new HashSet<>();
+
+        for (String permission : permissions.split(";")) {
+            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
+                if (permissible instanceof Player && permissible.hasPermission(permission)) {
+                    recipients.add((Player) permissible);
+                }
+            }
+        }
+
+        for (Player recipient : recipients) {
+            recipient.sendTitle(message);
+        }
+
+        return recipients.size();
+    }
+    
+    public int broadcastSubtitle(String message, String permissions) {
+        Set<Player> recipients = new HashSet<>();
+
+        for (String permission : permissions.split(";")) {
+            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
+                if (permissible instanceof Player && permissible.hasPermission(permission)) {
+                    recipients.add((Player) permissible);
+                }
+            }
+        }
+
+        for (Player recipient : recipients) {
+            recipient.setSubtitle(message);
         }
 
         return recipients.size();

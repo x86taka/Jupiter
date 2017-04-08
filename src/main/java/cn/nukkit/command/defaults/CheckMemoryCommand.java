@@ -10,8 +10,7 @@ public class CheckMemoryCommand extends VanillaCommand{
 	public CheckMemoryCommand(String name) {
         super(name,
                 "Javaのメモリ使用量の確認",
-                "/checkmemory",
-                new String[]{"ver", "about"}
+                "/checkmemory"
         );
         this.setPermission("nukkit.command.checkmemory");
         this.commandParameters.clear();

@@ -1813,7 +1813,7 @@ public class Level implements ChunkManager, Metadatable {
         if (createParticles) {
             Map<Integer, Player> players = this.getChunkPlayers((int) target.x >> 4, (int) target.z >> 4);
 
-            if(this.getServer().getJupiterConfigBoolean("DestroyBlockParticle"))
+            if(this.getServer().getJupiterConfigBoolean("destroy-block-particle"))
                 this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());
 
             if (player != null) {
@@ -2923,7 +2923,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setRaining(boolean raining) {
-        if (!this.getServer().getJupiterConfigBoolean("Weather"))
+        if (!this.getServer().getJupiterConfigBoolean("weather"))
             return false
 ;
         WeatherChangeEvent ev = new WeatherChangeEvent(this, raining);
@@ -2965,7 +2965,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setThundering(boolean thundering) {
-    	if (!this.getServer().getJupiterConfigBoolean("Weather"))
+    	if (!this.getServer().getJupiterConfigBoolean("weather"))
             return false;
 
         ThunderChangeEvent ev = new ThunderChangeEvent(this, thundering);
@@ -3006,7 +3006,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void sendWeather(Player[] players) {
-    	if (!this.getServer().getJupiterConfigBoolean("Weather"))
+    	if (!this.getServer().getJupiterConfigBoolean("weather"))
             return;
 
         if (players == null) {

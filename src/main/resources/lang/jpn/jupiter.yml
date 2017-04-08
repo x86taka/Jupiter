@@ -1,15 +1,27 @@
 #weather
-Weather: true
+weather: true
 
 #player
-KeepExperience: false
-KeepInventory: false
-AllowSplashPotion: true
-AllowProjectile: true
+keep-experience: false
+keep-inventory: false
+
+#projectile
+allow-snowball: true
+allow-egg: true
+allow-splashpotion: true
+allow-enderpearl: true
+allow-experience-bottle: true
+allow-bow: true
+
+#server
+join-quit-message: true
 
 #level
-DestroyBlockParticle: true
+#fromplayerdata => playerデータ(.dat)に保存された座標へスポーンします
+#default => levelの初期座標へとスポーンします
+spawnpoint: fromplayerdata
+destroy-block-particle: true
 
 #command
 #この設定をtrueにすると、プラグインで追加されたコマンド以外が全て無くなります
-DisableAllDefaultCommands: false
+disable-all-commands: false

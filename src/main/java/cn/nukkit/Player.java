@@ -4870,6 +4870,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.setMovementSpeed(this.movementSpeed);
     }
 
+    /**
+     * @deprecated 別のメソッドに置き換えられました。 {@link #transferServer(String, int)}
+     */
     public void transfer(InetSocketAddress address) {
         String hostName = address.getHostName();
         int port = address.getPort();
@@ -4887,6 +4890,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	pk.port = port;
     	this.dataPacket(pk);
     	String mes = "IP: " + ip + "  ポート: " + port + "のサーバーに移動しました。";
+    	if(this.server.getJupiterConfigBoolean("transfer-server-message")){
+    		this.server.broadcastMessage(this.getName() + "は別のサーバーへ移動しました。");
+    	}
     	this.close(mes, mes, false);
     }
 

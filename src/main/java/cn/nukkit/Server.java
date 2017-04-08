@@ -255,7 +255,7 @@ public class Server {
     private Level defaultLevel = null;
 
     private Thread currentThread;
-	private Config jupiterconfig;
+	private Map<String, Object> jupiterconfig;
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -381,7 +381,7 @@ public class Server {
             }
         });
 
-        this.jupiterconfig = new Config(this.getDataPath() + "jupiter.yml");
+        new Config(this.getDataPath() + "jupiter.yml");
 
         InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
         if (advacedConf == null)
@@ -392,6 +392,8 @@ public class Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        loadJupiterConfig();
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
@@ -1986,28 +1988,24 @@ public class Server {
         this.properties.save();
     }
 
-    public String getJupiterConfigString(String key){
-    	return this.jupiterconfig.getString(key);
+    public Config getJupiterConfig(){
+    	return new Config(this.getDataPath() + "jupiter.yml");
     }
 
-    public void setJupiterConfigString(String key, String value){
-    	this.jupiterconfig.set(key, value);
+    public void loadJupiterConfig(){
+    	this.jupiterconfig = this.getJupiterConfig().getAll();
+    }
+
+    public String getJupiterConfigString(String key){
+    	return (String) this.jupiterconfig.get(key);
     }
 
     public int getJupiterConfigInt(String key){
-    	return this.jupiterconfig.getInt(key);
-    }
-
-    public void setJupiterConfigInt(String key, int value){
-    	this.jupiterconfig.set(key, value);
+    	return (int) this.jupiterconfig.get(key);
     }
 
     public Boolean getJupiterConfigBoolean(String key){
-    	return this.jupiterconfig.getBoolean(key);
-    }
-
-    public void setJupiterConfigBoolean(String key, boolean value){
-    	this.jupiterconfig.set(key, value);
+    	return (Boolean) this.jupiterconfig.get(key);
     }
 
     public PluginIdentifiableCommand getPluginCommand(String name) {

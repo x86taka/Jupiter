@@ -348,7 +348,7 @@ public class Server {
         this.logger.info(TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "を読み込んでいます...");
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        this.logger.info(TextFormat.GREEN + "server properties" + TextFormat.WHITE + "を読み込んでいます...");
+        this.logger.info(TextFormat.GREEN + "server.properties" + TextFormat.WHITE + "を読み込んでいます...");
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -382,6 +382,8 @@ public class Server {
         });
 
         new Config(this.getDataPath() + "jupiter.yml");
+
+        this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
 
         InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
         if (advacedConf == null)

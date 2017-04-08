@@ -15,6 +15,7 @@ public class MemoryChecker {
 	    long max = Runtime.getRuntime().maxMemory() / 1024;
 	    long used = total - free;
 	    double ratio = (used * 100 / (double)total);
+	    
 	    result.add(TextFormat.AQUA + "--------------------------");
 	    result.add(TextFormat.YELLOW + "Java メモリ情報");
 	    result.add("合計: " + TextFormat.GREEN + f1.format(total));

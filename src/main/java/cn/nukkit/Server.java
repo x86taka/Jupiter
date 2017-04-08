@@ -1,5 +1,6 @@
 package cn.nukkit;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -385,7 +386,7 @@ public class Server {
         this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+	        BufferedInputStream advacedConf = (BufferedInputStream)this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf == null)
 	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
 	

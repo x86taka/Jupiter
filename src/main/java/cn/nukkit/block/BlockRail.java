@@ -15,7 +15,8 @@ import cn.nukkit.utils.BlockColor;
  * Package cn.nukkit.block in project nukkit
  */
 public class BlockRail extends BlockFlowable {
-	
+
+	//追加
 	public static final int STRAIGHT_EAST_WEST = 0;
 	public static final int STRAIGHT_NORTH_SOUTH = 1;
 	public static final int SLOPED_ASCENDING_NORTH = 2;

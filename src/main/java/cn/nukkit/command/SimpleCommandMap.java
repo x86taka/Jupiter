@@ -13,7 +13,6 @@ import cn.nukkit.Server;
 import cn.nukkit.command.defaults.BanCommand;
 import cn.nukkit.command.defaults.BanIpCommand;
 import cn.nukkit.command.defaults.BanListCommand;
-import cn.nukkit.command.defaults.CheckMemoryCommand;
 import cn.nukkit.command.defaults.DefaultGamemodeCommand;
 import cn.nukkit.command.defaults.DeopCommand;
 import cn.nukkit.command.defaults.DifficultyCommand;
@@ -90,7 +89,6 @@ public class SimpleCommandMap implements CommandMap {
         this.register("nukkit", new BanCommand("ban"));
         this.register("nukkit", new BanIpCommand("ban-ip"));
         this.register("nukkit", new BanListCommand("banlist"));
-        this.register("nukkit", new CheckMemoryCommand("checkmemory"));
         this.register("nukkit", new PardonCommand("pardon"));
         this.register("nukkit", new PardonIpCommand("pardon-ip"));
         this.register("nukkit", new SayCommand("say"));

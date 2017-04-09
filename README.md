@@ -14,7 +14,7 @@ Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェア�
  ダウンロード & インフォメーション
 --------------------
 
-* __[公式サイト](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io)__
+* __[公式サイト](https://jupiterdevelopmentteam.github.io/)__
 * __[ダウンロード](http://ux.getuploader.com/Itsu/)__
 
 

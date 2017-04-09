@@ -48,6 +48,7 @@ import cn.nukkit.block.BlockSugarcane;
 import cn.nukkit.block.BlockWheat;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityChest;
+import cn.nukkit.blockentity.BlockEntitySign;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityXPOrb;
@@ -2116,6 +2117,10 @@ public class Level implements ChunkManager, Metadatable {
 
     public Map<Integer, ChunkLoader> getLoaders() {
         return loaders;
+    }
+
+    public BlockEntitySign getSign(Vector3 pos){
+    	return (BlockEntitySign) getBlockEntity(pos);
     }
 
     public BlockEntity getBlockEntity(Vector3 pos) {

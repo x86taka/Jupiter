@@ -633,6 +633,10 @@ public class Server {
     public int broadcastSubtitle(String message) {
         return this.broadcastSubtitle(message, BROADCAST_CHANNEL_USERS);
     }
+    
+    public int broadcastImportantMessage(String message) {
+        return this.broadcastImportantMessage(message, BROADCAST_CHANNEL_USERS);
+    }
 
 
 
@@ -739,6 +743,24 @@ public class Server {
 
         for (Player recipient : recipients) {
             recipient.setSubtitle(message);
+        }
+
+        return recipients.size();
+    }
+    
+    public int broadcastImportantMessage(String message, String permissions) {
+        Set<CommandSender> recipients = new HashSet<>();
+
+        for (String permission : permissions.split(";")) {
+            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
+                if (permissible instanceof CommandSender && permissible.hasPermission(permission)) {
+                    recipients.add((CommandSender) permissible);
+                }
+            }
+        }
+
+        for (CommandSender recipient : recipients) {
+            recipient.sendImportantMessage(message);
         }
 
         return recipients.size();

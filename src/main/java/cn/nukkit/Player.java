@@ -344,6 +344,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private String deviceModel;
 
+    public boolean mute = false;
+
     public BlockEnderChest getViewingEnderChest() {
         return viewingEnderChest;
     }
@@ -3813,8 +3815,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return false;
     }
 
+    //TODO send
+
     @Override
     public void sendMessage(String message) {
+    	if(mute)return;
         // TODO: Remove this workaround (broken client MCPE 1.0.0)
         messageQueue.add(this.server.getLanguage().translateString(message));
 
@@ -3828,6 +3833,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     @Override
     public void sendMessage(TextContainer message) {
+    	if(mute)return;
         if (message instanceof TranslationContainer) {
             this.sendTranslation(message.getText(), ((TranslationContainer) message).getParameters());
             return;
@@ -3836,10 +3842,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendTranslation(String message) {
+    	if(mute)return;
         this.sendTranslation(message, new String[0]);
     }
 
     public void sendTranslation(String message, String[] parameters) {
+    	if(mute)return;
         TextPacket pk = new TextPacket();
         if (!this.server.isLanguageForced()) {
             pk.type = TextPacket.TYPE_TRANSLATION;
@@ -3857,10 +3865,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendPopup(String message) {
+    	if(mute)return;
         this.sendPopup(message, "");
     }
 
     public void sendPopup(String message, String subtitle) {
+    	if(mute)return;
         TextPacket pk = new TextPacket();
         pk.type = TextPacket.TYPE_POPUP;
         pk.source = message;
@@ -3869,10 +3879,23 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendTip(String message) {
+    	if(mute)return;
         TextPacket pk = new TextPacket();
         pk.type = TextPacket.TYPE_TIP;
         pk.message = message;
         this.dataPacket(pk);
+    }
+
+    public void sendImportantMessage(String message) {
+        // TODO: Remove this workaround (broken client MCPE 1.0.0)
+        messageQueue.add(this.server.getLanguage().translateString(message));
+
+        /*
+        TextPacket pk = new TextPacket();
+        pk.type = TextPacket.TYPE_RAW;
+        pk.message = this.server.getLanguage().translateString(message);
+        this.dataPacket(pk);
+        */
     }
 
     public void clearTitle() {
@@ -3891,6 +3914,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendTitle(String text) {
+    	if(mute)return;
         SetTitlePacket pk = new SetTitlePacket();
         pk.type = SetTitlePacket.TYPE_TITLE;
         pk.text = text;
@@ -3902,6 +3926,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @param text Subtitle text
      */
     public void setSubtitle(String text) {
+    	if(mute)return;
         SetTitlePacket pk = new SetTitlePacket();
         pk.type = SetTitlePacket.TYPE_SUBTITLE;
         pk.text = text;
@@ -3909,6 +3934,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void sendActionBarTitle(String text) {
+    	if(mute)return;
         SetTitlePacket pk = new SetTitlePacket();
         pk.type = SetTitlePacket.TYPE_ACTION_BAR;
         pk.text = text;

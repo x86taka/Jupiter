@@ -87,6 +87,7 @@ public abstract class DefaultPermissions {
         gamemode.recalculatePermissibles();
 
         registerPermission(new Permission(ROOT + ".command.me", "Allows the user to perform a chat action", Permission.DEFAULT_TRUE), commands);
+        registerPermission(new Permission(ROOT + ".command.mute", "Allows the user to mute the server.", Permission.DEFAULT_OP), commands);
         registerPermission(new Permission(ROOT + ".command.tell", "Allows the user to privately message another player", Permission.DEFAULT_TRUE), commands);
         registerPermission(new Permission(ROOT + ".command.say", "Allows the user to talk as the console", Permission.DEFAULT_OP), commands);
         registerPermission(new Permission(ROOT + ".command.give", "Allows the user to give items to players", Permission.DEFAULT_OP), commands);

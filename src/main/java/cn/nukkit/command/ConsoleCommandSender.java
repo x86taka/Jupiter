@@ -1,5 +1,7 @@
 package cn.nukkit.command;
 
+import java.util.Map;
+
 import cn.nukkit.Server;
 import cn.nukkit.lang.TextContainer;
 import cn.nukkit.permission.PermissibleBase;
@@ -8,8 +10,6 @@ import cn.nukkit.permission.PermissionAttachment;
 import cn.nukkit.permission.PermissionAttachmentInfo;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.MainLogger;
-
-import java.util.Map;
 
 /**
  * author: MagicDroidX
@@ -108,5 +108,13 @@ public class ConsoleCommandSender implements CommandSender {
     @Override
     public void setOp(boolean value) {
 
+    }
+    
+    @Override
+    public void sendImportantMessage(String message) {
+        message = this.getServer().getLanguage().translateString(message);
+        for (String line : message.trim().split("\n")) {
+            MainLogger.getLogger().info(line);
+        }
     }
 }

@@ -1,32 +1,31 @@
-
+# Jupiter
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
-紹介
+Introduce
 -------------
 
-Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。
-大部分のソースはNukkitのものを使用しています。
+Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。  
+大部分のソースはNukkitのものを使用しています。  
 
 * Javaで書かれているから速い
 * Javaだから多くのプラットフォームに対応しています。
 * Nukkitプラグインが使えます。
 
- ダウンロード & インフォメーション
+ Download & Information
 --------------------
 
 * __[公式サイト](https://jupiterdevelopmentteam.github.io/)__
 * __[ダウンロード](http://ux.getuploader.com/Itsu/)__
 
 
-
-Mavenリポジトリ
+Maven Repositories
 --------------------
 
-Mavenリポジトリはありません。
-しかしプラグインは作ることができます。
+Mavenリポジトリはありません。  
+しかしプラグインは作ることができます。  
 
 
-Jupiterプラグインの作り方
+__Jupiterプラグインの作り方__
 
-簡単です。
-ビルドパスにJupiterを追加するだけです。
+簡単です。  
+ビルドパスにJupiterを追加するだけです。  

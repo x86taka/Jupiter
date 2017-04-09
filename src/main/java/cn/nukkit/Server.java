@@ -389,7 +389,7 @@ public class Server {
 	        BufferedInputStream advacedConf = (BufferedInputStream)this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf == null)
 	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-	
+
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
 	        } catch (IOException e) {
@@ -625,11 +625,11 @@ public class Server {
     public int broadcastTip(String message) {
         return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
     }
-    
+
     public int broadcastTitle(String message) {
         return this.broadcastTitle(message, BROADCAST_CHANNEL_USERS);
     }
-    
+
     public int broadcastSubtitle(String message) {
         return this.broadcastSubtitle(message, BROADCAST_CHANNEL_USERS);
     }
@@ -707,7 +707,7 @@ public class Server {
 
         return recipients.size();
     }
-    
+
     public int broadcastTitle(String message, String permissions) {
         Set<Player> recipients = new HashSet<>();
 
@@ -725,7 +725,7 @@ public class Server {
 
         return recipients.size();
     }
-    
+
     public int broadcastSubtitle(String message, String permissions) {
         Set<Player> recipients = new HashSet<>();
 
@@ -902,11 +902,7 @@ public class Server {
         this.enablePlugins(PluginLoadOrder.STARTUP);
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
 
-        ArrayList<String> memory = new ArrayList<String>();
-        memory = MemoryChecker.getMemoryInfo();
-        for(int i=0; memory.size() > i;i++){
-        	this.logger.info(memory.get(i));
-        }
+
 
         Timings.reset();
     }
@@ -992,12 +988,6 @@ public class Server {
         this.tickCounter = 0;
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
-
-        ArrayList<String> memory = new ArrayList<String>();
-        memory = MemoryChecker.getMemoryInfo();
-        for(int i=0; memory.size() > i;i++){
-        	this.logger.info(memory.get(i));
-        }
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
 

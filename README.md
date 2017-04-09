@@ -1,62 +1,32 @@
 
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
-Introduction
+ç´¹ä»‹
 -------------
 
-Jupiter is free server software for Minecraft Pocket edition.
-Most of sources are from Nukkit.
+Jupiterã¯ç„¡æ–™ã®Minecraft Pocket Editionç”¨ã®ã‚µãƒ¼ãƒãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™ã€‚
+å¤§éƒ¨åˆ†ã®ã‚½ãƒ¼ã‚¹ã¯Nukkitã®ã‚‚ã®ã‚’ä½¿ç”¨ã—ã¦ã„ã¾ã™ã€‚
 
-* Written in Java, Jupiter is faster and more stable.
-* So Java, it has many corresponding platform.
-* Can use Nukkit plug-ins.
+* Javaã§æ›¸ã‹ã‚Œã¦ã„ã‚‹ã‹ã‚‰é€Ÿã„
+* Javaã ã‹ã‚‰å¤šãã®ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ã«å¯¾å¿œã—ã¦ã„ã¾ã™ã€‚
+* Nukkitãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒä½¿ãˆã¾ã™ã€‚
 
-
-Get Jupiter & Infomation
+ ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ & ã‚¤ãƒ³ãƒ•ã‚©ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 --------------------
 
-* __[Official Site](http://itsuplugin.web.fc2.com/Jupiter.html)__(**Japanese site**)
-* __[Jar Download](http://ux.getuploader.com/Itsu/download/1/Jupiter%231.zip)__
+* __[å…¬å¼ã‚µã‚¤ãƒˆ](https://jupiterdevelopmentteam.github.io/)__
+* __[ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰](http://ux.getuploader.com/Itsu/)__
 
 
-Where is Maven repository?
+
+Mavenãƒªãƒã‚¸ãƒˆãƒª
 --------------------
 
-It doesn't have Maven repository.
-But you can make plug-ins for it.
+Mavenãƒªãƒã‚¸ãƒˆãƒªã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
+ã—ã‹ã—ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯ä½œã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
 
-How to make plug-ins for it?
+Jupiterãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ä½œã‚Šæ–¹
 
-It is very easy.
-Please add Jupiter to build-pass.
-
-Ğ‰î
--------------
-
-Jupiter‚Í–³—¿‚ÌMinecraft Pocket Edition—p‚ÌƒT[ƒo[ƒ\ƒtƒgƒEƒFƒA‚Å‚·B
-‘å•”•ª‚Ìƒ\[ƒX‚ÍNukkit‚Ì‚à‚Ì‚ğg—p‚µ‚Ä‚¢‚Ü‚·B
-
-* Java‚Å‘‚©‚ê‚Ä‚¢‚é‚©‚ç‘¬‚¢
-* Java‚¾‚©‚ç‘½‚­‚Ìƒvƒ‰ƒbƒgƒtƒH[ƒ€‚É‘Î‰‚µ‚Ä‚¢‚Ü‚·B
-* Nukkitƒvƒ‰ƒOƒCƒ“‚ªg‚¦‚Ü‚·B
-
- ƒ_ƒEƒ“ƒ[ƒh & ƒCƒ“ƒtƒHƒ[ƒVƒ‡ƒ“
---------------------
-
-* __[Œö®ƒTƒCƒg](http://itsuplugin.web.fc2.com/Jupiter.html)__
-* __[ƒ_ƒEƒ“ƒ[ƒh](http://ux.getuploader.com/Itsu/download/1/Jupiter%231.zip)__
-
-
-
-MavenƒŠƒ|ƒWƒgƒŠ
---------------------
-
-MavenƒŠƒ|ƒWƒgƒŠ‚Í‚ ‚è‚Ü‚¹‚ñB
-‚µ‚©‚µƒvƒ‰ƒOƒCƒ“‚Íì‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
-
-
-Jupiterƒvƒ‰ƒOƒCƒ“‚Ìì‚è•û
-
-ŠÈ’P‚Å‚·B
-ƒrƒ‹ƒhƒpƒX‚ÉJupiter‚ğ’Ç‰Á‚·‚é‚¾‚¯‚Å‚·B
+ç°¡å˜ã§ã™ã€‚
+ãƒ“ãƒ«ãƒ‰ãƒ‘ã‚¹ã«Jupiterã‚’è¿½åŠ ã™ã‚‹ã ã‘ã§ã™ã€‚

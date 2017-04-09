@@ -46,10 +46,14 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.entity.item.EntityBoat;
+import cn.nukkit.entity.item.EntityEnderCrystal;
 import cn.nukkit.entity.item.EntityExpBottle;
 import cn.nukkit.entity.item.EntityFallingBlock;
 import cn.nukkit.entity.item.EntityItem;
+import cn.nukkit.entity.item.EntityMinecartChest;
 import cn.nukkit.entity.item.EntityMinecartEmpty;
+import cn.nukkit.entity.item.EntityMinecartHopper;
+import cn.nukkit.entity.item.EntityMinecartTNT;
 import cn.nukkit.entity.item.EntityPainting;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityPrimedTNT;
@@ -2184,6 +2188,7 @@ public class Server {
         Entity.registerEntity("Snowball", EntitySnowball.class);
         Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
         Entity.registerEntity("Painting", EntityPainting.class);
+        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
         //todo mobs
         Entity.registerEntity("Creeper", EntityCreeper.class);
         //TODO: more mobs
@@ -2203,7 +2208,9 @@ public class Server {
         Entity.registerEntity("Human", EntityHuman.class, true);
 
         Entity.registerEntity("MinecartRideable", EntityMinecartEmpty.class);
-        // TODO: 2016/1/30 all finds of minecart
+        Entity.registerEntity("MinecartChest", EntityMinecartChest.class);
+        Entity.registerEntity("MinecartHopper", EntityMinecartHopper.class);
+        Entity.registerEntity("MinecartTnt", EntityMinecartTNT.class);
         Entity.registerEntity("Boat", EntityBoat.class);
 
         Entity.registerEntity("Lightning", EntityLightning.class);

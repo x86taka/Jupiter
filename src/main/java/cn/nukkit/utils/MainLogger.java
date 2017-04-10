@@ -146,7 +146,7 @@ public class MainLogger extends ThreadedLogger {
     }
 
     protected void send(String message, int level) {
-    	if (!Server.getInstance().getJupiterConfigBoolean("disable-colsole-logger"))
+    	if (Server.getInstance().isLoadedJupiterConfig() && !Server.getInstance().getJupiterConfigBoolean("disable-colsole-logger"))
     		logBuffer.add(message);
     }
 

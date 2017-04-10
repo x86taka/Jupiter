@@ -2054,6 +2054,10 @@ public class Server {
     	return new Config(this.getDataPath() + "jupiter.yml");
     }
 
+    public boolean isLoadedJupiterConfig(){
+    	return this.jupiterconfig.size() > 0;
+    }
+
     public void loadJupiterConfig(){
     	this.jupiterconfig = this.getJupiterConfig().getAll();
     }

@@ -17,7 +17,6 @@ allow-bow: true
 join-quit-message: true
 #transferServer()を使ったときに全員に移動したことを知らせるかどうか
 transfer-server-message: true
-disable-console-logger: false
 disable-chat: false
 
 #level

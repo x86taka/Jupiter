@@ -17,7 +17,6 @@ import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
 import cn.nukkit.Nukkit;
-import cn.nukkit.Server;
 import cn.nukkit.command.CommandReader;
 
 /**
@@ -146,8 +145,7 @@ public class MainLogger extends ThreadedLogger {
     }
 
     protected void send(String message, int level) {
-    	if (Server.getInstance().isLoadedJupiterConfig() && !Server.getInstance().getJupiterConfigBoolean("disable-colsole-logger"))
-    		logBuffer.add(message);
+    	logBuffer.add(message);
     }
 
     private String colorize(String string) {

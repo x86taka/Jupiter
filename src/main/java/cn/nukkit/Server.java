@@ -58,6 +58,7 @@ import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityPrimedTNT;
 import cn.nukkit.entity.item.EntityXPOrb;
 import cn.nukkit.entity.mob.EntityCreeper;
+import cn.nukkit.entity.mob.EntityEndermite;
 import cn.nukkit.entity.passive.EntityChicken;
 import cn.nukkit.entity.passive.EntityCow;
 import cn.nukkit.entity.passive.EntityOcelot;
@@ -2191,6 +2192,7 @@ public class Server {
         Entity.registerEntity("Painting", EntityPainting.class);
         Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
         //todo mobs
+        Entity.registerEntity("Endermite", EntityEndermite.class);
         Entity.registerEntity("Creeper", EntityCreeper.class);
         //TODO: more mobs
         Entity.registerEntity("Chicken", EntityChicken.class);

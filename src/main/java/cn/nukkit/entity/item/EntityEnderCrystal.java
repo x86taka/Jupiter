@@ -54,6 +54,11 @@ public class EntityEnderCrystal extends EntityVehicle {
     }
 
     @Override
+    protected void initEntity() {
+        super.initEntity();
+    }
+
+    @Override
     public void spawnTo(Player player) {
         AddEntityPacket packet = new AddEntityPacket();
         packet.type = EntityEnderCrystal.NETWORK_ID;

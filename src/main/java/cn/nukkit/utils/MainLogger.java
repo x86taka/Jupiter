@@ -1,17 +1,24 @@
 package cn.nukkit.utils;
 
-import cn.nukkit.Nukkit;
-import cn.nukkit.command.CommandReader;
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
-
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.fusesource.jansi.Ansi;
+import org.fusesource.jansi.AnsiConsole;
+
+import cn.nukkit.Nukkit;
+import cn.nukkit.Server;
+import cn.nukkit.command.CommandReader;
 
 /**
  * author: MagicDroidX
@@ -139,7 +146,8 @@ public class MainLogger extends ThreadedLogger {
     }
 
     protected void send(String message, int level) {
-        logBuffer.add(message);
+    	if (!Server.getInstance().getJupiterConfigBoolean("disable-colsole-logger"))
+    		logBuffer.add(message);
     }
 
     private String colorize(String string) {

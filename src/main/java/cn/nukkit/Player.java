@@ -3168,7 +3168,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 } else { //Chat
                                     PlayerChatEvent chatEvent = new PlayerChatEvent(this, msg);
                                     this.server.getPluginManager().callEvent(chatEvent);
-                                    if (!chatEvent.isCancelled()) {
+                                    if (!chatEvent.isCancelled() && !this.getServer().getJupiterConfigBoolean("disable-chat")) {
                                         this.server.broadcastMessage(this.getServer().getLanguage().translateString(chatEvent.getFormat(), new String[]{chatEvent.getPlayer().getDisplayName(), chatEvent.getMessage()}), chatEvent.getRecipients());
                                     }
                                 }

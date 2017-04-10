@@ -1160,6 +1160,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    public void startSleep(){
+    	this.setDataFlag(DATA_PLAYER_FLAGS, DATA_PLAYER_FLAG_SLEEP, true);
+    	this.setDataProperty(new IntPositionEntityData(DATA_PLAYER_BED_POSITION, (int) this.x, (int) this.y, (int) this.z), true);
+    	this.sleeping = this.getPosition();
+    	this.server.getPluginManager().callEvent(new PlayerBedEnterEvent(this, this.level.getBlock(this.sleeping)));
+    }
+
     public void stopSleep() {
         if (this.sleeping != null) {
             this.server.getPluginManager().callEvent(new PlayerBedLeaveEvent(this, this.level.getBlock(this.sleeping)));

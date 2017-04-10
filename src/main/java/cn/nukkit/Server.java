@@ -2055,7 +2055,7 @@ public class Server {
     }
 
     public boolean isLoadedJupiterConfig(){
-    	return this.jupiterconfig.size() > 0;
+    	return !this.jupiterconfig.isEmpty();
     }
 
     public void loadJupiterConfig(){

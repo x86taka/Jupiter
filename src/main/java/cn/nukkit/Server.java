@@ -505,9 +505,8 @@ public class Server {
         this.network.registerInterface(new RakNetInterface(this));
 
         getLogger().info(TextFormat.AQUA + "--------------------------");
-        getLogger().info(TextFormat.AQUA + "Loading plugins...");
+        getLogger().info(TextFormat.AQUA + "プラグインを読み込んでいます...");
         this.pluginManager.loadPlugins(this.pluginPath);
-        getLogger().info(TextFormat.AQUA + "--------------------------");
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
 
@@ -583,6 +582,7 @@ public class Server {
         }
 
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
+        getLogger().info(TextFormat.AQUA + "--------------------------");
 
         this.start();
     }

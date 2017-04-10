@@ -385,8 +385,6 @@ public class Server {
             }
         });
 
-        new Config(this.getDataPath() + "jupiter.yml");
-
         this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
@@ -396,6 +394,7 @@ public class Server {
 
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+	            this.getLogger().info("Copied");
 	        } catch (IOException e) {
 	            throw new RuntimeException(e);
 	        }

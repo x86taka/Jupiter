@@ -389,7 +389,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void setFishingHook(EntityFishingHook entity){
     	this.unlinkHookToPlayer(this.getFishingHook());
-    	this.fishingHook.close();
     	this.fishingHook = entity;
     	this.linkHookToPlayer(this.getFishingHook());
     }
@@ -2578,7 +2577,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             double f = 1.5;
                             EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
                             entity.setMotion(entity.getMotion().multiply(f));
-                            this.setFishingHook(entity);
+                            this.linkHookToPlayer(entity);
                         }
 
                         this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, true);

@@ -2450,20 +2450,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
 
+                        CompoundTag nbt = new CompoundTag()
+                                .putList(new ListTag<DoubleTag>("Pos")
+                                        .add(new DoubleTag("", x))
+                                        .add(new DoubleTag("", y + this.getEyeHeight()))
+                                        .add(new DoubleTag("", z)))
+                                .putList(new ListTag<DoubleTag>("Motion")
+                                        .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                        .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                        .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                .putList(new ListTag<FloatTag>("Rotation")
+                                        .add(new FloatTag("", (float) yaw))
+                                        .add(new FloatTag("", (float) pitch)));
                         if (item.getId() == Item.SNOWBALL && this.getServer().getJupiterConfigBoolean("allow-snowball")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)));
-
                             float f = 1.5f;
                             EntitySnowball snowball = new EntitySnowball(this.chunk, nbt, this);
 
@@ -2485,19 +2484,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 snowball.spawnToAll();
                             }
                         } else if (item.getId() == Item.EGG && this.getServer().getJupiterConfigBoolean("allow-egg")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)));
-
                             float f = 1.5f;
                             EntityEgg egg = new EntityEgg(this.chunk, nbt, this);
 
@@ -2519,19 +2505,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 egg.spawnToAll();
                             }
                         } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.getServer().getJupiterConfigBoolean("allow-enderpearl")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)));
-
                             float f = 1.5f;
                             EntityEnderPearl enderPearl = new EntityEnderPearl(this.chunk, nbt, this);
 
@@ -2554,19 +2527,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                             this.lastEnderPearl = this.server.getTick();
                         } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.getServer().getJupiterConfigBoolean("allow-experience-bottle")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)))
-                                    .putInt("Potion", item.getDamage());
+                            nbt.putInt("Potion", item.getDamage());
                             double f = 1.5;
                             Entity bottle = new EntityExpBottle(this.chunk, nbt, this);
                             bottle.setMotion(bottle.getMotion().multiply(f));
@@ -2588,19 +2549,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 bottle.spawnToAll();
                             }
                         } else if (item.getId() == Item.SPLASH_POTION && this.getServer().getJupiterConfigBoolean("allow-splash-potion")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)))
-                                    .putShort("PotionId", item.getDamage());
+                            nbt.putShort("PotionId", item.getDamage());
                             double f = 1.5;
                             Entity bottle = new EntityPotion(this.chunk, nbt, this);
                             bottle.setMotion(bottle.getMotion().multiply(f));
@@ -2622,19 +2571,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 bottle.spawnToAll();
                             }
                         } else if (item.getId() == Item.FISHING_ROD && this.getServer().getJupiterConfigBoolean("allow-fishing-rod")) {
-                            CompoundTag nbt = new CompoundTag()
-                                    .putList(new ListTag<DoubleTag>("Pos")
-                                            .add(new DoubleTag("", x))
-                                            .add(new DoubleTag("", y + this.getEyeHeight()))
-                                            .add(new DoubleTag("", z)))
-                                    .putList(new ListTag<DoubleTag>("Motion")
-                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                    .putList(new ListTag<FloatTag>("Rotation")
-                                            .add(new FloatTag("", (float) yaw))
-                                            .add(new FloatTag("", (float) pitch)));
-
                             double f = 1.5;
                             EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
                             entity.setMotion(entity.getMotion().multiply(f));

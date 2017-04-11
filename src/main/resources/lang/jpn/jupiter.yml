@@ -12,6 +12,7 @@ allow-splashpotion: true
 allow-enderpearl: true
 allow-experience-bottle: true
 allow-bow: true
+allow-fishing-rod: true
 
 #server
 join-quit-message: true

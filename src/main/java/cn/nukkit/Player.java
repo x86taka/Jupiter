@@ -49,6 +49,7 @@ import cn.nukkit.entity.data.Skin;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.entity.item.EntityBoat;
 import cn.nukkit.entity.item.EntityExpBottle;
+import cn.nukkit.entity.item.EntityFishingHook;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityVehicle;
@@ -345,6 +346,49 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private String deviceModel;
 
     public boolean mute = false;
+
+    public EntityFishingHook fishingHook = null;
+
+	public boolean linkHookToPlayer(EntityFishingHook entity){
+		if (!entity.isAlive())
+    		return false;
+    	this.setFishingHook(entity);
+    	EntityEventPacket pk = new EntityEventPacket();
+    	pk.eid = this.getFishingHook().getId();
+    	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
+    	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
+    	return true;
+    }
+
+	public boolean unlinkHookToPlayer(EntityFishingHook entity){
+    	if (this.isFishing()){
+	    	EntityEventPacket pk = new EntityEventPacket();
+	    	pk.eid = this.getFishingHook().getId();
+	    	pk.event = EntityEventPacket.FISH_HOOK_TEASE;
+	    	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
+	    	this.setFishingHook();
+	    	return true;
+    	}
+    	return false;
+    }
+
+    public boolean isFishing(){
+    	return this.fishingHook instanceof EntityFishingHook;
+    }
+
+    public EntityFishingHook getFishingHook(){
+    	return this.fishingHook;
+    }
+
+    public void setFishingHook(){
+    	if (this.isFishing())
+    		this.fishingHook.close();
+    	this.fishingHook = null;
+    }
+
+    public void setFishingHook(EntityFishingHook entity){
+    	this.fishingHook = entity;
+    }
 
     public BlockEnderChest getViewingEnderChest() {
         return viewingEnderChest;
@@ -1604,6 +1648,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.blocksAround = blocksAround;
                     this.collisionBlocks = collidingBlocks;
                 }
+
+                if (this.isFishing()){
+                	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
+                		this.setFishingHook();
+                }
             }
 
             if (!this.isSpectator()) {
@@ -2572,6 +2621,24 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
+                        } else if (item.getId() == Item.FISHING_ROD && this.getServer().getJupiterConfigBoolean("allow-fishing-rod")) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)));
+
+                            double f = 1.5;
+                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
+                            entity.setMotion(entity.getMotion().multiply(f));
+                            this.setFishingHook(entity);
                         }
 
                         this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, true);
@@ -4015,6 +4082,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 pk.message = reason;
                 this.directDataPacket(pk);
             }
+
+            this.setFishingHook();
 
             this.connected = false;
             PlayerQuitEvent ev = null;

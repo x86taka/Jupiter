@@ -51,6 +51,7 @@ import cn.nukkit.entity.item.EntityBoat;
 import cn.nukkit.entity.item.EntityEnderCrystal;
 import cn.nukkit.entity.item.EntityExpBottle;
 import cn.nukkit.entity.item.EntityFallingBlock;
+import cn.nukkit.entity.item.EntityFishingHook;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityMinecartChest;
 import cn.nukkit.entity.item.EntityMinecartEmpty;
@@ -2220,6 +2221,7 @@ public class Server {
         Entity.registerEntity("Snowball", EntitySnowball.class);
         Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
         Entity.registerEntity("Painting", EntityPainting.class);
+        Entity.registerEntity("FishingHook", EntityFishingHook.class);
         Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
         //敵対Mob
         Entity.registerEntity("Blaze", EntityBlaze.class);

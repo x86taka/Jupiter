@@ -381,9 +381,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void setFishingHook(){
+    	this.unlinkHookToPlayer(this.getFishingHook());
     	if (this.isFishing())
     		this.fishingHook.close();
-    	this.unlinkHookToPlayer(this.getFishingHook());
     	this.fishingHook = null;
     }
 

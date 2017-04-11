@@ -1118,36 +1118,46 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.IRON_HORSE_ARMOR, 0));
         addCreativeItem(Item.get(Item.GOLD_HORSE_ARMOR, 0));
         addCreativeItem(Item.get(Item.DIAMOND_HORSE_ARMOR, 0));
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 10)); //Chicken
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 11)); //Cow
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 12)); //Pig
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 13)); //Sheep
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 14)); //Wolf
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 18)); //Rabbit
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 15)); //Villager
-        /*
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 16)); //Mooshroom
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 19)); //Bat
-        */
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 22)); //Ocelot
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 33)); //Creeper
-        /*
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 38)); //Enderman
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 39)); //Silverfish
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 34)); //Skeleton
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 37)); //Slime
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 35)); //Spider
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 32)); //Zombie
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 36)); //Zombie Pigman
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 17)); //Squid
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 40)); //Cave spider
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 42)); //Magma Cube
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 41)); //Ghast
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 43)); //Blaze
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 20)); //Iron Golem
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 21)); //Snow Golem
-        addCreativeItem(Item.get(Item.SPAWN_EGG, 44)); //Zombie Villager
-        */
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 10)); //鶏
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 11)); //牛
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 12)); //豚
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 13)); //羊
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 14)); //オオカミ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 15)); //村人
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 16)); //ムーシュルーム
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 17)); //イカ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 18)); //ウサギ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 19)); //コウモリ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 22)); //ヤマネコ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 23)); //馬
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 24)); //ロバ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 25)); //ラバ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 26)); //スケルトン馬
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 27)); //ゾンビ馬
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 28)); //ホッキョクグマ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 32)); //ゾンビ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 33)); //クリーパー
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 34)); //スケルトン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 35)); //クモ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 36)); //ゾンビピッグマン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 37)); //スライム
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 38)); //エンダーマン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 39)); //シルバーフィッシュ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 40)); //洞窟グモ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 41)); //ガスト
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 42)); //マグマキューブ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 43)); //ブレイズ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 44)); //ゾンビ村人
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 45)); //ウィッチ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 46)); //ストレイ
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 47)); //ハスク
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 48)); //ウィザースケルトン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 49)); //ガーディアン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 50)); //エルダーガーディアン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 53)); //エンダードラゴン
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 54)); //シュルカー
+        addCreativeItem(Item.get(Item.SPAWN_EGG, 55)); //エンダーマイト
+
         addCreativeItem(Item.get(Item.FIRE_CHARGE, 0));
         addCreativeItem(Item.get(Item.WOODEN_SWORD));
         addCreativeItem(Item.get(Item.WOODEN_HOE));

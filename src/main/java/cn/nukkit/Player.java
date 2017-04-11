@@ -381,7 +381,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void setFishingHook(){
-    	this.unlinkHookToPlayer(this.getFishingHook());
     	if (this.isFishing())
     		this.fishingHook.close();
     	this.fishingHook = null;
@@ -1654,7 +1653,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 if (this.isFishing()){
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
-                		this.setFishingHook();
+                		this.unlinkHookToPlayer(this.getFishingHook());
                 }
             }
 

@@ -1,8 +1,7 @@
-package cn.nukkit.entity.item;
+package cn.nukkit.entity.projectile;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
@@ -75,21 +74,21 @@ public class EntityFishingHook extends EntityProjectile {
         this.timing.startTiming();
 
         boolean hasUpdate = super.onUpdate(currentTick);
-        
+
         if (this.isCollidedVertically && this.isInsideOfWater()){
         	this.motionX = 0;
         	this.motionY += 0.01;
         	this.motionZ = 0;
         	this.motionChanged = true;
         	hasUpdate = true;
-        }else if(this.isCollided && this.keepMovement){
+        }/*else if(this.isCollided && this.keepMovement){
         	this.motionX = 0;
         	this.motionY = 0;
         	this.motionZ = 0;
         	this.motionChanged = true;
         	this.keepMovement = false;
         	hasUpdate = true;
-        }
+        }*/
 
         this.timing.stopTiming();
 

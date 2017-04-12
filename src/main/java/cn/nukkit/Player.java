@@ -49,7 +49,6 @@ import cn.nukkit.entity.data.Skin;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.entity.item.EntityBoat;
 import cn.nukkit.entity.item.EntityExpBottle;
-import cn.nukkit.entity.item.EntityFishingHook;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityVehicle;
@@ -58,6 +57,7 @@ import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.entity.projectile.EntityArrow;
 import cn.nukkit.entity.projectile.EntityEgg;
 import cn.nukkit.entity.projectile.EntityEnderPearl;
+import cn.nukkit.entity.projectile.EntityFishingHook;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.entity.projectile.EntitySnowball;
 import cn.nukkit.event.block.ItemFrameDropItemEvent;
@@ -100,6 +100,7 @@ import cn.nukkit.event.player.PlayerToggleFlightEvent;
 import cn.nukkit.event.player.PlayerToggleGlideEvent;
 import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
+import cn.nukkit.event.player.PlayerUseFishingRodEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.inventory.AnvilInventory;
@@ -2556,12 +2557,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                         } else if (item.getId() == Item.FISHING_ROD && this.getServer().getJupiterConfigBoolean("allow-fishing-rod")) {
                             double f = 1.5;
-                            if (this.isFishing()){
-                            	this.unlinkHookToPlayer();
-                            } else {
-	                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
-	                            entity.setMotion(entity.getMotion().multiply(f));
-	                            this.linkHookToPlayer(entity);
+                            this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
+                            if (!ev.isCancelled()){
+	                            if (this.isFishing()){
+	                            	this.unlinkHookToPlayer();
+	                            } else {
+		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
+		                            entity.setMotion(entity.getMotion().multiply(f));
+		                            this.linkHookToPlayer(entity);
+	                            }
                             }
                         }
 

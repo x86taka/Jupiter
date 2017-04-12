@@ -24,6 +24,26 @@ public class EntityEndermite extends EntityMob {
     protected void initEntity() {
         super.initEntity();
     }
+    
+    @Override
+    public float getWidth() {
+        return 1.0f;
+    }
+
+    @Override
+    public float getLength() {
+        return 1.0f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 0.5f;
+    }
+
+    @Override
+    public String getName() {
+        return "Endermite";
+    }
 
     @Override
     public void spawnTo(Player player) {

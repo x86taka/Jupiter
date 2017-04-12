@@ -20,6 +20,27 @@ public class EntityBlaze extends EntityMob {
     protected void initEntity() {
         super.initEntity();
     }
+    
+    @Override
+    public float getWidth() {
+        return 0.3f;
+    }
+
+    @Override
+    public float getLength() {
+        return 0.9f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 1.8f;
+    }
+
+    @Override
+    public String getName() {
+        return "Blaze";
+    }
+
 
     @Override
     public void spawnTo(Player player) {

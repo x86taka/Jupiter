@@ -17,9 +17,10 @@ public class EntitySilverfish extends EntityMob {
         super(chunk, nbt);
     }
     @Override
-    protected void initEntity() {
-        super.initEntity();
+    public String getName() {
+        return "Silver fish";
     }
+
 
     @Override
     public void spawnTo(Player player) {

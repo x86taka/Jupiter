@@ -20,6 +20,27 @@ public class EntityGhast extends EntityMob {
     protected void initEntity() {
         super.initEntity();
     }
+    
+    @Override
+    public float getWidth() {
+        return 6f;
+    }
+
+    @Override
+    public float getLength() {
+        return 6f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 6f;
+    }
+
+    @Override
+    public String getName() {
+        return "Ghast";
+    }
+
 
     @Override
     public void spawnTo(Player player) {

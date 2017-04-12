@@ -16,9 +16,10 @@ public class EntityGuardian extends EntityMob {
     public EntityGuardian(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
+    
     @Override
-    protected void initEntity() {
-        super.initEntity();
+    public String getName() {
+        return "Guardian";
     }
 
     @Override

@@ -60,6 +60,10 @@ public class EntityCreeper extends EntityMob {
             this.dataProperties.putBoolean(DATA_POWERED, true);
         }
     }
+    @Override
+    public String getName() {
+        return "Creeper";
+    }
 
     @Override
     public void spawnTo(Player player) {

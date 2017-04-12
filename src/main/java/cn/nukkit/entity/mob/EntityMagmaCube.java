@@ -20,6 +20,27 @@ public class EntityMagmaCube extends EntityMob {
     protected void initEntity() {
         super.initEntity();
     }
+    
+    @Override
+    public float getWidth() {
+        return 0.3f;
+    }
+
+    @Override
+    public float getLength() {
+        return 0.9f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 5f;
+    }
+
+    @Override
+    public String getName() {
+        return "Magma Cube";
+    }
+
 
     @Override
     public void spawnTo(Player player) {

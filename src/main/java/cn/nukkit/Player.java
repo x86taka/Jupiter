@@ -349,46 +349,29 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public EntityFishingHook fishingHook = null;
 
-	public boolean linkHookToPlayer(EntityFishingHook entity){
-		if (!entity.isAlive())
-    		return false;
-    	this.setFishingHook(entity);
+	public void linkHookToPlayer(EntityFishingHook entity){
+    	this.fishingHook = entity;
     	EntityEventPacket pk = new EntityEventPacket();
     	pk.eid = this.getFishingHook().getId();
-    	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
+    	pk.event = EntityEventPacket.FISH_HOOK_HOOK;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-    	return true;
     }
 
-	public boolean unlinkHookToPlayer(EntityFishingHook entity){
-    	if (this.isFishing()){
-	    	EntityEventPacket pk = new EntityEventPacket();
-	    	pk.eid = this.getFishingHook().getId();
-	    	pk.event = EntityEventPacket.FISH_HOOK_TEASE;
-	    	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-	    	this.setFishingHook();
-	    	return true;
-    	}
-    	return false;
+	public void unlinkHookToPlayer(){
+	    EntityEventPacket pk = new EntityEventPacket();
+	    pk.eid = this.getFishingHook().getId();
+	    pk.event = EntityEventPacket.FISH_HOOK_TEASE;
+	    Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
+		this.fishingHook.close();
+    	this.fishingHook = null;
     }
 
     public boolean isFishing(){
-    	return this.fishingHook instanceof EntityFishingHook;
+    	return this.fishingHook != null;
     }
 
     public EntityFishingHook getFishingHook(){
     	return this.fishingHook;
-    }
-
-    public void setFishingHook(){
-    	if (this.isFishing())
-    		this.fishingHook.close();
-    	this.fishingHook = null;
-    }
-
-    public void setFishingHook(EntityFishingHook entity){
-    	this.unlinkHookToPlayer(this.getFishingHook());
-    	this.fishingHook = entity;
     }
 
     public BlockEnderChest getViewingEnderChest() {
@@ -1652,7 +1635,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 if (this.isFishing()){
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
-                		this.unlinkHookToPlayer(this.getFishingHook());
+                		this.unlinkHookToPlayer();
                 }
             }
 
@@ -2573,9 +2556,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                         } else if (item.getId() == Item.FISHING_ROD && this.getServer().getJupiterConfigBoolean("allow-fishing-rod")) {
                             double f = 1.5;
-                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
-                            entity.setMotion(entity.getMotion().multiply(f));
-                            this.linkHookToPlayer(entity);
+                            if (this.isFishing()){
+                            	this.unlinkHookToPlayer();
+                            } else {
+	                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
+	                            entity.setMotion(entity.getMotion().multiply(f));
+	                            this.linkHookToPlayer(entity);
+                            }
                         }
 
                         this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, true);
@@ -4020,7 +4007,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.directDataPacket(pk);
             }
 
-            this.setFishingHook();
+            this.unlinkHookToPlayer();
 
             this.connected = false;
             PlayerQuitEvent ev = null;

@@ -1,13 +1,36 @@
 package cn.nukkit.entity;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockDirt;
 import cn.nukkit.block.BlockFire;
 import cn.nukkit.block.BlockWater;
-import cn.nukkit.entity.data.*;
-import cn.nukkit.event.entity.*;
+import cn.nukkit.entity.data.ByteEntityData;
+import cn.nukkit.entity.data.EntityData;
+import cn.nukkit.entity.data.EntityMetadata;
+import cn.nukkit.entity.data.FloatEntityData;
+import cn.nukkit.entity.data.IntEntityData;
+import cn.nukkit.entity.data.LongEntityData;
+import cn.nukkit.entity.data.ShortEntityData;
+import cn.nukkit.entity.data.StringEntityData;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDespawnEvent;
+import cn.nukkit.event.entity.EntityLevelChangeEvent;
+import cn.nukkit.event.entity.EntityMotionEvent;
+import cn.nukkit.event.entity.EntityPortalEnterEvent;
+import cn.nukkit.event.entity.EntityRegainHealthEvent;
+import cn.nukkit.event.entity.EntitySpawnEvent;
+import cn.nukkit.event.entity.EntityTeleportEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.item.Item;
@@ -15,7 +38,11 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.math.*;
+import cn.nukkit.math.AxisAlignedBB;
+import cn.nukkit.math.BlockVector3;
+import cn.nukkit.math.NukkitMath;
+import cn.nukkit.math.Vector2;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.metadata.MetadataValue;
 import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -33,10 +60,6 @@ import cn.nukkit.utils.MainLogger;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
-
-import java.lang.reflect.Constructor;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author MagicDroidX
@@ -1802,6 +1825,49 @@ public abstract class Entity extends Location implements Metadatable {
         this.server.getEntityMetadata().removeMetadata(this, metadataKey, owningPlugin);
     }
 
+    public Entity getMinDistanceEntity(){
+    	return this.getMinDistanceEntity(0);
+    }
+
+    public Entity getMinDistanceEntity(double maxDistance){
+    	Entity result = null;
+    	double minDistance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Entity entity : this.getLevel().getEntities()){
+    		if (maxDistance != 0){
+    			double distance = this.distance(entity);
+    			if (!(entity.equals(this)) && distance < minDistance && distance < maxDistance){
+    				result = entity;
+    				minDistance = distance;
+    			}
+    		}
+    	}
+
+    	return result;
+    }
+
+    public Player getMinDistancePlayer(){
+    	return this.getMinDistancePlayer(0);
+    }
+
+    public Player getMinDistancePlayer(double maxDistance){
+    	Player result = null;
+    	double minDistance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Player player : this.getLevel().getPlayers().values()){
+    		if (maxDistance != 0){
+    			double distance = this.distance(player);
+    			if (!(player.equals(this)) && distance < minDistance && distance < maxDistance){
+    				result = player;
+    				minDistance = distance;
+    			}
+    		}
+    	}
+
+    	return result;
+    }
     public Server getServer() {
         return server;
     }

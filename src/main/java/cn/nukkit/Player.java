@@ -358,12 +358,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
-	public void unlinkHookToPlayer(){
-	    EntityEventPacket pk = new EntityEventPacket();
-	    pk.eid = this.getFishingHook().getId();
-	    pk.event = EntityEventPacket.FISH_HOOK_TEASE;
-	    Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-		this.fishingHook.close();
+	public void unlinkHookFromPlayer(){
+		EntityEventPacket pk = new EntityEventPacket();
+		pk.eid = this.getFishingHook().getId();
+		pk.event = EntityEventPacket.FISH_HOOK_TEASE;
+		Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
+		if (this.isFishing())
+			this.fishingHook.close();
     	this.fishingHook = null;
     }
 
@@ -452,6 +453,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     @Override
     public boolean hasPlayedBefore() {
         return this.playedBefore;
+    }
+
+    public void setCanDestroyBlock(boolean setting){
+    	AdventureSettings adventuresettings = this.getAdventureSettings();
+    	adventuresettings.setCanDestroyBlock(setting);
+    	this.setAdventureSettings(adventuresettings);
     }
 
     public AdventureSettings getAdventureSettings() {
@@ -1636,7 +1643,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 if (this.isFishing()){
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
-                		this.unlinkHookToPlayer();
+                		this.unlinkHookFromPlayer();
                 }
             }
 
@@ -2560,7 +2567,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
                             if (!ev.isCancelled()){
 	                            if (this.isFishing()){
-	                            	this.unlinkHookToPlayer();
+	                            	this.unlinkHookFromPlayer();
 	                            } else {
 		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
 		                            entity.setMotion(entity.getMotion().multiply(f));
@@ -4011,7 +4018,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.directDataPacket(pk);
             }
 
-            this.unlinkHookToPlayer();
+            this.unlinkHookFromPlayer();
 
             this.connected = false;
             PlayerQuitEvent ev = null;

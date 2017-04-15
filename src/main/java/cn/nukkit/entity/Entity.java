@@ -1837,7 +1837,7 @@ public abstract class Entity extends Location implements Metadatable {
     	for (Entity entity : this.getLevel().getEntities()){
     		if (maxDistance != 0){
     			double distance = this.distance(entity);
-    			if (!(entity.equals(this)) && distance < minDistance && distance < maxDistance){
+    			if (!(entity.equals(this)) && distance < minDistance && distance <= maxDistance){
     				result = entity;
     				minDistance = distance;
     			}
@@ -1859,7 +1859,7 @@ public abstract class Entity extends Location implements Metadatable {
     	for (Player player : this.getLevel().getPlayers().values()){
     		if (maxDistance != 0){
     			double distance = this.distance(player);
-    			if (!(player.equals(this)) && distance < minDistance && distance < maxDistance){
+    			if (!(player.equals(this)) && distance < minDistance && distance <= maxDistance){
     				result = player;
     				minDistance = distance;
     			}

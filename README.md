@@ -3,6 +3,8 @@
 
 Introduce
 -------------
+[![Build Status](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)
+[![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master)
 
 Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。  
 大部分のソースはNukkitのものを使用しています。  

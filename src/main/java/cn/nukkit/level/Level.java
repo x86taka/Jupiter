@@ -305,6 +305,8 @@ public class Level implements ChunkManager, Metadatable {
     private long levelCurrentTick = 0;
 
     private int dimension;
+    
+    public static boolean sendDestroyParticle = true;
 
     public Level(Server server, String name, String path, Class<? extends LevelProvider> provider) {
         this.blockStates = Block.fullList;
@@ -1811,10 +1813,11 @@ public class Level implements ChunkManager, Metadatable {
             }
         }
 
+        //TODO particle
         if (createParticles) {
             Map<Integer, Player> players = this.getChunkPlayers((int) target.x >> 4, (int) target.z >> 4);
 
-            if(this.getServer().getJupiterConfigBoolean("destroy-block-particle"))
+            if(sendDestroyParticle)
                 this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());
 
             if (player != null) {
@@ -2695,6 +2698,11 @@ public class Level implements ChunkManager, Metadatable {
         }
 
         return null;
+    }
+    
+    public void setDestroyBlockParticle(boolean b){
+    	sendDestroyParticle = b;
+    	return;
     }
 
     public int getTime() {

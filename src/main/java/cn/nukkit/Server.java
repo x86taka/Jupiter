@@ -431,6 +431,12 @@ public class Server {
         }
 
         this.loadJupiterConfig();
+        
+        if(this.getJupiterConfigBoolean("destroy-block-particle")){
+        	Level.sendDestroyParticle = true;
+        }else{
+        	Level.sendDestroyParticle = false;
+        }
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));

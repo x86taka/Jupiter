@@ -455,6 +455,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.playedBefore;
     }
 
+    public void setCanDestroyBlock(boolean setting){
+    	AdventureSettings adventuresettings = this.getAdventureSettings();
+    	adventuresettings.setCanDestroyBlock(setting);
+    	this.setAdventureSettings(adventuresettings);
+    }
+
     public AdventureSettings getAdventureSettings() {
         return adventureSettings;
     }

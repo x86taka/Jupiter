@@ -29,3 +29,10 @@ destroy-block-particle: true
 #command
 #この設定をtrueにすると、プラグインで追加されたコマンド以外が全て無くなります
 disable-all-commands: false
+
+#compile-option
+#プラグイン開発モードの設定
+#Jupiterコンパイラのオン/オフ
+jupiter-compiler-mode: true
+#Jupiterの実行jarの名前(依存させるときに使います)
+jupiter-name: nukkit-1.0-SNAPSHOT.jar

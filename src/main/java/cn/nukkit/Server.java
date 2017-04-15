@@ -154,6 +154,7 @@ import cn.nukkit.permission.DefaultPermissions;
 import cn.nukkit.permission.Permissible;
 import cn.nukkit.plugin.JavaPluginLoader;
 import cn.nukkit.plugin.Plugin;
+import cn.nukkit.plugin.PluginCompiler;
 import cn.nukkit.plugin.PluginLoadOrder;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.plugin.service.NKServiceManager;
@@ -330,6 +331,11 @@ public class Server {
         if (!new File(dataPath + "unpackedPlugins/").exists()) {
             new File(dataPath + "unpackedPlugins/").mkdirs();
             this.getLogger().info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
+        }
+        
+        if (!new File(dataPath + "compileOrder/").exists()) {
+            new File(dataPath + "compileOrder/").mkdirs();
+            this.getLogger().info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
@@ -541,6 +547,20 @@ public class Server {
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
 
         this.network.registerInterface(new RakNetInterface(this));
+        
+        if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
+	        getLogger().info(TextFormat.AQUA + "--------------------------");
+	        getLogger().info(TextFormat.AQUA + "コンパイルしています...");
+	        File f = new File(dataPath + "compileOrder/");
+	        File[] list = f.listFiles();
+	        for(int i=0; i < list.length;i++){
+	        	if(new PluginCompiler().Compile(list[i]))
+	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
+	        	else
+	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
+	        }
+	        getLogger().info(TextFormat.AQUA + "--------------------------");
+        }
 
         getLogger().info(TextFormat.AQUA + "--------------------------");
         getLogger().info(TextFormat.AQUA + "プラグインを読み込んでいます...");

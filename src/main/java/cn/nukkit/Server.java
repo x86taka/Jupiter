@@ -19,6 +19,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
+
 import com.google.common.base.Preconditions;
 
 import cn.nukkit.block.Block;
@@ -435,8 +438,65 @@ public class Server {
 	            throw new RuntimeException(e);
 	        }
         }
+    	
+    	this.loadJupiterConfig();
+    	
+        	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+	        if (advacedConf1 == null)
+	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
 
-        this.loadJupiterConfig();
+	        try {
+	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+	        
+	        //get Jupiter.yml in the jar
+	        Config jupiter = new Config(this.getDataPath() + "jupiter1.yml");
+	        
+	        Map<String, Object> jmap = jupiter.getAll();
+	        
+	        Collection<Object> objj = jmap.values();
+        	Object[] objj1 = objj.toArray();
+        	Object objj2 = objj1[objj1.length - 1];
+        	
+        	BidiMap mapp = new DualHashBidiMap(jmap);
+        	String keyy = (String)mapp.getKey(objj2);
+        	
+        	
+        	//get JupiterConfig in the delectory
+        	Collection<Object> obj = jupiterconfig.values();
+        	Object[] obj1 = obj.toArray();
+        	Object obj2 = obj1[obj1.length - 1];
+        	
+        	BidiMap map = new DualHashBidiMap(jupiterconfig);
+        	String key1 = (String)map.getKey(obj2);
+        	
+        	
+        	//delete jupiter1.yml
+        	File jf = new File(this.dataPath + "jupiter1.yml");
+        	jf.delete();
+        	
+        	if(!keyy.equals(key1)){
+	        	
+	        	File conf = new File(this.dataPath + "jupiter.yml");
+	        	conf.delete();
+	        	
+	        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+		        if (advacedConf == null)
+		            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	
+		        try {
+		            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+		        } catch (IOException ex) {
+		            throw new RuntimeException(ex);
+		        }
+		        
+		        this.getLogger().info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
+		        
+		        this.loadJupiterConfig();
+	        
+        	}
         
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
         	Level.sendDestroyParticle = true;

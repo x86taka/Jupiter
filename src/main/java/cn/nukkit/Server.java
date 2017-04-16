@@ -9,6 +9,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -383,13 +384,6 @@ public class Server {
         }
 
         this.console.start();
-
-        this.logger.info(TextFormat.AQUA + "====================================");
-        this.logger.info(TextFormat.GREEN + "Jupiter - Nukkit Fork");
-        this.logger.info(TextFormat.YELLOW + "JupiterDevelopmentTeam 開発");
-        this.logger.info(TextFormat.AQUA + "====================================");
-
-
         this.logger.info(TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "を読み込んでいます...");
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
@@ -608,8 +602,40 @@ public class Server {
 
         this.network.registerInterface(new RakNetInterface(this));
         
+        Calendar now = Calendar.getInstance();
+
+        int y = now.get(Calendar.YEAR);
+        int mo = now.get(Calendar.MONTH) + 1;
+        int d = now.get(Calendar.DATE);
+        int h = now.get(Calendar.HOUR_OF_DAY);
+        int m = now.get(Calendar.MINUTE);
+        int s = now.get(Calendar.SECOND);
+        
+        this.logger.info(TextFormat.AQUA + "==================================================================================");
+        this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
+        this.logger.info("   |￣|  |￣| |￣|  |￣￣￣￣|  |￣|  |￣￣￣￣￣|  |￣￣￣￣| |￣￣￣￣|");
+        this.logger.info("   |  |  |  | |  |  | |￣￣| |  |  |  ￣￣|  |￣￣  | |￣￣￣  | |￣￣| |");
+        this.logger.info("   |  |  |  | |  |  | ￣￣￣ |  |  |      |  |      |  ￣￣￣| | ￣￣￣ | ");
+        this.logger.info("  _|  |  |  | |  |  | |￣￣￣   |  |      |  |      | |￣￣￣  | |￣＼ ＼");
+        this.logger.info(" |____|  |__￣___|  |_|         |__|      |__|      |  ￣￣￣| |_|    ＼_|");
+        this.logger.info("");
+        this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
+
+        this.logger.info(TextFormat.AQUA + "----------------------------------------------------------------------------------");
+        this.logger.info(TextFormat.GREEN + "Jupiter - Nukkit Fork");
+        this.logger.info(TextFormat.YELLOW + "JupiterDevelopmentTeam 開発");
+        this.logger.info(TextFormat.AQUA + "----------------------------------------------------------------------------------");
+        this.logger.info("日時: " + TextFormat.BLUE + y + "/" + mo + "/" + d + " " +  h + "時" + m + "分" + s + "秒");
+        this.logger.info("サーバー名: " + TextFormat.GREEN + this.getMotd());
+        this.logger.info("ip: " + TextFormat.GREEN + this.getIp());
+        this.logger.info("ポート: " + TextFormat.GREEN + this.getPort());
+        this.logger.info("Nukkitバージョン: " + TextFormat.LIGHT_PURPLE + this.getNukkitVersion());
+        this.logger.info("APIバージョン: " + TextFormat.LIGHT_PURPLE + this.getApiVersion());
+        this.logger.info("コードネーム: " + TextFormat.LIGHT_PURPLE + this.getCodename());
+        this.logger.info(TextFormat.AQUA + "==================================================================================");
+        
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
-	        getLogger().info(TextFormat.AQUA + "--------------------------");
+        	this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
 	        getLogger().info(TextFormat.AQUA + "コンパイルしています...");
 	        File f = new File(dataPath + "compileOrder/");
 	        File[] list = f.listFiles();
@@ -619,10 +645,10 @@ public class Server {
 	        	else
 	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
 	        }
-	        getLogger().info(TextFormat.AQUA + "--------------------------");
+	        this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
         }
 
-        getLogger().info(TextFormat.AQUA + "--------------------------");
+        this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
         getLogger().info(TextFormat.AQUA + "プラグインを読み込んでいます...");
         this.pluginManager.loadPlugins(this.pluginPath);
 
@@ -700,7 +726,7 @@ public class Server {
         }
 
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
-        getLogger().info(TextFormat.AQUA + "--------------------------");
+        this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
 
         this.start();
     }

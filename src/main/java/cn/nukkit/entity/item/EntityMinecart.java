@@ -1,3 +1,7 @@
+/*
+まだ使えないのでお願いします。
+*/
+
 package cn.nukkit.entity.item;
 
 import java.util.ArrayList;
@@ -141,6 +145,9 @@ public class EntityMinecart extends EntityVehicle{
     	}
     }
 
+	/**
+	* @param rail
+	*/
     private boolean isRail(Block rail){
 
     	ArrayList<Integer> list = new ArrayList<Integer>();

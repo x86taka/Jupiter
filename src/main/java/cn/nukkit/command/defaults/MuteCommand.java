@@ -29,11 +29,11 @@ public class MuteCommand extends VanillaCommand {
 
         if(p.mute){
         	p.mute = false;
-        	p.sendImportantMessage(p.getName() + "が" + TextFormat.GREEN + "ミュートを解除しました。");
+        	p.sendImportantMessage(TextFormat.GREEN + "ミュートを解除しました。");
         	return true;
         }else{
         	p.mute = true;
-        	p.sendImportantMessage(p.getName() + "が" + TextFormat.RED + "ミュートを有効にしました。");
+        	p.sendImportantMessage(TextFormat.RED + "ミュートを有効にしました。");
         	return true;
         }
     }

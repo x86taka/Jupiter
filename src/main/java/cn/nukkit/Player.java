@@ -358,6 +358,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
+	/*
 	public void unlinkHookFromPlayer(){
 		EntityEventPacket pk = new EntityEventPacket();
 		pk.eid = this.getFishingHook().getId();
@@ -367,6 +368,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 			this.fishingHook.close();
     	this.fishingHook = null;
     }
+    */
 
     public boolean isFishing(){
     	return this.fishingHook != null;
@@ -1642,8 +1644,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 if (this.isFishing()){
+                	//TODO s
+                	/*
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
                 		this.unlinkHookFromPlayer();
+                		*/
                 }
             }
 
@@ -2567,7 +2572,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
                             if (!ev.isCancelled()){
 	                            if (this.isFishing()){
-	                            	this.unlinkHookFromPlayer();
+	                            	//TODO s
+	                            	//this.unlinkHookFromPlayer();
 	                            } else {
 		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
 		                            entity.setMotion(entity.getMotion().multiply(f));
@@ -4018,7 +4024,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.directDataPacket(pk);
             }
 
-            this.unlinkHookFromPlayer();
+            //this.unlinkHookFromPlayer();
 
             this.connected = false;
             PlayerQuitEvent ev = null;
@@ -4905,6 +4911,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.movementSpeed += sprintSpeedChange;
         }
         this.setMovementSpeed(this.movementSpeed);
+    }
+    
+    public void setMute(boolean b){
+    	this.mute = b;
     }
 
     /**

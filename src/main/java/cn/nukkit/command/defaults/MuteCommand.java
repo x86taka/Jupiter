@@ -28,11 +28,11 @@ public class MuteCommand extends VanillaCommand {
         Player p = (Player)sender;
 
         if(p.mute){
-        	p.mute = false;
+        	p.setMute(false);
         	p.sendImportantMessage(TextFormat.GREEN + "ミュートを解除しました。");
         	return true;
         }else{
-        	p.mute = true;
+        	p.setMute(true);
         	p.sendImportantMessage(TextFormat.RED + "ミュートを有効にしました。");
         	return true;
         }

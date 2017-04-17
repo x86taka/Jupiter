@@ -358,7 +358,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
-	/*
 	public void unlinkHookFromPlayer(){
 		EntityEventPacket pk = new EntityEventPacket();
 		pk.eid = this.getFishingHook().getId();
@@ -368,7 +367,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 			this.fishingHook.close();
     	this.fishingHook = null;
     }
-    */
+
 
     public boolean isFishing(){
     	return this.fishingHook != null;
@@ -437,6 +436,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーオブジェクトを取得します。
+     * @return Player
+     */
     @Override
     public Player getPlayer() {
         return this;
@@ -505,6 +508,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーからサーバーオブジェクトを取得します。
+     * @return Server
+     */
     @Override
     public Server getServer() {
         return this.server;
@@ -564,11 +571,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.connected && this.loggedIn;
     }
 
+    /**
+     * OPかどうかを取得します。
+     * @return boolean trueがOP/falseが非OP
+     */
     @Override
     public boolean isOp() {
         return this.server.isOp(this.getName());
     }
 
+    /**
+     * プレイヤーをOPにします。
+     * @param value trueがOP/falseが非OP
+     * @return void
+     */
     @Override
     public void setOp(boolean value) {
         if (value == this.isOp()) {
@@ -725,6 +741,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.creationTime = System.currentTimeMillis();
     }
 
+    /**
+     * プレイヤーオブジェクトかどうかを取得します。
+     * この場合、trueしか返ってきません。
+     * @return boolean true
+     */
     public boolean isPlayer() {
         return true;
     }
@@ -741,10 +762,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return connected;
     }
 
+    /**
+     * プレイヤーのチャット上の名前を取得します。
+     * @return String プレイヤーのチャット上の名前
+     */
     public String getDisplayName() {
         return this.displayName;
     }
 
+    /**
+     * プレイヤーのチャット上の名前を設定します。
+     * @param displayName 設定する名前
+     * @return void
+     */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
         if (this.spawned) {
@@ -752,6 +782,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーのスキンを設定します。
+     * @param skin スキンデータ
+     * @return void
+     */
     @Override
     public void setSkin(Skin skin) {
         super.setSkin(skin);
@@ -760,10 +795,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーのIPアドレスを取得します。
+     * @return String プレイヤーのIPアドレス
+     */
     public String getAddress() {
         return this.ip;
     }
 
+    /**
+     * プレイヤーのポートを取得します。
+     * @return int プレイヤーのポート
+     */
     public int getPort() {
         return port;
     }
@@ -772,6 +815,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.newPosition != null ? new Position(this.newPosition.x, this.newPosition.y, this.newPosition.z, this.level) : this.getPosition();
     }
 
+    /**
+     * プレイヤーが寝ているかどうかをを取得します。
+     * @return boolean trueが寝ている/falseが寝ていない
+     */
     public boolean isSleeping() {
         return this.sleeping != null;
     }
@@ -1082,9 +1129,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     /**
-     * 0 is true
-     * -1 is false
-     * other is identifer
+     * プレイヤーにパケットを送信します。
+     * @param packet 送るパケット
+     * @return boolean
      */
     public boolean dataPacket(DataPacket packet) {
         return this.dataPacket(packet, false) != -1;
@@ -1183,6 +1230,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return true;
     }
 
+    /**
+     * プレイヤーのスポーン地点を設定します。
+     * @param pos 設定する座標
+     * @return void
+     * @see "Vector3"
+     * @see Vector3
+     */
     public void setSpawn(Vector3 pos) {
         Level level;
         if (!(pos instanceof Position)) {
@@ -1251,10 +1305,27 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return true;
     }
 
+    /**
+     * プレイヤーのゲームモードを取得します。
+     * <br>0:サバイバルモード
+     * <br>1:クリエイティブモード
+     * <br>2:アドベンチャーモード
+     * <br>3:スペクテイターモード
+     * @return int プレイヤーのゲームモード
+     */
     public int getGamemode() {
         return gamemode;
     }
 
+    /**
+     * プレイヤーのゲームモードを設定します。
+     * @param gamemode ゲームモード
+     * <br>0:サバイバルモード
+     * <br>1:クリエイティブモード
+     * <br>2:アドベンチャーモード
+     * <br>3:スペクテイターモード
+     * @return boolean
+     */
     public boolean setGamemode(int gamemode) {
         return this.setGamemode(gamemode, false, null);
     }
@@ -1644,11 +1715,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 if (this.isFishing()){
-                	//TODO s
-                	/*
+
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
                 		this.unlinkHookFromPlayer();
-                		*/
+
                 }
             }
 
@@ -3779,30 +3849,119 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * @return void
+     */
     public boolean kick() {
         return this.kick("");
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * 理由はPlayerkickEvent.Reason.UNKNOWNが使われます。
+     * @param reason 理由文
+     * @param isAdmin kicked by admin.を表示するかどうか
+     * @return boolean
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(String reason, boolean isAdmin) {
         return this.kick(PlayerKickEvent.Reason.UNKNOWN, reason, isAdmin);
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * 理由はPlayerkickEvent.Reason.UNKNOWNが使われます。
+     * @param reason 理由文
+     * @return boolean
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(String reason) {
         return kick(PlayerKickEvent.Reason.UNKNOWN, reason);
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * kicked by admin.が表示されます。
+     * @param reason 理由
+     * @return boolean
+     * @see "理由"
+     * @see PlayerKickEvent.Reason#FLYING_DISABLED
+     * @see PlayerKickEvent.Reason#INVALID_PVE
+     * @see PlayerKickEvent.Reason#IP_BANNED
+     * @see PlayerKickEvent.Reason#KICKED_BY_ADMIN
+     * @see PlayerKickEvent.Reason#LOGIN_TIMEOUT
+     * @see PlayerKickEvent.Reason#NAME_BANNED
+     * @see PlayerKickEvent.Reason#NEW_CONNECTION
+     * @see PlayerKickEvent.Reason#NOT_WHITELISTED
+     * @see PlayerKickEvent.Reason#SERVER_FULL
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(PlayerKickEvent.Reason reason) {
         return this.kick(reason, true);
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * kicked by admin.が表示されます。
+     * @param reason 理由
+     * @param reasonString 理由文
+     * @return boolean
+     * @see "理由"
+     * @see PlayerKickEvent.Reason#FLYING_DISABLED
+     * @see PlayerKickEvent.Reason#INVALID_PVE
+     * @see PlayerKickEvent.Reason#IP_BANNED
+     * @see PlayerKickEvent.Reason#KICKED_BY_ADMIN
+     * @see PlayerKickEvent.Reason#LOGIN_TIMEOUT
+     * @see PlayerKickEvent.Reason#NAME_BANNED
+     * @see PlayerKickEvent.Reason#NEW_CONNECTION
+     * @see PlayerKickEvent.Reason#NOT_WHITELISTED
+     * @see PlayerKickEvent.Reason#SERVER_FULL
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(PlayerKickEvent.Reason reason, String reasonString) {
         return this.kick(reason, reasonString, true);
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * @param reason 理由
+     * @param isAdmin kicked by admin.を表示するかどうか
+     * @return boolean
+     * @see "理由"
+     * @see PlayerKickEvent.Reason#FLYING_DISABLED
+     * @see PlayerKickEvent.Reason#INVALID_PVE
+     * @see PlayerKickEvent.Reason#IP_BANNED
+     * @see PlayerKickEvent.Reason#KICKED_BY_ADMIN
+     * @see PlayerKickEvent.Reason#LOGIN_TIMEOUT
+     * @see PlayerKickEvent.Reason#NAME_BANNED
+     * @see PlayerKickEvent.Reason#NEW_CONNECTION
+     * @see PlayerKickEvent.Reason#NOT_WHITELISTED
+     * @see PlayerKickEvent.Reason#SERVER_FULL
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(PlayerKickEvent.Reason reason, boolean isAdmin) {
         return this.kick(reason, reason.toString(), isAdmin);
     }
 
+    /**
+     * プレイヤーをサーバーから追放します。
+     * @param reason 理由
+     * @param reasonString 理由文
+     * @param isAdmin kicked by admin.を表示するかどうか
+     * @return boolean
+     * @see "理由"
+     * @see PlayerKickEvent.Reason#FLYING_DISABLED
+     * @see PlayerKickEvent.Reason#INVALID_PVE
+     * @see PlayerKickEvent.Reason#IP_BANNED
+     * @see PlayerKickEvent.Reason#KICKED_BY_ADMIN
+     * @see PlayerKickEvent.Reason#LOGIN_TIMEOUT
+     * @see PlayerKickEvent.Reason#NAME_BANNED
+     * @see PlayerKickEvent.Reason#NEW_CONNECTION
+     * @see PlayerKickEvent.Reason#NOT_WHITELISTED
+     * @see PlayerKickEvent.Reason#SERVER_FULL
+     * @see PlayerKickEvent.Reason#UNKNOWN
+     */
     public boolean kick(PlayerKickEvent.Reason reason, String reasonString, boolean isAdmin) {
         PlayerKickEvent ev;
         this.server.getPluginManager().callEvent(ev = new PlayerKickEvent(this, reason, this.getLeaveMessage()));
@@ -3830,8 +3989,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return false;
     }
 
-    //TODO send
-
+    /**
+     * プレイヤーにメッセージを送信します。
+     * ミュート状態では表示されません。
+     * (ミュート状態...isMuted()の戻り値)
+     * @see "ミュート状態でも表示したい場合"
+     * @see Player#sendImportantMessage(String) sendImportantMessage
+     * @see Player#isMuted() isMuted()
+     * @param message メッセージ内容
+     * @return void
+     */
     @Override
     public void sendMessage(String message) {
     	if(mute)return;
@@ -3879,11 +4046,24 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * プレイヤーにポップアップを送信します。
+     * ミュート状態では表示されません。
+     * @param message メッセージ内容
+     * @return void
+     */
     public void sendPopup(String message) {
     	if(mute)return;
         this.sendPopup(message, "");
     }
 
+    /**
+     * プレイヤーにポップアップを送信します。
+     * ミュート状態では表示されません。
+     * @param message メッセージ内容
+     * @param subtitle サブタイトル
+     * @return void
+     */
     public void sendPopup(String message, String subtitle) {
     	if(mute)return;
         TextPacket pk = new TextPacket();
@@ -3893,6 +4073,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * プレイヤーにチップを送信します。
+     * ミュート状態では表示されません。
+     * @param message メッセージ内容
+     * @return void
+     */
     public void sendTip(String message) {
     	if(mute)return;
         TextPacket pk = new TextPacket();
@@ -3901,16 +4087,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * プレイヤーにメッセージを送信します。
+     * ただし、ミュート状態でも表示されます。
+     * @param message メッセージ内容
+     * @return void
+     * @author Itsu
+     */
     public void sendImportantMessage(String message) {
-        // TODO: Remove this workaround (broken client MCPE 1.0.0)
         messageQueue.add(this.server.getLanguage().translateString(message));
-
-        /*
-        TextPacket pk = new TextPacket();
-        pk.type = TextPacket.TYPE_RAW;
-        pk.message = this.server.getLanguage().translateString(message);
-        this.dataPacket(pk);
-        */
     }
 
     public void clearTitle() {
@@ -3928,6 +4113,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * プレイヤーにタイトルを送信します。
+     * ミュート状態では表示されません。
+     * @param text タイトル内容
+     * @return void
+     */
     public void sendTitle(String text) {
     	if(mute)return;
         SetTitlePacket pk = new SetTitlePacket();
@@ -3937,8 +4128,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     /**
-     * Sets a subtitle for the next shown title
-     * @param text Subtitle text
+     * プレイヤーにサブタイトルを送信します。
+     * ミュート状態では表示されません。
+     * @param text サブタイトル内容
+     * @return void
      */
     public void setSubtitle(String text) {
     	if(mute)return;
@@ -3971,10 +4164,28 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * 128x128の大きさでMapにpathの画像を貼り付けます。
+     * @param path 画像のパス
+     * @param item Map
+     * @return void
+     * @author Megapix96
+     * @see "幅と高さを指定する場合"
+     * @see Player#sendImage(String, ItemMap, int, int) sendImage(String, ItemMap, int, int)
+     */
     public void sendImage(String path, ItemMap item) throws IOException{
     	this.sendImage(path, item, 128, 128);
     }
 
+    /**
+     * Mapにpathの画像を貼り付けます。
+     * @param path 画像のパス
+     * @param item Map
+     * @param width 幅
+     * @param height 高さ
+     * @return void
+     * @author Megapix96
+     */
     public void sendImage(String path, ItemMap item, int width, int height) throws IOException{
         item.setImage(new File(path));
 
@@ -4024,7 +4235,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.directDataPacket(pk);
             }
 
-            //this.unlinkHookFromPlayer();
+            this.unlinkHookFromPlayer();
 
             this.connected = false;
             PlayerQuitEvent ev = null;
@@ -4148,10 +4359,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤー名を取得します。
+     * @return String プレイヤー名
+     */
     public String getName() {
         return this.username;
     }
 
+    /**
+     * プレイヤーを殺害します。
+     * @return void
+     */
     @Override
     public void kill() {
         if (!this.spawned) {
@@ -4314,6 +4533,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+    /**
+     * プレイヤーの体力を設定します。
+     * @param health 設定する体力量
+     * @return void
+     */
     @Override
     public void setHealth(float health) {
         if (health < 1) {
@@ -4330,14 +4554,27 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーの経験値を取得します。
+     * @return int 経験値
+     */
     public int getExperience() {
         return this.exp;
     }
 
+    /**
+     * プレイヤーの経験値レベルを取得します。
+     * @return int 経験値レベル
+     */
     public int getExperienceLevel() {
         return this.expLevel;
     }
 
+    /**
+     * プレイヤーの経験値を追加します。
+     * @param add 追加する経験値量
+     * @return void
+     */
     public void addExperience(int add) {
         if (add == 0) return;
         int now = this.getExperience();
@@ -4362,12 +4599,23 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    /**
+     * プレイヤーの経験値を設定します。
+     * @param exp 設定する経験値量
+     * @return void
+     */
     public void setExperience(int exp) {
         setExperience(exp, this.getExperienceLevel());
     }
 
     //todo something on performance, lots of exp orbs then lots of packets, could crash client
 
+    /**
+     * プレイヤーの経験値と経験値レベルを設定します。
+     * @param exp 設定する経験値量
+     * @param level 設定する経験値レベル
+     * @return void
+     */
     public void setExperience(int exp, int level) {
         this.exp = exp;
         this.expLevel = level;
@@ -4912,9 +5160,24 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
         this.setMovementSpeed(this.movementSpeed);
     }
-    
+
+    /**
+     * プレイヤーをミュート状態にします。
+     * @param b trueで有効/falseで無効
+     * @return void
+     * @author Itsu
+     */
     public void setMute(boolean b){
     	this.mute = b;
+    }
+
+    /**
+     * プレイヤーがミュート状態かどうかを返します。
+     * @return boolean trueが有効/falseが無効
+     * @author Itsu
+     */
+    public boolean isMuted(){
+    	return this.mute;
     }
 
     /**
@@ -4931,6 +5194,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.close(message, message, false);
     }
 
+    /**
+     * プレイヤー指定したサーバーに転送します。
+     * @param ip 転送先サーバーのIPアドレス
+     * @param port 転送先サーバーのポート
+     * @return void
+     * @author Itsu
+     */
     public void transferServer(String ip, int port){
     	TransferPacket pk = new TransferPacket();
     	pk.address = ip;

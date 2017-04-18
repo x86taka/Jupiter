@@ -336,7 +336,7 @@ public class Server {
             new File(dataPath + "unpackedPlugins/").mkdirs();
             this.getLogger().info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
         }
-        
+
         if (!new File(dataPath + "compileOrder/").exists()) {
             new File(dataPath + "compileOrder/").mkdirs();
             this.getLogger().info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
@@ -432,9 +432,9 @@ public class Server {
 	            throw new RuntimeException(e);
 	        }
         }
-    	
+
     	this.loadJupiterConfig();
-    	
+
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf1 == null)
 	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
@@ -444,54 +444,54 @@ public class Server {
 	        } catch (IOException e) {
 	            throw new RuntimeException(e);
 	        }
-	        
+
 	        //get Jupiter.yml in the jar
 	        Config jupiter = new Config(this.getDataPath() + "jupiter1.yml");
-	        
+
 	        Map<String, Object> jmap = jupiter.getAll();
-	        
+
 	        Collection<Object> objj = jmap.values();
         	Object[] objj1 = objj.toArray();
         	Object objj2 = objj1[objj1.length - 1];
-        	
+
         	BidiMap mapp = new DualHashBidiMap(jmap);
         	String keyy = (String)mapp.getKey(objj2);
-        	
-        	
-        	//get JupiterConfig in the delectory
+
+
+        	//get JupiterConfig key in the delectory
         	Collection<Object> obj = jupiterconfig.values();
         	Object[] obj1 = obj.toArray();
         	Object obj2 = obj1[obj1.length - 1];
-        	
+
         	BidiMap map = new DualHashBidiMap(jupiterconfig);
         	String key1 = (String)map.getKey(obj2);
-        	
-        	
+
+
         	//delete jupiter1.yml
         	File jf = new File(this.dataPath + "jupiter1.yml");
         	jf.delete();
-        	
+
         	if(!keyy.equals(key1)){
-	        	
+
 	        	File conf = new File(this.dataPath + "jupiter.yml");
 	        	conf.delete();
-	        	
+
 	        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 		        if (advacedConf == null)
 		            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-	
+
 		        try {
 		            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
 		        } catch (IOException ex) {
 		            throw new RuntimeException(ex);
 		        }
-		        
+
 		        this.getLogger().info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
-		        
+
 		        this.loadJupiterConfig();
-	        
+
         	}
-        
+
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
         	Level.sendDestroyParticle = true;
         }else{
@@ -601,7 +601,7 @@ public class Server {
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
 
         this.network.registerInterface(new RakNetInterface(this));
-        
+
         Calendar now = Calendar.getInstance();
 
         int y = now.get(Calendar.YEAR);
@@ -610,7 +610,7 @@ public class Server {
         int h = now.get(Calendar.HOUR_OF_DAY);
         int m = now.get(Calendar.MINUTE);
         int s = now.get(Calendar.SECOND);
-        
+
         this.logger.info(TextFormat.AQUA + "==================================================================================");
         this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
         this.logger.info("   |￣|  |￣| |￣|  |￣￣￣￣|  |￣|  |￣￣￣￣￣|  |￣￣￣￣| |￣￣￣￣|");
@@ -633,7 +633,7 @@ public class Server {
         this.logger.info("APIバージョン: " + TextFormat.LIGHT_PURPLE + this.getApiVersion());
         this.logger.info("コードネーム: " + TextFormat.LIGHT_PURPLE + this.getCodename());
         this.logger.info(TextFormat.AQUA + "==================================================================================");
-        
+
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
         	this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
 	        getLogger().info(TextFormat.AQUA + "コンパイルしています...");
@@ -731,10 +731,30 @@ public class Server {
         this.start();
     }
 
+    /**
+     * サーバーにいる人全員にメッセージを送ります。
+     * <br>ミュート状態では表示されません。
+     * (ミュート状態...isMuted()の戻り値)
+     * @see "ミュート状態でも表示したい場合"
+     * @see Player#sendImportantMessage(String) sendImportantMessage
+     * @see Player#isMuted() isMuted()
+     * @param message 送る文
+     * @return int
+     */
     public int broadcastMessage(String message) {
         return this.broadcast(message, BROADCAST_CHANNEL_USERS);
     }
 
+    /**
+     * サーバーにいる人全員にメッセージを送ります。
+     * <br>ミュート状態では表示されません。
+     * (ミュート状態...isMuted()の戻り値)
+     * @see "ミュート状態でも表示したい場合"
+     * @see Player#sendImportantMessage(String) sendImportantMessage
+     * @see Player#isMuted() isMuted()
+     * @param message 送る文
+     * @return int
+     */
     public int broadcastMessage(TextContainer message) {
         return this.broadcast(message, BROADCAST_CHANNEL_USERS);
     }
@@ -763,22 +783,56 @@ public class Server {
         return recipients.size();
     }
 
+    /**
+     * サーバーにいる人全員にポップアップを送ります。
+     * <br>ミュート状態では表示されません。
+     * (ミュート状態...isMuted()の戻り値)
+     * @param message 送る文
+     * @return int
+     */
     public int broadcastPopup(String message) {
         return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
     }
 
+    /**
+     * サーバーにいる人全員にチップを送ります。
+     * <br>ミュート状態では表示されません。
+     * @param message 送る文
+     * @return int
+     */
     public int broadcastTip(String message) {
         return this.broadcastPopup(message, BROADCAST_CHANNEL_USERS);
     }
 
+    /**
+     * サーバーにいる人全員にタイトルを送ります。
+     * <br>ミュート状態では表示されません。
+     * @param message 送るタイトル
+     * @return int
+     */
     public int broadcastTitle(String message) {
         return this.broadcastTitle(message, BROADCAST_CHANNEL_USERS);
     }
 
+    /**
+     * サーバーにいる人全員にメサブタイトルを送ります。
+     * <br>ミュート状態では表示されません。
+     * @param message 送る文
+     * @return int
+     */
     public int broadcastSubtitle(String message) {
         return this.broadcastSubtitle(message, BROADCAST_CHANNEL_USERS);
     }
-    
+
+    /**
+     * サーバーにいる人全員にメッセージを送ります。
+     * <br>ミュート状態でも表示されます。
+     * (ミュート状態...isMuted()の戻り値)
+     * @see Player#isMuted() isMuted()
+     * @param message 送る文
+     * @return int
+     * @author Itsu
+     */
     public int broadcastImportantMessage(String message) {
         return this.broadcastImportantMessage(message, BROADCAST_CHANNEL_USERS);
     }
@@ -892,7 +946,7 @@ public class Server {
 
         return recipients.size();
     }
-    
+
     public int broadcastImportantMessage(String message, String permissions) {
         Set<CommandSender> recipients = new HashSet<>();
 
@@ -911,11 +965,22 @@ public class Server {
         return recipients.size();
     }
 
-
+    /**
+     * サーバーにいる人全員にパケットを送ります。
+     * @param players プレイヤー
+     * @param packet 送るパケット
+     * @return void
+     */
     public static void broadcastPacket(Collection<Player> players, DataPacket packet) {
         broadcastPacket(players.stream().toArray(Player[]::new), packet);
     }
 
+    /**
+     * サーバーにいる人全員にパケットを送ります。
+     * @param players プレイヤー
+     * @param packet 送るパケット
+     * @return void
+     */
     public static void broadcastPacket(Player[] players, DataPacket packet) {
         packet.encode();
         packet.isEncoded = true;
@@ -1009,6 +1074,12 @@ public class Server {
         this.pluginManager.disablePlugins();
     }
 
+    /**
+     * コマンドを実行します。
+     * @param sender 対象のCommandSender
+     * @param commandLine 送るパケット
+     * @return boolean trueが完了/falseが失敗
+     */
     public boolean dispatchCommand(CommandSender sender, String commandLine) throws ServerException {
         // First we need to check if this command is on the main thread or not, if not, warn the user
         if (!this.isPrimaryThread()) {
@@ -1034,6 +1105,10 @@ public class Server {
         return consoleSender;
     }
 
+    /**
+     * サーバーを再読み込みさせます。
+     * @return void
+     */
     public void reload() {
         this.logger.info("再読み込み中...");
 
@@ -1074,6 +1149,10 @@ public class Server {
         Timings.reset();
     }
 
+    /**
+     * サーバーを終了させます。
+     * @return void
+     */
     public void shutdown() {
         if (this.isRunning) {
             ServerKiller killer = new ServerKiller(90);
@@ -1141,6 +1220,10 @@ public class Server {
         }
     }
 
+    /**
+     * サーバーを開始させます。
+     * @return void
+     */
     public void start() {
         if (this.getPropertyBoolean("enable-query", true)) {
             this.queryHandler = new QueryHandler();
@@ -1496,6 +1579,10 @@ public class Server {
         return this.queryRegenerateEvent;
     }
 
+    /**
+     * サーバーの名前を取得します。
+     * @return String どんな場合でも"Nukkit"が返ってきます。
+     */
     public String getName() {
         return "Nukkit";
     }
@@ -1504,30 +1591,61 @@ public class Server {
         return isRunning;
     }
 
+    /**
+     * Nukkitのバージョンを取得します。
+     * @return String Nukkitバージョン
+     */
     public String getNukkitVersion() {
         return Nukkit.VERSION;
     }
 
+    /**
+     * コードネームを取得します。
+     * @return String コードネーム
+     */
     public String getCodename() {
         return Nukkit.CODENAME;
     }
 
+    /**
+     * マインクラフトPEのバージョンを取得します。
+     * @return String Minecraftバージョン
+     */
     public String getVersion() {
         return ProtocolInfo.MINECRAFT_VERSION;
     }
 
+    /**
+     * APIバージョンを取得します。
+     * @return String APIバージョン
+     */
     public String getApiVersion() {
         return Nukkit.API_VERSION;
     }
 
+    /**
+     * ファイルパスを取得します。
+     * @return String ファイルパス
+     */
     public String getFilePath() {
         return filePath;
     }
 
+    /**
+     * データパスを取得します。
+     * <br>この場合、jarがあるパスです。
+     * @return String データパス
+     */
     public String getDataPath() {
         return dataPath;
     }
 
+    /**
+     * pluginsのパスを取得します。
+     * <br>この場合、getDataPath()の戻り値に/pluginsがついたものとなります。
+     * @return String プラグインフォルダのパス
+     * @see Server#getDataPath()
+     */
     public String getPluginPath() {
         return pluginPath;
     }
@@ -1536,18 +1654,37 @@ public class Server {
     	return defaultplugin;
     }
 
+    /**
+     * サーバーの最大参加可能人数を取得します。
+     * @return int 最大参加可能人数
+     */
     public int getMaxPlayers() {
         return maxPlayers;
     }
 
+    /**
+     * サーバーのポートを取得します。
+     * <br>server.propertiesのserver-portの値です。
+     * @return int ポート
+     */
     public int getPort() {
         return this.getPropertyInt("server-port", 19132);
     }
 
+    /**
+     * サーバーの描画距離を取得します。
+     * <br>server.propertiesのview-distancetの値です。
+     * @return int 描画距離
+     */
     public int getViewDistance() {
         return this.getPropertyInt("view-distance", 10);
     }
 
+    /**
+     * サーバーのIPアドレスを取得します。
+     * <br>server.propertiesのserver-ipの値です。
+     * @return String IPアドレス
+     */
     public String getIp() {
         return this.getPropertyString("server-ip", "0.0.0.0");
     }
@@ -1556,10 +1693,18 @@ public class Server {
         return this.serverID;
     }
 
+    /**
+     * サーバーのオートセーブが有効かどうかを取得します。
+     * @return boolean trueが有効/falseが無効
+     */
     public boolean getAutoSave() {
         return this.autoSave;
     }
 
+    /**
+     * サーバーのオートセーブを設定します。
+     * @param autoSave trueが有効/falseが無効
+     */
     public void setAutoSave(boolean autoSave) {
         this.autoSave = autoSave;
         for (Level level : this.getLevels().values()) {
@@ -1567,6 +1712,15 @@ public class Server {
         }
     }
 
+    /**
+     * サーバーのワールドタイプを取得します。
+     * <br>server.propertiesのlevel-typeの値です。
+     * <br>
+     * <br>[ワールドタイプ]
+     * <br>FLAT フラットワールド
+     * <br>DEFAULT デフォルトワールド
+     * @return String ワールドタイプ
+     */
     public String getLevelType() {
         return this.getPropertyString("level-type", "DEFAULT");
     }
@@ -1575,6 +1729,18 @@ public class Server {
         return this.getPropertyBoolean("generate-structures", true);
     }
 
+    /**
+     * @deprecated {@link Server#getDefaultGamemode()}に置き換えられました。
+     * <br>サーバーのデフォルトゲームモードを取得します。
+     * <br>server.propertiesのgamemodeの値です。
+     * <br>
+     * <br>[ゲームモード]
+     * <br>0:サバイバルモード
+     * <br>1:クリエイティブモード
+     * <br>2:アドベンチャーモード
+     * <br>3:スペクテイターモード
+     * @return int ゲームモード
+     */
     public int getGamemode() {
         return this.getPropertyInt("gamemode", 0) & 0b11;
     }
@@ -1583,6 +1749,19 @@ public class Server {
         return this.getPropertyBoolean("force-gamemode", false);
     }
 
+    /**
+     * サーバーのゲームモードを名前で取得します。
+     * <br>server.propertiesのgamemodeの値です。
+     * <br>
+     * <br>[戻ってくる名前:ゲームモード(入力した番号)]
+     * <br>サバイバルモード(0)
+     * <br>クリエイティブモード(1)
+     * <br>アドベンチャーモード(2)
+     * <br>スペクテイターモード(3)
+     * <br>UNKNOWN(0-3以外の数値を入力した場合)
+     * @param mode 名前に変換したいゲームモードの番号(0, 1, 2, 3)
+     * @return String ゲームモード
+     */
     public static String getGamemodeString(int mode) {
         switch (mode) {
             case Player.SURVIVAL:
@@ -1649,14 +1828,29 @@ public class Server {
         return -1;
     }
 
+    /**
+     * サーバーの難易度を取得します。
+     * <br>server.propertiesのdifficultyの値です。
+     * @return int 難易度
+     */
     public int getDifficulty() {
         return this.getPropertyInt("difficulty", 1);
     }
 
+    /**
+     * サーバーがホワイトリスト状態かどうかを取得します。
+     * <br>server.propertiesのwhite-listの値です。
+     * @return boolean trueが有効/falseが無効
+     */
     public boolean hasWhitelist() {
         return this.getPropertyBoolean("white-list", false);
     }
 
+    /**
+     * スポーン地点から半径何ブロックが破壊できないかを取得します。
+     * <br>server.propertiesのspawn-protectionの値です。
+     * @return int 半径
+     */
     public int getSpawnRadius() {
         return this.getPropertyInt("spawn-protection", 16);
     }
@@ -1668,14 +1862,35 @@ public class Server {
         return getAllowFlight;
     }
 
+    /**
+     * サーバーがハードコア状態かどうかを取得します。
+     * <br>server.propertiesのhardcoreの値です。
+     * @return boolean trueが有効/falseが無効
+     */
     public boolean isHardcore() {
         return this.getPropertyBoolean("hardcore", false);
     }
 
+    /**
+     * サーバーのデフォルトのゲームモードを取得します。
+     * <br>server.propertiesのgamemodeの値です。
+     * <br>
+     * <br>[ゲームモード]
+     * <br>0:サバイバルモード
+     * <br>1:クリエイティブモード
+     * <br>2:アドベンチャーモード
+     * <br>3:スペクテイターモード
+     * @return int ゲームモード
+     */
     public int getDefaultGamemode() {
         return this.getPropertyInt("gamemode", 0);
     }
 
+    /**
+     * サーバー名を取得します。
+     * <br>server.propertiesのmotdの値です。
+     * @return String 難易度
+     */
     public String getMotd() {
         return this.getPropertyString("motd", "Nukkit Server For Minecraft: PE");
     }
@@ -1684,6 +1899,10 @@ public class Server {
         return this.getPropertyBoolean("force-resources", false);
     }
 
+    /**
+     * MainLoggerオブジェクトを取得します。
+     * @return MainLogger
+     */
     public MainLogger getLogger() {
         return this.logger;
     }
@@ -1700,18 +1919,62 @@ public class Server {
         return levelMetadata;
     }
 
+    /**
+     * プラグインマネージャを取得します。
+     * <br>
+     * <br>[よく使う方法: Itsuのメモ]
+     * <br>・イベント登録
+     * <br>{@code this.getLogger().getPluginManager().registerEvents(this, this);}
+     * @return PluginManager
+     * @see PluginManager#registerEvents(cn.nukkit.event.Listener, Plugin)
+     */
     public PluginManager getPluginManager() {
         return this.pluginManager;
     }
 
+    /**
+     * クラフティングマネージャを取得します。
+     * @return CraftingManager
+     */
     public CraftingManager getCraftingManager() {
         return craftingManager;
     }
 
+    /**
+     * リソースパックマネージャを取得します。
+     * @return ResourcePackManager
+     */
     public ResourcePackManager getResourcePackManager() {
         return resourcePackManager;
     }
 
+    /**
+     * スケジューラを取得します。
+     * <br>
+     * <br>[スケジューラの使い方:Itsuのメモ]
+     * <pre>
+     * ・繰り返し
+     * {@code 
+     *  TaskHandler th;
+     *  th = this.getServer().getScheduler().scheduleRepeatingTask(null, new Runnable(){
+     *      //繰り返す処理
+     *  };, 間隔tick(int));
+     *  
+     *  
+     * ・遅延してから繰り返し
+     *  TaskHandler th;
+     *  th = this.getServer().getScheduler().scheduleDelayedRepeatingTask(null, new Runnable(){
+     *      //繰り返す処理
+     *  };, 遅延tick(int), 間隔tick(int));
+     *  
+     *  
+     *  ・スケジューラを止める
+     *  th.cancel();
+     * </pre>
+     * [豆知識]
+     * <br>20tick = 1秒です!
+     * @return ServerScheduler
+     */
     public ServerScheduler getScheduler() {
         return scheduler;
     }
@@ -1834,6 +2097,11 @@ public class Server {
         }
     }
 
+    /**
+     * プレイヤーオブジェクトを名前から取得します。
+     * @param name 取得したいプレイヤーの名前
+     * @return Player 取得したプレイヤー
+     */
     public Player getPlayer(String name) {
         Player found = null;
         name = name.toLowerCase();
@@ -1901,6 +2169,10 @@ public class Server {
         return levels;
     }
 
+    /**
+     * デフォルトで設定されているワールドのオブジェクトを取得します。
+     * @return Level デフォルトで設定されているワールドのオブジェクト
+     */
     public Level getDefaultLevel() {
         return defaultLevel;
     }
@@ -1922,6 +2194,11 @@ public class Server {
         return null;
     }
 
+    /**
+     * ワールドオブジェクトを名前から取得します。
+     * @param name 取得したいワールドの名前
+     * @return Level 取得したワールドオブジェクト
+     */
     public Level getLevelByName(String name) {
         for (Level level : this.getLevels().values()) {
             if (level.getFolderName().equals(name)) {
@@ -2132,10 +2409,20 @@ public class Server {
         return value == null ? defaultValue : value;
     }
 
+    /**
+     * server.propertiesのオブジェクト(Config)を取得します。
+     * @return Config プロパティーのオブジェクト
+     */
     public Config getProperties() {
         return this.properties;
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値を取得します。
+     * <br>比較などするときは、適切にキャストする必要があります。
+     * @param variable キー
+     * @return Object 取得した値
+     */
     public Object getProperty(String variable) {
         return this.getProperty(variable, null);
     }
@@ -2144,11 +2431,22 @@ public class Server {
         return this.properties.exists(variable) ? this.properties.get(variable) : defaultValue;
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をString型で設定します。
+     * @param variable キー
+     * @param value 値
+     * @return void
+     */
     public void setPropertyString(String variable, String value) {
         this.properties.set(variable, value);
         this.properties.save();
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をString型で取得します。
+     * @param variable キー
+     * @return String 取得した値
+     */
     public String getPropertyString(String variable) {
         return this.getPropertyString(variable, null);
     }
@@ -2157,6 +2455,11 @@ public class Server {
         return this.properties.exists(variable) ? (String) this.properties.get(variable) : defaultValue;
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をint型で取得します。
+     * @param variable キー
+     * @return int 取得した値
+     */
     public int getPropertyInt(String variable) {
         return this.getPropertyInt(variable, null);
     }
@@ -2165,11 +2468,22 @@ public class Server {
         return this.properties.exists(variable) ? (!this.properties.get(variable).equals("") ? Integer.parseInt(String.valueOf(this.properties.get(variable))) : defaultValue) : defaultValue;
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をint型で設定します。
+     * @param variable キー
+     * @param value 値
+     * @return void
+     */
     public void setPropertyInt(String variable, int value) {
         this.properties.set(variable, value);
         this.properties.save();
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をboolean型で取得します。
+     * @param variable キー
+     * @return boolean 取得した値
+     */
     public boolean getPropertyBoolean(String variable) {
         return this.getPropertyBoolean(variable, null);
     }
@@ -2189,11 +2503,21 @@ public class Server {
         return false;
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をboolean型で設定します。
+     * @param variable キー
+     * @param value 値
+     * @return void
+     */
     public void setPropertyBoolean(String variable, boolean value) {
         this.properties.set(variable, value ? "1" : "0");
         this.properties.save();
     }
 
+    /**
+     * jupiter.ymlのオブジェクト(Config)を取得します。
+     * @return Config jupiter.ymlのオブジェクト
+     */
     public Config getJupiterConfig(){
     	return new Config(this.getDataPath() + "jupiter.yml");
     }
@@ -2202,18 +2526,38 @@ public class Server {
     	return !this.jupiterconfig.isEmpty();
     }
 
+    /**
+     * jupiter.ymlをロードします。
+     * @return void
+     */
     public void loadJupiterConfig(){
     	this.jupiterconfig = this.getJupiterConfig().getAll();
     }
 
+    /**
+     * jupiter.ymlの引数で指定したキーの値をString型で取得します。
+     * @param key キー
+     * @return String 取得した値
+     */
     public String getJupiterConfigString(String key){
     	return (String) this.jupiterconfig.get(key);
     }
 
+    /**
+     * jupiter.ymlの引数で指定したキーの値をint型で取得します。
+     * @param key キー
+     * @return int 取得した値
+     */
     public int getJupiterConfigInt(String key){
     	return (int) this.jupiterconfig.get(key);
     }
 
+    /**
+     * jupiter.ymlの引数で指定したキーの値をBoolean型で取得します。
+     * <br>注意:戻り値はbooleanのラッパークラスです。
+     * @param key キー
+     * @return Boolean 取得した値
+     */
     public Boolean getJupiterConfigBoolean(String key){
     	return (Boolean) this.jupiterconfig.get(key);
     }
@@ -2227,14 +2571,27 @@ public class Server {
         }
     }
 
+    /**
+     * 名前Banされた人のリストを取得します。
+     * @return BanList 名前Banリスト
+     */
     public BanList getNameBans() {
         return this.banByName;
     }
 
+    /**
+     * IPBanされた人のリストを取得します。
+     * @return BanList IPBanリスト
+     */
     public BanList getIPBans() {
         return this.banByIP;
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーをOPにします。
+     * @param name OPにしたいプレイヤーの名前
+     * @return void
+     */
     public void addOp(String name) {
         this.operators.set(name.toLowerCase(), true);
         Player player = this.getPlayerExact(name);
@@ -2244,6 +2601,11 @@ public class Server {
         this.operators.save(true);
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーのOP権を剥奪します。
+     * @param name OPを剥奪したいプレイヤーの名前
+     * @return void
+     */
     public void removeOp(String name) {
         this.operators.remove(name.toLowerCase());
         Player player = this.getPlayerExact(name);
@@ -2253,20 +2615,40 @@ public class Server {
         this.operators.save();
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーをホワイトリストに追加にします。
+     * @param name ホワイトリストに追加したいプレイヤーの名前
+     * @return void
+     */
     public void addWhitelist(String name) {
         this.whitelist.set(name.toLowerCase(), true);
         this.whitelist.save(true);
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーをホワイトリストから外します。
+     * @param name ホワイトリストから外したいプレイヤーの名前
+     * @return void
+     */
     public void removeWhitelist(String name) {
         this.whitelist.remove(name.toLowerCase());
         this.whitelist.save(true);
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーがホワイトリストに追加されているかどうかを取得します。
+     * @param name 調べたい人の名前
+     * @return boolean trueが追加されている/falseが追加されていない
+     */
     public boolean isWhitelisted(String name) {
         return !this.hasWhitelist() || this.operators.exists(name, true) || this.whitelist.exists(name, true);
     }
 
+    /**
+     * 引数で指定した名前のプレイヤーがOPかどうかを取得します。
+     * @param name 調べたい人の名前
+     * @return boolean trueがOP/falseが非OP
+     */
     public boolean isOp(String name) {
         return this.operators.exists(name, true);
     }
@@ -2408,6 +2790,10 @@ public class Server {
         BlockEntity.registerBlockEntity(BlockEntity.BEACON, BlockEntityBeacon.class);
     }
 
+    /**
+     * サーバーのインスタンスを取得します。
+     * @return Server サーバーのインスタンス
+     */
     public static Server getInstance() {
         return instance;
     }

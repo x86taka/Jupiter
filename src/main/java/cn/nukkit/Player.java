@@ -356,6 +356,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	pk.eid = this.getFishingHook().getId();
     	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
+    	SetEntityLinkPacket pk2 = new SetEntityLinkPacket();
+    	pk2.riding = this.getId();
+    	pk2.rider = this.getFishingHook().getId();
+    	pk2.type = SetEntityLinkPacket.TYPE_PASSENGER;
+    	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk2);
     }
 
 	public void unlinkHookFromPlayer(){
@@ -4276,7 +4281,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.loggedIn = false;
 
-            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "")) {
+            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "") && this.getJupiterConfigBoolean("join-quit-message")) {
                 this.server.broadcastMessage(ev.getQuitMessage());
             }
 
@@ -4498,7 +4503,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         PlayerDeathEvent ev;
         this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
 
-        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("KeepInventory"))) {
+        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("keep-inventory"))) {
             for (Item item : ev.getDrops()) {
                 this.level.dropItem(this, item, null, true, 40);
             }
@@ -4508,7 +4513,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("KeepExperience"))) {
+        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("keep-experience"))) {
             if (this.isSurvival() || this.isAdventure()) {
                 int exp = ev.getExperience() * 7;
                 if (exp > 100) exp = 100;

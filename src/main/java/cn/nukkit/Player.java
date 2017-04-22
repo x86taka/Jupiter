@@ -2647,6 +2647,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 	                            } else {
 		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
 		                            entity.setMotion(entity.getMotion().multiply(f));
+		                            entity.spawnToAll();
 		                            this.linkHookToPlayer(entity);
 	                            }
                             }

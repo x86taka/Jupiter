@@ -348,7 +348,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public boolean mute = false;
 
-    public EntityFishingHook fishingHook = null;
+    public EntityFishingHook fishingHook;
 
 	public void linkHookToPlayer(EntityFishingHook entity){
     	this.fishingHook = entity;

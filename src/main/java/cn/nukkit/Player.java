@@ -4228,15 +4228,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void close(TextContainer message, String reason, boolean notify) {
+
+        this.unlinkHookFromPlayer();
+        
         if (this.connected && !this.closed) {
             if (notify && reason.length() > 0) {
                 DisconnectPacket pk = new DisconnectPacket();
                 pk.message = reason;
                 this.directDataPacket(pk);
             }
-
-            this.unlinkHookFromPlayer();
-
+//
             this.connected = false;
             PlayerQuitEvent ev = null;
             if (this.getName() != null && this.getName().length() > 0) {
@@ -4497,7 +4498,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         PlayerDeathEvent ev;
         this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
 
-        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("KeepInventory"))) {
+        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("keep-inventory"))) {
             for (Item item : ev.getDrops()) {
                 this.level.dropItem(this, item, null, true, 40);
             }
@@ -4507,7 +4508,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("KeepExperience"))) {
+        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("keep-experience"))) {
             if (this.isSurvival() || this.isAdventure()) {
                 int exp = ev.getExperience() * 7;
                 if (exp > 100) exp = 100;

@@ -354,18 +354,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	this.fishingHook = entity;
     	EntityEventPacket pk = new EntityEventPacket();
     	pk.eid = this.getFishingHook().getId();
-    	pk.event = EntityEventPacket.FISH_HOOK_HOOK;
+    	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
 	public void unlinkHookFromPlayer(){
-		EntityEventPacket pk = new EntityEventPacket();
-		pk.eid = this.getFishingHook().getId();
-		pk.event = EntityEventPacket.FISH_HOOK_TEASE;
-		Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-		if (this.isFishing())
+		if (this.isFishing()){
+			EntityEventPacket pk = new EntityEventPacket();
+			pk.eid = this.getFishingHook().getId();
+			pk.event = EntityEventPacket.FISH_HOOK_TEASE;
+			Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
 			this.fishingHook.close();
-    	this.fishingHook = null;
+	    	this.fishingHook = null;
+		}
     }
 
 

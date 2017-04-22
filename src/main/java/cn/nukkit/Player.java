@@ -2643,8 +2643,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
                             if (!ev.isCancelled()){
 	                            if (this.isFishing()){
-	                            	//TODO s
-	                            	//this.unlinkHookFromPlayer();
+	                            	this.unlinkHookFromPlayer();
 	                            } else {
 		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
 		                            entity.setMotion(entity.getMotion().multiply(f));

@@ -4231,7 +4231,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void close(TextContainer message, String reason, boolean notify) {
 
         this.unlinkHookFromPlayer();
-        
+
         if (this.connected && !this.closed) {
             if (notify && reason.length() > 0) {
                 DisconnectPacket pk = new DisconnectPacket();
@@ -4277,7 +4277,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.loggedIn = false;
 
-            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "") && this.getJupiterConfigBoolean("join-quit-message")) {
+            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "") && this.getServer().getJupiterConfigBoolean("join-quit-message")) {
                 this.server.broadcastMessage(ev.getQuitMessage());
             }
 

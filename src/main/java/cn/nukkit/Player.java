@@ -356,11 +356,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	pk.eid = this.getFishingHook().getId();
     	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-    	SetEntityLinkPacket pk2 = new SetEntityLinkPacket();
-    	pk2.riding = this.getId();
-    	pk2.rider = this.getFishingHook().getId();
-    	pk2.type = SetEntityLinkPacket.TYPE_PASSENGER;
-    	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk2);
     }
 
 	public void unlinkHookFromPlayer(){
@@ -4699,7 +4694,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (damager instanceof Player) {
                 ((Player) damager).getFoodData().updateFoodExpLevel(0.3);
             }
-            //暴击
+            //暴?
             boolean add = false;
             if (!damager.onGround) {
                 NukkitRandom random = new NukkitRandom();

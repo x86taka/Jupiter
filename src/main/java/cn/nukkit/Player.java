@@ -354,18 +354,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	this.fishingHook = entity;
     	EntityEventPacket pk = new EntityEventPacket();
     	pk.eid = this.getFishingHook().getId();
-    	pk.event = EntityEventPacket.FISH_HOOK_HOOK;
+    	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
 	public void unlinkHookFromPlayer(){
-		EntityEventPacket pk = new EntityEventPacket();
-		pk.eid = this.getFishingHook().getId();
-		pk.event = EntityEventPacket.FISH_HOOK_TEASE;
-		Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
-		if (this.isFishing())
+		if (this.isFishing()){
+			EntityEventPacket pk = new EntityEventPacket();
+			pk.eid = this.getFishingHook().getId();
+			pk.event = EntityEventPacket.FISH_HOOK_TEASE;
+			Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
 			this.fishingHook.close();
-    	this.fishingHook = null;
+	    	this.fishingHook = null;
+		}
     }
 
 
@@ -2642,11 +2643,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
                             if (!ev.isCancelled()){
 	                            if (this.isFishing()){
-	                            	//TODO s
-	                            	//this.unlinkHookFromPlayer();
+	                            	this.unlinkHookFromPlayer();
 	                            } else {
 		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
 		                            entity.setMotion(entity.getMotion().multiply(f));
+		                            entity.spawnToAll();
 		                            this.linkHookToPlayer(entity);
 	                            }
                             }
@@ -4276,7 +4277,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.loggedIn = false;
 
-            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "")) {
+            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "") && this.getJupiterConfigBoolean("join-quit-message")) {
                 this.server.broadcastMessage(ev.getQuitMessage());
             }
 
@@ -4694,7 +4695,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (damager instanceof Player) {
                 ((Player) damager).getFoodData().updateFoodExpLevel(0.3);
             }
-            //暴击
+            //暴?
             boolean add = false;
             if (!damager.onGround) {
                 NukkitRandom random = new NukkitRandom();

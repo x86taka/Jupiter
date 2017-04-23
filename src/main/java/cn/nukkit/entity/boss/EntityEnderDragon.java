@@ -22,6 +22,16 @@ public class EntityEnderDragon extends EntityMob {
     protected void initEntity() {
         super.initEntity();
     }
+    
+    @Override
+    public float getWidth() {
+        return 13f;
+    }
+    
+    @Override
+    public float getHeight(){
+        return 4f;
+    }
 
     @Override
     public void spawnTo(Player player) {

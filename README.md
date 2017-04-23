@@ -1,4 +1,4 @@
-# Jupiter
+# Jupiter v1.0.7
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Introduce

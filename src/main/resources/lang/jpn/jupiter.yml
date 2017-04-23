@@ -36,3 +36,4 @@ disable-all-commands: false
 jupiter-compiler-mode: true
 #Jupiterの実行jarの名前(依存させるときに使います)
 jupiter-name: nukkit-1.0-SNAPSHOT.jar
+jupiter: true

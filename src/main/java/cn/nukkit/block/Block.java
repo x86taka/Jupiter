@@ -1,5 +1,8 @@
 package cn.nukkit.block;
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -13,9 +16,6 @@ import cn.nukkit.metadata.MetadataValue;
 import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.BlockColor;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
 
 /**
  * author: MagicDroidX
@@ -356,7 +356,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[BED_BLOCK] = BlockBed.class; //26
             list[POWERED_RAIL] = BlockRailPowered.class; //27
             list[DETECTOR_RAIL] = BlockRailDetector.class; //28
-            //TODO: list[STICKY_PISTON] = BlockPistonSticky.class; //29
+            //TODO Test Sticky Piston
+            list[STICKY_PISTON] = BlockStickyPiston.class; //29
             list[COBWEB] = BlockCobweb.class; //30
             list[TALL_GRASS] = BlockTallGrass.class; //31
             list[DEAD_BUSH] = BlockDeadBush.class; //32

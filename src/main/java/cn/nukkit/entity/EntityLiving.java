@@ -1,11 +1,21 @@
 package cn.nukkit.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.entity.passive.EntityWaterAnimal;
-import cn.nukkit.event.entity.*;
+import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
+import cn.nukkit.event.entity.EntityDeathEvent;
+import cn.nukkit.event.entity.EntityRegainHealthEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
@@ -15,11 +25,6 @@ import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockIterator;
 import co.aikar.timings.Timings;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * author: MagicDroidX
@@ -96,41 +101,41 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
     }
 
     @Override
-    public void attack(EntityDamageEvent source) {
+    public boolean attack(EntityDamageEvent source) {
         if (this.attackTime > 0 || this.noDamageTicks > 0) {
             EntityDamageEvent lastCause = this.getLastDamageCause();
             if (lastCause != null && lastCause.getDamage() >= source.getDamage()) {
-                source.setCancelled();
+                return false;
             }
         }
 
-        super.attack(source);
+        if (super.attack(source)) {
+            if (source instanceof EntityDamageByEntityEvent) {
+                Entity e = ((EntityDamageByEntityEvent) source).getDamager();
+                if (source instanceof EntityDamageByChildEntityEvent) {
+                    e = ((EntityDamageByChildEntityEvent) source).getChild();
+                }
 
-        if (source.isCancelled()) {
-            return;
-        }
+                if (e.isOnFire() && !(e instanceof Player)) {
+                    this.setOnFire(2 * this.server.getDifficulty());
+                }
 
-        if (source instanceof EntityDamageByEntityEvent) {
-            Entity e = ((EntityDamageByEntityEvent) source).getDamager();
-            if (source instanceof EntityDamageByChildEntityEvent) {
-                e = ((EntityDamageByChildEntityEvent) source).getChild();
+                double deltaX = this.x - e.x;
+                double deltaZ = this.z - e.z;
+                this.knockBack(e, source.getDamage(), deltaX, deltaZ, ((EntityDamageByEntityEvent) source).getKnockBack());
             }
 
-            if (e.isOnFire() && !(e instanceof Player)) {
-                this.setOnFire(2 * this.server.getDifficulty());
-            }
+            EntityEventPacket pk = new EntityEventPacket();
+            pk.eid = this.getId();
+            pk.event = this.getHealth() <= 0 ? EntityEventPacket.DEATH_ANIMATION : EntityEventPacket.HURT_ANIMATION;
+            Server.broadcastPacket(this.hasSpawned.values(), pk);
 
-            double deltaX = this.x - e.x;
-            double deltaZ = this.z - e.z;
-            this.knockBack(e, source.getDamage(), deltaX, deltaZ, ((EntityDamageByEntityEvent) source).getKnockBack());
+            this.attackTime = 10;
+
+            return true;
+        } else {
+            return false;
         }
-
-        EntityEventPacket pk = new EntityEventPacket();
-        pk.eid = this.getId();
-        pk.event = this.getHealth() <= 0 ? EntityEventPacket.DEATH_ANIMATION : EntityEventPacket.HURT_ANIMATION;
-        Server.broadcastPacket(this.hasSpawned.values(), pk);
-
-        this.attackTime = 10;
     }
 
     public void knockBack(Entity attacker, double damage, double x, double z) {
@@ -189,8 +194,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         if (this.isAlive()) {
             if (this.isInsideOfSolid()) {
                 hasUpdate = true;
-                EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_SUFFOCATION, 1);
-                this.attack(ev);
+                this.attack(new EntityDamageEvent(this, DamageCause.SUFFOCATION, 1));
             }
 
             if (!this.hasEffect(Effect.WATER_BREATHING) && this.isInsideOfWater()) {
@@ -202,8 +206,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
 
                     if (airTicks <= -20) {
                         airTicks = 0;
-                        EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_DROWNING, 2);
-                        this.attack(ev);
+                        this.attack(new EntityDamageEvent(this, DamageCause.DROWNING, 2));
                     }
 
                     this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));
@@ -215,8 +218,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
 
                     if (airTicks <= -20) {
                         airTicks = 0;
-                        EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_SUFFOCATION, 2);
-                        this.attack(ev);
+                        this.attack(new EntityDamageEvent(this, DamageCause.SUFFOCATION, 2));
                     }
 
                     this.setDataProperty(new ShortEntityData(DATA_AIR, airTicks));

@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -63,7 +64,7 @@ public class EntityEnderPearl extends EntityProjectile{
 		if(!this.hasTeleportedShooter){
 			this.hasTeleportedShooter = true;
 			if(this.shootingEntity instanceof Player && this.y > 0){
-				this.shootingEntity.attack(new EntityDamageEvent(this.shootingEntity, EntityDamageEvent.CAUSE_FALL, 5));
+				this.shootingEntity.attack(new EntityDamageEvent(this.shootingEntity, DamageCause.FALL, 5));
 				this.shootingEntity.teleport(this.getLocation());
 			}
 			this.kill();

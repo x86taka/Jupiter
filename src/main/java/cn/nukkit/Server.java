@@ -1954,20 +1954,20 @@ public class Server {
      * <br>[スケジューラの使い方:Itsuのメモ]
      * <pre>
      * ・繰り返し
-     * {@code 
+     * {@code
      *  TaskHandler th;
      *  th = this.getServer().getScheduler().scheduleRepeatingTask(null, new Runnable(){
      *      //繰り返す処理
      *  };, 間隔tick(int));
-     *  
-     *  
+     *
+     *
      * ・遅延してから繰り返し
      *  TaskHandler th;
      *  th = this.getServer().getScheduler().scheduleDelayedRepeatingTask(null, new Runnable(){
      *      //繰り返す処理
      *  };, 遅延tick(int), 間隔tick(int));
-     *  
-     *  
+     *
+     *
      *  ・スケジューラを止める
      *  th.cancel();
      * </pre>

@@ -24,6 +24,7 @@ import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.event.entity.EntityDespawnEvent;
 import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.entity.EntityMotionEvent;
@@ -787,24 +788,25 @@ public abstract class Entity extends Location implements Metadatable {
         }
     }
 
-    public void attack(EntityDamageEvent source) {
-        if (hasEffect(Effect.FIRE_RESISTANCE)
-                && (source.getCause() == EntityDamageEvent.CAUSE_FIRE
-                || source.getCause() == EntityDamageEvent.CAUSE_FIRE_TICK
-                || source.getCause() == EntityDamageEvent.CAUSE_LAVA)) {
-            source.setCancelled();
+    public boolean attack(EntityDamageEvent source) {
+    	if (hasEffect(Effect.FIRE_RESISTANCE)
+                && (source.getCause() == DamageCause.FIRE
+            	|| source.getCause() == DamageCause.FIRE_TICK
+            	|| source.getCause() == DamageCause.LAVA)) {
+            	 return false;
         }
 
         getServer().getPluginManager().callEvent(source);
         if (source.isCancelled()) {
-            return;
+            return false;
         }
         setLastDamageCause(source);
         setHealth(getHealth() - source.getFinalDamage());
+        return true;
     }
 
-    public void attack(float damage) {
-        this.attack(new EntityDamageEvent(this, EntityDamageEvent.CAUSE_VOID, damage));
+    public boolean attack(float damage) {
+    	return this.attack(new EntityDamageEvent(this, DamageCause.CUSTOM, damage));
     }
 
     public void heal(EntityRegainHealthEvent source) {
@@ -995,8 +997,7 @@ public abstract class Entity extends Location implements Metadatable {
         this.checkBlockCollision();
 
         if (this.y <= -16 && this.isAlive()) {
-            EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_VOID, 10);
-            this.attack(ev);
+        	this.attack(new EntityDamageEvent(this, DamageCause.VOID, 10));
             hasUpdate = true;
         }
 
@@ -1008,8 +1009,7 @@ public abstract class Entity extends Location implements Metadatable {
                 }
             } else {
                 if (!this.hasEffect(Effect.FIRE_RESISTANCE) && ((this.fireTicks % 20) == 0 || tickDiff > 20)) {
-                    EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_FIRE_TICK, 1);
-                    this.attack(ev);
+                	this.attack(new EntityDamageEvent(this, DamageCause.FIRE_TICK, 1));
                 }
                 this.fireTicks -= tickDiff;
             }
@@ -1191,8 +1191,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void fall(float fallDistance) {
         float damage = (float) Math.floor(fallDistance - 3 - (this.hasEffect(Effect.JUMP) ? this.getEffect(Effect.JUMP).getAmplifier() + 1 : 0));
         if (damage > 0) {
-            EntityDamageEvent ev = new EntityDamageEvent(this, EntityDamageEvent.CAUSE_FALL, damage);
-            this.attack(ev);
+        	this.attack(new EntityDamageEvent(this, DamageCause.FALL, damage));
         }
 
         if (fallDistance > 0.75) {

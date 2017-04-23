@@ -5,6 +5,7 @@
   <artifactId>nukkit</artifactId>
   <name>Jupiter</name>
   <version>1.0-SNAPSHOT</version>
+  <url>https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam</url>
   <build>
     <plugins>
       <plugin>

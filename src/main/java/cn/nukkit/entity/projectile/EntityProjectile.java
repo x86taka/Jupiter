@@ -1,16 +1,21 @@
 package cn.nukkit.entity.projectile;
 
+import java.util.Random;
+
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityLiving;
 import cn.nukkit.entity.data.LongEntityData;
-import cn.nukkit.event.entity.*;
+import cn.nukkit.event.entity.EntityCombustByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
+import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.level.MovingObjectPosition;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-
-import java.util.Random;
 
 /**
  * author: MagicDroidX
@@ -40,10 +45,8 @@ public abstract class EntityProjectile extends Entity {
         }
     }
 
-    public void attack(EntityDamageEvent source) {
-        if (source.getCause() == EntityDamageEvent.CAUSE_VOID) {
-            super.attack(source);
-        }
+    public boolean attack(EntityDamageEvent source) {
+        return source.getCause() == DamageCause.VOID && super.attack(source);
     }
 
     @Override
@@ -141,9 +144,9 @@ public abstract class EntityProjectile extends Entity {
 
                         EntityDamageEvent ev;
                         if (this.shootingEntity == null) {
-                            ev = new EntityDamageByEntityEvent(this, movingObjectPosition.entityHit, EntityDamageEvent.CAUSE_PROJECTILE, (float) damage);
+                            ev = new EntityDamageByEntityEvent(this, movingObjectPosition.entityHit, DamageCause.PROJECTILE, (float) damage);
                         } else {
-                            ev = new EntityDamageByChildEntityEvent(this.shootingEntity, this, movingObjectPosition.entityHit, EntityDamageEvent.CAUSE_PROJECTILE, (float) damage);
+                            ev = new EntityDamageByChildEntityEvent(this.shootingEntity, this, movingObjectPosition.entityHit, DamageCause.PROJECTILE, (float) damage);
                         }
 
                         movingObjectPosition.entityHit.attack(ev);

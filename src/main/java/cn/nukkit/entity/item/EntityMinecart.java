@@ -40,14 +40,10 @@ public class EntityMinecart extends EntityVehicle{
 
 	private int state = EntityMinecart.STATE_INITIAL;
 	private int direction = -1;
-	public Vector3[] moveVector;
+	public Vector3 moveVector[] = new Vector3[0];
 
 
-	public EntityMinecart(FullChunk chunk, CompoundTag nbt) {
-		super(chunk, nbt);
-	}
-
-    @Override
+	@Override
     public float getHeight() {
         return 0.7f;
     }
@@ -70,6 +66,10 @@ public class EntityMinecart extends EntityVehicle{
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
+    }
+
+    public EntityMinecart(FullChunk chunk, CompoundTag nbt) {
+        super(chunk, nbt);
     }
 
     @Override
@@ -572,5 +572,7 @@ public class EntityMinecart extends EntityVehicle{
 
         super.spawnTo(player);
     }
+    
+    
 
 }

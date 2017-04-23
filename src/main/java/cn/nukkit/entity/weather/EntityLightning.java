@@ -11,6 +11,7 @@ import cn.nukkit.entity.mob.EntityCreeper;
 import cn.nukkit.event.block.BlockIgniteEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -71,9 +72,10 @@ public class EntityLightning extends Entity implements EntityLightningStrike {
     }
 
     @Override
-    public void attack(EntityDamageEvent source) {
+    public boolean attack(EntityDamageEvent source) {
         source.setDamage(0);
         super.attack(source);
+        return true;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class EntityLightning extends Entity implements EntityLightningStrike {
             if (this.isEffect()) {
                 for (Entity e : this.level.getNearbyEntities(this.boundingBox.grow(6, 12, 6), this)) {
                     if (e instanceof EntityLiving) {
-                        e.attack(new EntityDamageByEntityEvent(this, e, EntityDamageEvent.CAUSE_LIGHTNING, 5));
+                        e.attack(new EntityDamageByEntityEvent(this, e, DamageCause.LIGHTNING, 5));
                         e.setOnFire(5);  //how long?
                         //Creeper
                         if (e instanceof EntityCreeper) {

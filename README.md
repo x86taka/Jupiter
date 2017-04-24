@@ -25,8 +25,10 @@ Can be used Nukkit plugins
 --------------------
 
 * __[公式サイト Official Site](https://jupiterdevelopmentteam.github.io/)__
+* __[公式プラグイン Official plugins](https://github.com/JupiterDevelopmentTeam/Plugins)__
 * __[Travis Ci](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)__
 * __[Circle Ci](https://circleci.com/gh/JupiterDevelopmentTeam)__
+* __[Jupiterプラグインコードエディタ CodeEditor for Jupiter 「EarthOne」](http://itsuplugin.web.fc2.com/earthone.html)__
 
 
 Maven Repositories

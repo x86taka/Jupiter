@@ -9,7 +9,7 @@ Jupiterについて / About Jupiter
 
 Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。コードの多くは[Nukkit](https://github.com/Nukkit/Nukkit/)のものを使用しています。
 
-* 日本人開発者が日本のユーザーのために作っています
+* 日本人開発者チームが日本のユーザーのために作っています
 
 * Nukkitプラグインはもちろん、Jupiterの独自メソッドを使ったプラグインも使用できます   
   

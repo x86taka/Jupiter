@@ -19,6 +19,30 @@ public class EntityDamageEvent extends EntityEvent implements Cancellable {
     public static HandlerList getHandlers() {
         return handlers;
     }
+    
+    public static final int MODIFIER_BASE = 0;
+    public static final int MODIFIER_ARMOR = 1;
+    public static final int MODIFIER_STRENGTH = 2;
+    public static final int MODIFIER_WEAKNESS = 3;
+    public static final int MODIFIER_RESISTANCE = 4;
+    //public static final int MODIFIER_ARMOR_ENCHANTMENTS = 5;
+
+    public static final int CAUSE_CONTACT = 0;
+    public static final int CAUSE_ENTITY_ATTACK = 1;
+    public static final int CAUSE_PROJECTILE = 2;
+    public static final int CAUSE_SUFFOCATION = 3;
+    public static final int CAUSE_FALL = 4;
+    public static final int CAUSE_FIRE = 5;
+    public static final int CAUSE_FIRE_TICK = 6;
+    public static final int CAUSE_LAVA = 7;
+    public static final int CAUSE_DROWNING = 8;
+    public static final int CAUSE_BLOCK_EXPLOSION = 9;
+    public static final int CAUSE_ENTITY_EXPLOSION = 10;
+    public static final int CAUSE_VOID = 11;
+    public static final int CAUSE_SUICIDE = 12;
+    public static final int CAUSE_MAGIC = 13;
+    public static final int CAUSE_CUSTOM = 14;
+    public static final int CAUSE_LIGHTNING = 15;
 
     private final DamageCause cause;
 

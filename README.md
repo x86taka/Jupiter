@@ -1,49 +1,33 @@
-# Jupiter v1.0.7
+# Jupiter - Nukkit Fork for 1.0.7
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
-Introduce
+Jupiterについて / About Jupiter
 -------------
-[![Build Status](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)
+#### ビルドステータス
+[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)
 [![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master)
 
-Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。  
-Jupiter is a free server software for Manecraft: PE.  
-  
-大部分のソースはNukkitのものを使用しています。  
-Most of sources are Nukkit's sources.  
+Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。コードの多くは[Nukkit](https://github.com/Nukkit/Nukkit/)のものを使用しています。
 
-* Javaで書かれているから速い  
-More faster work because it is used Java  
-  
-* Javaだから多くのプラットフォームに対応しています。  
-Can be used on many platforms
-  
-* Nukkitプラグインが使えます。  
-Can be used Nukkit plugins  
+* 日本人開発者が日本のユーザーのために作っています
 
- Download & Information
---------------------
+* Nukkitプラグインはもちろん、Jupiterの独自メソッドを使ったプラグインも使用できます   
 
-* __[公式サイト Official Site](https://jupiterdevelopmentteam.github.io/)__
-* __[公式プラグイン Official plugins](https://github.com/JupiterDevelopmentTeam/Plugins)__
+ダウンロード & インフォメーション / Download & Information
+-------------
+
+* __[公式サイト](https://jupiterdevelopmentteam.github.io/)__
+* __[公式プラグイン](https://github.com/JupiterDevelopmentTeam/Plugins)__
 * __[Travis Ci](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)__
 * __[Circle Ci](https://circleci.com/gh/JupiterDevelopmentTeam)__
-* __[Jupiterプラグインコードエディタ CodeEditor for Jupiter 「EarthOne」](http://itsuplugin.web.fc2.com/earthone.html)__
+* __[Jupiterプラグインコードエディタ「EarthOne」](http://itsuplugin.web.fc2.com/earthone.html)__
 
 
-Maven Repositories
+Mavenリポジトリ / Maven Repositories
 --------------------
 
-Mavenリポジトリはありません。  
-There are not Maven repositories.  
-  
-しかしプラグインは作ることができます。  
-But you can make plugins for it.  
+Mavenリポジトリはありませんが、プラグインを作ることはできます。
 
-__Jupiterプラグインの作り方 How to make a Jupiter plugin?__
+__Jupiterプラグインの作り方__
 
-簡単です。  
-It is very easy.  
-  
-ビルドパスにJupiterを追加するだけです。  
-Add to build-pass.  
+作り方は非常に簡単です。ビルドパスにJupiterを追加するだけで作成することができます。

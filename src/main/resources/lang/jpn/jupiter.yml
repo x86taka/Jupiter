@@ -19,6 +19,11 @@ join-quit-message: true
 #transferServer()を使ったときに全員に移動したことを知らせるかどうか
 transfer-server-message: true
 disable-chat: false
+#falseにするとversionが古い端末でもサーバーに入れるようになります
+#(大きく仕様が変更されているversionでは入れません)
+kick-outdated-client: true
+#その逆です falseにするとソースが開発者によって更新されていない場合でも入れます
+kick-outdated-server: true
 
 #level
 #fromplayerdata => playerデータ(.dat)に保存された座標へスポーンします

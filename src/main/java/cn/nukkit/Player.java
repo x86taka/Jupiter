@@ -2179,21 +2179,23 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     String message;
                     if (loginPacket.getProtocol() != ProtocolInfo.CURRENT_PROTOCOL) {
-                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
+                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL && this.getServer().getJupiterConfigBoolean("kick-outdated-client")) {
                             message = "disconnectionScreen.outdatedClient";
 
                             PlayStatusPacket pk = new PlayStatusPacket();
                             pk.status = PlayStatusPacket.LOGIN_FAILED_CLIENT;
                             this.directDataPacket(pk);
-                        } else {
+                            this.close("", message, false);
+    	                    break;
+                        } else if (this.getServer().getJupiterConfigBoolean("kick-outdated-server")){
                             message = "disconnectionScreen.outdatedServer";
 
                             PlayStatusPacket pk = new PlayStatusPacket();
                             pk.status = PlayStatusPacket.LOGIN_FAILED_SERVER;
                             this.directDataPacket(pk);
+                            this.close("", message, false);
+    	                    break;
                         }
-                        this.close("", message, false);
-                        break;
                     }
 
                     this.username = TextFormat.clean(loginPacket.username);

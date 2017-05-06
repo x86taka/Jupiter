@@ -8,7 +8,7 @@ keep-inventory: false
 #projectile
 allow-snowball: true
 allow-egg: true
-allow-splashpotion: true
+allow-splash-potion: true
 allow-enderpearl: true
 allow-experience-bottle: true
 allow-bow: true

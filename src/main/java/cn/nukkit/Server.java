@@ -438,7 +438,7 @@ public class Server {
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf1 == null)
 	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-
+	        
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
 	        } catch (IOException e) {
@@ -488,6 +488,7 @@ public class Server {
 
 		        this.getLogger().info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
 
+		        //ロード
 		        this.loadJupiterConfig();
 
         	}
@@ -639,7 +640,8 @@ public class Server {
 	        getLogger().info(TextFormat.AQUA + "コンパイルしています...");
 	        File f = new File(dataPath + "compileOrder/");
 	        File[] list = f.listFiles();
-	        for(int i=0; i < list.length;i++){
+	        int len = list.length;
+	        for(int i=0; i < len;i++){
 	        	if(new PluginCompiler().Compile(list[i]))
 	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
 	        	else
@@ -676,9 +678,10 @@ public class Server {
                 Map<String, Object> options = new HashMap<>();
                 String[] opts = ((String) this.getConfig("worlds." + name + ".generator", Generator.getGenerator("default").getSimpleName())).split(":");
                 Class<? extends Generator> generator = Generator.getGenerator(opts[0]);
-                if (opts.length > 1) {
+                int len = opts.length;
+                if (len > 1) {
                     String preset = "";
-                    for (int i = 1; i < opts.length; i++) {
+                    for (int i = 1; i < len; i++) {
                         preset += opts[i] + ":";
                     }
                     preset = preset.substring(0, preset.length() - 1);
@@ -690,7 +693,12 @@ public class Server {
             }
         }
 
-        if (this.getDefaultLevel() == null) {
+      //if (this.getDefaultLevel() == null) {
+        try{
+        	
+        	this.getDefaultLevel().getName();
+        	
+        }catch(NullPointerException ex){
             String defaultName = this.getPropertyString("level-name", "world");
             if (defaultName == null || "".equals(defaultName.trim())) {
                 this.getLogger().warning("level-name cannot be null, using default");
@@ -714,7 +722,12 @@ public class Server {
 
         this.properties.save(true);
 
-        if (this.getDefaultLevel() == null) {
+        //if (this.getDefaultLevel() == null) {
+        try{
+        	
+        	this.getDefaultLevel().getName();
+        	
+        }catch(NullPointerException e){
             this.getLogger().emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
             this.forceShutdown();
 
@@ -1581,14 +1594,14 @@ public class Server {
 
     /**
      * サーバーの名前を取得します。
-     * @return String どんな場合でも"Nukkit"が返ってきます。
+     * @return String どんな場合でも"Jupiter"が返ってきます。
      */
     public String getName() {
-        return "Nukkit";
+        return "Jupiter";
     }
 
     public boolean isRunning() {
-        return isRunning;
+    	return isRunning;
     }
 
     /**
@@ -1596,7 +1609,9 @@ public class Server {
      * @return String Nukkitバージョン
      */
     public String getNukkitVersion() {
-        return Nukkit.VERSION;
+    	synchronized(Nukkit.VERSION){
+    		return Nukkit.VERSION;
+    	}
     }
 
     /**
@@ -1604,7 +1619,9 @@ public class Server {
      * @return String コードネーム
      */
     public String getCodename() {
-        return Nukkit.CODENAME;
+        synchronized(Nukkit.CODENAME){
+    		return Nukkit.CODENAME;
+    	}
     }
 
     /**
@@ -1612,7 +1629,9 @@ public class Server {
      * @return String Minecraftバージョン
      */
     public String getVersion() {
-        return ProtocolInfo.MINECRAFT_VERSION;
+        synchronized(ProtocolInfo.MINECRAFT_VERSION){
+    		return ProtocolInfo.MINECRAFT_VERSION;
+    	}
     }
 
     /**
@@ -1620,7 +1639,9 @@ public class Server {
      * @return String APIバージョン
      */
     public String getApiVersion() {
-        return Nukkit.API_VERSION;
+        synchronized(Nukkit.API_VERSION){
+    		return Nukkit.API_VERSION;
+    	}
     }
 
     /**
@@ -1628,7 +1649,9 @@ public class Server {
      * @return String ファイルパス
      */
     public String getFilePath() {
-        return filePath;
+        synchronized(filePath){
+    		return filePath;
+    	}
     }
 
     /**
@@ -1637,7 +1660,9 @@ public class Server {
      * @return String データパス
      */
     public String getDataPath() {
-        return dataPath;
+        synchronized(dataPath){
+    		return dataPath;
+    	}
     }
 
     /**
@@ -1647,11 +1672,15 @@ public class Server {
      * @see Server#getDataPath()
      */
     public String getPluginPath() {
-        return pluginPath;
+        synchronized(pluginPath){
+    		return pluginPath;
+    	}
     }
 
     public String getDefaultplugins(){
-    	return defaultplugin;
+    	synchronized(defaultplugin){
+    		return defaultplugin;
+    	}
     }
 
     /**
@@ -1659,7 +1688,7 @@ public class Server {
      * @return int 最大参加可能人数
      */
     public int getMaxPlayers() {
-        return maxPlayers;
+    	return maxPlayers;
     }
 
     /**
@@ -1686,11 +1715,16 @@ public class Server {
      * @return String IPアドレス
      */
     public String getIp() {
-        return this.getPropertyString("server-ip", "0.0.0.0");
+        synchronized(this.getPropertyString("server-ip", "0.0.0.0")){
+    		return this.getPropertyString("server-ip", "0.0.0.0");
+    	}
+        
     }
 
     public UUID getServerUniqueId() {
-        return this.serverID;
+        synchronized(this.serverID){
+    		return this.serverID;
+    	}
     }
 
     /**
@@ -1722,7 +1756,9 @@ public class Server {
      * @return String ワールドタイプ
      */
     public String getLevelType() {
-        return this.getPropertyString("level-type", "DEFAULT");
+        synchronized(this.getPropertyString("level-type", "DEFAULT")){
+    		return this.getPropertyString("level-type", "DEFAULT");
+    	}
     }
 
     public boolean getGenerateStructures() {

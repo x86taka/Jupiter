@@ -4028,9 +4028,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.server.isLanguageForced()) {
             pk.type = TextPacket.TYPE_TRANSLATION;
             pk.message = this.server.getLanguage().translateString(message, parameters, "nukkit.");
-            for (int i = 0; i < parameters.length; i++) {
+            int len =  parameters.length;
+            for (int i = 0; i < len; i++) {
                 parameters[i] = this.server.getLanguage().translateString(parameters[i], parameters, "nukkit.");
-
             }
             pk.parameters = parameters;
         } else {
@@ -4359,7 +4359,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return String プレイヤー名
      */
     public String getName() {
-        return this.username;
+    	synchronized(this.username){
+    		return this.username;
+    	}
     }
 
     /**
@@ -5214,7 +5216,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public String getDeviceModel() {
-        return deviceModel;
+    	synchronized(deviceModel){
+    		return deviceModel;
+    	}
     }
 
     @Override

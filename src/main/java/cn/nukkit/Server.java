@@ -788,10 +788,16 @@ public class Server {
     }
 
     public String getTrayMessage(){
+    	if(IconMessage == null){
+    		IconMessage = "";
+    	}
     	return IconMessage;
     }
 
     public TrayIcon getTrayIcon(){
+    	if(icon == null){
+    		icon = new TrayIcon(getTrayImage());
+    	}
     	return icon;
     }
 

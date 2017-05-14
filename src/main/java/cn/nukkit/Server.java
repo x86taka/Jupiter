@@ -1,5 +1,12 @@
 package cn.nukkit;
 
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +26,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
@@ -298,6 +307,10 @@ public class Server {
     private Thread currentThread;
 	private Map<String, Object> jupiterconfig;
 
+	private Image image;
+	private TrayIcon icon;
+	private String IconMessage = "";
+
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
         Preconditions.checkState(instance == null, "Already initialized!");
@@ -438,7 +451,7 @@ public class Server {
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf1 == null)
 	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-	        
+
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
 	        } catch (IOException e) {
@@ -695,9 +708,9 @@ public class Server {
 
       //if (this.getDefaultLevel() == null) {
         try{
-        	
+
         	this.getDefaultLevel().getName();
-        	
+
         }catch(NullPointerException ex){
             String defaultName = this.getPropertyString("level-name", "world");
             if (defaultName == null || "".equals(defaultName.trim())) {
@@ -724,9 +737,9 @@ public class Server {
 
         //if (this.getDefaultLevel() == null) {
         try{
-        	
+
         	this.getDefaultLevel().getName();
-        	
+
         }catch(NullPointerException e){
             this.getLogger().emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
             this.forceShutdown();
@@ -741,7 +754,62 @@ public class Server {
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
         this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
 
+        try {
+			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
+	        this.loadTrayIcon();
+		} catch (IOException | AWTException e) {
+			this.logger.critical("TaskTrayでエラーが発生しました。");
+		}
+
         this.start();
+    }
+
+    //TODO TrayIcon
+
+    public void setTrayMessage(String message){
+    	this.IconMessage = message;
+    }
+
+    public void setTrayImage(Image image){
+    	this.image = image;
+    }
+
+    public Image getTrayImage(){
+    	return image;
+    }
+
+    public String getTrayMessage(){
+    	return IconMessage;
+    }
+
+    public TrayIcon getTrayIcon(){
+    	return icon;
+    }
+
+    public void trayMessage(String message){
+    	trayMessage(message, MessageType.INFO);
+    	return;
+    }
+
+    public void trayMessage(String message, MessageType type){
+    	trayMessage("Jupiter", message, type);
+    	return;
+    }
+
+    public void trayMessage(String title, String message, MessageType type){
+    	getTrayIcon().displayMessage(title, message, type);
+    	return;
+    }
+
+    public void loadTrayIcon() throws AWTException{
+			icon = new TrayIcon(image);
+			icon.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
+	            }
+	        });
+	        SystemTray.getSystemTray().add(icon);
     }
 
     /**
@@ -1229,6 +1297,7 @@ public class Server {
         } catch (Exception e) {
             this.logger.logException(e); //todo remove this?
             this.logger.emergency("Exception happened while shutting down, exit the process");
+            this.trayMessage("サーバーシャットダウン中にエラーが発生したため、強制終了しました。", MessageType.ERROR);
             System.exit(1);
         }
     }
@@ -1253,6 +1322,8 @@ public class Server {
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
+
+        this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
 
         this.tickProcessor();
         this.forceShutdown();
@@ -1718,7 +1789,7 @@ public class Server {
         synchronized(this.getPropertyString("server-ip", "0.0.0.0")){
     		return this.getPropertyString("server-ip", "0.0.0.0");
     	}
-        
+
     }
 
     public UUID getServerUniqueId() {

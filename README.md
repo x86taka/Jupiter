@@ -1,4 +1,4 @@
-# Jupiter - Nukkit Fork for 1.0.7
+# Jupiter - Nukkit Fork for 1.0.8
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Jupiterについて / About Jupiter

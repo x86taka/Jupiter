@@ -757,7 +757,7 @@ public class Server {
         try {
 			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
 	        this.loadTrayIcon();
-		} catch (IOException | AWTException e) {
+		} catch (IOException e) {
 			this.logger.critical("TaskTrayでエラーが発生しました。");
 		}
 
@@ -775,6 +775,15 @@ public class Server {
     }
 
     public Image getTrayImage(){
+    	if(image == null){
+			try {
+				image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+			return image;
+    	}
     	return image;
     }
 
@@ -801,15 +810,20 @@ public class Server {
     	return;
     }
 
-    public void loadTrayIcon() throws AWTException{
-			icon = new TrayIcon(image);
+    public void loadTrayIcon(){
+    	try {
+			icon = new TrayIcon(getTrayImage());
 			icon.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
 	            }
 	        });
-	        SystemTray.getSystemTray().add(icon);
+				SystemTray.getSystemTray().add(icon);
+			} catch (AWTException e1) {
+				e1.printStackTrace();
+				this.logger.critical("TaskTrayでエラーが発生しました。");
+			}
     }
 
     /**

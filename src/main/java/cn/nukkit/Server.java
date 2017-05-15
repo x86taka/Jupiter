@@ -2,8 +2,6 @@ package cn.nukkit;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.Menu;
-import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
@@ -313,7 +311,6 @@ public class Server {
 	private Image image;
 	private TrayIcon icon;
 	private String IconMessage = "";
-	private PopupMenu popup = new PopupMenu();
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -759,7 +756,7 @@ public class Server {
 
         try {
 			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
-	        this.loadTrayIcon();
+	        this.defaultloadTrayIcon();
 		} catch (IOException e) {
 			this.logger.critical("TaskTrayでエラーが発生しました。");
 		}
@@ -773,7 +770,7 @@ public class Server {
     	this.IconMessage = message;
     }
 
-    private void setTrayImage(Image image){
+    public void setTrayImage(Image image){
     	this.image = image;
     }
 
@@ -789,7 +786,6 @@ public class Server {
     	}
     	return image;
     }
-
     public String getTrayMessage(){
     	if(IconMessage == null){
     		IconMessage = "";
@@ -804,18 +800,10 @@ public class Server {
     	return icon;
     }
     
-    private PopupMenu getTrayIconPopupMenu(){
-    	return this.popup;
-    }
-    
     public void setTrayIcon(TrayIcon icon){
     	this.icon = icon;
     }
     
-    public void addTrayIconMenu(Menu menu){
-    	this.popup.add(menu);
-    }
-
     public void trayMessage(String message){
     	trayMessage(message, MessageType.INFO);
     	return;
@@ -830,8 +818,29 @@ public class Server {
     	getTrayIcon().displayMessage(title, message, type);
     	return;
     }
-
+    
     public void loadTrayIcon(){
+    	try {
+        	SystemTray.getSystemTray().remove(getTrayIcon());
+        	
+        	icon = getTrayIcon();
+        	icon.setImage(this.getTrayImage());
+        	
+        	ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
+			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
+			if(icons != null){
+				for(TrayIcon i : icons){
+					iconlist.add(i);
+				}
+			}
+        	
+			SystemTray.getSystemTray().add(icon);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+    }
+
+    private void defaultloadTrayIcon(){
     	try {
     		SystemTray.getSystemTray().remove(getTrayIcon());
 
@@ -839,19 +848,15 @@ public class Server {
 			icon.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	            	TrayIconClickEvent event = new TrayIconClickEvent(icon);
-	            	getPluginManager().callEvent(event);
-	            	if(event.isCancelled()){
-	            		return;
-	            	}
+	            	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
+			        getPluginManager().callEvent(event);
+			        if(event.isCancelled()){
+			        	return;
+			        }
+	            	
 	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
 	            }
 	        });
-			
-			if(this.popup != null){
-				icon.setPopupMenu(getTrayIconPopupMenu());
-			}
-
     		ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
 			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
 			if(icons != null){
@@ -865,6 +870,7 @@ public class Server {
 				e1.printStackTrace();
 				this.logger.critical("TaskTrayでエラーが発生しました。");
 			}
+    	return;
     }
 
     /**

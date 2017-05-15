@@ -2,6 +2,8 @@ package cn.nukkit;
 
 import java.awt.AWTException;
 import java.awt.Image;
+import java.awt.Menu;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
@@ -311,6 +313,7 @@ public class Server {
 	private Image image;
 	private TrayIcon icon;
 	private String IconMessage = "";
+	private PopupMenu popup = new PopupMenu();
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -322,38 +325,38 @@ public class Server {
         this.filePath = filePath;
         if (!new File(dataPath + "worlds/").exists()) {
             new File(dataPath + "worlds/").mkdirs();
-            this.getLogger().info(TextFormat.AQUA + dataPath + "worlds/  was created!");
+            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  was created!");
         }
 
         if (!new File(dataPath + "players/").exists()) {
             new File(dataPath + "players/").mkdirs();
-            this.getLogger().info(TextFormat.AQUA + dataPath + "players/  was created!");
+            this.logger.info(TextFormat.AQUA + dataPath + "players/  was created!");
         }
 
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
-            this.getLogger().info(TextFormat.AQUA + pluginPath + "plugins/  was created!");
-            this.getLogger().info(TextFormat.AQUA + dataPath + "worlds/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + pluginPath + "plugins/  was created!");
+            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  を作成しました。");
         }
 
         if (!new File(dataPath + "players/").exists()) {
             new File(dataPath + "players/").mkdirs();
-            this.getLogger().info(TextFormat.AQUA + dataPath + "players/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + dataPath + "players/  を作成しました。");
         }
 
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
-            this.getLogger().info(TextFormat.AQUA + pluginPath + "  を作成しました。");
+            this.logger.info(TextFormat.AQUA + pluginPath + "  を作成しました。");
         }
 
         if (!new File(dataPath + "unpackedPlugins/").exists()) {
             new File(dataPath + "unpackedPlugins/").mkdirs();
-            this.getLogger().info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
         }
 
         if (!new File(dataPath + "compileOrder/").exists()) {
             new File(dataPath + "compileOrder/").mkdirs();
-            this.getLogger().info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
@@ -368,7 +371,7 @@ public class Server {
             try {
                 String[] lines = Utils.readFile(this.getClass().getClassLoader().getResourceAsStream("lang/language.list")).split("\n");
                 for (String line : lines) {
-                    this.getLogger().info(line);
+                    this.logger.info(line);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -438,7 +441,7 @@ public class Server {
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
 	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf == null)
-	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
 
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
@@ -451,7 +454,7 @@ public class Server {
 
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf1 == null)
-	            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
 
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
@@ -487,23 +490,24 @@ public class Server {
 
         	if(!keyy.equals(key1)){
 
-	        	File conf = new File(this.dataPath + "jupiter.yml");
-	        	conf.delete();
-
-	        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-		        if (advacedConf == null)
-		            this.getLogger().error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-
-		        try {
-		            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-		        } catch (IOException ex) {
-		            throw new RuntimeException(ex);
-		        }
-
-		        this.getLogger().info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
-
-		        //ロード
-		        this.loadJupiterConfig();
+		        	File conf = new File(this.dataPath + "jupiter.yml");
+		        	conf.delete();
+	
+		        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+			        if (advacedConf == null)
+			            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	
+			        try {
+			            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+			        } catch (IOException ex) {
+			            throw new RuntimeException(ex);
+			        }
+	
+			        this.logger.info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
+	
+			        //ロード
+			        this.loadJupiterConfig();
+		        
 
         	}
 
@@ -651,21 +655,21 @@ public class Server {
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
         	this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
-	        getLogger().info(TextFormat.AQUA + "コンパイルしています...");
+        	this.logger.info(TextFormat.AQUA + "コンパイルしています...");
 	        File f = new File(dataPath + "compileOrder/");
 	        File[] list = f.listFiles();
 	        int len = list.length;
 	        for(int i=0; i < len;i++){
 	        	if(new PluginCompiler().Compile(list[i]))
-	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
+	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
 	        	else
-	        		getLogger().info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
+	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
 	        }
 	        this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
         }
 
         this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
-        getLogger().info(TextFormat.AQUA + "プラグインを読み込んでいます...");
+        logger.info(TextFormat.AQUA + "プラグインを読み込んでいます...");
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
@@ -715,7 +719,7 @@ public class Server {
         }catch(NullPointerException ex){
             String defaultName = this.getPropertyString("level-name", "world");
             if (defaultName == null || "".equals(defaultName.trim())) {
-                this.getLogger().warning("level-name cannot be null, using default");
+                this.logger.warning("level-name cannot be null, using default");
                 defaultName = "world";
                 this.setPropertyString("level-name", defaultName);
             }
@@ -735,14 +739,12 @@ public class Server {
         }
 
         this.properties.save(true);
-
-        //if (this.getDefaultLevel() == null) {
         try{
 
         	this.getDefaultLevel().getName();
 
         }catch(NullPointerException e){
-            this.getLogger().emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
+            this.logger.emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
             this.forceShutdown();
 
             return;
@@ -801,6 +803,18 @@ public class Server {
     	}
     	return icon;
     }
+    
+    private PopupMenu getTrayIconPopupMenu(){
+    	return this.popup;
+    }
+    
+    public void setTrayIcon(TrayIcon icon){
+    	this.icon = icon;
+    }
+    
+    public void addTrayIconMenu(Menu menu){
+    	this.popup.add(menu);
+    }
 
     public void trayMessage(String message){
     	trayMessage(message, MessageType.INFO);
@@ -820,8 +834,8 @@ public class Server {
     public void loadTrayIcon(){
     	try {
     		SystemTray.getSystemTray().remove(getTrayIcon());
-    		
-			icon = new TrayIcon(getTrayImage());
+
+			icon = getTrayIcon();
 			icon.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
@@ -833,6 +847,10 @@ public class Server {
 	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
 	            }
 	        });
+			
+			if(this.popup != null){
+				icon.setPopupMenu(getTrayIconPopupMenu());
+			}
 
     		ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
 			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
@@ -1359,7 +1377,7 @@ public class Server {
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
-
+        
         this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
 
         this.tickProcessor();

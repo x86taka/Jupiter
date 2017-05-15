@@ -119,6 +119,7 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.level.LevelInitEvent;
 import cn.nukkit.event.level.LevelLoadEvent;
 import cn.nukkit.event.server.QueryRegenerateEvent;
+import cn.nukkit.event.server.TrayIconClickEvent;
 import cn.nukkit.inventory.CraftingManager;
 import cn.nukkit.inventory.FurnaceRecipe;
 import cn.nukkit.inventory.Recipe;
@@ -770,11 +771,11 @@ public class Server {
     	this.IconMessage = message;
     }
 
-    public void setTrayImage(Image image){
+    private void setTrayImage(Image image){
     	this.image = image;
     }
 
-    public Image getTrayImage(){
+    private Image getTrayImage(){
     	if(image == null){
 			try {
 				image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
@@ -818,14 +819,30 @@ public class Server {
 
     public void loadTrayIcon(){
     	try {
+    		SystemTray.getSystemTray().remove(getTrayIcon());
+    		
 			icon = new TrayIcon(getTrayImage());
 			icon.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
+	            	TrayIconClickEvent event = new TrayIconClickEvent(icon);
+	            	getPluginManager().callEvent(event);
+	            	if(event.isCancelled()){
+	            		return;
+	            	}
 	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
 	            }
 	        });
-				SystemTray.getSystemTray().add(icon);
+
+    		ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
+			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
+			if(icons != null){
+				for(TrayIcon i : icons){
+					iconlist.add(i);
+				}
+			}
+
+			SystemTray.getSystemTray().add(icon);
 			} catch (AWTException e1) {
 				e1.printStackTrace();
 				this.logger.critical("TaskTrayでエラーが発生しました。");

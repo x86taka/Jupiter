@@ -2,6 +2,7 @@ package cn.nukkit;
 
 import java.awt.AWTException;
 import java.awt.Image;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
@@ -194,7 +195,7 @@ import co.aikar.timings.Timings;
  * @author MagicDroidX
  * @author Box
  */
-public class Server {
+public class Server implements ActionListener{
 
     public static final String BROADCAST_CHANNEL_ADMINISTRATIVE = "nukkit.broadcast.admin";
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
@@ -617,6 +618,13 @@ public class Server {
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
 
         this.network.registerInterface(new RakNetInterface(this));
+        
+        try {
+			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
+	        this.defaultloadTrayIcon();
+		} catch (IOException e) {
+			this.logger.critical("TaskTrayでエラーが発生しました。");
+		}
 
         Calendar now = Calendar.getInstance();
 
@@ -754,13 +762,6 @@ public class Server {
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
         this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
 
-        try {
-			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
-	        this.defaultloadTrayIcon();
-		} catch (IOException e) {
-			this.logger.critical("TaskTrayでエラーが発生しました。");
-		}
-
         this.start();
     }
 
@@ -800,25 +801,27 @@ public class Server {
     	return icon;
     }
     
+    public void setTrayIconPopupMenu(PopupMenu menu){
+    	this.getTrayIcon().setPopupMenu(menu);
+    }
+    
     public void setTrayIcon(TrayIcon icon){
     	this.icon = icon;
     }
     
     public void trayMessage(String message){
-    	trayMessage(message, MessageType.INFO);
-    	return;
+    	this.trayMessage(message, MessageType.INFO);
     }
 
     public void trayMessage(String message, MessageType type){
-    	trayMessage("Jupiter", message, type);
-    	return;
+    	this.trayMessage("Jupiter", message, type);
     }
 
     public void trayMessage(String title, String message, MessageType type){
-    	getTrayIcon().displayMessage(title, message, type);
-    	return;
+    	this.getTrayIcon().displayMessage(title, message, type);
     }
     
+    /*
     public void loadTrayIcon(){
     	try {
         	SystemTray.getSystemTray().remove(getTrayIcon());
@@ -839,38 +842,34 @@ public class Server {
 			e.printStackTrace();
 		}
     }
+    */
 
     private void defaultloadTrayIcon(){
     	try {
+    		
     		SystemTray.getSystemTray().remove(getTrayIcon());
 
-			icon = getTrayIcon();
-			icon.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	            	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
-			        getPluginManager().callEvent(event);
-			        if(event.isCancelled()){
-			        	return;
-			        }
-	            	
-	            	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
-	            }
-	        });
-    		ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
-			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
-			if(icons != null){
-				for(TrayIcon i : icons){
-					iconlist.add(i);
-				}
-			}
+			icon = this.getTrayIcon();
+			icon.removeActionListener(this);
+			icon.addActionListener(this);
 
 			SystemTray.getSystemTray().add(icon);
+			
 			} catch (AWTException e1) {
 				e1.printStackTrace();
 				this.logger.critical("TaskTrayでエラーが発生しました。");
 			}
     	return;
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
+        getPluginManager().callEvent(event);
+        if(event.isCancelled()){
+        	return;
+        }
+    	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
     }
 
     /**

@@ -1281,6 +1281,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+    //TODO 実績処理
     public boolean awardAchievement(String achievementId) {
         if (!Server.getInstance().getPropertyBoolean("achievements", true)) {
             return false;

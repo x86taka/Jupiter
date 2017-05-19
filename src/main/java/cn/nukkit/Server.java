@@ -312,6 +312,8 @@ public class Server implements ActionListener{
 	private Image image;
 	private TrayIcon icon;
 	private String IconMessage = "";
+	
+	private StringBuffer sb;
 
     @SuppressWarnings("unchecked")
 	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -399,10 +401,21 @@ public class Server implements ActionListener{
         }
 
         this.console.start();
-        this.logger.info(TextFormat.GREEN + "nukkit.yml" + TextFormat.WHITE + "を読み込んでいます...");
+        sb = new StringBuffer();
+        sb.append(TextFormat.GREEN);
+        sb.append("nukkit.yml");
+        sb.append(TextFormat.WHITE);
+        sb.append("を読み込んでいます...");
+        this.logger.info(sb.toString());
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        this.logger.info(TextFormat.GREEN + "server.properties" + TextFormat.WHITE + "を読み込んでいます...");
+        sb = new StringBuffer();
+        sb.append(TextFormat.GREEN);
+        sb.append("server.properties");
+        sb.append(TextFormat.WHITE);
+        sb.append("を読み込んでいます...");
+        this.logger.info(sb.toString());
+        
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -434,12 +447,21 @@ public class Server implements ActionListener{
             }
         });
 
-        this.logger.info(TextFormat.GREEN + "jupiter.yml" + TextFormat.WHITE + "を読み込んでいます...");
+        sb = new StringBuffer();
+        sb.append(TextFormat.GREEN);
+        sb.append("jupiter.yml");
+        sb.append(TextFormat.WHITE);
+        sb.append("を読み込んでいます...");
+        this.logger.info(sb.toString());
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
 	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-	        if (advacedConf == null)
-	            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	        if (advacedConf == null){
+	        	sb = new StringBuffer();
+		        sb.append(TextFormat.AQUA);
+		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+		        this.logger.error(sb.toString());
+	        }
 
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
@@ -451,8 +473,12 @@ public class Server implements ActionListener{
     	this.loadJupiterConfig();
 
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-	        if (advacedConf1 == null)
-	            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+	        if (advacedConf1 == null){
+	        	sb = new StringBuffer();
+		        sb.append(TextFormat.AQUA);
+		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+		        this.logger.error(sb.toString());
+	        }
 
 	        try {
 	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
@@ -492,8 +518,12 @@ public class Server implements ActionListener{
 		        	conf.delete();
 	
 		        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-			        if (advacedConf == null)
-			            this.logger.error("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+			        if (advacedConf == null){
+				        sb = new StringBuffer();
+				        sb.append(TextFormat.AQUA);
+				        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+				        this.logger.error(sb.toString());
+			        }
 	
 			        try {
 			            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
@@ -501,7 +531,10 @@ public class Server implements ActionListener{
 			            throw new RuntimeException(ex);
 			        }
 	
-			        this.logger.info(TextFormat.AQUA + "Jupiter.ymlが更新されたため、再作成されました。");
+			        sb = new StringBuffer();
+			        sb.append(TextFormat.AQUA);
+			        sb.append("Jupiter.ymlが更新されたため、再作成されました。");
+			        this.logger.info(sb.toString());
 	
 			        //ロード
 			        this.loadJupiterConfig();
@@ -644,18 +677,60 @@ public class Server implements ActionListener{
         this.logger.info(" |____|  |__￣___|  |_|         |__|      |__|      |  ￣￣￣| |_|    ＼_|");
         this.logger.info("");
         this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
-
-        this.logger.info(TextFormat.AQUA + "----------------------------------------------------------------------------------");
-        this.logger.info(TextFormat.GREEN + "Jupiter - Nukkit Fork");
-        this.logger.info(TextFormat.YELLOW + "JupiterDevelopmentTeam 開発");
-        this.logger.info(TextFormat.AQUA + "----------------------------------------------------------------------------------");
-        this.logger.info("日時: " + TextFormat.BLUE + y + "/" + mo + "/" + d + " " +  h + "時" + m + "分" + s + "秒");
-        this.logger.info("サーバー名: " + TextFormat.GREEN + this.getMotd());
-        this.logger.info("ip: " + TextFormat.GREEN + this.getIp());
-        this.logger.info("ポート: " + TextFormat.GREEN + this.getPort());
-        this.logger.info("Nukkitバージョン: " + TextFormat.LIGHT_PURPLE + this.getNukkitVersion());
-        this.logger.info("APIバージョン: " + TextFormat.LIGHT_PURPLE + this.getApiVersion());
-        this.logger.info("コードネーム: " + TextFormat.LIGHT_PURPLE + this.getCodename());
+        
+        sb = new StringBuffer();
+        sb.append("日時:");
+        sb.append(TextFormat.BLUE);
+        sb.append(y);
+        sb.append("/");
+        sb.append(mo);
+        sb.append("/");
+        sb.append(d);
+        sb.append(" ");
+        sb.append(h);
+        sb.append("時");
+        sb.append(m);
+        sb.append("分");
+        sb.append(s);
+        sb.append("秒");
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("サーバー名: ");
+        sb.append(TextFormat.GREEN);
+        sb.append(this.getMotd());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("ip: ");
+        sb.append(TextFormat.GREEN);
+        sb.append(this.getIp());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("ポート: ");
+        sb.append(TextFormat.GREEN);
+        sb.append(this.getPort());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("Nukkitバージョン: ");
+        sb.append(TextFormat.LIGHT_PURPLE);
+        sb.append(this.getNukkitVersion());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("APIバージョン: ");
+        sb.append(TextFormat.LIGHT_PURPLE);
+        sb.append(this.getApiVersion());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
+        sb.append("コードネーム: ");
+        sb.append(TextFormat.LIGHT_PURPLE);
+        sb.append(this.getCodename());
+        this.logger.info(sb.toString());
+        
         this.logger.info(TextFormat.AQUA + "==================================================================================");
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){

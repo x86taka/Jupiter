@@ -1,19 +1,19 @@
 package cn.nukkit.lang;
 
-import cn.nukkit.Server;
-import cn.nukkit.utils.Utils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.nukkit.Server;
+import cn.nukkit.utils.Utils;
 
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
 public class BaseLang {
-    public static final String FALLBACK_LANGUAGE = "eng";
+    public static final String FALLBACK_LANGUAGE = "jpn";
 
     protected final String langName;
 
@@ -137,7 +137,8 @@ public class BaseLang {
     public String translateString(String str, String[] params, String onlyPrefix) {
         String baseText = this.get(str);
         baseText = this.parseTranslation((baseText != null && (onlyPrefix == null || str.indexOf(onlyPrefix) == 0)) ? baseText : str, onlyPrefix);
-        for (int i = 0; i < params.length; i++) {
+        int len = params.length;
+        for (int i = 0; i < len; i++) {
             baseText = baseText.replace("{%" + i + "}", this.parseTranslation(String.valueOf(params[i])));
         }
 
@@ -149,7 +150,8 @@ public class BaseLang {
         if (c instanceof TranslationContainer) {
             baseText = this.internalGet(c.getText());
             baseText = this.parseTranslation(baseText != null ? baseText : c.getText());
-            for (int i = 0; i < ((TranslationContainer) c).getParameters().length; i++) {
+            int len = ((TranslationContainer) c).getParameters().length;
+            for (int i = 0; i < len; i++) {
                 baseText = baseText.replace("{%" + i + "}", this.parseTranslation(((TranslationContainer) c).getParameters()[i]));
             }
         }

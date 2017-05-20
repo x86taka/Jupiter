@@ -63,7 +63,7 @@ public class Nukkit {
 
         try {
             if (ANSI) {
-                System.out.println("Starting Jupiter Server For Minecraft: PE");
+                System.out.println("Minecraft PE用Jupiterサーバーを開始しています...");
             }
             new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
         } catch (Exception e) {
@@ -71,9 +71,9 @@ public class Nukkit {
         }
 
         if (ANSI) {
-            System.out.println("Stopping Server...");
+            System.out.println("サーバーを停止しています...");
         }
-        logger.info("Stopping other threads");
+        logger.info("スレッドが停止しました。");
 
         for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
             if (!(thread instanceof InterruptibleThread)) {
@@ -93,7 +93,7 @@ public class Nukkit {
         CommandReader.getInstance().removePromptLine();
 
         if (ANSI) {
-            System.out.print("Server Stopped");
+            System.out.println("サーバーが停止しました。");
         }
         System.exit(0);
     }

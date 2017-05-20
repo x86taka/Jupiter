@@ -1,11 +1,11 @@
-#weather
+#[weather]
 weather: true
 
-#player
+#[player]
 keep-experience: false
 keep-inventory: false
 
-#projectile
+#[projectile]
 allow-snowball: true
 allow-egg: true
 allow-splash-potion: true
@@ -14,7 +14,7 @@ allow-experience-bottle: true
 allow-bow: true
 allow-fishing-rod: true
 
-#server
+#[server]
 join-quit-message: true
 #transferServer()を使ったときに全員に移動したことを知らせるかどうか
 transfer-server-message: true
@@ -24,18 +24,19 @@ disable-chat: false
 kick-outdated-client: true
 #その逆です falseにするとソースが開発者によって更新されていない場合でも入れます
 kick-outdated-server: true
-
-#level
+#通知によるお知らせ機能(起動時/クラッシュ時)を使用
+send-notice: true
+#[level]
 #fromplayerdata => playerデータ(.dat)に保存された座標へスポーンします
 #default => levelの初期座標へとスポーンします
 spawnpoint: fromplayerdata
 destroy-block-particle: true
 
-#command
+#[command]
 #この設定をtrueにすると、プラグインで追加されたコマンド以外が全て無くなります
 disable-all-commands: false
 
-#compile-option
+#[compile-option]
 #プラグイン開発モードの設定
 #Jupiterコンパイラのオン/オフ
 jupiter-compiler-mode: true

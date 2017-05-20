@@ -30,9 +30,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.collections.BidiMap;
-import org.apache.commons.collections.bidimap.DualHashBidiMap;
-
 import com.google.common.base.Preconditions;
 
 import cn.nukkit.block.Block;
@@ -472,6 +469,7 @@ public class Server implements ActionListener{
 
     	this.loadJupiterConfig();
 
+    	/*
         	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
 	        if (advacedConf1 == null){
 	        	sb = new StringBuffer();
@@ -532,7 +530,7 @@ public class Server implements ActionListener{
 			        }
 	
 			        sb = new StringBuffer();
-			        sb.append(TextFormat.AQUA);
+			        sb.append(TextFormat.RED);
 			        sb.append("Jupiter.ymlが更新されたため、再作成されました。");
 			        this.logger.info(sb.toString());
 	
@@ -541,6 +539,8 @@ public class Server implements ActionListener{
 		        
 
         	}
+        	
+        	*/
 
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
         	Level.sendDestroyParticle = true;
@@ -944,7 +944,7 @@ public class Server implements ActionListener{
         if(event.isCancelled()){
         	return;
         }
-    	trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
+        trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
     }
 
     /**
@@ -1457,7 +1457,6 @@ public class Server implements ActionListener{
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
-        
         this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
 
         this.tickProcessor();
@@ -2801,7 +2800,22 @@ public class Server implements ActionListener{
      * @return Boolean 取得した値
      */
     public Boolean getJupiterConfigBoolean(String key){
-    	return (Boolean) this.jupiterconfig.get(key);
+    	return this.getJupiterConfigBoolean(key, null);
+    }
+    
+    public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
+        Object value = this.properties.exists(variable) ? this.properties.get(variable) : defaultValue;
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
+        switch (String.valueOf(value)) {
+            case "on":
+            case "true":
+            case "1":
+            case "yes":
+                return true;
+        }
+        return false;
     }
 
     public PluginIdentifiableCommand getPluginCommand(String name) {

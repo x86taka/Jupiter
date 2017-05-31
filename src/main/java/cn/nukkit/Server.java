@@ -361,7 +361,7 @@ public class Server implements ActionListener{
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
 
         this.console = new CommandReader();
-        //todo: VersionString 现在不必要
+        //todo: VersionString ?在不必要
 
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
             this.getLogger().info(TextFormat.GREEN + "Welcome! Please choose a language first!");
@@ -2804,7 +2804,7 @@ public class Server implements ActionListener{
     }
     
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
-        Object value = this.properties.exists(variable) ? this.properties.get(variable) : defaultValue;
+        Object value = this.jupiterconfig.exists(variable) ? this.jupiterconfig.get(variable) : defaultValue;
         if (value instanceof Boolean) {
             return (Boolean) value;
         }

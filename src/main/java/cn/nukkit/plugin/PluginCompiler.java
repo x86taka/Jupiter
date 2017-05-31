@@ -40,7 +40,7 @@ public class PluginCompiler{
 	
   private boolean execCmd(File file) throws IOException, InterruptedException{
 		
-	String[] cmd = {"javac","-classpath", server.getJupiterConfigString("jupiter-name"), file.toPath() + "\\*.java"};
+	String[] cmd = {"javac","-classpath", server.getJupiterConfigString("jupiter-name"), file.toPath()};
 	
 	process = Runtime.getRuntime().exec(cmd);
 	in = process.getInputStream(); 

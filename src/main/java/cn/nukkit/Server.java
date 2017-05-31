@@ -2804,7 +2804,7 @@ public class Server implements ActionListener{
     }
     
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
-        Object value = this.jupiterconfig.exists(variable) ? this.jupiterconfig.get(variable) : defaultValue;
+        Object value = this.jupiterconfig.containsKey(variable) ? this.jupiterconfig.get(variable) : defaultValue;
         if (value instanceof Boolean) {
             return (Boolean) value;
         }

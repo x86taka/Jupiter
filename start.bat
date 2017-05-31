@@ -1,4 +1,4 @@
-@echo off
+@echo on
 
 rem Jupiter 起動バッチファイル(Windows専用)
 
@@ -16,12 +16,12 @@ cls
 chcp 932 > nul
 
 
-java -Djline.terminal=jline.UnsupportedTerminal -jar nukkit-1.0-SNAPSHOT.jar
+java -Djline.terminal=jline.UnsupportedTerminal -jar %Jupiter%
 
 goto END
 
 :Finish
-	echo %Jupiter%がありません。
+	echo [ERROR]%Jupiter%が見つかりませんでした。
 	echo キーを押して終了してください。
 	pause > nul
 

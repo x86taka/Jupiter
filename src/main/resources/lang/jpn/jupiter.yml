@@ -24,8 +24,6 @@ disable-chat: false
 kick-outdated-client: true
 #その逆です falseにするとソースが開発者によって更新されていない場合でも入れます
 kick-outdated-server: true
-#通知によるお知らせ機能(起動時/クラッシュ時)を使用
-send-notice: true
 #[level]
 #fromplayerdata => playerデータ(.dat)に保存された座標へスポーンします
 #default => levelの初期座標へとスポーンします

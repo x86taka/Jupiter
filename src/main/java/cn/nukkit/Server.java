@@ -1458,7 +1458,7 @@ public class Server implements ActionListener{
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
         this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
-
+        
         this.tickProcessor();
         this.forceShutdown();
     }

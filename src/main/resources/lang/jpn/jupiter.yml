@@ -4,6 +4,8 @@ weather: true
 #[player]
 keep-experience: false
 keep-inventory: false
+#falseにするとロールバックが発生しなくなります。同時に、PlayerInvalidMoveEventも発生しなくなります。
+enable-revert: true
 
 #[projectile]
 allow-snowball: true

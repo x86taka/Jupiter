@@ -4,6 +4,7 @@ import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.ServerKiller;
+import cn.nukkit.utils.Splash;
 
 /**
  * `_   _       _    _    _ _
@@ -41,62 +42,73 @@ public class Nukkit {
     public static int DEBUG = 1;
 
     public static void main(String[] args) {
+    	Thread th1 = new Thread(new Runnable(){
+    		public void run(){
+    			new Splash("起動しています");
+    		}
+    	});
 
-        //Shorter title for windows 8/2012
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("windows")) {
-            if (osName.contains("windows 8") || osName.contains("2012")) {
-                shortTitle = true;
-            }
-        }
+    	th1.start();
+		        //Shorter title for windows 8/2012
+		        String osName = System.getProperty("os.name").toLowerCase();
+		        if (osName.contains("windows")) {
+		            if (osName.contains("windows 8") || osName.contains("2012")) {
+		                shortTitle = true;
+		            }
+		        }
 
-        //启动参数
-        for (String arg : args) {
-            switch (arg) {
-                case "disable-ansi":
-                    ANSI = false;
-                    break;
-            }
-        }
+		        //启动参数
+		        for (String arg : args) {
+		            switch (arg) {
+		                case "disable-ansi":
+		                    ANSI = false;
+		                    break;
+		            }
+		        }
 
-        MainLogger logger = new MainLogger(DATA_PATH + "server.log");
+		        MainLogger logger = new MainLogger(DATA_PATH + "server.log");
 
-        try {
-            if (ANSI) {
-                System.out.println("Minecraft PE用Jupiterサーバーを開始しています...");
-            }
-            new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
-        } catch (Exception e) {
-            logger.logException(e);
-        }
+		        try {
+		            if (ANSI) {
+		                System.out.println("Minecraft PE用Jupiterサーバーを開始しています...");
+		            }
+		            new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
+		        } catch (Exception e) {
+		            logger.logException(e);
+		        }
 
-        if (ANSI) {
-            System.out.println("サーバーを停止しています...");
-        }
-        logger.info("スレッドが停止しました。");
+		        if (ANSI) {
+		            System.out.println("サーバーを停止しています...");
+		        	Thread th = new Thread(new Runnable(){
+		        		public void run(){
+		        			new Splash("終了しています");
+		        		}
+		        	});
+		        	th.start();
+		        }
+		        logger.info("スレッドが停止しました。");
 
-        for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
-            if (!(thread instanceof InterruptibleThread)) {
-                continue;
-            }
-            logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
-            if (thread.isAlive()) {
-                thread.interrupt();
-            }
-        }
+		        for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
+		            if (!(thread instanceof InterruptibleThread)) {
+		                continue;
+		            }
+		            logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
+		            if (thread.isAlive()) {
+		                thread.interrupt();
+		            }
+		        }
 
-        ServerKiller killer = new ServerKiller(8);
-        killer.start();
+		        ServerKiller killer = new ServerKiller(8);
+		        killer.start();
 
-        logger.shutdown();
-        logger.interrupt();
-        CommandReader.getInstance().removePromptLine();
+		        logger.shutdown();
+		        logger.interrupt();
+		        CommandReader.getInstance().removePromptLine();
 
-        if (ANSI) {
-            System.out.println("サーバーが停止しました。");
-        }
-        System.exit(0);
+		        if (ANSI) {
+		            System.out.println("サーバーが停止しました。");
+		        }
+		        System.exit(0);
     }
-
 
 }

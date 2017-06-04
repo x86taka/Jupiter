@@ -352,7 +352,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public boolean mute = false;
 
     public EntityFishingHook fishingHook;
-    
+
     protected boolean enableRevert = true;
 
 	public void linkHookToPlayer(EntityFishingHook entity){
@@ -856,7 +856,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.usedChunks = new HashMap<>();
             SetTimePacket pk = new SetTimePacket();
             pk.time = this.level.getTime();
-            pk.started = !this.level.stopTime;
             this.dataPacket(pk);
 
             // TODO: Remove this hack
@@ -998,7 +997,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.time = this.level.getTime();
-        setTimePacket.started = !this.level.stopTime;
         this.dataPacket(setTimePacket);
 
         Position pos = this.level.getSafeSpawn(this);
@@ -1663,7 +1661,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 	                            this.getServer().getPluginManager().callEvent(ev = new PlayerInvalidMoveEvent(this, true));
 	                            if (!ev.isCancelled()) {
 	                                revert = ev.isRevert();
-	
+
 	                                if (revert) {
 	                                    this.server.getLogger().warning(this.getServer().getLanguage().translateString("nukkit.player.invalidMove", this.getName()));
 	                                }
@@ -2113,7 +2111,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.time = this.level.getTime();
-        setTimePacket.started = !this.level.stopTime;
         this.dataPacket(setTimePacket);
 
         this.setMovementSpeed(DEFAULT_SPEED);
@@ -2156,6 +2153,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void handleDataPacket(DataPacket packet) {
+    	System.out.println("handle");
         if (!connected) {
             return;
         }

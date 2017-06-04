@@ -1,12 +1,12 @@
 package cn.nukkit.inventory;
 
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.ContainerOpenPacket;
-
-import java.util.Map;
 
 /**
  * author: MagicDroidX
@@ -35,7 +35,7 @@ public abstract class ContainerInventory extends BaseInventory {
         ContainerOpenPacket pk = new ContainerOpenPacket();
         pk.windowid = (byte) who.getWindowId(this);
         pk.type = (byte) this.getType().getNetworkType();
-        pk.slots = this.getSize();
+        //pk.slots = this.getSize();
         InventoryHolder holder = this.getHolder();
         if (holder instanceof Vector3) {
             pk.x = (int) ((Vector3) holder).getX();

@@ -288,6 +288,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected String username;
     protected String iusername;
     protected String displayName;
+    protected String xuid;
 
     protected int startAction = -1;
 
@@ -2153,7 +2154,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void handleDataPacket(DataPacket packet) {
-    	System.out.println("handle");
         if (!connected) {
             return;
         }
@@ -2183,28 +2183,27 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     String message;
                     if (loginPacket.getProtocol() != ProtocolInfo.CURRENT_PROTOCOL) {
-                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL && this.getServer().getJupiterConfigBoolean("kick-outdated-client")) {
+                        if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
                             message = "disconnectionScreen.outdatedClient";
 
                             PlayStatusPacket pk = new PlayStatusPacket();
                             pk.status = PlayStatusPacket.LOGIN_FAILED_CLIENT;
                             this.directDataPacket(pk);
-                            this.close("", message, false);
-    	                    break;
-                        } else if (this.getServer().getJupiterConfigBoolean("kick-outdated-server")){
+                        } else {
                             message = "disconnectionScreen.outdatedServer";
 
                             PlayStatusPacket pk = new PlayStatusPacket();
                             pk.status = PlayStatusPacket.LOGIN_FAILED_SERVER;
                             this.directDataPacket(pk);
-                            this.close("", message, false);
-    	                    break;
                         }
+                        this.close("", message, false);
+                        break;
                     }
 
                     this.username = TextFormat.clean(loginPacket.username);
                     this.displayName = this.username;
                     this.iusername = this.username.toLowerCase();
+                    this.xuid = loginPacket.xuid;
                     this.setDataProperty(new StringEntityData(DATA_NAMETAG, this.username), false);
 
                     if (this.server.getOnlinePlayers().size() >= this.server.getMaxPlayers() && this.kick(PlayerKickEvent.Reason.SERVER_FULL, "disconnectionScreen.serverFull", false)) {

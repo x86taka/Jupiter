@@ -258,11 +258,7 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
             }
             String identifier = this.identifiers.get(player.rawHashCode());
             EncapsulatedPacket pk = null;
-            if (!packet.isEncoded) {
-                packet.encode();
-                packet.isEncoded = true;
-                buffer = packet.getBuffer();
-            } else if (!needACK) {
+            if (!needACK) {
                 if (packet.encapsulatedPacket == null) {
                     packet.encapsulatedPacket = new CacheEncapsulatedPacket();
                     packet.encapsulatedPacket.identifierACK = null;
@@ -309,18 +305,15 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
         }
 
         return null;
-
     }
 
     private DataPacket getPacket(byte[] buffer) {
-        byte pid = buffer[0];
-        int start = 1;
+        int start = 0;
 
-        if (pid == (byte) 0xfe) {
-            pid = buffer[1];
+        if (buffer[0] == (byte) 0xfe) {
             start++;
         }
-        DataPacket data = this.network.getPacket(pid);
+        DataPacket data = this.network.getPacket(ProtocolInfo.BATCH_PACKET);
 
         if (data == null) {
             return null;

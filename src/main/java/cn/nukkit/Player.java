@@ -103,7 +103,6 @@ import cn.nukkit.event.player.PlayerToggleFlightEvent;
 import cn.nukkit.event.player.PlayerToggleGlideEvent;
 import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
-import cn.nukkit.event.player.PlayerUseFishingRodEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.inventory.AnvilInventory;
@@ -141,6 +140,7 @@ import cn.nukkit.level.sound.ExperienceOrbSound;
 import cn.nukkit.level.sound.ItemFrameItemRemovedSound;
 import cn.nukkit.level.sound.LaunchSound;
 import cn.nukkit.math.AxisAlignedBB;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector2;
@@ -2118,6 +2118,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.sendAttributes();
         this.setNameTagVisible(true);
         this.setNameTagAlwaysVisible(true);
+        this.setCanClimb(true);
 
         this.server.getLogger().info(this.getServer().getLanguage().translateString("nukkit.player.logIn",
                 TextFormat.AQUA + this.username + TextFormat.WHITE,
@@ -2136,10 +2137,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (this.gamemode == Player.SPECTATOR) {
             ContainerSetContentPacket containerSetContentPacket = new ContainerSetContentPacket();
             containerSetContentPacket.windowid = ContainerSetContentPacket.SPECIAL_CREATIVE;
+            containerSetContentPacket.eid = this.id;
             this.dataPacket(containerSetContentPacket);
         } else {
             ContainerSetContentPacket containerSetContentPacket = new ContainerSetContentPacket();
             containerSetContentPacket.windowid = ContainerSetContentPacket.SPECIAL_CREATIVE;
+            containerSetContentPacket.eid = this.id;
             containerSetContentPacket.slots = Item.getCreativeItems().stream().toArray(Item[]::new);
             this.dataPacket(containerSetContentPacket);
         }
@@ -2442,7 +2445,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, false);
                     break;
                 case ProtocolInfo.USE_ITEM_PACKET:
-                    if (!this.spawned || !this.isAlive()) {
+                	if (!this.spawned || !this.isAlive()) {
                         break;
                     }
 
@@ -2453,12 +2456,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.craftingType = CRAFTING_SMALL;
 
                     if (useItemPacket.face >= 0 && useItemPacket.face <= 5) {
+                        BlockFace face = BlockFace.fromIndex(useItemPacket.face);
                         this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, false);
 
                         if (!this.canInteract(blockVector.add(0.5, 0.5, 0.5), this.isCreative() ? 13 : 7)) {
                         } else if (this.isCreative()) {
                             Item i = this.inventory.getItemInHand();
-                            if (this.level.useItemOn(blockVector, i, useItemPacket.face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this) != null) {
+                            if (this.level.useItemOn(blockVector, i, face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this, true) != null) {
                                 break;
                             }
                         } else if (!this.inventory.getItemInHand().deepEquals(useItemPacket.item)) {
@@ -2467,7 +2471,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             item = this.inventory.getItemInHand();
                             Item oldItem = item.clone();
                             //TODO: Implement adventure mode checks
-                            if ((item = this.level.useItemOn(blockVector, item, useItemPacket.face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this)) != null) {
+                            if ((item = this.level.useItemOn(blockVector, item, face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this, true)) != null) {
                                 if (!item.deepEquals(oldItem) || item.getCount() != oldItem.getCount()) {
                                     this.inventory.setItemInHand(item);
                                     this.inventory.sendHeldItem(this.hasSpawned.values());
@@ -2483,7 +2487,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }
 
                         Block target = this.level.getBlock(blockVector);
-                        Block block = target.getSide(useItemPacket.face);
+                        Block block = target.getSide(face);
 
                         if (target instanceof BlockDoor) {
                             BlockDoor door = (BlockDoor) target;
@@ -2491,7 +2495,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             Block part;
 
                             if ((door.getDamage() & 0x08) > 0) { //up
-                                part = target.getSide(Vector3.SIDE_DOWN);
+                                part = target.down();
 
                                 if (part.getId() == target.getId()) {
                                     target = part;
@@ -2517,7 +2521,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             item = this.inventory.getItemInHand();
                         }
 
-                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, item, aimPos, useItemPacket.face, PlayerInteractEvent.RIGHT_CLICK_AIR);
+                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, item, aimPos, null, PlayerInteractEvent.RIGHT_CLICK_AIR);
 
                         this.server.getPluginManager().callEvent(playerInteractEvent);
 
@@ -2526,19 +2530,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
 
-                        CompoundTag nbt = new CompoundTag()
-                                .putList(new ListTag<DoubleTag>("Pos")
-                                        .add(new DoubleTag("", x))
-                                        .add(new DoubleTag("", y + this.getEyeHeight()))
-                                        .add(new DoubleTag("", z)))
-                                .putList(new ListTag<DoubleTag>("Motion")
-                                        .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
-                                        .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
-                                        .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
-                                .putList(new ListTag<FloatTag>("Rotation")
-                                        .add(new FloatTag("", (float) yaw))
-                                        .add(new FloatTag("", (float) pitch)));
-                        if (item.getId() == Item.SNOWBALL && this.getServer().getJupiterConfigBoolean("allow-snowball")) {
+                        if (item.getId() == Item.SNOWBALL) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)));
+
                             float f = 1.5f;
                             EntitySnowball snowball = new EntitySnowball(this.chunk, nbt, this);
 
@@ -2559,7 +2564,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 snowball.spawnToAll();
                             }
-                        } else if (item.getId() == Item.EGG && this.getServer().getJupiterConfigBoolean("allow-egg")) {
+                        } else if (item.getId() == Item.EGG) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)));
+
                             float f = 1.5f;
                             EntityEgg egg = new EntityEgg(this.chunk, nbt, this);
 
@@ -2580,7 +2598,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 egg.spawnToAll();
                             }
-                        } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.getServer().getJupiterConfigBoolean("allow-enderpearl")) {
+                        } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)));
+
                             float f = 1.5f;
                             EntityEnderPearl enderPearl = new EntityEnderPearl(this.chunk, nbt, this);
 
@@ -2602,8 +2633,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 enderPearl.spawnToAll();
                             }
                             this.lastEnderPearl = this.server.getTick();
-                        } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.getServer().getJupiterConfigBoolean("allow-experience-bottle")) {
-                            nbt.putInt("Potion", item.getDamage());
+                        } else if (item.getId() == Item.EXPERIENCE_BOTTLE) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)))
+                                    .putInt("Potion", item.getDamage());
                             double f = 1.5;
                             Entity bottle = new EntityExpBottle(this.chunk, nbt, this);
                             bottle.setMotion(bottle.getMotion().multiply(f));
@@ -2624,8 +2667,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                        } else if (item.getId() == Item.SPLASH_POTION && this.getServer().getJupiterConfigBoolean("allow-splash-potion")) {
-                            nbt.putShort("PotionId", item.getDamage());
+                        } else if (item.getId() == Item.SPLASH_POTION) {
+                            CompoundTag nbt = new CompoundTag()
+                                    .putList(new ListTag<DoubleTag>("Pos")
+                                            .add(new DoubleTag("", x))
+                                            .add(new DoubleTag("", y + this.getEyeHeight()))
+                                            .add(new DoubleTag("", z)))
+                                    .putList(new ListTag<DoubleTag>("Motion")
+                                            .add(new DoubleTag("", -Math.sin(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", -Math.sin(pitch / 180 * Math.PI)))
+                                            .add(new DoubleTag("", Math.cos(yaw / 180 * Math.PI) * Math.cos(pitch / 180 * Math.PI))))
+                                    .putList(new ListTag<FloatTag>("Rotation")
+                                            .add(new FloatTag("", (float) yaw))
+                                            .add(new FloatTag("", (float) pitch)))
+                                    .putShort("PotionId", item.getDamage());
                             double f = 1.5;
                             Entity bottle = new EntityPotion(this.chunk, nbt, this);
                             bottle.setMotion(bottle.getMotion().multiply(f));
@@ -2646,19 +2701,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                        } else if (item.getId() == Item.FISHING_ROD && this.getServer().getJupiterConfigBoolean("allow-fishing-rod")) {
-                            double f = 1.5;
-                            this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
-                            if (!ev.isCancelled()){
-	                            if (this.isFishing()){
-	                            	this.unlinkHookFromPlayer();
-	                            } else {
-		                            EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
-		                            entity.setMotion(entity.getMotion().multiply(f));
-		                            entity.spawnToAll();
-		                            this.linkHookToPlayer(entity);
-	                            }
-                            }
                         }
 
                         this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, true);
@@ -2666,36 +2708,38 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
                     break;
                 case ProtocolInfo.PLAYER_ACTION_PACKET:
-                    if (!this.spawned || (!this.isAlive() && ((PlayerActionPacket) packet).action != PlayerActionPacket.ACTION_RESPAWN && ((PlayerActionPacket) packet).action != PlayerActionPacket.ACTION_DIMENSION_CHANGE)) {
-                        break;
-                    }
+                	 PlayerActionPacket playerActionPacket = (PlayerActionPacket) packet;
+                     if (!this.spawned || (!this.isAlive() && playerActionPacket.action != PlayerActionPacket.ACTION_RESPAWN && playerActionPacket.action != PlayerActionPacket.ACTION_DIMENSION_CHANGE)) {
+                         break;
+                     }
 
-                    ((PlayerActionPacket) packet).entityId = this.id;
-                    Vector3 pos = new Vector3(((PlayerActionPacket) packet).x, ((PlayerActionPacket) packet).y, ((PlayerActionPacket) packet).z);
+                     playerActionPacket.entityId = this.id;
+                     Vector3 pos = new Vector3(playerActionPacket.x, playerActionPacket.y, playerActionPacket.z);
+                     BlockFace face = BlockFace.fromIndex(playerActionPacket.face);
 
-                    switch (((PlayerActionPacket) packet).action) {
-                        case PlayerActionPacket.ACTION_START_BREAK:
-                            if (this.lastBreak != Long.MAX_VALUE || pos.distanceSquared(this) > 10000) {
-                                break;
-                            }
-                            Block target = this.level.getBlock(pos);
-                            PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, this.inventory.getItemInHand(), target, ((PlayerActionPacket) packet).face, target.getId() == 0 ? PlayerInteractEvent.LEFT_CLICK_AIR : PlayerInteractEvent.LEFT_CLICK_BLOCK);
-                            this.getServer().getPluginManager().callEvent(playerInteractEvent);
-                            if (playerInteractEvent.isCancelled()) {
-                                this.inventory.sendHeldItem(this);
-                                break;
-                            }
-                            if (target.getId() == Block.NOTEBLOCK) {
-                                ((BlockNoteblock)target).emitSound();
-                                break;
-                            }
-                            Block block = target.getSide(((PlayerActionPacket) packet).face);
-                            if (block.getId() == Block.FIRE) {
-                                this.level.setBlock(block, new BlockAir(), true);
-                                break;
-                            }
-                            this.lastBreak = System.currentTimeMillis();
-                            break;
+                     switch (playerActionPacket.action) {
+                         case PlayerActionPacket.ACTION_START_BREAK:
+                             if (this.lastBreak != Long.MAX_VALUE || pos.distanceSquared(this) > 10000) {
+                                 break;
+                             }
+                             Block target = this.level.getBlock(pos);
+                             PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, this.inventory.getItemInHand(), target, face, target.getId() == 0 ? PlayerInteractEvent.LEFT_CLICK_AIR : PlayerInteractEvent.LEFT_CLICK_BLOCK);
+                             this.getServer().getPluginManager().callEvent(playerInteractEvent);
+                             if (playerInteractEvent.isCancelled()) {
+                                 this.inventory.sendHeldItem(this);
+                                 break;
+                             }
+                             if (target.getId() == Block.NOTEBLOCK) {
+                                 ((BlockNoteblock)target).emitSound();
+                                 break;
+                             }
+                             Block block = target.getSide(face);
+                             if (block.getId() == Block.FIRE) {
+                                 this.level.setBlock(block, new BlockAir(), true);
+                                 break;
+                             }
+                             this.lastBreak = System.currentTimeMillis();
+                             break;
 
                         case PlayerActionPacket.ACTION_ABORT_BREAK:
                             this.lastBreak = Long.MAX_VALUE;
@@ -3765,7 +3809,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
                     break;
                 case ProtocolInfo.REQUEST_CHUNK_RADIUS_PACKET:
-                    RequestChunkRadiusPacket requestChunkRadiusPacket = (RequestChunkRadiusPacket) packet;
+                	RequestChunkRadiusPacket requestChunkRadiusPacket = (RequestChunkRadiusPacket) packet;
                     ChunkRadiusUpdatedPacket chunkRadiusUpdatePacket = new ChunkRadiusUpdatedPacket();
                     this.chunkRadius = Math.max(5, Math.min(requestChunkRadiusPacket.radius, this.viewDistance));
                     chunkRadiusUpdatePacket.radius = this.chunkRadius;

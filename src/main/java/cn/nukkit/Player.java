@@ -89,6 +89,7 @@ import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInvalidMoveEvent;
 import cn.nukkit.event.player.PlayerItemConsumeEvent;
 import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerJumpEvent;
 import cn.nukkit.event.player.PlayerKickEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMapInfoRequestEvent;
@@ -2885,6 +2886,21 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
 
                         case PlayerActionPacket.ACTION_JUMP:
+                        	PlayerJumpEvent playerJumpEvent = new PlayerJumpEvent(this, new Location(((PlayerActionPacket) packet).x, ((PlayerActionPacket) packet).y, ((PlayerActionPacket) packet).z));
+                        	this.server.getPluginManager().callEvent(playerJumpEvent);
+                        	System.out.println("Jumped");
+                        	if(playerJumpEvent.isCancelled()){
+                        		break packetswitch;
+                        	}
+                        	PlayerActionPacket pk = (PlayerActionPacket) packet;
+                        	pk.action = PlayerActionPacket.ACTION_JUMP;
+                        	pk.entityId = this.getId();
+                        	pk.x = (int) this.x;
+                        	pk.y = (int) this.y;
+                        	pk.z = (int) this.z;
+                        	BlockFace Aface = BlockFace.fromIndex(pk.face);
+                        	pk.face = Aface.getHorizontalIndex();
+                        	this.dataPacket(pk);
                             break packetswitch;
 
                         case PlayerActionPacket.ACTION_START_SPRINT:
@@ -2897,6 +2913,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                             break packetswitch;
 
+                            //TODO PLAYER ACTION PACKET_SNEAK
                         case PlayerActionPacket.ACTION_STOP_SPRINT:
                             playerToggleSprintEvent = new PlayerToggleSprintEvent(this, false);
                             this.server.getPluginManager().callEvent(playerToggleSprintEvent);

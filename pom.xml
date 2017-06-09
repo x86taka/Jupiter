@@ -26,13 +26,6 @@
             <artifactId>guava</artifactId>
             <version>21.0</version>
         </dependency>   
-	 <dependency>
-            <groupId>org.iq80.leveldb</groupId>
-            <artifactId>LevelDB</artifactId>
-            <version>1.0</version>
-            <scope>LevDB</scope>
-            <systemPath>${basedir}/lib/leveldb.jar</systemPath>
-         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

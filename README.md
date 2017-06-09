@@ -1,4 +1,4 @@
-# Jupiter - Nukkit Fork for 1.1.0 beta1
+# Jupiter - Nukkit Fork for 1.1.0
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Jupiterについて / About Jupiter

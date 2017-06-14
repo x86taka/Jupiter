@@ -355,6 +355,13 @@ public class Server implements ActionListener{
             new File(dataPath + "compileOrder/").mkdirs();
             this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
+        
+        /*
+        if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
+            new File(dataPath + "JavaScriptPlugin/").mkdirs();
+            this.logger.info(TextFormat.AQUA + pluginPath + "JavaScriptPlugin/  を作成しました。");
+        }
+        */
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 
@@ -810,29 +817,6 @@ public class Server implements ActionListener{
     public void trayMessage(String title, String message, MessageType type){
     	this.getTrayIcon().displayMessage(title, message, type);
     }
-    
-    /*
-    public void loadTrayIcon(){
-    	try {
-        	SystemTray.getSystemTray().remove(getTrayIcon());
-        	
-        	icon = getTrayIcon();
-        	icon.setImage(this.getTrayImage());
-        	
-        	ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
-			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
-			if(icons != null){
-				for(TrayIcon i : icons){
-					iconlist.add(i);
-				}
-			}
-        	
-			SystemTray.getSystemTray().add(icon);
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-    }
-    */
 
     private void defaultloadTrayIcon(){
     	try {

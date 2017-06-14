@@ -242,7 +242,10 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
             byte[] buffer;
             if (packet.pid() == ProtocolInfo.BATCH_PACKET) {
                 buffer = ((BatchPacket) packet).payload;
-            } else {
+            }else if(!needACK){
+            	this.server.batchPackets(new Player[]{player}, new DataPacket[]{packet}, true);
+            	return null;
+            }else {
                 if (!packet.isEncoded) {
                     packet.encode();
                     packet.isEncoded = true;
@@ -272,12 +275,6 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
                     }
                 }
                 pk = packet.encapsulatedPacket;
-            }
-
-
-            if (!immediate && !needACK && packet.pid() != ProtocolInfo.BATCH_PACKET) {
-                this.server.batchPackets(new Player[]{player}, new DataPacket[]{packet}, true);
-                return null;
             }
 
             if (pk == null) {

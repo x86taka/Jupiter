@@ -1,31 +1,28 @@
 package cn.nukkit.level.particle;
 
-import cn.nukkit.block.Block;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.LevelEventPacket;
 
 /**
- * Created on 2015/11/21 by xtypr.
- * Package cn.nukkit.level.particle in project Nukkit .
+ * Created by CreeperFace on 15.4.2017.
  */
-public class DestroyBlockParticle extends Particle {
+public class BoneMealParticle extends Particle {
 
-    protected final int data;
+    private Vector3 position;
 
-    public DestroyBlockParticle(Vector3 pos, Block block) {
+    public BoneMealParticle(Vector3 pos) {
         super(pos.x, pos.y, pos.z);
-        this.data = block.getId() | (block.getDamage() << 8);
     }
 
     @Override
     public DataPacket[] encode() {
         LevelEventPacket pk = new LevelEventPacket();
-        pk.evid = LevelEventPacket.EVENT_PARTICLE_DESTROY;
+        pk.evid = LevelEventPacket.EVENT_PARTICLE_BONEMEAL;
         pk.x = (float) this.x;
         pk.y = (float) this.y;
         pk.z = (float) this.z;
-        pk.data = this.data;
+        pk.data = 0;
 
         return new DataPacket[]{pk};
     }

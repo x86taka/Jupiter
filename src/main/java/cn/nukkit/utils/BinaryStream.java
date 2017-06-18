@@ -1,14 +1,14 @@
 package cn.nukkit.utils;
 
-import cn.nukkit.entity.data.Skin;
-import cn.nukkit.item.Item;
-import cn.nukkit.math.BlockVector3;
-import cn.nukkit.math.Vector3f;
-
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
+
+import cn.nukkit.entity.data.Skin;
+import cn.nukkit.item.Item;
+import cn.nukkit.math.BlockVector3;
+import cn.nukkit.math.Vector3f;
 
 /**
  * author: MagicDroidX
@@ -317,6 +317,20 @@ public class BinaryStream {
         this.putLFloat(x);
         this.putLFloat(y);
         this.putLFloat(z);
+    }
+
+    public RuleData getRuleData() {
+        RuleData rule = new RuleData();
+        rule.name = this.getString();
+        rule.unknown1 = this.getBoolean();
+        rule.unknown2 = this.getBoolean();
+        return rule;
+    }
+
+    public void putRuleData(RuleData rule) {
+        this.putString(rule.name);
+        this.putBoolean(rule.unknown1);
+        this.putBoolean(rule.unknown2);
     }
 
     public boolean feof() {

@@ -1,5 +1,8 @@
 package cn.nukkit.block;
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -15,9 +18,6 @@ import cn.nukkit.metadata.MetadataValue;
 import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.BlockColor;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
 
 /**
  * author: MagicDroidX

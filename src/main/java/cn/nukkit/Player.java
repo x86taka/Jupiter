@@ -857,7 +857,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.usedChunks = new HashMap<>();
             SetTimePacket pk = new SetTimePacket();
             pk.time = this.level.getTime();
-            pk.started = !this.level.stopTime;
             this.dataPacket(pk);
 
             // TODO: Remove this hack
@@ -999,7 +998,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.time = this.level.getTime();
-        setTimePacket.started = !this.level.stopTime;
         this.dataPacket(setTimePacket);
 
         Position pos = this.level.getSafeSpawn(this);
@@ -2114,7 +2112,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.time = this.level.getTime();
-        setTimePacket.started = !this.level.stopTime;
         this.dataPacket(setTimePacket);
 
         this.setMovementSpeed(DEFAULT_SPEED);
@@ -2463,7 +2460,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (!this.canInteract(blockVector.add(0.5, 0.5, 0.5), this.isCreative() ? 13 : 7)) {
                         } else if (this.isCreative()) {
                             Item i = this.inventory.getItemInHand();
-                            if (this.level.useItemOn(blockVector, i, useItemPacket.face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this) != null) {
+                            if (this.level.useItemOn(blockVector, i, face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this) != null) {
                                 break;
                             }
                         } else if (!this.inventory.getItemInHand().deepEquals(useItemPacket.item)) {
@@ -2472,7 +2469,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             item = this.inventory.getItemInHand();
                             Item oldItem = item.clone();
                             //TODO: Implement adventure mode checks
-                            if ((item = this.level.useItemOn(blockVector, item, useItemPacket.face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this)) != null) {
+                            if ((item = this.level.useItemOn(blockVector, item, face, useItemPacket.fx, useItemPacket.fy, useItemPacket.fz, this)) != null) {
                                 if (!item.deepEquals(oldItem) || item.getCount() != oldItem.getCount()) {
                                     this.inventory.setItemInHand(item);
                                     this.inventory.sendHeldItem(this.hasSpawned.values());
@@ -2522,7 +2519,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             item = this.inventory.getItemInHand();
                         }
 
-                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, item, aimPos, useItemPacket.face, PlayerInteractEvent.RIGHT_CLICK_AIR);
+                        PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, item, aimPos, null, PlayerInteractEvent.RIGHT_CLICK_AIR);
 
                         this.server.getPluginManager().callEvent(playerInteractEvent);
 
@@ -2686,7 +2683,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 break;
                             }
                             Block target = this.level.getBlock(pos);
-                            PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, this.inventory.getItemInHand(), target, playerActionPacket.face, target.getId() == 0 ? PlayerInteractEvent.LEFT_CLICK_AIR : PlayerInteractEvent.LEFT_CLICK_BLOCK);
+                            PlayerInteractEvent playerInteractEvent = new PlayerInteractEvent(this, this.inventory.getItemInHand(), target, face, target.getId() == 0 ? PlayerInteractEvent.LEFT_CLICK_AIR : PlayerInteractEvent.LEFT_CLICK_BLOCK);
                             this.getServer().getPluginManager().callEvent(playerInteractEvent);
                             if (playerInteractEvent.isCancelled()) {
                                 this.inventory.sendHeldItem(this);

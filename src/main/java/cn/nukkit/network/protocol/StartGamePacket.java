@@ -2,6 +2,9 @@ package cn.nukkit.network.protocol;
 
 import cn.nukkit.utils.RuleData;
 
+/**
+ * Created on 15-10-13.
+ */
 public class StartGamePacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.START_GAME_PACKET;
@@ -33,7 +36,7 @@ public class StartGamePacket extends DataPacket {
     public boolean commandsEnabled;
     public boolean isTexturePacksRequired = false;
     public RuleData[] ruleDatas = new RuleData[0];
-    public String levelId = "";
+    public String levelId = ""; //base64 string, usually the same as world folder name in vanilla
     public String worldName;
     public String premiumWorldTemplateId = "";
     public boolean unknown;

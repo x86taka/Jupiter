@@ -1,5 +1,12 @@
 package cn.nukkit.item;
 
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -16,13 +23,6 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
-
-import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * author: MagicDroidX
@@ -813,7 +813,7 @@ public class Item implements Cloneable {
             }
         }
 
-        initCreativItems();
+        initCreativeItems();
     }
 
     private static final ArrayList<Item> creative = new ArrayList<>();
@@ -1192,7 +1192,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.SPAWN_EGG, 53)); //エンダードラゴン
         addCreativeItem(Item.get(Item.SPAWN_EGG, 54)); //シュルカー
         addCreativeItem(Item.get(Item.SPAWN_EGG, 55)); //エンダーマイト
-        */
+
         addCreativeItem(Item.get(Item.FIRE_CHARGE, 0));
         addCreativeItem(Item.get(Item.WOODEN_SWORD));
         addCreativeItem(Item.get(Item.WOODEN_HOE));

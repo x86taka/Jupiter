@@ -542,11 +542,7 @@ public class Server implements ActionListener{
         	
         	*/
 
-        if(this.getJupiterConfigBoolean("destroy-block-particle")){
-        	Level.sendDestroyParticle = true;
-        }else{
-        	Level.sendDestroyParticle = false;
-        }
+    	Level.sendDestroyBlockParticle = this.getJupiterConfigBoolean("destroy-block-particle");
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));

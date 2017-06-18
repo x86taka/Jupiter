@@ -140,6 +140,7 @@ public class Level implements ChunkManager, Metadatable {
     private static int levelIdCounter = 1;
     private static int chunkLoaderCounter = 1;
     public static int COMPRESSION_LEVEL = 8;
+	public static Boolean sendDestroyBlockParticle;
 
     public static final int BLOCK_UPDATE_NORMAL = 1;
     public static final int BLOCK_UPDATE_RANDOM = 2;
@@ -1923,7 +1924,7 @@ public class Level implements ChunkManager, Metadatable {
             }
         }
 
-        if (createParticles) {
+        if (createParticles && sendDestroyBlockParticle) {
             Map<Integer, Player> players = this.getChunkPlayers((int) target.x >> 4, (int) target.z >> 4);
 
             this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());

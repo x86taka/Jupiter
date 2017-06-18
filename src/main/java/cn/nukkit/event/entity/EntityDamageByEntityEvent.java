@@ -1,9 +1,9 @@
 package cn.nukkit.event.entity;
 
-import java.util.Map;
-
 import cn.nukkit.entity.Entity;
 import cn.nukkit.potion.Effect;
+
+import java.util.Map;
 
 /**
  * author: MagicDroidX

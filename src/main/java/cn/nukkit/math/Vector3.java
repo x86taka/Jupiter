@@ -6,6 +6,13 @@ package cn.nukkit.math;
  */
 public class Vector3 implements Cloneable {
 
+    public static final int SIDE_DOWN = 0;
+    public static final int SIDE_UP = 1;
+    public static final int SIDE_NORTH = 2;
+    public static final int SIDE_SOUTH = 3;
+    public static final int SIDE_WEST = 4;
+    public static final int SIDE_EAST = 5;
+
     public double x;
     public double y;
     public double z;

@@ -1,16 +1,16 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.entity.data.Skin;
-import cn.nukkit.utils.Zlib;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import cn.nukkit.entity.data.Skin;
 
 
 /**
@@ -40,13 +40,7 @@ public class LoginPacket extends DataPacket {
     public void decode() {
         this.protocol = this.getInt();
         this.gameEdition = (byte) this.getByte();
-        byte[] str;
-        try {
-            str = Zlib.inflate(this.get((int) this.getUnsignedVarInt()));
-        } catch (Exception e) {
-            return;
-        }
-        this.setBuffer(str, 0);
+        this.setBuffer(this.getByteArray(), 0);
         decodeChainData();
         decodeSkinData();
     }

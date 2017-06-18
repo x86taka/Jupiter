@@ -24,16 +24,14 @@ public class ResourcePacksInfoPacket extends DataPacket {
         for (ResourcePack entry : this.behaviourPackEntries) {
             this.putString(entry.getPackId());
             this.putString(entry.getPackVersion());
-            this.putUnsignedVarLong(entry.getPackSize());
-            this.putString(""); //unknown
+            this.putLLong(entry.getPackSize());
         }
 
         this.putUnsignedVarInt(this.resourcePackEntries.length);
         for (ResourcePack entry : this.resourcePackEntries) {
             this.putString(entry.getPackId());
             this.putString(entry.getPackVersion());
-            this.putUnsignedVarLong(entry.getPackSize());
-            this.putString(""); //unknown
+            this.putLLong(entry.getPackSize());
         }
     }
 

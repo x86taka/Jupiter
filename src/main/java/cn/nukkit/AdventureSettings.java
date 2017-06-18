@@ -30,6 +30,10 @@ public class AdventureSettings implements Cloneable {
 
     private boolean noMvp = false;
 
+    private boolean worldBuilder = true;
+
+    private boolean worldImmutable = false;
+
     private Player player;
 
     private AdventureSettings() {
@@ -77,6 +81,14 @@ public class AdventureSettings implements Cloneable {
         this.noMvp = noMvp;
     }
 
+    public void setWorldBuilder(boolean worldBuilder) {
+        this.worldBuilder = worldBuilder;
+    }
+
+    public void setWorldImmutable(boolean worldImmutable) {
+        this.worldImmutable = worldImmutable;
+    }
+
     public boolean canDestroyBlock() {
         return canDestroyBlock;
     }
@@ -109,6 +121,14 @@ public class AdventureSettings implements Cloneable {
         return noMvp;
     }
 
+    public boolean isWorldBuilder(){
+    	return worldBuilder;
+    }
+
+    public boolean isWorldImmutable(){
+    	return worldImmutable;
+    }
+
     public void update() {
         AdventureSettingsPacket pk = new AdventureSettingsPacket();
         pk.flags = 0;
@@ -120,6 +140,8 @@ public class AdventureSettings implements Cloneable {
         pk.noPvp = noPvp;
         pk.noPvm = noPvm;
         pk.noMvp = noMvp;
+        pk.worldBuilder = worldBuilder;
+        pk.worldImmutable = worldImmutable;
         pk.userPermission = (this.player.isOp() ? PERMISSION_OPERATOR : PERMISSION_NORMAL);
         player.dataPacket(pk);
 
@@ -155,6 +177,16 @@ public class AdventureSettings implements Cloneable {
         public Builder autoJump(boolean autoJump) {
             settings.autoJump = autoJump;
             return this;
+        }
+
+        public Builder worldBuilder(boolean worldBuilder){
+        	settings.worldBuilder = worldBuilder;
+        	return this;
+        }
+
+        public Builder worldImmutable(boolean worldImmutable){
+        	settings.worldImmutable = worldImmutable;
+        	return this;
         }
 
         public AdventureSettings build() {

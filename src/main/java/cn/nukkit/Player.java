@@ -2018,6 +2018,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 .autoJump(true)
                 .canFly(isCreative())
                 .noclip(isSpectator())
+                .worldBuilder(true)
+                .worldImmutable(false)
                 .build();
 
         Level level;

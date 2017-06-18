@@ -1,16 +1,16 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.entity.data.Skin;
-import cn.nukkit.utils.Zlib;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import cn.nukkit.entity.data.Skin;
 
 
 /**
@@ -31,6 +31,7 @@ public class LoginPacket extends DataPacket {
     public String xuid;
 
     public Skin skin;
+	public int deviceOS;
 
     @Override
     public byte pid() {
@@ -83,7 +84,7 @@ public class LoginPacket extends DataPacket {
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
         if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
         if (skinToken.has("DeviceModel")) this.deviceModel = skinToken.get("DeviceModel").getAsString();
-        if (skinToken.has("DeviceOS")) ; //TODO: add variables
+        if (skinToken.has("DeviceOS")) ; this.deviceOS =skinToken.get("DeviceOS").getAsString();
         if (skinToken.has("GameVersion")) ;
         if (skinToken.has("GuiScale")) ;
         if (skinToken.has("LanguageCode")) ;

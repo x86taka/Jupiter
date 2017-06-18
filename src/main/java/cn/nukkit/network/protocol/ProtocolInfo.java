@@ -104,5 +104,5 @@ public interface ProtocolInfo {
     byte SET_TITLE_PACKET = 0x59;
     byte ADD_BEHAVIOR_TREE_PACKET = 0x5a;
     byte STRUCTURE_BLOCK_UPDATE_PACKET = 0x5b;
-    byte BATCH_PACKET = (byte) 0xff;
+    byte BATCH_PACKET = (byte) 0xfe;
 }

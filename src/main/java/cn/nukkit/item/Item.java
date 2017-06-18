@@ -16,6 +16,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.inventory.Fuel;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Level;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -310,6 +311,26 @@ public class Item implements Cloneable {
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
 
+    public static final int SHULKER_BOX = 218;
+    public static final int PURPLE_GLAZED_TERRACOTTA = 219;
+    public static final int WHITE_GLAZED_TERRACOTTA = 220;
+    public static final int ORANGE_GLAZED_TERRACOTTA = 221;
+    public static final int MAGENTA_GLAZED_TERRACOTTA = 222;
+    public static final int LIGHT_BLUE_GLAZED_TERRACOTTA = 223;
+    public static final int YELLOW_GLAZED_TERRACOTTA = 224;
+    public static final int LIME_GLAZED_TERRACOTTA = 225;
+    public static final int PINK_GLAZED_TERRACOTTA = 226;
+    public static final int GRAY_GLAZED_TERRACOTTA = 227;
+    public static final int SILVER_GLAZED_TERRACOTTA = 228;
+    public static final int CYAN_GLAZED_TERRACOTTA = 229;
+    public static final int BLUE_GLAZED_TERRACOTTA = 231;
+    public static final int BROWN_GLAZED_TERRACOTTA = 232;
+    public static final int GREEN_GLAZED_TERRACOTTA = 233;
+    public static final int RED_GLAZED_TERRACOTTA = 234;
+    public static final int BLACK_GLAZED_TERRACOTTA = 235;
+    public static final int CONCRETE = 236;
+    public static final int CONCRETE_POWDER = 237;
+
     public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
     public static final int PODZOL = 243;
@@ -541,8 +562,7 @@ public class Item implements Cloneable {
 
     public static final int GOLDEN_APPLE_ENCHANTED = 466;
 
-    @SuppressWarnings("rawtypes")
-	public static Class[] list = null;
+    public static Class[] list = null;
 
     protected Block block = null;
     protected final int id;
@@ -691,7 +711,7 @@ public class Item implements Cloneable {
             list[SUGAR] = ItemSugar.class; //353
             list[CAKE] = ItemCake.class; //354
             list[BED] = ItemBed.class; //355
-            //TODO: list[REPEATER] = ItemRepeater.class; //356
+            list[REPEATER] = ItemRedstoneRepeater.class; //356
             list[COOKIE] = ItemCookie.class; //357
             list[MAP] = ItemMap.class; //358
             list[SHEARS] = ItemShears.class; //359
@@ -736,13 +756,13 @@ public class Item implements Cloneable {
             list[PUMPKIN_PIE] = ItemPumpkinPie.class; //400
 
             list[ENCHANTED_BOOK] = ItemBookEnchanted.class; //403
-            //TODO: list[COMPARATOR] = ItemComparator.class; //404
+            list[COMPARATOR] = ItemRedstoneComparator.class; //404
             list[NETHER_BRICK] = ItemNetherBrick.class; //405
             list[QUARTZ] = ItemQuartz.class; //406
             list[MINECART_WITH_TNT] = ItemMinecartTNT.class; //407
             list[MINECART_WITH_HOPPER] = ItemMinecartHopper.class; //408
             list[PRISMARINE_SHARD] = ItemPrismarineShard.class; //409
-            //TODO: list[HOPPER] = ItemHopper.class; //410
+            list[HOPPER] = ItemHopper.class;
             list[RAW_RABBIT] = ItemRabbitRaw.class; //411
             list[COOKED_RABBIT] = ItemRabbitCooked.class; //412
             list[RABBIT_STEW] = ItemRabbitStew.class; //413
@@ -963,6 +983,21 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.FENCE_GATE_DARK_OAK, 0));
         addCreativeItem(Item.get(Item.IRON_BARS, 0));
         addCreativeItem(Item.get(Item.BED, 0));
+        addCreativeItem(Item.get(Item.BED, 8));
+        addCreativeItem(Item.get(Item.BED, 7));
+        addCreativeItem(Item.get(Item.BED, 15));
+        addCreativeItem(Item.get(Item.BED, 12));
+        addCreativeItem(Item.get(Item.BED, 14));
+        addCreativeItem(Item.get(Item.BED, 1));
+        addCreativeItem(Item.get(Item.BED, 4));
+        addCreativeItem(Item.get(Item.BED, 5));
+        addCreativeItem(Item.get(Item.BED, 13));
+        addCreativeItem(Item.get(Item.BED, 9));
+        addCreativeItem(Item.get(Item.BED, 3));
+        addCreativeItem(Item.get(Item.BED, 11));
+        addCreativeItem(Item.get(Item.BED, 10));
+        addCreativeItem(Item.get(Item.BED, 2));
+        addCreativeItem(Item.get(Item.BED, 6));
         addCreativeItem(Item.get(Item.BOOKSHELF, 0));
         addCreativeItem(Item.get(Item.SIGN, 0));
         addCreativeItem(Item.get(Item.PAINTING, 0));
@@ -1219,6 +1254,9 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.REPEATER));
         addCreativeItem(Item.get(Item.COMPARATOR));
         addCreativeItem(Item.get(Item.DISPENSER, 3));
+        addCreativeItem(Item.get(Item.DROPPER));
+        addCreativeItem(Item.get(Item.PISTON));
+        addCreativeItem(Item.get(Item.STICKY_PISTON));
         addCreativeItem(Item.get(Item.OBSERVER));
         addCreativeItem(Item.get(Item.HOPPER));
         addCreativeItem(Item.get(Item.SNOWBALL));
@@ -1499,7 +1537,7 @@ public class Item implements Cloneable {
 
     public static Item get(int id, Integer meta, int count, byte[] tags) {
         try {
-            Class<?> c = list[id];
+            Class c = list[id];
             Item item;
 
             if (c == null) {
@@ -1657,7 +1695,7 @@ public class Item implements Cloneable {
         for (CompoundTag entry : this.getNamedTag().getList("ench", CompoundTag.class).getAll()) {
             if (entry.getShort("id") == id) {
                 Enchantment e = Enchantment.getEnchantment(entry.getShort("id"));
-                if (e != null){
+                if (e != null) {
                     e.setLevel(entry.getShort("lvl"));
                     return e;
                 }
@@ -1719,10 +1757,10 @@ public class Item implements Cloneable {
         ListTag<CompoundTag> ench = this.getNamedTag().getList("ench", CompoundTag.class);
         for (CompoundTag entry : ench.getAll()) {
             Enchantment e = Enchantment.getEnchantment(entry.getShort("id"));
-            if (e != null){
+            if (e != null) {
                 e.setLevel(entry.getShort("lvl"));
                 enchantments.add(e);
-            } 
+            }
         }
 
         return enchantments.stream().toArray(Enchantment[]::new);
@@ -1799,6 +1837,46 @@ public class Item implements Cloneable {
         }
 
         return this;
+    }
+
+    public String[] getLore() {
+        Tag tag = this.getNamedTagEntry("display");
+        ArrayList<String> lines = new ArrayList<>();
+
+        if (tag instanceof CompoundTag) {
+            CompoundTag nbt = (CompoundTag) tag;
+            ListTag<StringTag> lore = nbt.getList("Lore", StringTag.class);
+
+            if (lore.size() > 0) {
+                for (StringTag stringTag : lore.getAll()) {
+                    lines.add(stringTag.data);
+                }
+            }
+        }
+
+        return lines.toArray(new String[0]);
+    }
+
+    public void setLore(String... lines) {
+        CompoundTag tag;
+        if (!this.hasCompoundTag()) {
+            tag = new CompoundTag();
+        } else {
+            tag = this.getNamedTag();
+        }
+        ListTag<StringTag> lore = new ListTag<>("Lore");
+
+        for (String line : lines) {
+            lore.add(new StringTag("", line));
+        }
+
+        if (!tag.contains("display")) {
+            tag.putCompound("display", new CompoundTag("display").putList(lore));
+        } else {
+            tag.getCompound("display").putList(lore);
+        }
+
+        this.setNamedTag(tag);
     }
 
     public Tag getNamedTagEntry(String name) {
@@ -1981,7 +2059,7 @@ public class Item implements Cloneable {
         return 1;
     }
 
-    public boolean onActivate(Level level, Player player, Block block, Block target, int face, double fx, double fy, double fz) {
+    public boolean onActivate(Level level, Player player, Block block, Block target, BlockFace face, double fx, double fy, double fz) {
         return false;
     }
 

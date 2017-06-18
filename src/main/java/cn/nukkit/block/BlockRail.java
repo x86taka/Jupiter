@@ -1,32 +1,21 @@
 package cn.nukkit.block;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.BlockColor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Snake1999 on 2016/1/11.
  * Package cn.nukkit.block in project nukkit
  */
 public class BlockRail extends BlockFlowable {
-
-	//追加
-	public static final int STRAIGHT_EAST_WEST = 0;
-	public static final int STRAIGHT_NORTH_SOUTH = 1;
-	public static final int SLOPED_ASCENDING_NORTH = 2;
-	public static final int SLOPED_ASCENDING_SOUTH = 3;
-	public static final int SLOPED_ASCENDING_EAST = 4;
-	public static final int SLOPED_ASCENDING_WEST = 5;
-	public static final int CURVED_NORTH_WEST = 7;
-	public static final int CURVED_SOUTH_WEST = 6;
-	public static final int CURVED_SOUTH_EAST = 9;
-	public static final int CURVED_NORTH_EAST = 8;
 
     public BlockRail() {
         this(0);
@@ -64,7 +53,7 @@ public class BlockRail extends BlockFlowable {
     @Override
     public int onUpdate(int type) {
         if (type == Level.BLOCK_UPDATE_NORMAL) {
-            if (this.getSide(0).isTransparent()) {
+            if (this.down().isTransparent()) {
                 this.getLevel().useBreakOn(this);
                 return Level.BLOCK_UPDATE_NORMAL;
             }
@@ -73,20 +62,13 @@ public class BlockRail extends BlockFlowable {
     }
 
     @Override
-    public int[][] getDrops(Item item) {
-        return new int[][]{
-                {Item.RAIL, 0, 1}
-        };
-    }
-
-    @Override
     public BlockColor getColor() {
         return BlockColor.AIR_BLOCK_COLOR;
     }
 
     @Override
-    public boolean place(Item item, Block block, Block target, int face, double fx, double fy, double fz, Player player) {
-        Block down = this.getSide(Vector3.SIDE_DOWN);
+    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        Block down = this.down();
         if (down == null) return false;
         if (down.isTransparent()) return false;
         int[][] arrayXZ = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};

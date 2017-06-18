@@ -22,7 +22,7 @@ public class EntityEventPacket extends DataPacket {
     public static final byte FISH_HOOK_TEASE = 14;
     public static final byte SQUID_INK_CLOUD = 15;
     public static final byte AMBIENT_SOUND = 16;
-    public static final byte RESPAWN = 17;
+    public static final byte RESPAWN = 18;
 
     @Override
     public byte pid() {

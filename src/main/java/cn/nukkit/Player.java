@@ -349,6 +349,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected int lastEnderPearl = -1;
 
     private String deviceModel;
+    private int deviceOS;
 
     public boolean mute = false;
 
@@ -2252,6 +2253,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     this.deviceModel = loginPacket.deviceModel;
+                    this.deviceOS = loginPacket.deviceOS;
 
                     PlayerPreLoginEvent playerPreLoginEvent;
                     this.server.getPluginManager().callEvent(playerPreLoginEvent = new PlayerPreLoginEvent(this, "Plugin reason"));
@@ -5228,6 +5230,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	synchronized(deviceModel){
     		return deviceModel;
     	}
+    }
+
+    public int getDeviceOS() {
+    	return deviceOS;
     }
 
     @Override

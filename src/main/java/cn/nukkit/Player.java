@@ -2936,7 +2936,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         	BlockFace Aface = BlockFace.fromIndex(pkpk.face);
                         	pkpk.face = Aface.getHorizontalIndex();
                         	this.dataPacket(pkpk);
-                            break;
+                            break packetswitch;
 
 
                         case PlayerActionPacket.ACTION_START_SPRINT:

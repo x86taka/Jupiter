@@ -2173,6 +2173,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         try (Timing timing = Timings.getReceiveDataPacketTiming(packet)) {
             DataPacketReceiveEvent ev = new DataPacketReceiveEvent(this, packet);
             this.server.getPluginManager().callEvent(ev);
+            /*
+            InteractPacket確認用
+            1.1.0現在:ACTION_MOUSEOVERが断続的に発生している模様。
+            これを実行すると4が出力される。
+            
+            if(packet.pid() == ProtocolInfo.INTERACT_PACKET){
+            	InteractPacket pkpk = (InteractPacket)packet;
+            	System.out.println(pkpk.action);
+            }
+            */
             if (ev.isCancelled()) {
                 timing.stopTiming();
                 return;
@@ -2923,7 +2933,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         case PlayerActionPacket.ACTION_JUMP:
                         	PlayerJumpEvent playerJumpEvent = new PlayerJumpEvent(this, new Location(((PlayerActionPacket) packet).x, ((PlayerActionPacket) packet).y, ((PlayerActionPacket) packet).z));
                         	this.server.getPluginManager().callEvent(playerJumpEvent);
-                        	System.out.println("Jumped");
                         	if(playerJumpEvent.isCancelled()){
                         		break packetswitch;
                         	}
@@ -3052,7 +3061,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET:
                     break;
 
-                case ProtocolInfo.INTERACT_PACKET:
+                case ProtocolInfo.INTERACT_PACKET://TODO INTERACT_PACKET
                     if (!this.spawned || !this.isAlive()) {
                         break;
                     }

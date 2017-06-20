@@ -713,7 +713,6 @@ public class Server implements ActionListener{
             }
         }
 
-      //if (this.getDefaultLevel() == null) {
         try{
 
         	this.getDefaultLevel().getName();

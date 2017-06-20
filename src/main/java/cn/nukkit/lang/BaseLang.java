@@ -137,8 +137,7 @@ public class BaseLang {
     public String translateString(String str, String[] params, String onlyPrefix) {
         String baseText = this.get(str);
         baseText = this.parseTranslation((baseText != null && (onlyPrefix == null || str.indexOf(onlyPrefix) == 0)) ? baseText : str, onlyPrefix);
-        int len = params.length;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i < params.length; i++) {
             baseText = baseText.replace("{%" + i + "}", this.parseTranslation(String.valueOf(params[i])));
         }
 
@@ -150,8 +149,7 @@ public class BaseLang {
         if (c instanceof TranslationContainer) {
             baseText = this.internalGet(c.getText());
             baseText = this.parseTranslation(baseText != null ? baseText : c.getText());
-            int len = ((TranslationContainer) c).getParameters().length;
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < ((TranslationContainer) c).getParameters().length; i++) {
                 baseText = baseText.replace("{%" + i + "}", this.parseTranslation(((TranslationContainer) c).getParameters()[i]));
             }
         }
@@ -186,9 +184,7 @@ public class BaseLang {
 
         String replaceString = null;
 
-        int len = text.length();
-
-        for (int i = 0; i < len; ++i) {
+        for (int i = 0; i < text.length(); ++i) {
             char c = text.charAt(i);
             if (replaceString != null) {
                 int ord = c;

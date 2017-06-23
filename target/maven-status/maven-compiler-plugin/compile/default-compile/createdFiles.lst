@@ -1,5 +1,12 @@
+cn\nukkit\Player$2.class
+cn\nukkit\block\BlockTrapdoor$1.class
 cn\nukkit\item\enchantment\EnchantmentType$1.class
+cn\nukkit\block\BlockLever$1.class
+cn\nukkit\block\BlockLeaves$1.class
+cn\nukkit\block\BlockItemFrame$1.class
 cn\nukkit\AdventureSettings$1.class
+cn\nukkit\math\BlockFace$1.class
 cn\nukkit\utils\EnumFacing$1.class
 cn\nukkit\raknet\server\RakNetServer$1.class
+cn\nukkit\block\BlockSkull$1.class
 cn\nukkit\utils\MainLogger$1.class

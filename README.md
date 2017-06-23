@@ -1,4 +1,4 @@
-# Jupiter - Nukkit Fork for 1.0.9
+# Jupiter - Nukkit Fork for 1.1.0
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Jupiterについて / About Jupiter
@@ -12,7 +12,7 @@ Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェア�
 * 日本人開発者チームが日本のユーザーのために作っています
 
 * Nukkitプラグインはもちろん、Jupiterの独自メソッドを使ったプラグインも使用できます   
-  
+
 #### 開発に至ったきっかけ  
 日本ではPHPのサーバーソフトを使ったサーバーが主流です。  
 Javaのものはほとんど使われていなく、Java(Nukkit)を使ったサーバーは人数が少なくなるという傾向がありました。  

@@ -1,8 +1,9 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.command.data.CommandArgs;
 import com.google.gson.Gson;
 
-import cn.nukkit.command.data.CommandArgs;
+import java.math.BigInteger;
 
 /**
  * author: MagicDroidX
@@ -28,9 +29,9 @@ public class CommandStepPacket extends DataPacket {
     public String command;
     public String overload;
     public long uvarint1;
-    public long currentStep;
+    public long uvarint2;
     public boolean bool;
-    public long clientId;
+    public BigInteger uvarint64;
     public CommandArgs args = new CommandArgs(); //JSON formatted command arguments
     public String string4;
 
@@ -44,9 +45,9 @@ public class CommandStepPacket extends DataPacket {
         this.command = this.getString();
         this.overload = this.getString();
         this.uvarint1 = this.getUnsignedVarInt();
-        this.currentStep = this.getUnsignedVarInt();
+        this.uvarint2 = this.getUnsignedVarInt();
         this.bool = this.getBoolean();
-        this.clientId = this.getVarLong();
+        this.uvarint64 = this.getUnsignedVarLong();
         String argsString = this.getString();
         this.args = new Gson().fromJson(argsString, CommandArgs.class);
         this.string4 = this.getString();

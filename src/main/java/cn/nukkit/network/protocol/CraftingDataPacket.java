@@ -1,9 +1,5 @@
 package cn.nukkit.network.protocol;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import cn.nukkit.inventory.FurnaceRecipe;
 import cn.nukkit.inventory.ShapedRecipe;
 import cn.nukkit.inventory.ShapelessRecipe;
@@ -12,6 +8,10 @@ import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.item.enchantment.EnchantmentEntry;
 import cn.nukkit.item.enchantment.EnchantmentList;
 import cn.nukkit.utils.BinaryStream;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Nukkit Project Team
@@ -25,7 +25,6 @@ public class CraftingDataPacket extends DataPacket {
     public static final int ENTRY_FURNACE = 2;
     public static final int ENTRY_FURNACE_DATA = 3;
     public static final int ENTRY_ENCHANT_LIST = 4;
-    public static final int ENTRY_SHULKER_BOX = 5;
 
     public List<Object> entries = new ArrayList<>();
     public boolean cleanRecipes;

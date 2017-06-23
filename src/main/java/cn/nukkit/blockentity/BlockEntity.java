@@ -4,7 +4,6 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.ChunkException;
 import co.aikar.timings.Timing;
@@ -33,11 +32,6 @@ public abstract class BlockEntity extends Position {
     public static final String ITEM_FRAME = "ItemFrame";
     public static final String CAULDRON = "Cauldron";
     public static final String BEACON = "Beacon";
-    public static final String PISTON_ARM = "PistonArm";
-    public static final String MOVING_BLOCK = "MovingBlock";
-    public static final String COMPARATOR = "Comparator";
-    public static final String HOPPER = "Hopper";
-    public static final String BED = "Bed";
 
 
     public static long count = 1;
@@ -175,11 +169,4 @@ public abstract class BlockEntity extends Position {
         return name;
     }
 
-    public static CompoundTag getDefaultCompound(Vector3 pos, String id) {
-        return new CompoundTag("")
-                .putString("id", id)
-                .putInt("x", pos.getFloorX())
-                .putInt("y", pos.getFloorY())
-                .putInt("z", pos.getFloorZ());
-    }
 }

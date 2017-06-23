@@ -52,20 +52,4 @@ public abstract class DataPacket extends BinaryStream implements Cloneable {
             return null;
         }
     }
-    
-    public long getEntityId(){
-    	return this.getVarLong();
-    }
-    
-    public void putEntityId(long eid){
-    	this.putVarLong(eid);
-    }
-    
-    public boolean canBeBatched(){
-    	return true;
-    }
-    
-    public boolean canBeSentBeforeLogin(){
-    	return false;
-    }
 }

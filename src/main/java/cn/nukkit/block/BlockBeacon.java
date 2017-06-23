@@ -5,7 +5,6 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityBeacon;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
-import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 
 /**
@@ -64,7 +63,13 @@ public class BlockBeacon extends BlockTransparent {
     }
 
     @Override
-    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+    public int[][] getDrops(Item item) {
+        return new int[][]{{Item.BEACON, 0, 1}};
+    }
+
+
+    @Override
+    public boolean place(Item item, Block block, Block target, int face, double fx, double fy, double fz, Player player) {
         boolean blockSuccess = super.place(item, block, target, face, fx, fy, fz, player);
 
         if (blockSuccess) {
@@ -77,10 +82,5 @@ public class BlockBeacon extends BlockTransparent {
         }
 
         return blockSuccess;
-    }
-
-    @Override
-    public boolean canBePushed() {
-        return false;
     }
 }

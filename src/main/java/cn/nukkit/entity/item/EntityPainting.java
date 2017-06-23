@@ -81,7 +81,7 @@ public class EntityPainting extends EntityHanging {
         pk.x = (int) this.x;
         pk.y = (int) this.y;
         pk.z = (int) this.z;
-        pk.direction = this.getDirection().getHorizontalIndex();
+        pk.direction = this.getDirection();
         pk.title = this.namedTag.getString("Motive");
 
         player.dataPacket(pk);

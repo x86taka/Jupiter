@@ -469,6 +469,79 @@ public class Server implements ActionListener{
 
     	this.loadJupiterConfig();
 
+    	/*
+        	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+	        if (advacedConf1 == null){
+	        	sb = new StringBuffer();
+		        sb.append(TextFormat.AQUA);
+		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+		        this.logger.error(sb.toString());
+	        }
+
+	        try {
+	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        //get Jupiter.yml in the jar
+	        Config jupiter = new Config(this.getDataPath() + "jupiter1.yml");
+
+	        Map<String, Object> jmap = jupiter.getAll();
+
+	        Collection<Object> objj = jmap.values();
+        	Object[] objj1 = objj.toArray();
+        	Object objj2 = objj1[objj1.length - 1];
+
+        	BidiMap mapp = new DualHashBidiMap(jmap);
+        	String keyy = (String)mapp.getKey(objj2);
+
+
+        	//get JupiterConfig key in the delectory
+        	Collection<Object> obj = jupiterconfig.values();
+        	Object[] obj1 = obj.toArray();
+        	Object obj2 = obj1[obj1.length - 1];
+
+        	BidiMap map = new DualHashBidiMap(jupiterconfig);
+        	String key1 = (String)map.getKey(obj2);
+
+
+        	//delete jupiter1.yml
+        	File jf = new File(this.dataPath + "jupiter1.yml");
+        	jf.delete();
+
+        	if(!keyy.equals(key1)){
+
+		        	File conf = new File(this.dataPath + "jupiter.yml");
+		        	conf.delete();
+	
+		        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+			        if (advacedConf == null){
+				        sb = new StringBuffer();
+				        sb.append(TextFormat.AQUA);
+				        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+				        this.logger.error(sb.toString());
+			        }
+	
+			        try {
+			            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+			        } catch (IOException ex) {
+			            throw new RuntimeException(ex);
+			        }
+	
+			        sb = new StringBuffer();
+			        sb.append(TextFormat.RED);
+			        sb.append("Jupiter.ymlが更新されたため、再作成されました。");
+			        this.logger.info(sb.toString());
+	
+			        //ロード
+			        this.loadJupiterConfig();
+		        
+
+        	}
+        	
+        	*/
+
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
         	Level.sendDestroyParticle = true;
         }else{
@@ -490,7 +563,19 @@ public class Server implements ActionListener{
         }
 
         ServerScheduler.WORKERS = (int) poolSize;
-        
+
+        int threshold;
+        try {
+            threshold = Integer.valueOf(String.valueOf(this.getConfig("network.batch-threshold", 256)));
+        } catch (Exception e) {
+            threshold = 256;
+        }
+
+        if (threshold < 0) {
+            threshold = -1;
+        }
+
+        Network.BATCH_THRESHOLD = threshold;
         this.networkCompressionLevel = (int) this.getConfig("network.compression-level", 7);
         this.networkCompressionAsync = (boolean) this.getConfig("network.async-compression", true);
 
@@ -1115,6 +1200,10 @@ public class Server implements ActionListener{
     public static void broadcastPacket(Player[] players, DataPacket packet) {
         packet.encode();
         packet.isEncoded = true;
+        if (Network.BATCH_THRESHOLD >= 0 && packet.getBuffer().length >= Network.BATCH_THRESHOLD) {
+            Server.getInstance().batchPackets(players, new DataPacket[]{packet}, false);
+            return;
+        }
 
         for (Player player : players) {
             player.dataPacket(packet);
@@ -1170,6 +1259,8 @@ public class Server implements ActionListener{
     public void broadcastPacketsCallback(byte[] data, List<String> identifiers) {
         BatchPacket pk = new BatchPacket();
         pk.payload = data;
+        pk.encode();
+        pk.isEncoded = true;
 
         for (String i : identifiers) {
             if (this.players.containsKey(i)) {

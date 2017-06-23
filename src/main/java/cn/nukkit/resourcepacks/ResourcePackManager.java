@@ -1,14 +1,13 @@
 package cn.nukkit.resourcepacks;
 
+import cn.nukkit.Server;
+import com.google.common.io.Files;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.io.Files;
-
-import cn.nukkit.Server;
 
 public class ResourcePackManager {
     private ResourcePack[] resourcePacks;
@@ -30,7 +29,6 @@ public class ResourcePackManager {
                 if (!pack.isDirectory()) { //directory resource packs temporarily unsupported
                     switch (Files.getFileExtension(pack.getName())) {
                         case "zip":
-                        case "mcpack":
                             resourcePack = new ZippedResourcePack(pack);
                             break;
                         default:

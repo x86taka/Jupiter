@@ -1,5 +1,7 @@
 package cn.nukkit.level.generator.biome;
 
+import cn.nukkit.level.generator.Normal;
+import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.level.generator.noise.Simplex;
 import cn.nukkit.math.NukkitRandom;
 
@@ -49,11 +51,10 @@ public class BiomeSelector {
         }
         return Biome.PLAINS;
     }
-
     public void recalculate() {
         this.map = new int[64 * 64];
-        for (int i = 0; i < 64; ++i) {
-            for (int j = 0; j < 64; ++j) {
+        for(int i = 0; i < 64; ++i) {
+            for(int j = 0; j < 64; ++j) {
                 this.map[i + (j << 6)] = this.lookup(i / 63d, j / 63d);
             }
         }

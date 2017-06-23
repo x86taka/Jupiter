@@ -4,9 +4,8 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.block.BlockGrowEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemNetherWart;
 import cn.nukkit.level.Level;
-import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.BlockColor;
 
 import java.util.Random;
@@ -16,7 +15,7 @@ import java.util.Random;
  */
 public class BlockNetherWart extends BlockFlowable {
 
-    public BlockNetherWart() {
+    public BlockNetherWart(){
         this(0);
     }
 
@@ -25,13 +24,13 @@ public class BlockNetherWart extends BlockFlowable {
     }
 
     @Override
-    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz) {
+    public boolean place(Item item, Block block, Block target, int face, double fx, double fy, double fz) {
         return this.place(item, block, target, face, fx, fy, fz, null);
     }
 
     @Override
-    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-        Block down = this.down();
+    public boolean place(Item item, Block block, Block target, int face, double fx, double fy, double fz, Player player) {
+        Block down = this.getSide(0);
         if (down.getId() == SOUL_SAND) {
             this.getLevel().setBlock(block, this, true, true);
             return true;
@@ -42,7 +41,7 @@ public class BlockNetherWart extends BlockFlowable {
     @Override
     public int onUpdate(int type) {
         if (type == Level.BLOCK_UPDATE_NORMAL) {
-            if (this.down().getId() != SOUL_SAND) {
+            if (this.getSide(Vector3.SIDE_DOWN).getId() != SOUL_SAND) {
                 this.getLevel().useBreakOn(this);
                 return Level.BLOCK_UPDATE_NORMAL;
             }
@@ -84,21 +83,16 @@ public class BlockNetherWart extends BlockFlowable {
     }
 
     @Override
-    public Item[] getDrops(Item item) {
+    public int[][] getDrops(Item item) {
         if (this.meta == 0x03) {
-            return new Item[]{
-                    new ItemNetherWart(0, 2 + (int) (Math.random() * ((4 - 2) + 1)))
+            return new int[][]{
+                    {Item.NETHER_WART, 0, 2+(int)(Math.random()*((4-2)+1))}
             };
         } else {
-            return new Item[]{
-                    new ItemNetherWart()
+            return new int[][]{
+                    {Item.NETHER_WART, 0, 1}
             };
         }
-    }
-
-    @Override
-    public Item toItem() {
-        return new ItemNetherWart();
     }
 }
 

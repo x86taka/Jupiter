@@ -98,6 +98,7 @@ import cn.nukkit.entity.monster.EntitySkeleton;
 import cn.nukkit.entity.monster.EntitySlime;
 import cn.nukkit.entity.monster.EntitySpider;
 import cn.nukkit.entity.monster.EntityStray;
+import cn.nukkit.entity.monster.EntityVex;
 import cn.nukkit.entity.monster.EntityVindicator;
 import cn.nukkit.entity.monster.EntityWitch;
 import cn.nukkit.entity.monster.EntityWitherSkeleton;
@@ -2897,6 +2898,7 @@ public class Server implements ActionListener{
         Entity.registerEntity("Slime", EntitySlime.class);
         Entity.registerEntity("Spider", EntitySpider.class);
         Entity.registerEntity("Stray", EntityStray.class);
+        Entity.registerEntity("Vex", EntityVex.class);
         Entity.registerEntity("Vindicator", EntityVindicator.class);
         Entity.registerEntity("Witch", EntityWitch.class);
         Entity.registerEntity("WitherSkeleton", EntityWitherSkeleton.class);

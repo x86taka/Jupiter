@@ -636,6 +636,12 @@ public class Server implements ActionListener{
         this.logger.info(sb.toString());
         
         sb = new StringBuffer();
+        sb.append("Jupiterバージョン: ");
+        sb.append(TextFormat.LIGHT_PURPLE);
+        sb.append(this.getJupiterVersion());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
         sb.append("Nukkitバージョン: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getNukkitVersion());
@@ -761,7 +767,7 @@ public class Server implements ActionListener{
         this.start();
     }
 
-    //TODO TrayIcon
+	//TODO TrayIcon
 
     public void setTrayMessage(String message){
     	this.IconMessage = message;
@@ -1740,6 +1746,12 @@ public class Server implements ActionListener{
     		return Nukkit.API_VERSION;
     	}
     }
+    
+    public String getJupiterVersion() {
+    	synchronized(Nukkit.JUPITER_VERSION){
+    		return Nukkit.JUPITER_VERSION;
+    	}
+	}
 
     /**
      * ファイルパスを取得します。

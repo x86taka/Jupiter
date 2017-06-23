@@ -1,16 +1,16 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.entity.data.Skin;
-import cn.nukkit.utils.Zlib;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import cn.nukkit.entity.data.Skin;
 
 
 /**
@@ -25,8 +25,6 @@ public class LoginPacket extends DataPacket {
     public byte gameEdition;
     public UUID clientUUID;
     public long clientId;
-    public String identityPublicKey;
-    public String serverAddress;
     public String deviceModel;
 
     public Skin skin;
@@ -40,13 +38,7 @@ public class LoginPacket extends DataPacket {
     public void decode() {
         this.protocol = this.getInt();
         this.gameEdition = (byte) this.getByte();
-        byte[] str;
-        try {
-            str = Zlib.inflate(this.get((int) this.getUnsignedVarInt()));
-        } catch (Exception e) {
-            return;
-        }
-        this.setBuffer(str, 0);
+        this.setBuffer(this.getByteArray(), 0);
         decodeChainData();
         decodeSkinData();
     }
@@ -72,10 +64,9 @@ public class LoginPacket extends DataPacket {
             if (chainMap.has("extraData")) {
                 JsonObject extra = chainMap.get("extraData").getAsJsonObject();
                 if (extra.has("displayName")) this.username = extra.get("displayName").getAsString();
+                if (extra.has("deviceModel")) this.deviceModel = extra.get("deviceModel").getAsString();
                 if (extra.has("identity")) this.clientUUID = UUID.fromString(extra.get("identity").getAsString());
             }
-            if (chainMap.has("identityPublicKey"))
-                this.identityPublicKey = chainMap.get("identityPublicKey").getAsString();
         }
     }
 
@@ -83,10 +74,9 @@ public class LoginPacket extends DataPacket {
         JsonObject skinToken = decodeToken(new String(this.get(this.getLInt())));
         String skinId = null;
         if (skinToken.has("ClientRandomId")) this.clientId = skinToken.get("ClientRandomId").getAsLong();
-        if (skinToken.has("ServerAddress")) this.serverAddress = skinToken.get("ServerAddress").getAsString();
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
+        if (skinToken.has("deviceModel")) this.deviceModel = skinToken.get("deviceModel").getAsString();
         if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
-        if (skinToken.has("DeviceModel")) this.deviceModel = skinToken.get("DeviceModel").getAsString();
     }
 
     private JsonObject decodeToken(String token) {

@@ -355,6 +355,13 @@ public class Server implements ActionListener{
             new File(dataPath + "compileOrder/").mkdirs();
             this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
+        
+        /*
+        if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
+            new File(dataPath + "JavaScriptPlugin/").mkdirs();
+            this.logger.info(TextFormat.AQUA + pluginPath + "JavaScriptPlugin/  を作成しました。");
+        }
+        */
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 
@@ -469,79 +476,6 @@ public class Server implements ActionListener{
 
     	this.loadJupiterConfig();
 
-    	/*
-        	InputStream advacedConf1 = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-	        if (advacedConf1 == null){
-	        	sb = new StringBuffer();
-		        sb.append(TextFormat.AQUA);
-		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-		        this.logger.error(sb.toString());
-	        }
-
-	        try {
-	            Utils.writeFile(this.dataPath + "jupiter1.yml", advacedConf1);
-	        } catch (IOException e) {
-	            throw new RuntimeException(e);
-	        }
-
-	        //get Jupiter.yml in the jar
-	        Config jupiter = new Config(this.getDataPath() + "jupiter1.yml");
-
-	        Map<String, Object> jmap = jupiter.getAll();
-
-	        Collection<Object> objj = jmap.values();
-        	Object[] objj1 = objj.toArray();
-        	Object objj2 = objj1[objj1.length - 1];
-
-        	BidiMap mapp = new DualHashBidiMap(jmap);
-        	String keyy = (String)mapp.getKey(objj2);
-
-
-        	//get JupiterConfig key in the delectory
-        	Collection<Object> obj = jupiterconfig.values();
-        	Object[] obj1 = obj.toArray();
-        	Object obj2 = obj1[obj1.length - 1];
-
-        	BidiMap map = new DualHashBidiMap(jupiterconfig);
-        	String key1 = (String)map.getKey(obj2);
-
-
-        	//delete jupiter1.yml
-        	File jf = new File(this.dataPath + "jupiter1.yml");
-        	jf.delete();
-
-        	if(!keyy.equals(key1)){
-
-		        	File conf = new File(this.dataPath + "jupiter.yml");
-		        	conf.delete();
-	
-		        	InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-			        if (advacedConf == null){
-				        sb = new StringBuffer();
-				        sb.append(TextFormat.AQUA);
-				        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-				        this.logger.error(sb.toString());
-			        }
-	
-			        try {
-			            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-			        } catch (IOException ex) {
-			            throw new RuntimeException(ex);
-			        }
-	
-			        sb = new StringBuffer();
-			        sb.append(TextFormat.RED);
-			        sb.append("Jupiter.ymlが更新されたため、再作成されました。");
-			        this.logger.info(sb.toString());
-	
-			        //ロード
-			        this.loadJupiterConfig();
-		        
-
-        	}
-        	
-        	*/
-
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
         	Level.sendDestroyParticle = true;
         }else{
@@ -563,19 +497,7 @@ public class Server implements ActionListener{
         }
 
         ServerScheduler.WORKERS = (int) poolSize;
-
-        int threshold;
-        try {
-            threshold = Integer.valueOf(String.valueOf(this.getConfig("network.batch-threshold", 256)));
-        } catch (Exception e) {
-            threshold = 256;
-        }
-
-        if (threshold < 0) {
-            threshold = -1;
-        }
-
-        Network.BATCH_THRESHOLD = threshold;
+        
         this.networkCompressionLevel = (int) this.getConfig("network.compression-level", 7);
         this.networkCompressionAsync = (boolean) this.getConfig("network.async-compression", true);
 
@@ -714,6 +636,12 @@ public class Server implements ActionListener{
         this.logger.info(sb.toString());
         
         sb = new StringBuffer();
+        sb.append("Jupiterバージョン: ");
+        sb.append(TextFormat.LIGHT_PURPLE);
+        sb.append(this.getJupiterVersion());
+        this.logger.info(sb.toString());
+        
+        sb = new StringBuffer();
         sb.append("Nukkitバージョン: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getNukkitVersion());
@@ -791,7 +719,6 @@ public class Server implements ActionListener{
             }
         }
 
-      //if (this.getDefaultLevel() == null) {
         try{
 
         	this.getDefaultLevel().getName();
@@ -840,7 +767,7 @@ public class Server implements ActionListener{
         this.start();
     }
 
-    //TODO TrayIcon
+	//TODO TrayIcon
 
     public void setTrayMessage(String message){
     	this.IconMessage = message;
@@ -895,29 +822,6 @@ public class Server implements ActionListener{
     public void trayMessage(String title, String message, MessageType type){
     	this.getTrayIcon().displayMessage(title, message, type);
     }
-    
-    /*
-    public void loadTrayIcon(){
-    	try {
-        	SystemTray.getSystemTray().remove(getTrayIcon());
-        	
-        	icon = getTrayIcon();
-        	icon.setImage(this.getTrayImage());
-        	
-        	ArrayList<TrayIcon> iconlist = new ArrayList<TrayIcon>();
-			TrayIcon[] icons = SystemTray.getSystemTray().getTrayIcons();
-			if(icons != null){
-				for(TrayIcon i : icons){
-					iconlist.add(i);
-				}
-			}
-        	
-			SystemTray.getSystemTray().add(icon);
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
-    }
-    */
 
     private void defaultloadTrayIcon(){
     	try {
@@ -1200,10 +1104,6 @@ public class Server implements ActionListener{
     public static void broadcastPacket(Player[] players, DataPacket packet) {
         packet.encode();
         packet.isEncoded = true;
-        if (Network.BATCH_THRESHOLD >= 0 && packet.getBuffer().length >= Network.BATCH_THRESHOLD) {
-            Server.getInstance().batchPackets(players, new DataPacket[]{packet}, false);
-            return;
-        }
 
         for (Player player : players) {
             player.dataPacket(packet);
@@ -1259,8 +1159,6 @@ public class Server implements ActionListener{
     public void broadcastPacketsCallback(byte[] data, List<String> identifiers) {
         BatchPacket pk = new BatchPacket();
         pk.payload = data;
-        pk.encode();
-        pk.isEncoded = true;
 
         for (String i : identifiers) {
             if (this.players.containsKey(i)) {
@@ -1848,6 +1746,12 @@ public class Server implements ActionListener{
     		return Nukkit.API_VERSION;
     	}
     }
+    
+    public String getJupiterVersion() {
+    	synchronized(Nukkit.JUPITER_VERSION){
+    		return Nukkit.JUPITER_VERSION;
+    	}
+	}
 
     /**
      * ファイルパスを取得します。

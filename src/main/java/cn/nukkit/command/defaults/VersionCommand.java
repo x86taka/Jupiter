@@ -1,13 +1,13 @@
 package cn.nukkit.command.defaults;
 
+import java.util.List;
+
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginDescription;
 import cn.nukkit.utils.TextFormat;
-
-import java.util.List;
 
 /**
  * Created on 2015/11/12 by xtypr.
@@ -38,7 +38,7 @@ public class VersionCommand extends VanillaCommand {
                     sender.getServer().getApiVersion(),
                     sender.getServer().getVersion(),
                     String.valueOf(ProtocolInfo.CURRENT_PROTOCOL)
-            }));
+            }) + "使用しているJupiterのバージョンは" + sender.getServer().getJupiterVersion() + "です。");
         } else {
             String pluginName = "";
             for (String arg : args) pluginName += arg + " ";

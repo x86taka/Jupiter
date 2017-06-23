@@ -1,12 +1,11 @@
 package cn.nukkit.entity.boss;
 
 import cn.nukkit.Player;
-import cn.nukkit.entity.mob.EntityMob;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 
-public class EntityElderGuardian extends EntityMob {
+public class EntityElderGuardian extends EntityBoss {
 
 	public static final int NETWORK_ID = 50;
 
@@ -20,6 +19,7 @@ public class EntityElderGuardian extends EntityMob {
     }
     @Override
     protected void initEntity() {
+    	this.setMaxHealth(80);
         super.initEntity();
     }
 

@@ -1,27 +1,26 @@
-package cn.nukkit.entity.boss;
+package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 
-public class EntityWither extends EntityBoss {
-
-	public static final int NETWORK_ID = 52;
+public class EntitySilverfish extends EntityMonster {
+    public static final int NETWORK_ID = 39;
 
     @Override
     public int getNetworkId() {
         return NETWORK_ID;
     }
 
-    public EntityWither(FullChunk chunk, CompoundTag nbt) {
+    public EntitySilverfish(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
     @Override
-    protected void initEntity() {
-    	this.setMaxHealth(300);
-        super.initEntity();
+    public String getName() {
+        return "Silver fish";
     }
+
 
     @Override
     public void spawnTo(Player player) {

@@ -3056,6 +3056,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setRaining(boolean raining) {
+    	if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
         WeatherChangeEvent ev = new WeatherChangeEvent(this, raining);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -3095,6 +3096,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setThundering(boolean thundering) {
+    	if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
         ThunderChangeEvent ev = new ThunderChangeEvent(this, thundering);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -3133,6 +3135,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void sendWeather(Player[] players) {
+    	if (!this.getServer().getJupiterConfigBoolean("weather"))return;
         if (players == null) {
             players = this.getPlayers().values().stream().toArray(Player[]::new);
         }

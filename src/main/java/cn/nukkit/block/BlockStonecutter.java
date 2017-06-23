@@ -38,7 +38,9 @@ public class BlockStonecutter extends BlockSolid {
     }
 
     @Override
-    public Item[] getDrops(Item item) {
-        return new Item[]{Item.get(Item.STONECUTTER)};
+    public int[][] getDrops(Item item) {
+        return new int[][]{
+                {Item.STONECUTTER, 0, 1}
+        };
     }
 }

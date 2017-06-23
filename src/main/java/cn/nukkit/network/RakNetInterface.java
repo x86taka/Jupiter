@@ -1,10 +1,5 @@
 package cn.nukkit.network;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import cn.nukkit.Nukkit;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -21,6 +16,11 @@ import cn.nukkit.raknet.server.ServerInstance;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * author: MagicDroidX
@@ -240,7 +240,11 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
             byte[] buffer = packet.getBuffer();
             String identifier = this.identifiers.get(player.rawHashCode());
             EncapsulatedPacket pk = null;
-            if (!needACK) {
+            if (!packet.isEncoded) {
+                packet.encode();
+                packet.isEncoded = true;
+                buffer = packet.getBuffer();
+            } else if (!needACK) {
                 if (packet.encapsulatedPacket == null) {
                     packet.encapsulatedPacket = new CacheEncapsulatedPacket();
                     packet.encapsulatedPacket.identifierACK = null;
@@ -257,7 +261,7 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
             }
 
 
-            if (!immediate && !needACK && packet.pid() != ProtocolInfo.BATCH_PACKET && buffer != null) {
+            if (!immediate && !needACK && packet.pid() != ProtocolInfo.BATCH_PACKET && Network.BATCH_THRESHOLD >= 0 && buffer != null && buffer.length >= Network.BATCH_THRESHOLD) {
                 this.server.batchPackets(new Player[]{player}, new DataPacket[]{packet}, true);
                 return null;
             }
@@ -291,12 +295,14 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
     }
 
     private DataPacket getPacket(byte[] buffer) {
-        int start = 0;
+        byte pid = buffer[0];
+        int start = 1;
 
-        if (buffer[0] == (byte) 0xfe) {
+        if (pid == (byte) 0xfe) {
+            pid = buffer[1];
             start++;
         }
-        DataPacket data = this.network.getPacket(ProtocolInfo.BATCH_PACKET);
+        DataPacket data = this.network.getPacket(pid);
 
         if (data == null) {
             return null;

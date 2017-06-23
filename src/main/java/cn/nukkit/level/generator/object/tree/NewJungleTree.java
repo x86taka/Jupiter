@@ -1,15 +1,11 @@
 package cn.nukkit.level.generator.object.tree;
 
-import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockLeaves;
-import cn.nukkit.block.BlockUnknown;
-import cn.nukkit.block.BlockVine;
-import cn.nukkit.block.BlockWood;
+import cn.nukkit.block.*;
 import cn.nukkit.level.ChunkManager;
-import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.utils.EnumFacing;
 
 /**
  * Created by CreeperFace on 26. 10. 2016.
@@ -73,7 +69,7 @@ public class NewJungleTree extends TreeGenerator {
             if (!flag) {
                 return false;
             } else {
-                BlockVector3 down = position.down();
+                BlockVector3 down = position.getSide(Vector3.SIDE_DOWN);
                 int block = worldIn.getBlockIdAt(down.x, down.y, down.z);
 
                 if ((block == Block.GRASS || block == Block.DIRT || block == Block.FARMLAND) && position.getY() < 256 - i - 1) {
@@ -104,7 +100,7 @@ public class NewJungleTree extends TreeGenerator {
                     }
 
                     for (int j3 = 0; j3 < i; ++j3) {
-                        BlockVector3 up = position.up(j3);
+                        BlockVector3 up = position.getSide(Vector3.SIDE_UP, j3);
                         int id = worldIn.getBlockIdAt(up.x, up.y, up.z);
 
                         if (id == Block.AIR || id == Block.LEAVES || id == Block.VINE) {
@@ -140,10 +136,10 @@ public class NewJungleTree extends TreeGenerator {
                                 pos2.setComponents(l4, k3, i5);
 
                                 if (worldIn.getBlockIdAt(pos2.x, pos2.y, pos2.z) == Block.LEAVES) {
-                                    BlockVector3 blockpos2 = pos2.west();
-                                    BlockVector3 blockpos3 = pos2.east();
-                                    BlockVector3 blockpos4 = pos2.north();
-                                    BlockVector3 blockpos1 = pos2.south();
+                                    BlockVector3 blockpos2 = pos2.getSide(Vector3.SIDE_WEST);
+                                    BlockVector3 blockpos3 = pos2.getSide(BlockVector3.SIDE_EAST);
+                                    BlockVector3 blockpos4 = pos2.getSide(BlockVector3.SIDE_NORTH);
+                                    BlockVector3 blockpos1 = pos2.getSide(BlockVector3.SIDE_SOUTH);
 
                                     if (rand.nextBoundedInt(4) == 0 && worldIn.getBlockIdAt(blockpos2.x, blockpos2.y, blockpos2.z) == Block.AIR) {
                                         this.addHangingVine(worldIn, blockpos2, 8);
@@ -167,10 +163,10 @@ public class NewJungleTree extends TreeGenerator {
 
                     if (rand.nextBoundedInt(5) == 0 && i > 5) {
                         for (int l3 = 0; l3 < 2; ++l3) {
-                            for (BlockFace enumfacing : BlockFace.Plane.HORIZONTAL) {
+                            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
                                 if (rand.nextBoundedInt(4 - l3) == 0) {
-                                    BlockFace enumfacing1 = enumfacing.getOpposite();
-                                    this.placeCocoa(worldIn, rand.nextBoundedInt(3), position.add(enumfacing1.getXOffset(), i - 5 + l3, enumfacing1.getZOffset()), enumfacing);
+                                    EnumFacing enumfacing1 = enumfacing.getOpposite();
+                                    this.placeCocoa(worldIn, rand.nextBoundedInt(3), position.add(enumfacing1.getFrontOffsetX(), i - 5 + l3, enumfacing1.getFrontOffsetZ()), enumfacing);
                                 }
                             }
                         }
@@ -186,7 +182,7 @@ public class NewJungleTree extends TreeGenerator {
         }
     }
 
-    private void placeCocoa(ChunkManager worldIn, int age, BlockVector3 pos, BlockFace side) {
+    private void placeCocoa(ChunkManager worldIn, int age, BlockVector3 pos, EnumFacing side) {
         int meta = getCocoaMeta(age, side.getIndex());
 
         this.setBlockAndNotifyAdequately(worldIn, pos, new BlockUnknown(127, meta));
@@ -200,9 +196,9 @@ public class NewJungleTree extends TreeGenerator {
         this.addVine(worldIn, pos, meta);
         int i = 4;
 
-        for (pos = pos.down(); i > 0 && worldIn.getBlockIdAt(pos.x, pos.y, pos.z) == Block.AIR; --i) {
+        for (pos = pos.getSide(BlockVector3.SIDE_DOWN); i > 0 && worldIn.getBlockIdAt(pos.x, pos.y, pos.z) == Block.AIR; --i) {
             this.addVine(worldIn, pos, meta);
-            pos = pos.down();
+            pos = pos.getSide(BlockVector3.SIDE_DOWN);
         }
     }
 

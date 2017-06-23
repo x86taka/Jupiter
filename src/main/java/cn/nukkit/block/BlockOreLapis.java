@@ -1,7 +1,6 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemDye;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.NukkitRandom;
 
@@ -48,13 +47,13 @@ public class BlockOreLapis extends BlockSolid {
     }
 
     @Override
-    public Item[] getDrops(Item item) {
+    public int[][] getDrops(Item item) {
         if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_STONE) {
-            return new Item[]{
-                    new ItemDye(4, new Random().nextInt(4) + 4)
+            return new int[][]{
+                    {Item.DYE, 4, new Random().nextInt(4) + 4}
             };
         } else {
-            return new Item[0];
+            return new int[0][0];
         }
     }
 

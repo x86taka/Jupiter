@@ -542,7 +542,11 @@ public class Server implements ActionListener{
         	
         	*/
 
-    	Level.sendDestroyBlockParticle = this.getJupiterConfigBoolean("destroy-block-particle");
+        if(this.getJupiterConfigBoolean("destroy-block-particle")){
+        	Level.sendDestroyParticle = true;
+        }else{
+        	Level.sendDestroyParticle = false;
+        }
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
@@ -560,6 +564,18 @@ public class Server implements ActionListener{
 
         ServerScheduler.WORKERS = (int) poolSize;
 
+        int threshold;
+        try {
+            threshold = Integer.valueOf(String.valueOf(this.getConfig("network.batch-threshold", 256)));
+        } catch (Exception e) {
+            threshold = 256;
+        }
+
+        if (threshold < 0) {
+            threshold = -1;
+        }
+
+        Network.BATCH_THRESHOLD = threshold;
         this.networkCompressionLevel = (int) this.getConfig("network.compression-level", 7);
         this.networkCompressionAsync = (boolean) this.getConfig("network.async-compression", true);
 
@@ -1184,6 +1200,10 @@ public class Server implements ActionListener{
     public static void broadcastPacket(Player[] players, DataPacket packet) {
         packet.encode();
         packet.isEncoded = true;
+        if (Network.BATCH_THRESHOLD >= 0 && packet.getBuffer().length >= Network.BATCH_THRESHOLD) {
+            Server.getInstance().batchPackets(players, new DataPacket[]{packet}, false);
+            return;
+        }
 
         for (Player player : players) {
             player.dataPacket(packet);

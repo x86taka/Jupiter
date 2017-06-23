@@ -1,9 +1,6 @@
 package cn.nukkit.level;
 
-import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.LevelException;
 
@@ -66,15 +63,15 @@ public class Position extends Vector3 {
         return false;
     }
 
-    public Position getSide(BlockFace face) {
-        return this.getSide(face, 1);
+    public Position getSide(int side) {
+        return this.getSide(side, 1);
     }
 
-    public Position getSide(BlockFace face, int step) {
+    public Position getSide(int side, int step) {
         if (!this.isValid()) {
             throw new LevelException("Undefined Level reference");
         }
-        return Position.fromObject(super.getSide(face, step), this.level);
+        return Position.fromObject(super.getSide(side, step), this.level);
     }
 
     @Override
@@ -98,50 +95,6 @@ public class Position extends Vector3 {
     public Location getLocation() {
         if (this.isValid()) return new Location(this.x, this.y, this.z, 0, 0, this.level);
         else throw new LevelException("Undefined Level reference");
-    }
-
-    public Entity getMinDistanceEntity(){
-    	return this.getMinDistanceEntity(0);
-    }
-
-    public Entity getMinDistanceEntity(double maxDistance){
-    	Entity result = null;
-    	double minDistance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Entity entity : this.getLevel().getEntities()){
-    		if (maxDistance != 0){
-    			double distance = this.distance(entity);
-    			if (!(entity.equals(((Entity)this))) && distance < minDistance && distance <= maxDistance){
-    				result = entity;
-    				minDistance = distance;
-    			}
-    		}
-    	}
-
-    	return result;
-    }
-
-    public Player getMinDistancePlayer(){
-    	return this.getMinDistancePlayer(0);
-    }
-
-    public Player getMinDistancePlayer(double maxDistance){
-    	Player result = null;
-    	double minDistance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Player player : this.getLevel().getPlayers().values()){
-    		if (maxDistance != 0){
-    			double distance = this.distance(player);
-    			if (!(player.equals(((Entity)this))) && distance < minDistance && distance <= maxDistance){
-    				result = player;
-    				minDistance = distance;
-    			}
-    		}
-    	}
-
-    	return result;
     }
 
     @Override
@@ -224,4 +177,3 @@ public class Position extends Vector3 {
         return (Position) super.clone();
     }
 }
-

@@ -40,8 +40,10 @@ public class BlockStickyPiston extends BlockSolid{
     }
 
     @Override
-    public Item[] getDrops(Item item) {
-    	return new Item[]{Item.get(Item.STICKY_PISTON)};
+    public int[][] getDrops(Item item) {
+        return new int[][]{
+                {Item.STICKY_PISTON, 0, 1}
+        };
     }
 
 

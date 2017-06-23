@@ -1682,6 +1682,48 @@ public abstract class Entity extends Location implements Metadatable {
 
         return true;
     }
+    
+    public Entity getMinDistanceEntity(){
+    	return this.getMinDistanceEntity(0);
+    }
+
+    public Entity getMinDistanceEntity(double maxDistance){
+    	Entity result = null;
+    	double distance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Entity entity : this.getLevel().getEntities()){
+    		if (maxDistance != 0){
+    			if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) > maxDistance){
+    				result = entity;
+    				distance = this.distance(entity);
+    			}
+    		}
+    	}
+
+    	return result;
+    }
+
+    public Player getMinDistancePlayer(){
+    	return this.getMinDistancePlayer(0);
+    }
+
+    public Player getMinDistancePlayer(double maxDistance){
+    	Player result = null;
+    	double distance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Player player : this.getLevel().getPlayers().values()){
+    		if (maxDistance != 0){
+    			if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) > maxDistance){
+    				result = player;
+    				distance = this.distance(player);
+    			}
+    		}
+    	}
+
+    	return result;
+    }
 
     public Vector3 getMotion() {
         return new Vector3(this.motionX, this.motionY, this.motionZ);

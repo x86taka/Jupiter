@@ -1854,7 +1854,6 @@ public class Server implements ActionListener{
             level.setAutoSave(this.autoSave);
         }
     }
-
     /**
      * サーバーのワールドタイプを取得します。
      * <br>server.propertiesのlevel-typeの値です。

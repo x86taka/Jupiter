@@ -360,6 +360,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public boolean mute = false;
 
     public EntityFishingHook fishingHook;
+    
+    private boolean allowegg = true;
+    
+    private boolean allowenderpearl = true;
+    
+    private boolean allowexbottle = true;
+    
+    private boolean allowsppotion = true;
+    
+    private boolean allowbow = true;
 
     protected boolean enableRevert = true;
     
@@ -756,6 +766,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.creationTime = System.currentTimeMillis();
         this.enableRevert = this.server.getJupiterConfigBoolean("enable-revert");
+        this.allowegg = this.server.getJupiterConfigBoolean("allow-egg");
+        this.allowenderpearl = this.server.getJupiterConfigBoolean("allow-enderpearl");
+        this.allowexbottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
+        this.allowsppotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
+        this.allowbow = this.server.getJupiterConfigBoolean("allow-bow");
     }
 
     /**
@@ -1292,7 +1307,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
-    //TODO 実績処理
     public boolean awardAchievement(String achievementId) {
         if (!Server.getInstance().getPropertyBoolean("achievements", true)) {
             return false;
@@ -1351,7 +1365,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public boolean setGamemode(int gamemode, boolean clientSide, AdventureSettings newSettings) {
-        if (gamemode < 0 || gamemode > 3 || this.gamemode == gamemode) {
+        if (gamemode < 0 || gamemode > 3){// || this.gamemode == gamemode) {
             return false;
         }
 
@@ -2582,7 +2596,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 snowball.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.EGG && this.getServer().getJupiterConfigBoolean("allow-egg")) {
+                        	 } else if (item.getId() == Item.EGG && allowegg) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2616,7 +2630,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 egg.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.getServer().getJupiterConfigBoolean("allow-enderpearl")) {
+                        	 } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && allowenderpearl) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2651,7 +2665,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 enderPearl.spawnToAll();
                             }
                             this.lastEnderPearl = this.server.getTick();
-                        	 } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.getServer().getJupiterConfigBoolean("allow-experience-bottle")) {
+                        	 } else if (item.getId() == Item.EXPERIENCE_BOTTLE && allowexbottle) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2685,7 +2699,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.SPLASH_POTION && this.getServer().getJupiterConfigBoolean("allow-splash-potion")) {
+                        	 } else if (item.getId() == Item.SPLASH_POTION && allowsppotion) {
                             CompoundTag nbt = new CompoundTag()
                                     .putList(new ListTag<DoubleTag>("Pos")
                                             .add(new DoubleTag("", x))
@@ -2788,7 +2802,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                         case PlayerActionPacket.ACTION_RELEASE_ITEM:
                             if (this.startAction > -1 && this.getDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION)) {
-                            	if (this.inventory.getItemInHand().getId() == Item.BOW && this.getServer().getJupiterConfigBoolean("allow-bow")) {
+                            	if (this.inventory.getItemInHand().getId() == Item.BOW && allowbow) {
 
                                     Item bow = this.inventory.getItemInHand();
                                     ItemArrow itemArrow = new ItemArrow();

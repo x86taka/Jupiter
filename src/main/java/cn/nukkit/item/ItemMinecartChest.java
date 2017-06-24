@@ -2,7 +2,7 @@ package cn.nukkit.item;
 
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.item.EntityMinecartChest;
+import cn.nukkit.entity.vehicle.EntityMinecartChest;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;

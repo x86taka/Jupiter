@@ -361,15 +361,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public EntityFishingHook fishingHook;
     
-    private boolean allowegg = true;
+    private boolean allowEgg = true;
     
-    private boolean allowenderpearl = true;
+    private boolean allowEnderpearl = true;
     
-    private boolean allowexbottle = true;
+    private boolean allowXpBottle = true;
     
-    private boolean allowsppotion = true;
+    private boolean allowSplashPotion = true;
     
-    private boolean allowbow = true;
+    private boolean allowBow = true;
 
     protected boolean enableRevert = true;
     
@@ -745,11 +745,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.creationTime = System.currentTimeMillis();
         this.enableRevert = this.server.getJupiterConfigBoolean("enable-revert");
         this.allowsnowball = this.server.getJupiterConfigBoolean("allow-snowball");
-        this.allowegg = this.server.getJupiterConfigBoolean("allow-egg");
-        this.allowenderpearl = this.server.getJupiterConfigBoolean("allow-enderpearl");
-        this.allowexbottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
-        this.allowsppotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
-        this.allowbow = this.server.getJupiterConfigBoolean("allow-bow");
+        this.allowEgg = this.server.getJupiterConfigBoolean("allow-egg");
+        this.allowEnderpearl = this.server.getJupiterConfigBoolean("allow-enderpearl");
+        this.allowXpBottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
+        this.allowSplashPotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
+        this.allowBow = this.server.getJupiterConfigBoolean("allow-bow");
     }
 
     /**
@@ -1917,6 +1917,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private ArrayList<String> messageQueue = new ArrayList<String>();
 	private boolean allowsnowball;
+	private boolean keepInventory;
+	private boolean keepExperience;
 
     public void checkNetwork() {
         if (!this.isOnline()) {
@@ -2577,7 +2579,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 snowball.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.EGG && allowegg) {
+                        	 } else if (item.getId() == Item.EGG && this.allowEgg) {
                             EntityEgg egg = new EntityEgg(this.chunk, nbt, this);
 
                             egg.setMotion(egg.getMotion().multiply(f));
@@ -2597,7 +2599,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 egg.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && allowenderpearl) {
+                        	 } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.allowEnderpearl) {
                             EntityEnderPearl enderPearl = new EntityEnderPearl(this.chunk, nbt, this);
 
                             enderPearl.setMotion(enderPearl.getMotion().multiply(f));
@@ -2618,7 +2620,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 enderPearl.spawnToAll();
                             }
                             this.lastEnderPearl = this.server.getTick();
-                        	 } else if (item.getId() == Item.EXPERIENCE_BOTTLE && allowexbottle) {
+                        	 } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.allowXpBottle) {
                             nbt.putInt("Potion", item.getDamage());
 
                             Entity bottle = new EntityExpBottle(this.chunk, nbt, this);
@@ -2640,7 +2642,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                        	 } else if (item.getId() == Item.SPLASH_POTION && allowsppotion) {
+                        	 } else if (item.getId() == Item.SPLASH_POTION && this.allowSplashPotion) {
                             nbt.putShort("PotionId", item.getDamage());
 
                             Entity bottle = new EntityPotion(this.chunk, nbt, this);
@@ -2731,7 +2733,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                         case PlayerActionPacket.ACTION_RELEASE_ITEM:
                             if (this.startAction > -1 && this.getDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION)) {
-                            	if (this.inventory.getItemInHand().getId() == Item.BOW && allowbow) {
+                            	if (this.inventory.getItemInHand().getId() == Item.BOW && this.allowBow) {
 
                                     Item bow = this.inventory.getItemInHand();
                                     ItemArrow itemArrow = new ItemArrow();
@@ -4566,10 +4568,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.health = 0;
         this.scheduleUpdate();
 
-        PlayerDeathEvent ev;
+        
+        PlayerDeathEvent ev = null;
+        if (this.keepInventory){
+        	ev.setKeepInventory(true);
+        }
+        if (this.keepExperience){
+        	ev.setKeepExperience(true);
+        }
         this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
 
-        if (!ev.getKeepInventory() && !(this.getServer().getJupiterConfigBoolean("keep-inventory"))) {
+        
+        if (!ev.getKeepInventory()) {
             for (Item item : ev.getDrops()) {
                 this.level.dropItem(this, item, null, true, 40);
             }
@@ -4579,7 +4589,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        if (!ev.getKeepExperience() && !(this.getServer().getJupiterConfigBoolean("keep-experience"))) {
+        if (this.keepExperience){
+        	ev.setKeepExperience(true);
+        }
+        if (!ev.getKeepExperience()) {
             if (this.isSurvival() || this.isAdventure()) {
                 int exp = ev.getExperience() * 7;
                 if (exp > 100) exp = 100;

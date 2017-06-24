@@ -1,5 +1,8 @@
 package cn.nukkit.item;
 
+import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.utils.BlockColor;
+
 /**
  * author: MagicDroidX
  * Nukkit Project
@@ -54,5 +57,34 @@ abstract public class ItemArmor extends Item {
         }
 
         return 0;
+    }
+
+    public void setCustomColor(BlockColor color){
+        CompoundTag tag;
+        if(this.hasCompoundTag()){
+            tag = this.getNamedTag();
+        }else{
+            tag = new CompoundTag();
+        }
+        tag.putInt("customColor", color.getRGB());
+        this.setCompoundTag(tag);
+    }
+
+    public CompoundTag getCustomColor(){
+        if(!this.hasCompoundTag()) return null;
+        CompoundTag tag = this.getNamedTag();
+        if(tag.getCompound("customColor") != null){
+            return tag.getCompound("customColor");
+        }
+        return null;
+    }
+
+    public void clearCustomColor(){
+        if(!this.hasCompoundTag()) return;
+        CompoundTag tag = this.getNamedTag();
+        if(tag.getCompound("customColor") != null){
+            tag.remove("customColor");
+        }
+        this.setCompoundTag(tag);
     }
 }

@@ -1117,6 +1117,56 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.CARPET, 2));
         addCreativeItem(Item.get(Item.CARPET, 6));
 
+        addCreativeItem(Item.get(Item.PURPLE_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.WHITE_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.ORANGE_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.MAGENTA_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.LIGHT_BLUE_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.YELLOW_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.LIME_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.PINK_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.GRAY_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.SILVER_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.CYAN_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.BLUE_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.BROWN_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.GREEN_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.RED_GLAZED_TERRACOTTA, 0));
+        addCreativeItem(Item.get(Item.BLACK_GLAZED_TERRACOTTA, 0));
+        
+        addCreativeItem(Item.get(Item.CONCRETE, 0));
+        addCreativeItem(Item.get(Item.CONCRETE, 8));
+        addCreativeItem(Item.get(Item.CONCRETE, 7));
+        addCreativeItem(Item.get(Item.CONCRETE, 15));
+        addCreativeItem(Item.get(Item.CONCRETE, 12));
+        addCreativeItem(Item.get(Item.CONCRETE, 14));
+        addCreativeItem(Item.get(Item.CONCRETE, 1));
+        addCreativeItem(Item.get(Item.CONCRETE, 4));
+        addCreativeItem(Item.get(Item.CONCRETE, 5));
+        addCreativeItem(Item.get(Item.CONCRETE, 13));
+        addCreativeItem(Item.get(Item.CONCRETE, 9));
+        addCreativeItem(Item.get(Item.CONCRETE, 3));
+        addCreativeItem(Item.get(Item.CONCRETE, 11));
+        addCreativeItem(Item.get(Item.CONCRETE, 10));
+        addCreativeItem(Item.get(Item.CONCRETE, 2));
+        addCreativeItem(Item.get(Item.CONCRETE, 6));
+        
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 0));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 8));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 7));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 15));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 12));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 14));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 1));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 4));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 5));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 13));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 9));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 3));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 11));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 10));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 2));
+        addCreativeItem(Item.get(Item.CONCRETE_POWDER, 6));
 
         //Tools
         addCreativeItem(Item.get(Item.RAIL, 0));

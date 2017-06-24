@@ -89,7 +89,7 @@ public class EntitySheep extends EntityAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getWoolData());
+            this.setColor(((ItemDye) item).getDyeColor().getBlockColorData());
             return true;
         }
 
@@ -130,13 +130,13 @@ public class EntitySheep extends EntityAnimal {
         double rand = random.nextDouble(1, 100);
 
         if (rand <= 0.164) {
-            return DyeColor.PINK.getWoolData();
+            return DyeColor.PINK.getBlockColorData();
         }
 
         if (rand <= 15) {
-            return random.nextBoolean() ? DyeColor.BLACK.getWoolData() : random.nextBoolean() ? DyeColor.GRAY.getWoolData() : DyeColor.LIGHT_GRAY.getWoolData();
+            return random.nextBoolean() ? DyeColor.BLACK.getBlockColorData() : random.nextBoolean() ? DyeColor.GRAY.getBlockColorData() : DyeColor.LIGHT_GRAY.getBlockColorData();
         }
 
-        return DyeColor.WHITE.getWoolData();
+        return DyeColor.WHITE.getBlockColorData();
     }
 }

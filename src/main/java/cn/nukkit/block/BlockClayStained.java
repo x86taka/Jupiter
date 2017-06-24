@@ -20,7 +20,7 @@ public class BlockClayStained extends BlockSolid {
     }
 
     public BlockClayStained(DyeColor dyeColor) {
-        this(dyeColor.getWoolData());
+        this(dyeColor.getBlockColorData());
     }
 
     @Override
@@ -59,11 +59,11 @@ public class BlockClayStained extends BlockSolid {
 
     @Override
     public BlockColor getColor() {
-        return DyeColor.getByWoolData(meta).getColor();
+        return DyeColor.getByBlockColorData(meta).getColor();
     }
 
     public DyeColor getDyeColor() {
-        return DyeColor.getByWoolData(meta);
+        return DyeColor.getByBlockColorData(meta);
     }
 
 }

@@ -10,7 +10,7 @@ import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.TextFormat;
 
 /**
@@ -49,7 +49,7 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public String getName() {
-        return "Bed Block";
+    	return getDyeColor().getName() + " Bed";
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BlockBed extends BlockTransparent {
         boolean isNight = (time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE);
 
         if (player != null && !isNight) {
-            player.sendMessage(TextFormat.GRAY + "You can only sleep at night");
+            player.sendMessage(TextFormat.GRAY + "夜の間しか眠ることはできません");
             return true;
         }
 
@@ -99,7 +99,7 @@ public class BlockBed extends BlockTransparent {
                 b = blockWest;
             } else {
                 if (player != null) {
-                    player.sendMessage(TextFormat.GRAY + "This bed is incomplete");
+                    player.sendMessage(TextFormat.GRAY + "このベッドは未完成です");
                 }
 
                 return true;
@@ -107,7 +107,7 @@ public class BlockBed extends BlockTransparent {
         }
 
         if (player != null && !player.sleepOn(b)) {
-            player.sendMessage(TextFormat.GRAY + "This bed is occupied");
+            player.sendMessage(TextFormat.GRAY + "このベッドは既に使われています");
         }
 
 
@@ -184,11 +184,11 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public Item toItem() {
-        return new ItemBed(); //TODO: color
+        return new ItemBed(this.meta);
+    }
+    
+    public DyeColor getDyeColor() {
+        return DyeColor.getByBlockColorData(meta);
     }
 
-    @Override
-    public BlockColor getColor() {
-        return BlockColor.CLOTH_BLOCK_COLOR;
-    }
 }

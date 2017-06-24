@@ -3,6 +3,7 @@ package cn.nukkit.block;
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
@@ -35,11 +36,6 @@ public class BlockLadder extends BlockTransparent {
 
     @Override
     public boolean hasEntityCollision() {
-        return true;
-    }
-
-    @Override
-    public boolean canBeClimbed() {
         return true;
     }
 
@@ -143,6 +139,18 @@ public class BlockLadder extends BlockTransparent {
     @Override
     public int getToolType() {
         return ItemTool.TYPE_AXE;
+    }
+
+    @Override
+    public Item[] getDrops(Item item) {
+    	return new Item[]{
+                this.toItem()
+        };
+    }
+    
+    @Override
+    public Item toItem() {
+        return new ItemBlock(this, 0, 1);
     }
 
     @Override

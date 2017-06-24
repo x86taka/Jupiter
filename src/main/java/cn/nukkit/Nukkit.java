@@ -26,7 +26,7 @@ import cn.nukkit.utils.Splash;
 public class Nukkit {
 
     public final static String VERSION = "1.0dev";
-    public final static String JUPITER_VERSION = "1.1.0.2";
+    public final static String JUPITER_VERSION = "1.1.2.3";
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "Jupiter";
     @Deprecated

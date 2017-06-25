@@ -371,6 +371,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     
     private boolean allowBow = true;
 
+    private boolean allowSnowball = true;
+
+    private boolean keepInventory = true;
+
+    private boolean keepExperience = true;
+
     protected boolean enableRevert = true;
     
     public ClientChainData loginChainData;
@@ -744,7 +750,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.creationTime = System.currentTimeMillis();
         this.enableRevert = this.server.getJupiterConfigBoolean("enable-revert");
-        this.allowsnowball = this.server.getJupiterConfigBoolean("allow-snowball");
+        this.allowSnowball = this.server.getJupiterConfigBoolean("allow-snowball");
         this.allowEgg = this.server.getJupiterConfigBoolean("allow-egg");
         this.allowEnderpearl = this.server.getJupiterConfigBoolean("allow-enderpearl");
         this.allowXpBottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
@@ -1916,9 +1922,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     private ArrayList<String> messageQueue = new ArrayList<String>();
-	private boolean allowsnowball;
-	private boolean keepInventory;
-	private boolean keepExperience;
 
     public void checkNetwork() {
         if (!this.isOnline()) {
@@ -2559,7 +2562,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                         float f = 1.5f;
 
-                        if (item.getId() == Item.SNOWBALL && this.allowsnowball) {
+                        if (item.getId() == Item.SNOWBALL && this.allowSnowball) {
                             EntitySnowball snowball = new EntitySnowball(this.chunk, nbt, this);
 
                             snowball.setMotion(snowball.getMotion().multiply(f));

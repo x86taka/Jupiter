@@ -1218,18 +1218,18 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public BlockFace getDirection() {
-        double rotation = this.yaw % 360;
+        double rotation = (this.yaw - 90) % 360;
         if (rotation < 0) {
             rotation += 360.0;
         }
         if ((0 <= rotation && rotation < 45) || (315 <= rotation && rotation < 360)) {
-            return BlockFace.SOUTH;
+            return BlockFace.NORTH;//s
         } else if (45 <= rotation && rotation < 135) {
-            return BlockFace.WEST;
+            return BlockFace.EAST;//w
         } else if (135 <= rotation && rotation < 225) {
-            return BlockFace.NORTH;
+            return BlockFace.SOUTH;//n
         } else if (225 <= rotation && rotation < 315) {
-            return BlockFace.EAST;
+            return BlockFace.WEST;//e
         } else {
             return null;
         }

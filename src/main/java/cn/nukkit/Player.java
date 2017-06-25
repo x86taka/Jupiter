@@ -4572,14 +4572,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.scheduleUpdate();
 
         
-        PlayerDeathEvent ev = null;
+        PlayerDeathEvent ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel());
         if (this.keepInventory){
         	ev.setKeepInventory(true);
         }
         if (this.keepExperience){
         	ev.setKeepExperience(true);
         }
-        this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
+        this.server.getPluginManager().callEvent(ev);
 
         
         if (!ev.getKeepInventory()) {

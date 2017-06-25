@@ -71,6 +71,11 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public boolean onActivate(Item item, Player player) {
+    	/*ネザーだったら...爆発させたい
+    	if(this.getLevel().getDimension() == Level.DIMENSION_NETHER){
+    		
+    	}
+    	*/
         int time = this.getLevel().getTime() % Level.TIME_FULL;
 
         boolean isNight = (time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE);
@@ -80,10 +85,10 @@ public class BlockBed extends BlockTransparent {
             return true;
         }
 
-        Block blockNorth = this.north();
-        Block blockSouth = this.south();
-        Block blockEast = this.east();
-        Block blockWest = this.west();
+        Block blockNorth = this.getSide(BlockFace.NORTH);
+        Block blockSouth = this.getSide(BlockFace.SOUTH);
+        Block blockEast = this.getSide(BlockFace.EAST);
+        Block blockWest = this.getSide(BlockFace.WEST);
 
         Block b;
         if ((this.meta & 0x08) == 0x08) {
@@ -126,15 +131,13 @@ public class BlockBed extends BlockTransparent {
             int[] faces = {3, 4, 2, 5};
             int d = player != null ? player.getDirection().getHorizontalIndex() : 0;
             Block next = this.getSide(BlockFace.fromIndex(faces[((d + 3) % 4)]));
-            Block downNext = this.down();
+            Block downNext = this.getSide(BlockFace.DOWN);
 
             if (next.canBeReplaced() && !downNext.isTransparent()) {
                 int meta = ((d + 3) % 4) & 0x03;
                 this.getLevel().setBlock(block, Block.get(this.getId(), meta), true, true);
                 this.getLevel().setBlock(next, Block.get(this.getId(), meta | 0x08), true, true);
 
-                createBlockEntity(this, item.getDamage());
-                createBlockEntity(next, item.getDamage());
                 return true;
             }
         }
@@ -144,34 +147,31 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public boolean onBreak(Item item) {
-        Block blockNorth = this.north(); //Gets the blocks around them
-        Block blockSouth = this.south();
-        Block blockEast = this.east();
-        Block blockWest = this.west();
-
-        if ((this.meta & 0x08) == 0x08) { //This is the Top part of bed
-            if (blockNorth.getId() == this.getId() && blockNorth.meta != 0x08) { //Checks if the block ID&&meta are right
-                this.getLevel().setBlock(blockNorth, new BlockAir(), true, true);
-            } else if (blockSouth.getId() == this.getId() && blockSouth.meta != 0x08) {
-                this.getLevel().setBlock(blockSouth, new BlockAir(), true, true);
-            } else if (blockEast.getId() == this.getId() && blockEast.meta != 0x08) {
-                this.getLevel().setBlock(blockEast, new BlockAir(), true, true);
-            } else if (blockWest.getId() == this.getId() && blockWest.meta != 0x08) {
-                this.getLevel().setBlock(blockWest, new BlockAir(), true, true);
-            }
-        } else { //Bottom Part of Bed
-            if (blockNorth.getId() == this.getId() && (blockNorth.meta & 0x08) == 0x08) {
-                this.getLevel().setBlock(blockNorth, new BlockAir(), true, true);
-            } else if (blockSouth.getId() == this.getId() && (blockSouth.meta & 0x08) == 0x08) {
-                this.getLevel().setBlock(blockSouth, new BlockAir(), true, true);
-            } else if (blockEast.getId() == this.getId() && (blockEast.meta & 0x08) == 0x08) {
-                this.getLevel().setBlock(blockEast, new BlockAir(), true, true);
-            } else if (blockWest.getId() == this.getId() && (blockWest.meta & 0x08) == 0x08) {
-                this.getLevel().setBlock(blockWest, new BlockAir(), true, true);
-            }
+        Block blockNorth = this.getSide(BlockFace.NORTH);
+        Block blockSouth = this.getSide(BlockFace.SOUTH);
+        Block blockEast = this.getSide(BlockFace.EAST);
+        Block blockWest = this.getSide(BlockFace.WEST);
+        
+        int[] faces = {3, 4, 2, 5, 2, 5, 3, 4};
+        Block next = null;
+        try{
+	        if ((this.meta & 0x08) == 0x08) { //This is the Top part of bed
+	        	next = this.getSide(BlockFace.fromIndex(faces[this.meta]));
+	        	if(next.getId() == this.getId() && (next.meta | 0x08) == this.meta){
+	        		this.getLevel().setBlock(next, new BlockAir(), true, true);
+	        	}
+			}else{
+				next = this.getSide(BlockFace.fromIndex(faces[this.meta]));
+				if(next.getId() == this.getId() && next.meta == (next.meta | 0x08)){
+		       		this.getLevel().setBlock(next, Block.get(Block.AIR), true, true);
+				}
+			}
+        }catch(ArrayIndexOutOfBoundsException e){
+        	next = this.getSide(BlockFace.fromIndex(faces[0]));
+        	this.getLevel().setBlock(next, Block.get(Block.AIR), true, true);
+        	return true;
         }
-        this.getLevel().setBlock(this, new BlockAir(), true, true);
-
+        this.getLevel().setBlock(next, Block.get(Block.AIR), true, true);
         return true;
     }
 
@@ -187,8 +187,14 @@ public class BlockBed extends BlockTransparent {
         return new ItemBed(this.meta);
     }
     
+    @Override
+    public Item[] getDrops(Item item){
+    	return new Item[]{this.toItem()};
+    }
+    
     public DyeColor getDyeColor() {
         return DyeColor.getByBlockColorData(meta);
     }
+    
 
 }

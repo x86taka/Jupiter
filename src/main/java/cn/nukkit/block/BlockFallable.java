@@ -1,7 +1,10 @@
 package cn.nukkit.block;
 
+import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityFallingBlock;
 import cn.nukkit.level.Level;
+import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.Vector3f;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.DoubleTag;
 import cn.nukkit.nbt.tag.FloatTag;
@@ -20,10 +23,10 @@ public abstract class BlockFallable extends BlockSolid {
 
     public int onUpdate(int type) {
         if (type == Level.BLOCK_UPDATE_NORMAL) {
-            Block down = this.down();
+            Block down = this.getSide(BlockFace.fromIndex(Vector3f.SIDE_DOWN));
             if (down.getId() == AIR || down instanceof BlockLiquid) {
-                this.level.setBlock(this, Block.get(Block.AIR), true, true);
-                CompoundTag nbt = new CompoundTag()
+            	EntityFallingBlock fall = (EntityFallingBlock) Entity.createEntity("FallingSand", this.getLevel().getChunk((int) (this.x) >> 4, (int) (this.z) >> 4),
+            			new CompoundTag()
                         .putList(new ListTag<DoubleTag>("Pos")
                                 .add(new DoubleTag("", this.x + 0.5))
                                 .add(new DoubleTag("", this.y))
@@ -37,11 +40,8 @@ public abstract class BlockFallable extends BlockSolid {
                                 .add(new FloatTag("", 0))
                                 .add(new FloatTag("", 0)))
                         .putInt("TileID", this.getId())
-                        .putByte("Data", this.getDamage());
-
-                EntityFallingBlock fall = new EntityFallingBlock(this.getLevel().getChunk((int) this.x >> 4, (int) this.z >> 4), nbt);
-
-                fall.spawnToAll();
+                        .putByte("Data", this.getDamage()));
+            	fall.spawnToAll();
             }
         }
         return type;

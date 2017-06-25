@@ -360,19 +360,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public boolean mute = false;
 
     public EntityFishingHook fishingHook;
-    
+
     private boolean allowEgg = true;
-    
+
     private boolean allowEnderpearl = true;
-    
+
     private boolean allowXpBottle = true;
-    
+
     private boolean allowSplashPotion = true;
-    
+
     private boolean allowBow = true;
 
     protected boolean enableRevert = true;
-    
+
     public ClientChainData loginChainData;
 
 	public void linkHookToPlayer(EntityFishingHook entity){
@@ -2123,7 +2123,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.sendAttributes();
         this.setNameTagVisible(true);
         this.setNameTagAlwaysVisible(true);
-        //this.setCanClimb(true);
+        this.setCanClimb(true);
 
         this.server.getLogger().info(this.getServer().getLanguage().translateString("nukkit.player.logIn",
                 TextFormat.AQUA + this.username + TextFormat.WHITE,
@@ -2152,6 +2152,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.dataPacket(containerSetContentPacket);
         }
 
+
         this.setEnableClientCommand(true);
 
         this.server.sendFullPlayerListData(this);
@@ -2159,6 +2160,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.forceMovement = this.teleportPosition = this.getPosition();
 
         this.server.onPlayerLogin(this);
+
+        System.out.println("PASSED");
     }
 
     public void handleDataPacket(DataPacket packet) {
@@ -2173,7 +2176,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             InteractPacket確認用
             1.1.0現在:ACTION_MOUSEOVERが断続的に発生している模様。
             これを実行すると4が出力される。
-            
+
             if(packet.pid() == ProtocolInfo.INTERACT_PACKET){
             	InteractPacket pkpk = (InteractPacket)packet;
             	System.out.println(pkpk.action);
@@ -4105,9 +4108,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.server.isLanguageForced()) {
             pk.type = TextPacket.TYPE_TRANSLATION;
             pk.message = this.server.getLanguage().translateString(message, parameters, "nukkit.");
-            int len =  parameters.length;
-            for (int i = 0; i < len; i++) {
+            for (int i = 0; i < parameters.length; i++) {
                 parameters[i] = this.server.getLanguage().translateString(parameters[i], parameters, "nukkit.");
+
             }
             pk.parameters = parameters;
         } else {
@@ -4568,7 +4571,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.health = 0;
         this.scheduleUpdate();
 
-        
+
         PlayerDeathEvent ev = null;
         if (this.keepInventory){
         	ev.setKeepInventory(true);
@@ -4578,7 +4581,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
         this.server.getPluginManager().callEvent(ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.stream().toArray(String[]::new)), this.getExperienceLevel()));
 
-        
+
         if (!ev.getKeepInventory()) {
             for (Item item : ev.getDrops()) {
                 this.level.dropItem(this, item, null, true, 40);

@@ -1,6 +1,11 @@
 package cn.nukkit.utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by fromgate on 26.04.2016.
@@ -77,7 +82,8 @@ public class ConfigSection extends LinkedHashMap<String, Object> {
      * @param defaultValue
      * @return
      */
-    public <T> T get(String key, T defaultValue) {
+    @SuppressWarnings("unchecked")
+	public <T> T get(String key, T defaultValue) {
         if (key == null || key.isEmpty()) return defaultValue;
         if (super.containsKey(key)) return (T) super.get(key);
         String[] keys = key.split("\\.", 2);

@@ -1,11 +1,17 @@
 package cn.nukkit.plugin;
 
-import cn.nukkit.permission.Permission;
-import cn.nukkit.utils.PluginException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.*;
+import cn.nukkit.permission.Permission;
+import cn.nukkit.utils.PluginException;
 
 /* TODO Add these to Javadoc：
  *     <li><i>softdepend</i><br>
@@ -137,7 +143,8 @@ public class PluginDescription {
         this.loadMap(yaml.loadAs(yamlString, LinkedHashMap.class));
     }
 
-    private void loadMap(Map<String, Object> plugin) throws PluginException {
+    @SuppressWarnings("unchecked")
+	private void loadMap(Map<String, Object> plugin) throws PluginException {
         this.name = ((String) plugin.get("name")).replaceAll("[^A-Za-z0-9 _.-]", "");
         if (this.name.equals("")) {
             throw new PluginException("Invalid PluginDescription name");

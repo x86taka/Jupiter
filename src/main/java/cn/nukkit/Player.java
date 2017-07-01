@@ -742,7 +742,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.chunksPerTick = (int) this.server.getConfig("chunk-sending.per-tick", 4);
         this.spawnThreshold = (int) this.server.getConfig("chunk-sending.spawn-threshold", 56);
         this.spawnPosition = null;
-        this.gamemode = this.server.getGamemode();
+        this.gamemode = this.server.getDefaultGamemode();
         this.setLevel(this.server.getDefaultLevel());
         this.viewDistance = this.server.getViewDistance();
         this.chunkRadius = viewDistance;
@@ -2021,7 +2021,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.gamemode = nbt.getInt("playerGameType") & 0x03;
         if (this.server.getForceGamemode()) {
-            this.gamemode = this.server.getGamemode();
+            this.gamemode = this.server.getDefaultGamemode();
             nbt.putInt("playerGameType", this.gamemode);
         }
 

@@ -1,8 +1,12 @@
 package cn.nukkit.permission;
 
-import cn.nukkit.Server;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import cn.nukkit.Server;
 
 /**
  * author: MagicDroidX
@@ -139,7 +143,8 @@ public class Permission {
         if (data != null) {
             for (Map.Entry e : data.entrySet()) {
                 String key = (String) e.getKey();
-                Map<String, Object> entry = (Map<String, Object>) e.getValue();
+                @SuppressWarnings("unchecked")
+				Map<String, Object> entry = (Map<String, Object>) e.getValue();
                 result.add(loadPermission(key, entry, defaultValue, result));
             }
         }
@@ -154,7 +159,8 @@ public class Permission {
         return loadPermission(name, data, defaultValue, new ArrayList<>());
     }
 
-    public static Permission loadPermission(String name, Map<String, Object> data, String defaultValue, List<Permission> output) {
+    @SuppressWarnings("unchecked")
+	public static Permission loadPermission(String name, Map<String, Object> data, String defaultValue, List<Permission> output) {
         String desc = null;
         Map<String, Boolean> children = new HashMap<>();
         if (data.containsKey("default")) {

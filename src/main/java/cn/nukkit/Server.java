@@ -1356,7 +1356,7 @@ public class Server implements ActionListener{
 
         this.tickCounter = 0;
 
-        this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getGamemode())));
+        this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getDefaultGamemode())));
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
         this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
@@ -1877,22 +1877,6 @@ public class Server implements ActionListener{
         return this.getPropertyBoolean("generate-structures", true);
     }
 
-    /**
-     * @deprecated {@link Server#getDefaultGamemode()}に置き換えられました。
-     * <br>サーバーのデフォルトゲームモードを取得します。
-     * <br>server.propertiesのgamemodeの値です。
-     * <br>
-     * <br>[ゲームモード]
-     * <br>0:サバイバルモード
-     * <br>1:クリエイティブモード
-     * <br>2:アドベンチャーモード
-     * <br>3:スペクテイターモード
-     * @return int ゲームモード
-     */
-    public int getGamemode() {
-        return this.getPropertyInt("gamemode", 0) & 0b11;
-    }
-
     public boolean getForceGamemode() {
         return this.getPropertyBoolean("force-gamemode", false);
     }
@@ -2205,7 +2189,7 @@ public class Server implements ActionListener{
                 .putString("Level", this.getDefaultLevel().getName())
                 .putList(new ListTag<>("Inventory"))
                 .putCompound("Achievements", new CompoundTag())
-                .putInt("playerGameType", this.getGamemode())
+                .putInt("playerGameType", this.getDefaultGamemode())
                 .putList(new ListTag<DoubleTag>("Motion")
                         .add(new DoubleTag("0", 0))
                         .add(new DoubleTag("1", 0))
@@ -2832,7 +2816,8 @@ public class Server implements ActionListener{
         return serviceManager;
     }
 
-    public Map<String, List<String>> getCommandAliases() {
+    @SuppressWarnings("unchecked")
+	public Map<String, List<String>> getCommandAliases() {
         Object section = this.getConfig("aliases");
         Map<String, List<String>> result = new LinkedHashMap<>();
         if (section instanceof Map) {

@@ -1,15 +1,20 @@
 package cn.nukkit.event.server;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginDescription;
 import cn.nukkit.utils.Binary;
-
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 /**
  * author: MagicDroidX
@@ -61,7 +66,7 @@ public class QueryRegenerateEvent extends ServerEvent {
         }
         this.players = players.toArray(new Player[players.size()]);
 
-        this.gameType = (server.getGamemode() & 0x01) == 0 ? "SMP" : "CMP";
+        this.gameType = (server.getDefaultGamemode() & 0x01) == 0 ? "SMP" : "CMP";
         this.version = server.getVersion();
         this.server_engine = server.getName() + " " + server.getNukkitVersion();
         this.map = server.getDefaultLevel() == null ? "unknown" : server.getDefaultLevel().getName();

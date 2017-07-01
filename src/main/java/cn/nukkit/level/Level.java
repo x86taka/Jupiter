@@ -1833,7 +1833,8 @@ public class Level implements ChunkManager, Metadatable {
         return this.useBreakOn(vector, item, player, false);
     }
 
-    public Item useBreakOn(Vector3 vector, Item item, Player player, boolean createParticles) {
+    @SuppressWarnings("unchecked")
+	public Item useBreakOn(Vector3 vector, Item item, Player player, boolean createParticles) {
         if (player != null && player.getGamemode() > 1) {
             return null;
         }
@@ -2016,7 +2017,8 @@ public class Level implements ChunkManager, Metadatable {
         return this.useItemOn(vector, item, face, fx, fy, fz, player, false);
     }
 
-    public Item useItemOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player, boolean playSound) {
+    @SuppressWarnings("unchecked")
+	public Item useItemOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player, boolean playSound) {
         Block target = this.getBlock(vector);
         Block block = target.getSide(face);
 

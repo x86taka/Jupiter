@@ -21,7 +21,7 @@ public class ContainerSetContentPacket extends DataPacket {
     public static final byte SPECIAL_FIXED_INVENTORY = 0x7b;
 
     public long windowid;
-    public long eid;
+    public long entityRuntimeId;
     public Item[] slots = new Item[0];
     public int[] hotbar = new int[0];
 
@@ -35,7 +35,7 @@ public class ContainerSetContentPacket extends DataPacket {
     @Override
     public void decode() {
         this.windowid = (int) this.getUnsignedVarInt();
-        this.eid = this.getVarLong();
+        this.entityRuntimeId = this.getVarLong();
         int count = (int) this.getUnsignedVarInt();
         this.slots = new Item[count];
 
@@ -54,7 +54,7 @@ public class ContainerSetContentPacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putUnsignedVarInt(this.windowid);
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.putUnsignedVarInt(this.slots.length);
         for (Item slot : this.slots) {
             this.putSlot(slot);

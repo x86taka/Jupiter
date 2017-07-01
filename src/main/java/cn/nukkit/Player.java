@@ -384,7 +384,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 	public void linkHookToPlayer(EntityFishingHook entity){
     	this.fishingHook = entity;
     	EntityEventPacket pk = new EntityEventPacket();
-    	pk.eid = this.getFishingHook().getId();
+    	pk.entityRuntimeId = this.getFishingHook().getId();
     	pk.event = EntityEventPacket.FISH_HOOK_POSITION;
     	Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
@@ -392,7 +392,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 	public void unlinkHookFromPlayer(){
 		if (this.isFishing()){
 			EntityEventPacket pk = new EntityEventPacket();
-			pk.eid = this.getFishingHook().getId();
+			pk.entityRuntimeId = this.getFishingHook().getId();
 			pk.event = EntityEventPacket.FISH_HOOK_TEASE;
 			Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
 			this.fishingHook.close();
@@ -588,6 +588,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     @Override
     public boolean isOp() {
         return this.server.isOp(this.getName());
+    }
+
+    public void setOp(){
+    	this.setOp(true);
     }
 
     /**
@@ -1286,7 +1290,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.level.sleepTicks = 0;
 
             AnimatePacket pk = new AnimatePacket();
-            pk.eid = this.id;
+            pk.entityRuntimeId = this.id;
             pk.action = 3; //Wake up
             this.dataPacket(pk);
         }
@@ -1537,12 +1541,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                pk.entityId = this.getId();
+                pk.entityRuntimeId = this.getId();
                 pk.target = entity.getId();
                 Server.broadcastPacket(entity.getViewers().values(), pk);
 
                 pk = new TakeItemEntityPacket();
-                pk.entityId = this.id;
+                pk.entityRuntimeId = this.id;
                 pk.target = entity.getId();
                 this.dataPacket(pk);
 
@@ -1582,12 +1586,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }*/
 
                         TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                        pk.entityId = this.getId();
+                        pk.entityRuntimeId = this.getId();
                         pk.target = entity.getId();
                         Server.broadcastPacket(entity.getViewers().values(), pk);
 
                         pk = new TakeItemEntityPacket();
-                        pk.entityId = this.id;
+                        pk.entityRuntimeId = this.id;
                         pk.target = entity.getId();
                         this.dataPacket(pk);
 
@@ -1820,7 +1824,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void sendAttributes() {
         UpdateAttributesPacket pk = new UpdateAttributesPacket();
-        pk.entityId = this.getId();
+        pk.entityRuntimeId = this.getId();
         pk.entries = new Attribute[]{
                 Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(this.getMaxHealth()).setValue(health > 0 ? (health < getMaxHealth() ? health : getMaxHealth()) : 0),
                 Attribute.getAttribute(Attribute.MAX_HUNGER).setValue(this.getFoodData().getLevel()),
@@ -2145,12 +2149,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (this.gamemode == Player.SPECTATOR) {
             ContainerSetContentPacket containerSetContentPacket = new ContainerSetContentPacket();
             containerSetContentPacket.windowid = ContainerSetContentPacket.SPECIAL_CREATIVE;
-            containerSetContentPacket.eid = this.id;
+            containerSetContentPacket.entityRuntimeId = this.id;
             this.dataPacket(containerSetContentPacket);
         } else {
             ContainerSetContentPacket containerSetContentPacket = new ContainerSetContentPacket();
             containerSetContentPacket.windowid = ContainerSetContentPacket.SPECIAL_CREATIVE;
-            containerSetContentPacket.eid = this.id;
+            containerSetContentPacket.entityRuntimeId = this.id;
             containerSetContentPacket.slots = Item.getCreativeItems().stream().toArray(Item[]::new);
             this.dataPacket(containerSetContentPacket);
         }
@@ -2682,7 +2686,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    playerActionPacket.entityId = this.id;
+                    playerActionPacket.entityRuntimeId = this.id;
                     Vector3 pos = new Vector3(playerActionPacket.x, playerActionPacket.y, playerActionPacket.z);
                     BlockFace face = BlockFace.fromIndex(playerActionPacket.face);
 
@@ -2889,7 +2893,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         	}
                         	PlayerActionPacket pkpk = (PlayerActionPacket) packet;
                         	pkpk.action = PlayerActionPacket.ACTION_JUMP;
-                        	pkpk.entityId = this.getId();
+                        	pkpk.entityRuntimeId = this.getId();
                         	pkpk.x = (int) this.x;
                         	pkpk.y = (int) this.y;
                         	pkpk.z = (int) this.z;
@@ -3159,7 +3163,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     AnimatePacket animatePacket = new AnimatePacket();
-                    animatePacket.eid = this.getId();
+                    animatePacket.entityRuntimeId = this.getId();
                     animatePacket.action = animationEvent.getAnimationType();
                     Server.broadcastPacket(this.getViewers().values(), animatePacket);
                     break;
@@ -3207,7 +3211,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                             } else {
                                 EntityEventPacket pk = new EntityEventPacket();
-                                pk.eid = this.getId();
+                                pk.entityRuntimeId = this.getId();
                                 pk.event = EntityEventPacket.USE_ITEM;
                                 this.dataPacket(pk);
                                 Server.broadcastPacket(this.getViewers().values(), pk);
@@ -4640,7 +4644,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (this.spawned) {
             UpdateAttributesPacket pk = new UpdateAttributesPacket();
             pk.entries = new Attribute[]{attr};
-            pk.entityId = this.id;
+            pk.entityRuntimeId = this.id;
             this.dataPacket(pk);
         }
     }
@@ -4739,7 +4743,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void setAttribute(Attribute attribute) {
         UpdateAttributesPacket pk = new UpdateAttributesPacket();
         pk.entries = new Attribute[]{attribute};
-        pk.entityId = this.id;
+        pk.entityRuntimeId = this.id;
         this.dataPacket(pk);
     }
 
@@ -4804,7 +4808,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (this.getLastDamageCause() == source && this.spawned) {
         	this.getFoodData().updateFoodExpLevel(0.3);
         	EntityEventPacket pk = new EntityEventPacket();
-        	pk.eid = this.id;
+        	pk.entityRuntimeId = this.id;
         	pk.event = EntityEventPacket.HURT_ANIMATION;
         	this.dataPacket(pk);
         }
@@ -4832,7 +4836,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void sendPosition(Vector3 pos, double yaw, double pitch, byte mode, Player[] targets) {
         MovePlayerPacket pk = new MovePlayerPacket();
-        pk.eid = this.getId();
+        pk.entityRuntimeId = this.getId();
         pk.x = (float) pos.x;
         pk.y = (float) (pos.y + this.getEyeHeight());
         pk.z = (float) pos.z;
@@ -4844,7 +4848,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (targets != null) {
             Server.broadcastPacket(targets, pk);
         } else {
-            pk.eid = this.id;
+            pk.entityRuntimeId = this.id;
             this.dataPacket(pk);
         }
     }
@@ -5021,7 +5025,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         // Now we send the entity attributes
         // TODO: Attributes should be sent on AddEntityPacket, however it doesn't work (client bug?)
         UpdateAttributesPacket pkAttributes = new UpdateAttributesPacket();
-        pkAttributes.entityId = bossBarId;
+        pkAttributes.entityRuntimeId = bossBarId;
         Attribute attr = Attribute.getAttribute(Attribute.MAX_HEALTH);
         attr.setMaxValue(100); // Max value - We need to change the max value first, or else the "setValue" will return a IllegalArgumentException
         attr.setValue(length); // Entity health
@@ -5030,7 +5034,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         // And now we send the bossbar packet
         BossEventPacket pkBoss = new BossEventPacket();
-        pkBoss.eid = bossBarId;
+        pkBoss.entityRuntimeId = bossBarId;
         pkBoss.type = BossEventPacket.ADD;
         this.dataPacket(pkBoss);
         return bossBarId;
@@ -5046,7 +5050,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void updateBossBar(String text, int length, long bossBarId) {
         // First we update the boss bar length
         UpdateAttributesPacket pkAttributes = new UpdateAttributesPacket();
-        pkAttributes.entityId = bossBarId;
+        pkAttributes.entityRuntimeId = bossBarId;
         Attribute attr = Attribute.getAttribute(Attribute.MAX_HEALTH);
         attr.setMaxValue(100); // Max value - We need to change the max value first, or else the "setValue" will return a IllegalArgumentException
         attr.setValue(length); // Entity health
@@ -5068,7 +5072,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         // And now we send the bossbar packet
         BossEventPacket pkBoss = new BossEventPacket();
-        pkBoss.eid = bossBarId;
+        pkBoss.entityRuntimeId = bossBarId;
         pkBoss.type = BossEventPacket.UPDATE;
         this.dataPacket(pkBoss);
         return;
@@ -5081,7 +5085,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public void removeBossBar(long bossBarId) {
         RemoveEntityPacket pkRemove = new RemoveEntityPacket();
-        pkRemove.eid = bossBarId;
+        pkRemove.entityRuntimeId = bossBarId;
         this.dataPacket(pkRemove);
     }
 

@@ -3,13 +3,13 @@ package cn.nukkit.network.protocol;
 public class EntityFallPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.ENTITY_FALL_PACKET;
 
-    public long eid;
+    public long entityRuntimeId;
     public float fallDistance;
     public boolean unknown;
 
     @Override
     public void decode() {
-        this.eid = this.getVarLong();
+        this.entityRuntimeId = this.getVarLong();
         this.fallDistance = this.getLFloat();
         this.unknown = this.getBoolean();
     }

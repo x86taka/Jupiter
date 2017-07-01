@@ -1,5 +1,7 @@
 package cn.nukkit.inventory;
 
+import java.util.Collection;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.BlockAir;
@@ -14,8 +16,6 @@ import cn.nukkit.network.protocol.ContainerSetContentPacket;
 import cn.nukkit.network.protocol.ContainerSetSlotPacket;
 import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
-
-import java.util.Collection;
 
 /**
  * author: MagicDroidX
@@ -108,7 +108,7 @@ public class PlayerInventory extends BaseInventory {
         Item item = this.getItemInHand();
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = this.getHolder().getId();
+        pk.entityRuntimeId = this.getHolder().getId();
         pk.item = item;
         pk.slot = (byte) this.getHeldItemSlot();
         pk.selectedSlot = (byte) this.getHeldItemIndex();
@@ -128,9 +128,9 @@ public class PlayerInventory extends BaseInventory {
         pk.selectedSlot = (byte) this.getHeldItemIndex();
 
         for (Player player : players) {
-            pk.eid = this.getHolder().getId();
+            pk.entityRuntimeId = this.getHolder().getId();
             if (player.equals(this.getHolder())) {
-                pk.eid = player.getId();
+                pk.entityRuntimeId = player.getId();
                 this.sendSlot(this.getHeldItemSlot(), player);
             }
 
@@ -311,7 +311,7 @@ public class PlayerInventory extends BaseInventory {
         Item[] armor = this.getArmorContents();
 
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
-        pk.eid = this.getHolder().getId();
+        pk.entityRuntimeId = this.getHolder().getId();
         pk.slots = armor;
         pk.encode();
         pk.isEncoded = true;
@@ -320,7 +320,7 @@ public class PlayerInventory extends BaseInventory {
             if (player.equals(this.getHolder())) {
                 ContainerSetContentPacket pk2 = new ContainerSetContentPacket();
                 pk2.windowid = ContainerSetContentPacket.SPECIAL_ARMOR;
-                pk2.eid = player.getId();
+                pk2.entityRuntimeId = player.getId();
                 pk2.slots = armor;
                 player.dataPacket(pk2);
             } else {
@@ -361,7 +361,7 @@ public class PlayerInventory extends BaseInventory {
         Item[] armor = this.getArmorContents();
 
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
-        pk.eid = this.getHolder().getId();
+        pk.entityRuntimeId = this.getHolder().getId();
         pk.slots = armor;
         pk.encode();
         pk.isEncoded = true;
@@ -414,7 +414,7 @@ public class PlayerInventory extends BaseInventory {
                 this.close(player);
                 continue;
             }
-            pk.eid = player.getId();
+            pk.entityRuntimeId = player.getId();
             pk.windowid = (byte) id;
             player.dataPacket(pk.clone());
         }

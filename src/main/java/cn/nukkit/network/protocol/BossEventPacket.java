@@ -7,7 +7,7 @@ public class BossEventPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.BOSS_EVENT_PACKET;
 
-    public long eid;
+    public long entityRuntimeId;
     public int type;
 
     public static final int ADD = 0;
@@ -27,7 +27,7 @@ public class BossEventPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.putUnsignedVarInt(this.type);
     }
 }

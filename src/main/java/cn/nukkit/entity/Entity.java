@@ -805,7 +805,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void sendPotionEffects(Player player) {
         for (Effect effect : this.effects.values()) {
             MobEffectPacket pk = new MobEffectPacket();
-            pk.eid = this.getId();
+            pk.entityRuntimeId = this.getId();
             pk.effectId = effect.getId();
             pk.amplifier = effect.getAmplifier();
             pk.particles = effect.isVisible();
@@ -851,7 +851,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void despawnFrom(Player player) {
         if (this.hasSpawned.containsKey(player.getLoaderId())) {
             RemoveEntityPacket pk = new RemoveEntityPacket();
-            pk.eid = this.getId();
+            pk.entityRuntimeId = this.getId();
             player.dataPacket(pk);
             this.hasSpawned.remove(player.getLoaderId());
         }

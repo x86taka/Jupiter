@@ -147,11 +147,6 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public boolean onBreak(Item item) {
-        Block blockNorth = this.getSide(BlockFace.NORTH);
-        Block blockSouth = this.getSide(BlockFace.SOUTH);
-        Block blockEast = this.getSide(BlockFace.EAST);
-        Block blockWest = this.getSide(BlockFace.WEST);
-        
         int[] faces = {3, 4, 2, 5, 2, 5, 3, 4};
         Block next = null;
         try{
@@ -175,7 +170,8 @@ public class BlockBed extends BlockTransparent {
         return true;
     }
 
-    private void createBlockEntity(Vector3 pos, int color) {
+    @SuppressWarnings("unused")
+	private void createBlockEntity(Vector3 pos, int color) {
         CompoundTag nbt = BlockEntity.getDefaultCompound(pos, BlockEntity.BED);
         nbt.putByte("color", color);
 

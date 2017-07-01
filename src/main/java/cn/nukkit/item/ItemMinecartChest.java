@@ -31,8 +31,6 @@ public class ItemMinecartChest extends Item {
 
     @Override
     public boolean onActivate(Level level, Player player, Block block, Block target, BlockFace face, double fx, double fy, double fz) {
-        Block secret = level.getBlock(block.add(0, -1, 0));
-        // TODO: 2016/1/30 check if blockId of secret is a rail
         EntityMinecartChest minecart = new EntityMinecartChest(
                 level.getChunk(block.getFloorX() >> 4, block.getFloorZ() >> 4), new CompoundTag("")
                 .putList(new ListTag<DoubleTag>("Pos")

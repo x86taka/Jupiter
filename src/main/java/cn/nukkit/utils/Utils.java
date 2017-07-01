@@ -38,7 +38,6 @@ public class Utils {
     }
 
     public static void writeFile(File file, InputStream content) throws IOException {
-    	String str = null;
         if (content == null) {
             throw new IllegalArgumentException("content must not be null");
         }

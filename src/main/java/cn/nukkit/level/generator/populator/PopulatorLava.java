@@ -29,8 +29,6 @@ public class PopulatorLava extends Populator {
             BaseFullChunk chunk = level.getChunk(chunkX, chunkZ);
             int bx = chunkX << 4;
             int bz = chunkZ << 4;
-            int tx = bx + 15;
-            int tz = bz + 15;
             for (int i = 0; i < amount; ++i) {
                 int x = random.nextRange(0, 15);
                 int z = random.nextRange(0, 15);

@@ -581,7 +581,6 @@ public class PluginManager {
             throw new PluginException("Plugin attempted to register " + listener.getClass().getName() + " while not enabled");
         }
 
-        Map<Class<? extends Event>, Set<RegisteredListener>> ret = new HashMap<>();
         Set<Method> methods;
         try {
             Method[] publicMethods = listener.getClass().getMethods();

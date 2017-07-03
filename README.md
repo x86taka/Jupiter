@@ -26,8 +26,8 @@ Jupiterはこのようなきっかけを持つために、__日本語に特化__
 * __[Lobiグループ](https://web.lobi.co/group/5f56c6d4c43cdb8c63541731b2ea8533ac4b50f1)__
 * __[公式プラグイン](https://github.com/JupiterDevelopmentTeam/Plugins)__
 * __[JupiterをWindows10で動かす！(Youtube)](https://www.youtube.com/watch?v=bHTzzD6z4pw)__
-* __[Travis Ci](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)__
-* __[Circle Ci](https://circleci.com/gh/JupiterDevelopmentTeam)__
+* __[Travis Ci](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)__
+* __[Circle Ci](https://circleci.com/gh/Jupiter)__
 * __[Jupiterプラグインコードエディタ「EarthOne」](http://itsuplugin.web.fc2.com/earthone.html)__
 
 

@@ -184,7 +184,9 @@ public class BaseLang {
 
         String replaceString = null;
 
-        for (int i = 0; i < text.length(); ++i) {
+        int len = text.length();
+
+        for (int i = 0; i < len; ++i) {
             char c = text.charAt(i);
             if (replaceString != null) {
                 int ord = c;

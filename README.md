@@ -4,8 +4,8 @@
 Jupiterについて / About Jupiter
 -------------
 #### ビルドステータス
-[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/JupiterDevelopmentTeam)
-[![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/JupiterDevelopmentTeam/tree/master)
+[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)
+[![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)
 
 Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。コードの多くは[Nukkit](https://github.com/Nukkit/Nukkit/)のものを使用しています。
 

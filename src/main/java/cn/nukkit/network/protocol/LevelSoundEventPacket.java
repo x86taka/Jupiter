@@ -121,8 +121,8 @@ public class LevelSoundEventPacket extends DataPacket {
     public float z;
     public int extraData = -1;
     public int pitch = 1;
-    public boolean unknownBool;
-    public boolean disableRelativeVolume;
+    public boolean unknownBool = false;
+    public boolean disableRelativeVolume = false;
 
     @Override
     public void decode() {

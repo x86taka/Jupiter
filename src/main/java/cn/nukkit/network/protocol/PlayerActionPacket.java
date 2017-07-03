@@ -28,7 +28,7 @@ public class PlayerActionPacket extends DataPacket {
     public static final byte ACTION_WORLD_IMMUTABLE = 17;
     public static final byte ACTION_CONTINUE_BREAK = 18;
 
-    public long entityId;
+    public long entityRuntimeId;
     public int action;
     public int x;
     public int y;
@@ -38,7 +38,7 @@ public class PlayerActionPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.entityId = this.getVarLong();
+        this.entityRuntimeId = this.getVarLong();
         this.action = this.getVarInt();
         BlockVector3 v = this.getBlockCoords();
         this.x = v.x;
@@ -50,7 +50,7 @@ public class PlayerActionPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.entityId);
+        this.putVarLong(this.entityRuntimeId);
         this.putVarInt(this.action);
         this.putBlockCoords(this.x, this.y, this.z);
         this.putVarInt(this.face);

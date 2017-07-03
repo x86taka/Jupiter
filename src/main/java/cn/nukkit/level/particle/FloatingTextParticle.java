@@ -1,5 +1,9 @@
 package cn.nukkit.level.particle;
 
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.item.Item;
@@ -7,10 +11,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.AddPlayerPacket;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
-
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created on 2015/11/21 by xtypr.
@@ -61,7 +61,7 @@ public class FloatingTextParticle extends Particle {
             this.entityId = 1095216660480L + ThreadLocalRandom.current().nextLong(0, 0x7fffffffL);
         } else {
             RemoveEntityPacket pk = new RemoveEntityPacket();
-            pk.eid = this.entityId;
+            pk.entityRuntimeId = this.entityId;
 
             packets.add(pk);
         }

@@ -7,7 +7,7 @@ public class ShowCreditsPacket extends DataPacket {
     public static final int STATUS_START_CREDITS = 0;
     public static final int STATUS_END_CREDITS = 1;
 
-    public long eid;
+    public long entityRuntimeId;
     public int status;
 
     @Override
@@ -22,7 +22,7 @@ public class ShowCreditsPacket extends DataPacket {
 
     @Override
     public void encode() {
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.putVarInt(this.status);
     }
 }

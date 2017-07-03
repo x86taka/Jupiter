@@ -29,13 +29,13 @@ public class EntityEventPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public byte event;
     public long data = 0;
 
     @Override
     public void decode() {
-        this.eid = this.getVarLong();
+        this.entityRuntimeId = this.getVarLong();
         this.event = (byte) this.getByte();
         this.data = this.getUnsignedVarInt();
     }
@@ -43,7 +43,7 @@ public class EntityEventPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.putByte(this.event);
         this.putUnsignedVarInt(this.data);
     }

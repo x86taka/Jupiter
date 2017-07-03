@@ -14,12 +14,12 @@ public class MobArmorEquipmentPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public Item[] slots = new Item[4];
 
     @Override
     public void decode() {
-        this.eid = this.getVarLong();
+        this.entityRuntimeId = this.getVarLong();
         this.slots = new Item[4];
         this.slots[0] = this.getSlot();
         this.slots[1] = this.getSlot();
@@ -30,7 +30,7 @@ public class MobArmorEquipmentPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.eid);
+        this.putVarLong(this.entityRuntimeId);
         this.putSlot(this.slots[0]);
         this.putSlot(this.slots[1]);
         this.putSlot(this.slots[2]);

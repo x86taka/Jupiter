@@ -47,4 +47,8 @@ public class EntityEventPacket extends DataPacket {
         this.putByte(this.event);
         this.putUnsignedVarInt(this.data);
     }
+    
+    public String getName(){
+    	return "EntityEventPacket";
+    }
 }

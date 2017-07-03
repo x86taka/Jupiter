@@ -42,4 +42,8 @@ public class AddItemEntityPacket extends DataPacket {
         this.putVector3f(this.speedX, this.speedY, this.speedZ);
         this.put(Binary.writeMetadata(metadata));
     }
+    
+    public String getName(){
+    	return "AddItemEntityPacket";
+    }
 }

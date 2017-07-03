@@ -1,10 +1,10 @@
 package cn.nukkit.network.protocol;
 
+import java.util.UUID;
+
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Binary;
-
-import java.util.UUID;
 
 /**
  * author: MagicDroidX
@@ -53,5 +53,9 @@ public class AddPlayerPacket extends DataPacket {
         this.putSlot(this.item);
 
         this.put(Binary.writeMetadata(this.metadata));
+    }
+    
+    public String getName(){
+    	return "AddPlayerPacket";
     }
 }

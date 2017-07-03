@@ -36,4 +36,8 @@ public class AddHangingEntityPacket extends DataPacket {
         this.putBlockCoords(this.x, this.y, this.z);
         this.putVarInt(this.unknown);
     }
+    
+    public String getName(){
+    	return "AddHangingEntityPacket";
+    }
 }

@@ -562,7 +562,8 @@ public class Item implements Cloneable {
 
     public static final int GOLDEN_APPLE_ENCHANTED = 466;
 
-    public static Class[] list = null;
+    @SuppressWarnings("rawtypes")
+	public static Class[] list = null;
 
     protected Block block = null;
     protected final int id;
@@ -1590,9 +1591,11 @@ public class Item implements Cloneable {
         return get(id, meta, count, new byte[0]);
     }
 
-    public static Item get(int id, Integer meta, int count, byte[] tags) {
+    @SuppressWarnings("unchecked")
+	public static Item get(int id, Integer meta, int count, byte[] tags) {
         try {
-            Class c = list[id];
+            @SuppressWarnings("rawtypes")
+			Class c = list[id];
             Item item;
 
             if (c == null) {

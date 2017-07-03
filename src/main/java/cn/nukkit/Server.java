@@ -313,7 +313,7 @@ public class Server implements ActionListener{
 	private Image image;
 	private TrayIcon icon;
 	private String IconMessage = "";
-	
+
 	private StringBuffer sb;
 
     @SuppressWarnings("unchecked")
@@ -359,7 +359,7 @@ public class Server implements ActionListener{
             new File(dataPath + "compileOrder/").mkdirs();
             this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
-        
+
         /*
         if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
             new File(dataPath + "JavaScriptPlugin/").mkdirs();
@@ -423,7 +423,7 @@ public class Server implements ActionListener{
         sb.append(TextFormat.WHITE);
         sb.append("を読み込んでいます...");
         this.logger.info(sb.toString());
-        
+
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -501,7 +501,7 @@ public class Server implements ActionListener{
         }
 
         ServerScheduler.WORKERS = (int) poolSize;
-        
+
         this.networkCompressionLevel = (int) this.getConfig("network.compression-level", 7);
         this.networkCompressionAsync = (boolean) this.getConfig("network.async-compression", true);
 
@@ -577,7 +577,7 @@ public class Server implements ActionListener{
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
 
         this.network.registerInterface(new RakNetInterface(this));
-        
+
         try {
 			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
 	        this.defaultloadTrayIcon();
@@ -603,7 +603,7 @@ public class Server implements ActionListener{
         this.logger.info(" |____|  |__￣___|  |_|         |__|      |__|      |  ￣￣￣| |_|    ＼_|");
         this.logger.info("");
         this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
-        
+
         sb = new StringBuffer();
         sb.append("日時:");
         sb.append(TextFormat.BLUE);
@@ -620,49 +620,49 @@ public class Server implements ActionListener{
         sb.append(s);
         sb.append("秒");
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("サーバー名: ");
         sb.append(TextFormat.GREEN);
         sb.append(this.getMotd());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("ip: ");
         sb.append(TextFormat.GREEN);
         sb.append(this.getIp());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("ポート: ");
         sb.append(TextFormat.GREEN);
         sb.append(this.getPort());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("Jupiterバージョン: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getJupiterVersion());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("Nukkitバージョン: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getNukkitVersion());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("APIバージョン: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getApiVersion());
         this.logger.info(sb.toString());
-        
+
         sb = new StringBuffer();
         sb.append("コードネーム: ");
         sb.append(TextFormat.LIGHT_PURPLE);
         sb.append(this.getCodename());
         this.logger.info(sb.toString());
-        
+
         this.logger.info(TextFormat.AQUA + "==================================================================================");
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
@@ -806,15 +806,15 @@ public class Server implements ActionListener{
     	}
     	return icon;
     }
-    
+
     public void setTrayIconPopupMenu(PopupMenu menu){
     	this.getTrayIcon().setPopupMenu(menu);
     }
-    
+
     public void setTrayIcon(TrayIcon icon){
     	this.icon = icon;
     }
-    
+
     public void trayMessage(String message){
     	this.trayMessage(message, MessageType.INFO);
     }
@@ -829,7 +829,7 @@ public class Server implements ActionListener{
 
     private void defaultloadTrayIcon(){
     	try {
-    		
+
     		SystemTray.getSystemTray().remove(getTrayIcon());
 
 			icon = this.getTrayIcon();
@@ -837,14 +837,14 @@ public class Server implements ActionListener{
 			icon.addActionListener(this);
 
 			SystemTray.getSystemTray().add(icon);
-			
+
 			} catch (AWTException e1) {
 				e1.printStackTrace();
 				this.logger.critical("TaskTrayでエラーが発生しました。");
 			}
     	return;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
     	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
@@ -1360,7 +1360,7 @@ public class Server implements ActionListener{
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
         this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
-        
+
         this.tickProcessor();
         this.forceShutdown();
     }
@@ -1750,7 +1750,7 @@ public class Server implements ActionListener{
     		return Nukkit.API_VERSION;
     	}
     }
-    
+
     public String getJupiterVersion() {
     	synchronized(Nukkit.JUPITER_VERSION){
     		return Nukkit.JUPITER_VERSION;
@@ -2709,7 +2709,7 @@ public class Server implements ActionListener{
     public Boolean getJupiterConfigBoolean(String key){
     	return this.getJupiterConfigBoolean(key, null);
     }
-    
+
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
         Object value = this.jupiterconfig.containsKey(variable) ? this.jupiterconfig.get(variable) : defaultValue;
         if (value instanceof Boolean) {

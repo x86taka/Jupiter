@@ -22,7 +22,7 @@ public class EntityEventPacket extends DataPacket {
     public static final byte FISH_HOOK_TEASE = 14;
     public static final byte SQUID_INK_CLOUD = 15;
     public static final byte AMBIENT_SOUND = 16;
-    public static final byte RESPAWN = 18;
+    public static final byte RESPAWN = 17;
 
     @Override
     public byte pid() {
@@ -31,13 +31,13 @@ public class EntityEventPacket extends DataPacket {
 
     public long eid;
     public byte event;
-    public int data = 0;
+    public long data = 0;
 
     @Override
     public void decode() {
         this.eid = this.getVarLong();
         this.event = (byte) this.getByte();
-        this.data = this.getVarInt();
+        this.data = this.getUnsignedVarInt();
     }
 
     @Override
@@ -45,6 +45,6 @@ public class EntityEventPacket extends DataPacket {
         this.reset();
         this.putVarLong(this.eid);
         this.putByte(this.event);
-        this.putVarInt(this.data);
+        this.putUnsignedVarInt(this.data);
     }
 }

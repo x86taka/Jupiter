@@ -2097,9 +2097,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         StartGamePacket startGamePacket = new StartGamePacket();
         startGamePacket.entityUniqueId = this.id;
         startGamePacket.entityRuntimeId = this.id;
+        //startGamePacket.playerGamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.x = (float) this.x;
         startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
+        startGamePacket.yaw = (float) this.yaw;
+        startGamePacket.pitch = (float) this.pitch;
         startGamePacket.seed = -1;
         startGamePacket.dimension = (byte) (this.level.getDimension() & 0xff);
         startGamePacket.gamemode = this.gamemode & 0x01;
@@ -2112,9 +2115,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.eduMode = false;
         startGamePacket.rainLevel = 0;
         startGamePacket.lightningLevel = 0;
-        startGamePacket.commandsEnabled = true;
+        startGamePacket.commandsEnabled = this.isEnableClientCommand();
         startGamePacket.levelId = "";
-        startGamePacket.worldName = this.level.getName();
+        startGamePacket.worldName = this.getServer().getNetwork().getName();
         startGamePacket.generator = 1; //0 old, 1 infinite, 2 flat
         this.dataPacket(startGamePacket);
 
@@ -2155,7 +2158,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.dataPacket(containerSetContentPacket);
         }
 
-
         this.setEnableClientCommand(true);
 
         this.server.sendFullPlayerListData(this);
@@ -2163,8 +2165,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.forceMovement = this.teleportPosition = this.getPosition();
 
         this.server.onPlayerLogin(this);
-
-        System.out.println("PASSED");
     }
 
     public void handleDataPacket(DataPacket packet) {

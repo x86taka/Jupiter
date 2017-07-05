@@ -428,7 +428,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return clientSecret;
     }
 
-    public ClientChainData getClientChainData(){
+    public ClientChainData getLoginChainData(){
     	return this.loginChainData;
     }
 

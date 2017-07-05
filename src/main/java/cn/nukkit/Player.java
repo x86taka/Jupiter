@@ -428,6 +428,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return clientSecret;
     }
 
+    public ClientChainData getClientChainData(){
+    	return this.loginChainData;
+    }
+
     /**
      * This might disappear in the future.
      * Please use getUniqueId() instead (IP + clientId + name combo, in the future it'll change to real UUID for online auth)

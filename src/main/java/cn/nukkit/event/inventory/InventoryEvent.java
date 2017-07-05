@@ -17,7 +17,11 @@ public abstract class InventoryEvent extends Event {
     }
 
     public Inventory getInventory() {
-        return inventory;
+        return this.inventory;
+    }
+
+    public Player getPlayer() {
+    	return (Player) this.inventory.getHolder();
     }
 
     public Player[] getViewers() {

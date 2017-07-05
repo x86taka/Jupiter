@@ -72,6 +72,37 @@ public final class ClientChainData {
     public int getDeviceOS() {
         return this.deviceOS;
     }
+    
+    public String getDeviceOSbyName(){
+    	switch(this.deviceOS){
+    		case DEVICE_OS_ANDROID:
+    			return "Android";
+    			
+    		case DEVICE_OS_iOS:
+    			return "iOS";
+    			
+    		case DEVICE_OS_OSX:
+    			return "OSX";
+    			
+    		case DEVICE_OS_FIREOS:
+    			return "FireOS";
+    			
+    		case DEVICE_OS_GEARVR:
+    			return "Gear VR";
+    			
+    		case DEVICE_OS_HOLOLENS:
+    			return "HoloLens";
+    			
+    		case DEVICE_OS_WINDOWS10:
+    			return "Windows 10";
+    			
+    		case DEVICE_OS_WINDOWS32:
+    			return "Windows 32";
+    			
+    			default:
+    				return null;
+    	}
+    }
 
     public String getGameVersion() {
         return this.gameVersion;

@@ -355,8 +355,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected int lastEnderPearl = -1;
 
-    private String deviceModel;
-
     public boolean mute = false;
 
     public EntityFishingHook fishingHook;
@@ -5308,12 +5306,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     		this.server.broadcastMessage(this.getName() + "は別のサーバーへ移動しました。");
     	}
     	this.close(mes, mes, false);
-    }
-
-    public String getDeviceModel() {
-    	synchronized(deviceModel){
-    		return deviceModel;
-    	}
     }
 
     @Override

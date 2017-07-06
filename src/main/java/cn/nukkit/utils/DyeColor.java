@@ -2,7 +2,6 @@ package cn.nukkit.utils;
 
 public enum DyeColor {
 
-
     BLACK(0, 15, "Black", BlockColor.BLACK_BLOCK_COLOR),
     RED(1, 14, "Red", BlockColor.RED_BLOCK_COLOR),
     GREEN(2, 13, "Green", BlockColor.GREEN_BLOCK_COLOR),
@@ -20,19 +19,17 @@ public enum DyeColor {
     ORANGE(14, 1, "Orange", BlockColor.ORANGE_BLOCK_COLOR),
     WHITE(15, 0, "White", BlockColor.WHITE_BLOCK_COLOR);
 
-
     private int dyeColorMeta;
-    private int blockColorMeta;
+    private int dyedColorMeta;
     private String colorName;
     private BlockColor blockColor;
 
-
-    private final static DyeColor[] BY_BLOCK_DATA;
+    private final static DyeColor[] BY_DYED_DATA;
     private final static DyeColor[] BY_DYE_DATA;
 
-    DyeColor(int dyeColorMeta, int blockColorMeta, String colorName, BlockColor blockColor) {
+    DyeColor(int dyeColorMeta, int dyedColorMeta, String colorName, BlockColor blockColor) {
         this.dyeColorMeta = dyeColorMeta;
-        this.blockColorMeta = blockColorMeta;
+        this.dyedColorMeta = dyedColorMeta;
         this.colorName = colorName;
         this.blockColor = blockColor;
     }
@@ -45,8 +42,8 @@ public enum DyeColor {
         return this.dyeColorMeta;
     }
 
-    public int getBlockColorData() {
-        return this.blockColorMeta;
+    public int getDyedData() {
+        return this.dyedColorMeta;
     }
 
     public String getName() {
@@ -55,10 +52,10 @@ public enum DyeColor {
 
     static {
         BY_DYE_DATA = values();
-        BY_BLOCK_DATA = values();
+        BY_DYED_DATA = values();
 
         for (DyeColor color : values()) {
-        	BY_BLOCK_DATA[color.blockColorMeta & 0x0f] = color;
+            BY_DYED_DATA[color.dyedColorMeta & 0x0f] = color;
             BY_DYE_DATA[color.dyeColorMeta & 0x0f] = color;
         }
     }
@@ -67,9 +64,8 @@ public enum DyeColor {
         return BY_DYE_DATA[dyeColorMeta & 0x0f];
     }
 
-    public static DyeColor getByBlockColorData(int blockColorMeta) {
-        return BY_BLOCK_DATA[blockColorMeta & 0x0f];
+    public static DyeColor getByDyedData(int dyedColorMeta) {
+        return BY_DYED_DATA[dyedColorMeta & 0x0f];
     }
-
 
 }

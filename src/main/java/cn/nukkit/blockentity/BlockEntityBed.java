@@ -44,6 +44,6 @@ public class BlockEntityBed extends BlockEntitySpawnable {
     }
 
     public DyeColor getDyeColor() {
-        return DyeColor.getByBlockColorData(color);
+        return DyeColor.getByDyedData(color);
     }
 }

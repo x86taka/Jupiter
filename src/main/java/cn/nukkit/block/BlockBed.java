@@ -72,12 +72,17 @@ public class BlockBed extends BlockTransparent {
 
     @Override
     public boolean onActivate(Item item, Player player) {
+
+        if(this.getLevel().getDimension() == Level.DIMENSION_NETHER){
+        	//TODO: ベッドを爆発させる
+        } 
+
         int time = this.getLevel().getTime() % Level.TIME_FULL;
 
         boolean isNight = (time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE);
 
         if (player != null && !isNight) {
-            player.sendMessage(TextFormat.GRAY + "You can only sleep at night");
+            player.sendMessage(TextFormat.GRAY + "夜の間しか眠ることはできません");
             return true;
         }
 
@@ -100,7 +105,7 @@ public class BlockBed extends BlockTransparent {
                 b = blockWest;
             } else {
                 if (player != null) {
-                    player.sendMessage(TextFormat.GRAY + "This bed is incomplete");
+                    player.sendMessage(TextFormat.GRAY + "このベッドは未完成です");
                 }
 
                 return true;
@@ -108,7 +113,7 @@ public class BlockBed extends BlockTransparent {
         }
 
         if (player != null && !player.sleepOn(b)) {
-            player.sendMessage(TextFormat.GRAY + "This bed is occupied");
+            player.sendMessage(TextFormat.GRAY + "このベッドは既に使われています");
         }
 
 

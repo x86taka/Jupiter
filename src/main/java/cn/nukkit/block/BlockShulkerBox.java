@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
@@ -108,18 +110,35 @@ public class BlockShulkerBox extends BlockTransparent {
     }
 
     @Override
+    public Item[] getDrops(Item item) {
+        return new Item[0];
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return 1;
+    }
+
+    @Override
     public Item toItem() {
         Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
-            item.setCustomName(blockEntity.getName());
+            if (((BlockEntityShulkerBox) blockEntity).hasName()) {
+                item.setCustomName(blockEntity.getName());
+            }
             item.setCustomBlockData(blockEntity.getCleanedNBT());
+            List<String> lore = new ArrayList<>();
+            for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
+                lore.add(i.getName() + " x" + i.getCount());
+            }
+            item.setLore(lore.stream().toArray(String[]::new));
         }
         return item;
     }
 
     public DyeColor getDyeColor() {
-        return DyeColor.getByDyeData(this.meta);
+        return DyeColor.getByDyedData(this.meta);
     }
 
     @Override

@@ -27,7 +27,7 @@ Jupiterはこのようなきっかけを持つために、__日本語に特化__
 * __[公式プラグイン](https://github.com/JupiterDevelopmentTeam/Plugins)__
 * __[JupiterをWindows10で動かす！(Youtube)](https://www.youtube.com/watch?v=bHTzzD6z4pw)__
 * __[Travis Ci](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)__
-* __[Circle Ci](https://circleci.com/gh/Jupiter)__
+* __[Circle Ci](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)__
 * __[Jupiterプラグインコードエディタ「EarthOne」](http://itsuplugin.web.fc2.com/earthone.html)__
 
 

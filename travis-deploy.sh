@@ -14,4 +14,4 @@ git config user.name "Travis-CI"
 git init
 git add .
 git commit -m "Deploy to GitHub Pages. #$TRAVIS_BUILD_NUMBER"
-git push --force --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git" master:gh-pages > /dev/null 2>&1
+git push --force --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git" master:master > /dev/null 2>&1

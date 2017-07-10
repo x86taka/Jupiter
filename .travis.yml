@@ -1,12 +1,20 @@
 language: java
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 branches:
   only:
-    - master
-    
+  - master
+
 install:
-  - mvn clean
-  - mvn package
+- mvn clean
+- mvn package
+
+script:
+- '[ "$TRAVIS_BRANCH" == master ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && bash
+  ./travis-deploy.sh'
+
+env:
+  global:
+    - secure: sqyMulr5uWwScIOEi0Q8S07oOIFg7Z4OL7m0UovrkttrYbRhS+qWwlZpj3yiUuVKVQToiSeR5TWwWKe+FDAhmXG15sfK4uP/rUZYSQgPz/qN44Xu2Adcs+evMJGzI4uVJ+poF+gC2nsiJtwM4lpsuf67X4dML14/P9DB3cVJgPIJMM2mZrBQWpwMnQ0IaAFg6XZmwxVmOQGi9bUFdHSf0j9adFlPmN63AsUr9r+zeUgPm7s7UjNDraH8A1Qd6dQPRhgi8vbVN0bWaDYTuMqx3ly8B62FoJaFTTOgl4V0wzg/JjcNsIJ+Cb2XkA2Ks4IYrwfg91oRCSwPavpWWjHugFSHAzst9B4vw+x9+MAVHlzxVgDIrFDrh9io4FYrHQbFkA1jxqiKXlMQbg9u77XhRDhCBO+KzuGfxSSeoxfarKH1ojR83ElY39uuRhNK/Ehl+ECeHlUTNwipipIvIR+CmZJ9FayGdqS02QvmTCmgdUkJF/pxa2wdSKoYWznve7z+srDUAhpV1tmKordWSJUi8mZjJQqJQzHhxUZw2Ql0ZNpBtTJboKChRtGOpeeoCrAdo/Q/l4dN8me52QE6TxR0z6YR9S2ltSy/ahbKnpTSrgw/L4jN2xQWi1QfjouHraWNyBUOk8ClV4KrPPqbVeelo5PQSjZ/PYZV3J+sLPWTLKw=

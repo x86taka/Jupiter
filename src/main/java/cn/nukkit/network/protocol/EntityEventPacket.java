@@ -37,7 +37,7 @@ public class EntityEventPacket extends DataPacket {
     public void decode() {
         this.entityRuntimeId = this.getVarLong();
         this.event = (byte) this.getByte();
-        this.data = this.getVarInt();
+        this.data = this.getUnsignedVarInt();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class EntityEventPacket extends DataPacket {
         this.reset();
         this.putVarLong(this.entityRuntimeId);
         this.putByte(this.event);
-        this.putVarInt((int) this.data);
+        this.putUnsignedVarInt(this.data);
     }
     
     public String getName(){

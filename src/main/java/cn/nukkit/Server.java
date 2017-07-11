@@ -1401,9 +1401,7 @@ public class Server implements ActionListener{
         }
     }
 
-    public void onPlayerLogin
-    
-    (Player player) {
+    public void onPlayerLogin(Player player) {
         if (this.sendUsageTicker > 0) {
             this.uniquePlayers.add(player.getUniqueId());
         }
@@ -1718,7 +1716,9 @@ public class Server implements ActionListener{
      * @return String Nukkitバージョン
      */
     public String getNukkitVersion() {
-    	return Nukkit.VERSION;
+    	synchronized(Nukkit.VERSION){
+    		return Nukkit.VERSION;
+    	}
     }
 
     /**
@@ -1726,7 +1726,9 @@ public class Server implements ActionListener{
      * @return String コードネーム
      */
     public String getCodename() {
-    	return Nukkit.CODENAME;
+        synchronized(Nukkit.CODENAME){
+    		return Nukkit.CODENAME;
+    	}
     }
 
     /**
@@ -1734,7 +1736,9 @@ public class Server implements ActionListener{
      * @return String Minecraftバージョン
      */
     public String getVersion() {
-    	return ProtocolInfo.MINECRAFT_VERSION;
+        synchronized(ProtocolInfo.MINECRAFT_VERSION){
+    		return ProtocolInfo.MINECRAFT_VERSION;
+    	}
     }
 
     /**
@@ -1742,11 +1746,15 @@ public class Server implements ActionListener{
      * @return String APIバージョン
      */
     public String getApiVersion() {
-    	return Nukkit.API_VERSION;
+        synchronized(Nukkit.API_VERSION){
+    		return Nukkit.API_VERSION;
+    	}
     }
 
     public String getJupiterVersion() {
-    	return Nukkit.JUPITER_VERSION;
+    	synchronized(Nukkit.JUPITER_VERSION){
+    		return Nukkit.JUPITER_VERSION;
+    	}
 	}
 
     /**
@@ -1754,7 +1762,9 @@ public class Server implements ActionListener{
      * @return String ファイルパス
      */
     public String getFilePath() {
-    	return filePath;
+        synchronized(filePath){
+    		return filePath;
+    	}
     }
 
     /**
@@ -1763,7 +1773,9 @@ public class Server implements ActionListener{
      * @return String データパス
      */
     public String getDataPath() {
-    	return dataPath;
+        synchronized(dataPath){
+    		return dataPath;
+    	}
     }
 
     /**
@@ -1773,11 +1785,15 @@ public class Server implements ActionListener{
      * @see Server#getDataPath()
      */
     public String getPluginPath() {
-    	return pluginPath;
+        synchronized(pluginPath){
+    		return pluginPath;
+    	}
     }
 
     public String getDefaultplugins(){
-    	return defaultplugin;
+    	synchronized(defaultplugin){
+    		return defaultplugin;
+    	}
     }
 
     /**
@@ -1812,11 +1828,16 @@ public class Server implements ActionListener{
      * @return String IPアドレス
      */
     public String getIp() {
-    	return this.getPropertyString("server-ip", "0.0.0.0");
+        synchronized(this.getPropertyString("server-ip", "0.0.0.0")){
+    		return this.getPropertyString("server-ip", "0.0.0.0");
+    	}
+
     }
 
     public UUID getServerUniqueId() {
-    	return this.serverID;
+        synchronized(this.serverID){
+    		return this.serverID;
+    	}
     }
 
     /**
@@ -1847,8 +1868,10 @@ public class Server implements ActionListener{
      * @return String ワールドタイプ
      */
     public String getLevelType() {
-    	return this.getPropertyString("level-type", "DEFAULT");
-       }
+        synchronized(this.getPropertyString("level-type", "DEFAULT")){
+    		return this.getPropertyString("level-type", "DEFAULT");
+    	}
+    }
 
     public boolean getGenerateStructures() {
         return this.getPropertyBoolean("generate-structures", true);
@@ -2825,9 +2848,7 @@ public class Server implements ActionListener{
     /**
      * Checks the current thread against the expected primary thread for the server.
      *
-     * <b>Note:</b> this method should not be used to indicate the current synchronized state of the runtime. A current 
-
- matching the main thread indicates that it is synchronized, but a mismatch does not preclude the same assumption.
+     * <b>Note:</b> this method should not be used to indicate the current synchronized state of the runtime. A current thread matching the main thread indicates that it is synchronized, but a mismatch does not preclude the same assumption.
      * @return true if the current thread matches the expected primary thread, false otherwise
      */
     public boolean isPrimaryThread() {

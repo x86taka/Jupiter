@@ -220,6 +220,8 @@ public class Server implements ActionListener{
 
     private int profilingTickrate = 20;
 
+    public int a;
+
     private ServerScheduler scheduler = null;
 
     private int tickCounter;

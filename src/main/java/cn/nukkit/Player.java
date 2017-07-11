@@ -1741,7 +1741,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                 	if (this.distance(this.getFishingHook()) > 33 | this.getInventory().getItemInHand().getId() != Item.FISHING_ROD)
                 		this.unlinkHookFromPlayer();
-
                 }
             }
 
@@ -1965,8 +1964,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         double dot1 = dV.dot(new Vector2(pos.x, pos.z));
         return (dot1 - dot) >= -maxDiff;
     }
+    
+    private static int getClientFriendlyGamemode(int gamemode){
+        gamemode &= 0x03;
+        if (gamemode == Player.SPECTATOR) {
+            return Player.CREATIVE;
+        }
+        return gamemode;
+    }
 
-    protected void processLogin() {
+    protected void processLogin() {//TODO PROCESS_LOGIN
         if (!this.server.isWhitelisted((this.getName()).toLowerCase())) {
             this.kick(PlayerKickEvent.Reason.NOT_WHITELISTED, "Server is white-listed");
 
@@ -2103,7 +2110,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         StartGamePacket startGamePacket = new StartGamePacket();
         startGamePacket.entityUniqueId = this.id;
         startGamePacket.entityRuntimeId = this.id;
-        //startGamePacket.playerGamemode = getClientFriendlyGamemode(this.gamemode);
+        startGamePacket.playerGamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.x = (float) this.x;
         startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
@@ -2182,7 +2189,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             DataPacketReceiveEvent ev = new DataPacketReceiveEvent(this, packet);
             this.server.getPluginManager().callEvent(ev);
             /*
-            InteractPacket確認用
+            TODO InteractPacket確認用
             1.1.0現在:ACTION_MOUSEOVERが断続的に発生している模様。
             これを実行すると4が出力される。
 
@@ -3018,7 +3025,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET:
                     break;
 
-                case ProtocolInfo.INTERACT_PACKET://TODO INTERACT_PACKET
+                case ProtocolInfo.INTERACT_PACKET:
                     if (!this.spawned || !this.isAlive()) {
                         break;
                     }
@@ -4310,7 +4317,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.close(message, reason, true);
     }
 
-    public void close(TextContainer message, String reason, boolean notify) {
+    public void close(TextContainer message, String reason, boolean notify) {//TODO CLOSE()
 
         this.unlinkHookFromPlayer();
 
@@ -4448,9 +4455,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return String プレイヤー名
      */
     public String getName() {
-    	synchronized(this.username){
-    		return this.username;
-    	}
+    	return this.username;
     }
 
     /**
@@ -5187,7 +5192,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public boolean isLoaderActive() {
         return this.isConnected();
     }
-
 
     public static BatchPacket getChunkCacheFromData(int chunkX, int chunkZ, byte[] payload) {
         FullChunkDataPacket pk = new FullChunkDataPacket();

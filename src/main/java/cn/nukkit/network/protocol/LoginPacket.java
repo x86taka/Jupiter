@@ -77,6 +77,8 @@ public class LoginPacket extends DataPacket {
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
         if (skinToken.has("deviceModel")) this.deviceModel = skinToken.get("deviceModel").getAsString();
         if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
+    System.out.println(skinId);
+    System.out.println(skinToken.get("SkinData").getAsString());
     }
 
     private JsonObject decodeToken(String token) {

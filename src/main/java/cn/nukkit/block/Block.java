@@ -1,5 +1,10 @@
 package cn.nukkit.block;
 
+import java.lang.reflect.Constructor;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -17,11 +22,6 @@ import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockColor;
-
-import java.lang.reflect.Constructor;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * author: MagicDroidX
@@ -558,7 +558,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[END_ROD] = BlockEndRod.class; //208
             list[END_GATEWAY] = BlockEndGateway.class; //209
 
-            //TODO: list[SHULKER_BOX] = BlockShulkerBox.class; //218
+            list[SHULKER_BOX] = BlockShulkerBox.class; //218
             list[PURPLE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedPurple.class; //219
             list[WHITE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedWhite.class; //220
             list[ORANGE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedOrange.class; //221
@@ -800,6 +800,10 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
     public final void setDamage(Integer meta) {
         this.meta = (meta == null ? 0 : meta & 0x0f);
+    }
+
+    public int getMaxStackSize(){
+    	return 64;
     }
 
     final public void position(Position v) {

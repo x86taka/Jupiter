@@ -1,5 +1,7 @@
 package cn.nukkit.entity.animal;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.BlockWool;
 import cn.nukkit.entity.data.ByteEntityData;
@@ -10,8 +12,6 @@ import cn.nukkit.item.ItemDye;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.DyeColor;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Author: BeYkeRYkt
@@ -89,7 +89,7 @@ public class EntitySheep extends EntityAnimal {
     @Override
     public boolean onInteract(Player player, Item item) {
         if (item.getId() == Item.DYE) {
-            this.setColor(((ItemDye) item).getDyeColor().getBlockColorData());
+            this.setColor(((ItemDye) item).getDyeColor().getDyedData());
             return true;
         }
 
@@ -130,13 +130,13 @@ public class EntitySheep extends EntityAnimal {
         double rand = random.nextDouble(1, 100);
 
         if (rand <= 0.164) {
-            return DyeColor.PINK.getBlockColorData();
+            return DyeColor.PINK.getDyedData();
         }
 
         if (rand <= 15) {
-            return random.nextBoolean() ? DyeColor.BLACK.getBlockColorData() : random.nextBoolean() ? DyeColor.GRAY.getBlockColorData() : DyeColor.LIGHT_GRAY.getBlockColorData();
+            return random.nextBoolean() ? DyeColor.BLACK.getDyedData() : random.nextBoolean() ? DyeColor.GRAY.getDyedData() : DyeColor.LIGHT_GRAY.getDyedData();
         }
 
-        return DyeColor.WHITE.getBlockColorData();
+        return DyeColor.WHITE.getDyedData();
     }
 }

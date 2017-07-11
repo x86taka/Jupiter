@@ -8,6 +8,7 @@ public enum InventoryType implements InventoryNetworkId{
 
     CHEST(27, "Chest", WINDOW_CONTAINER),
     ENDER_CHEST(27, "Ender Chest", WINDOW_CONTAINER),
+    SHULKER_BOX(27, "Shulker Box", WINDOW_CONTAINER), 
     DOUBLE_CHEST(27 + 27, "Double Chest", WINDOW_CONTAINER),
     PLAYER(40, "Player", WINDOW_CONTAINER), //36 CONTAINER, 4 ARMOR
     FURNACE(3, "Furnace", WINDOW_FURNACE),

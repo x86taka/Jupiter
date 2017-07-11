@@ -1,5 +1,9 @@
 package cn.nukkit.blockentity;
 
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.Position;
@@ -9,10 +13,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.ChunkException;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
-
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author MagicDroidX
@@ -38,6 +38,7 @@ public abstract class BlockEntity extends Position {
     public static final String COMPARATOR = "Comparator";
     public static final String HOPPER = "Hopper";
     public static final String BED = "Bed";
+    public static final String SHULKER_BOX = "ShulkerBox";
 
 
     public static long count = 1;

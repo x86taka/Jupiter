@@ -2,8 +2,8 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
-import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.DyeColor;
 
 /**
  * Created by CreeperFace on 2.6.2017.
@@ -19,7 +19,7 @@ public class BlockConcrete extends BlockSolid {
     }
     
     public BlockConcrete(DyeColor dyeColor) {
-        this(dyeColor.getBlockColorData());
+        this(dyeColor.getDyedData());
     }
 
     @Override
@@ -60,10 +60,10 @@ public class BlockConcrete extends BlockSolid {
     
     @Override
     public BlockColor getColor() {
-        return DyeColor.getByBlockColorData(meta).getColor();
+        return DyeColor.getByDyedData(meta).getColor();
     }
     
     public DyeColor getDyeColor() {
-        return DyeColor.getByBlockColorData(meta);
+        return DyeColor.getByDyedData(meta);
     }
 }

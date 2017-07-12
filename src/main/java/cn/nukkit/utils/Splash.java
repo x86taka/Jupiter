@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,7 +16,7 @@ public class Splash extends JFrame{
 	JLabel label;
 	JLabel text;
 	
-	public Splash(String splashText) throws IOException, InterruptedException{
+	public Splash(String splashText) throws Exception{
 			BufferedImage image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/Jupiter.jpg"));
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			label = new JLabel(new ImageIcon(image));

@@ -8,6 +8,7 @@ import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -49,6 +50,11 @@ public class BlockShulkerBox extends BlockTransparent {
     @Override
     public double getResistance() {
         return 30;
+    }
+
+    @Override
+    public int getToolType() {
+        return ItemTool.TYPE_PICKAXE;
     }
 
     @Override
@@ -111,7 +117,9 @@ public class BlockShulkerBox extends BlockTransparent {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[0];
+        return new Item[]{
+                this.toItem()
+        };
     }
 
     @Override

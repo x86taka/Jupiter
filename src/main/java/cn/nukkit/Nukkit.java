@@ -1,5 +1,7 @@
 package cn.nukkit;
 
+import java.io.IOException;
+
 import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
@@ -26,7 +28,7 @@ import cn.nukkit.utils.Splash;
 public class Nukkit {
 
     public final static String VERSION = "1.0dev";
-    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".1";
+    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".2";
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "Jupiter";
     @Deprecated
@@ -45,7 +47,13 @@ public class Nukkit {
     public static void main(String[] args) {
     	Thread th1 = new Thread(new Runnable(){
     		public void run(){
-    			new Splash("起動しています");
+    			try {
+					new Splash("起動しています");
+					
+				} catch (IOException | InterruptedException e) {
+					System.err.println("Splash画面の表示に失敗しました。");
+					e.printStackTrace();
+				}
     		}
     	});
 

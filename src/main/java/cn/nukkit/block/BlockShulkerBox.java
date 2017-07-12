@@ -11,7 +11,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
@@ -66,6 +65,13 @@ public class BlockShulkerBox extends BlockTransparent {
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
 
+        try {
+        	item.getNamedTag().getList("Items");
+        	nbt.putList(item.getNamedTag().getList("Items"));
+        } catch (NullPointerException e){
+
+        }
+
         if (item.hasCustomName()) {
             nbt.putString("CustomName", item.getCustomName());
         }
@@ -95,7 +101,6 @@ public class BlockShulkerBox extends BlockTransparent {
                 shulkerBox = (BlockEntityShulkerBox) t;
             } else {
                 CompoundTag nbt = new CompoundTag("")
-                        .putList(new ListTag<>("Items"))
                         .putString("id", BlockEntity.SHULKER_BOX)
                         .putInt("x", (int) this.x)
                         .putInt("y", (int) this.y)
@@ -129,7 +134,7 @@ public class BlockShulkerBox extends BlockTransparent {
 
     @Override
     public Item toItem() {
-        Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
+        Item item = Item.get(Item.SHULKER_BOX, this.meta);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
             item.setNamedTag(blockEntity.namedTag);

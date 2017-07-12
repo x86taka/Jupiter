@@ -65,7 +65,12 @@ public class BlockShulkerBox extends BlockTransparent {
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
 
+        for (Tag tag : item.getNamedTag().getAllTags()){
+        	System.out.println(tag.toString());
+        }
+
         if (item.getNamedTag() != null && item.getNamedTag().contains("List")){
+        	System.out.println("found");
         	nbt.putList(item.getNamedTag().getList("Items"));
         }
 

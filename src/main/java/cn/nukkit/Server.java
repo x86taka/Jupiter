@@ -220,7 +220,6 @@ public class Server implements ActionListener{
 
     private int profilingTickrate = 20;
 
-    public int a;
 
     private ServerScheduler scheduler = null;
 
@@ -584,7 +583,7 @@ public class Server implements ActionListener{
         try {
 			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
 	        this.defaultloadTrayIcon();
-		} catch (IOException e) {
+		} catch (IOException | AWTException e) {
 			this.logger.critical("TaskTrayでエラーが発生しました。");
 		}
 
@@ -830,8 +829,7 @@ public class Server implements ActionListener{
     	this.getTrayIcon().displayMessage(title, message, type);
     }
 
-    private void defaultloadTrayIcon(){
-    	try {
+    private void defaultloadTrayIcon() throws AWTException{
 
     		SystemTray.getSystemTray().remove(getTrayIcon());
 
@@ -840,11 +838,7 @@ public class Server implements ActionListener{
 			icon.addActionListener(this);
 
 			SystemTray.getSystemTray().add(icon);
-
-			} catch (AWTException e1) {
-				e1.printStackTrace();
-				this.logger.critical("TaskTrayでエラーが発生しました。");
-			}
+			
     	return;
     }
 

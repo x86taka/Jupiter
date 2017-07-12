@@ -17,8 +17,7 @@ public class Splash extends JFrame{
 	JLabel label;
 	JLabel text;
 	
-	public Splash(String splashText){
-		try {
+	public Splash(String splashText) throws IOException, InterruptedException{
 			BufferedImage image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/Jupiter.jpg"));
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			label = new JLabel(new ImageIcon(image));
@@ -40,9 +39,5 @@ public class Splash extends JFrame{
 			Thread.sleep(2000);
 			this.setVisible(false);
 			return;
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-			return;
-		}
 	}
 }

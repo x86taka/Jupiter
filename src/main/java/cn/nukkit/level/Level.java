@@ -50,6 +50,7 @@ import cn.nukkit.block.BlockSugarcane;
 import cn.nukkit.block.BlockWheat;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityChest;
+import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityXPOrb;
@@ -1946,8 +1947,12 @@ public class Level implements ChunkManager, Metadatable {
                     ((BlockEntityChest) blockEntity).unpair();
                 }
 
-                for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
-                    this.dropItem(target, chestItem);
+                if (!(blockEntity instanceof BlockEntityShulkerBox)) {
+                    for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
+                        this.dropItem(target, chestItem);
+                    }
+                } else if (((InventoryHolder) blockEntity).getInventory().isEmpty()) {
+                    this.dropItem(target, target.toItem());
                 }
             }
 

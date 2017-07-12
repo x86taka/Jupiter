@@ -1,7 +1,5 @@
 package cn.nukkit;
 
-import java.awt.AWTException;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -363,12 +361,12 @@ public class Server implements ActionListener{
             this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
 
-        
+
         if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
             new File(dataPath + "JavaScriptPlugin/").mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "JavaScriptPlugin/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + dataPath + "JavaScriptPlugin/  を作成しました。");
         }
-        
+
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 
@@ -584,7 +582,7 @@ public class Server implements ActionListener{
         try {
 			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
 	        this.defaultloadTrayIcon();
-		} catch (IOException | AWTException e) {
+		} catch (Exception e) {
 			this.logger.critical("TaskTrayでエラーが発生しました。");
 		}
 
@@ -682,6 +680,20 @@ public class Server implements ActionListener{
 	        }
 	        this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
         }
+        /*
+        logger.info(TextFormat.AQUA + "JavaScriptプラグインを読み込んでいます...");
+        File file = new File(this.getDataPath() + "JavaScriptPlugin/");
+        File files[] = file.listFiles();
+        JavaScriptPluginLoader loader = new JavaScriptPluginLoader();
+        if(files != null){
+        for(File f : files){
+        	try {
+				loader.loadPlugin(f);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+        }*/
 
         this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
         logger.info(TextFormat.AQUA + "プラグインを読み込んでいます...");
@@ -830,7 +842,7 @@ public class Server implements ActionListener{
     	this.getTrayIcon().displayMessage(title, message, type);
     }
 
-    private void defaultloadTrayIcon() throws AWTException, HeadlessException{
+    private void defaultloadTrayIcon() throws Exception{
 
     		SystemTray.getSystemTray().remove(getTrayIcon());
 
@@ -839,7 +851,7 @@ public class Server implements ActionListener{
 			icon.addActionListener(this);
 
 			SystemTray.getSystemTray().add(icon);
-			
+
     	return;
     }
 
@@ -1714,9 +1726,7 @@ public class Server implements ActionListener{
      * @return String Nukkitバージョン
      */
     public String getNukkitVersion() {
-    	synchronized(Nukkit.VERSION){
-    		return Nukkit.VERSION;
-    	}
+    	return Nukkit.VERSION;
     }
 
     /**
@@ -1724,9 +1734,7 @@ public class Server implements ActionListener{
      * @return String コードネーム
      */
     public String getCodename() {
-        synchronized(Nukkit.CODENAME){
-    		return Nukkit.CODENAME;
-    	}
+    	return Nukkit.CODENAME;
     }
 
     /**
@@ -1734,9 +1742,7 @@ public class Server implements ActionListener{
      * @return String Minecraftバージョン
      */
     public String getVersion() {
-        synchronized(ProtocolInfo.MINECRAFT_VERSION){
-    		return ProtocolInfo.MINECRAFT_VERSION;
-    	}
+    	return ProtocolInfo.MINECRAFT_VERSION;
     }
 
     /**
@@ -1744,15 +1750,11 @@ public class Server implements ActionListener{
      * @return String APIバージョン
      */
     public String getApiVersion() {
-        synchronized(Nukkit.API_VERSION){
-    		return Nukkit.API_VERSION;
-    	}
+    	return Nukkit.API_VERSION;
     }
 
     public String getJupiterVersion() {
-    	synchronized(Nukkit.JUPITER_VERSION){
-    		return Nukkit.JUPITER_VERSION;
-    	}
+    	return Nukkit.JUPITER_VERSION;
 	}
 
     /**
@@ -1760,9 +1762,7 @@ public class Server implements ActionListener{
      * @return String ファイルパス
      */
     public String getFilePath() {
-        synchronized(filePath){
-    		return filePath;
-    	}
+    	return filePath;
     }
 
     /**
@@ -1771,9 +1771,7 @@ public class Server implements ActionListener{
      * @return String データパス
      */
     public String getDataPath() {
-        synchronized(dataPath){
-    		return dataPath;
-    	}
+    	return dataPath;
     }
 
     /**
@@ -1783,9 +1781,7 @@ public class Server implements ActionListener{
      * @see Server#getDataPath()
      */
     public String getPluginPath() {
-        synchronized(pluginPath){
-    		return pluginPath;
-    	}
+    	return pluginPath;
     }
 
     public String getDefaultplugins(){
@@ -1826,16 +1822,12 @@ public class Server implements ActionListener{
      * @return String IPアドレス
      */
     public String getIp() {
-        synchronized(this.getPropertyString("server-ip", "0.0.0.0")){
-    		return this.getPropertyString("server-ip", "0.0.0.0");
-    	}
+    	return this.getPropertyString("server-ip", "0.0.0.0");
 
     }
 
     public UUID getServerUniqueId() {
-        synchronized(this.serverID){
-    		return this.serverID;
-    	}
+    	return this.serverID;
     }
 
     /**
@@ -1866,9 +1858,7 @@ public class Server implements ActionListener{
      * @return String ワールドタイプ
      */
     public String getLevelType() {
-        synchronized(this.getPropertyString("level-type", "DEFAULT")){
-    		return this.getPropertyString("level-type", "DEFAULT");
-    	}
+    	return this.getPropertyString("level-type", "DEFAULT");
     }
 
     public boolean getGenerateStructures() {

@@ -1,7 +1,5 @@
 package cn.nukkit;
 
-import java.io.IOException;
-
 import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
@@ -49,8 +47,7 @@ public class Nukkit {
     		public void run(){
     			try {
 					new Splash("起動しています");
-					
-				} catch (IOException | InterruptedException e) {
+				} catch (Exception e) {
 					System.err.println("Splash画面の表示に失敗しました。");
 					e.printStackTrace();
 				}

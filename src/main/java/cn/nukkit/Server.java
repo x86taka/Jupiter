@@ -1,6 +1,7 @@
 package cn.nukkit;
 
 import java.awt.AWTException;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -362,12 +363,12 @@ public class Server implements ActionListener{
             this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
         }
 
-        /*
+        
         if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
             new File(dataPath + "JavaScriptPlugin/").mkdirs();
             this.logger.info(TextFormat.AQUA + pluginPath + "JavaScriptPlugin/  を作成しました。");
         }
-        */
+        
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 
@@ -829,7 +830,7 @@ public class Server implements ActionListener{
     	this.getTrayIcon().displayMessage(title, message, type);
     }
 
-    private void defaultloadTrayIcon() throws AWTException{
+    private void defaultloadTrayIcon() throws AWTException, HeadlessException{
 
     		SystemTray.getSystemTray().remove(getTrayIcon());
 

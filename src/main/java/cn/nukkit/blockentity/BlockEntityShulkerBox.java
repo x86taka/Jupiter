@@ -136,6 +136,10 @@ public class BlockEntityShulkerBox extends BlockEntitySpawnable implements Inven
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
 
+        if (this.namedTag.contains("Items")){
+        	nbt.putList(this.namedTag.getList("Items"));
+        }
+
         if (this.hasName()) {
             nbt.put("CustomName", this.namedTag.get("CustomName"));
         }

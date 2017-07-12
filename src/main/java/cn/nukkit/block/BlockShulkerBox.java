@@ -20,7 +20,7 @@ import cn.nukkit.utils.DyeColor;
 public class BlockShulkerBox extends BlockTransparent {
 
     public BlockShulkerBox() {
-        this(0);
+        this(DyeColor.PURPLE.getDyedData());
     }
 
     public BlockShulkerBox(int meta) {
@@ -132,10 +132,7 @@ public class BlockShulkerBox extends BlockTransparent {
         Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
-            if (((BlockEntityShulkerBox) blockEntity).hasName()) {
-                item.setCustomName(blockEntity.getName());
-            }
-            item.setCustomBlockData(blockEntity.getCleanedNBT());
+            item.setNamedTag(blockEntity.namedTag);
             List<String> lore = new ArrayList<>();
             for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
                 lore.add(i.getName() + " x" + i.getCount());

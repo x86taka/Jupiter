@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -143,8 +144,15 @@ public class BlockShulkerBox extends BlockTransparent {
         if (blockEntity instanceof BlockEntityShulkerBox) {
             item.setNamedTag(blockEntity.namedTag);
             List<String> lore = new ArrayList<>();
-            for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
+            int count = 0;
+            Collection<Item> items = ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values();
+            for (Item i : items) {
                 lore.add(i.getName() + " x" + i.getCount());
+                ++count;
+                if (count == 5 && items.size() - count > 0){
+                	lore.add("and " + (items.size() - count) + " more...");
+                	break;
+                }
             }
             item.setLore(lore.stream().toArray(String[]::new));
         }

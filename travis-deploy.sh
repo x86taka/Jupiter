@@ -4,11 +4,7 @@ set -e
 SOURCE_BRANCH="master"
 TARGET_BRANCH="master"
 
-REPO='git config https://github.com/JupiterDevelopmentTeam/Jupiter.git'
-SSH_REPO=${REPO/https:\/\/github.com\//https://${GH_TOKEN}@github.com/}
-SHA='git rev-parse --verify HEAD'
-
-git clone $REPO
+git clone https://github.com/JupiterDevelopmentTeam/Jupiter.git
 mkdir -p artifact
 cp -R ./target/nukkit-1.0-SNAPSHOT.jar artifact
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH

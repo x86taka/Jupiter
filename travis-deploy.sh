@@ -20,4 +20,4 @@ fi
 
 git add nukkit-1.0-SNAPSHOT.jar
 git commit -m "#$TRAVIS_BUILD_NUMBERでの成果物の更新. [skip ci]"
-git push --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/Jupiter.git" "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git"
+git push --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/Jupiter.git" $SOURCE_BRANCH:$TARGET_BRANCH

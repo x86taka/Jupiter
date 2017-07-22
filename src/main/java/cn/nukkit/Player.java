@@ -1715,8 +1715,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.lastPitch = to.pitch;
 
             if (!isFirst) {
-                List<Block> blocksAround = new ArrayList<>(this.blocksAround);
-                List<Block> collidingBlocks = new ArrayList<>(this.collisionBlocks);
+                List<Block> blocksAround = this.blocksAround;
+                List<Block> collidingBlocks = this.collisionBlocks;
 
                 PlayerMoveEvent ev = new PlayerMoveEvent(this, from, to);
 

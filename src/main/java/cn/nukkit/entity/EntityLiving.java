@@ -20,7 +20,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.ShortTag;
+import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockIterator;
@@ -60,7 +60,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
             this.namedTag.remove("HealF");
         }
 
-        if (!this.namedTag.contains("Health") || !(this.namedTag.get("Health") instanceof ShortTag)) {
+        if (!this.namedTag.contains("Health") || !(this.namedTag.get("Health") instanceof FloatTag)) {
             this.namedTag.putFloat("Health", this.getMaxHealth());
         }
 

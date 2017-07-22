@@ -10,8 +10,8 @@ cp -R ./target/nukkit-1.0-SNAPSHOT.jar artifact
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
 cd artifact
-git config user.name "Travis CI"
-git config user.email "noreply@travis-ci.org"
+git config　--global user.name "Travis CI"
+git config --global user.email "noreply@travis-ci.org"
 
 if [ -z 'git diff --exit-code' ]; then
     echo "No changes to the spec on this push; exiting."
@@ -20,4 +20,4 @@ fi
 
 git add nukkit-1.0-SNAPSHOT.jar
 git commit -m "#$TRAVIS_BUILD_NUMBERでの成果物の更新. [skip ci]"
-git push --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git" $SOURCE_BRANCH:$TARGET_BRANCH
+git push --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/Jupiter.git" "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git"

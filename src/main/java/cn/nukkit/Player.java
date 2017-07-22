@@ -1508,14 +1508,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected void checkBlockCollision() {
         boolean portal = false;
 
-        for (Block block : this.getCollisionBlocks()) {
-            if (block.getId() == Block.NETHER_PORTAL) {
-                portal = true;
-                continue;
-            }
+        Block block = this.getLevelBlock();
 
-            block.onEntityCollide(this);
+        if (block.getId() == Block.NETHER_PORTAL) {
+            portal = true;
         }
+
+        block.onEntityCollide(this);
 
         if (portal) {
             inPortalTicks++;

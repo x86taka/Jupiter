@@ -10,7 +10,7 @@ cp -R ./target/nukkit-1.0-SNAPSHOT.jar artifact
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
 cd artifact
-git config　--global user.name "Travis CI"
+git config --global user.name "Travis CI"
 git config --global user.email "noreply@travis-ci.org"
 
 if [ -z 'git diff --exit-code' ]; then

@@ -1,17 +1,16 @@
 package cn.nukkit.utils;
 
-import cn.nukkit.entity.Attribute;
-import cn.nukkit.entity.data.Skin;
-import cn.nukkit.item.Item;
-import cn.nukkit.math.BlockVector3;
-import cn.nukkit.math.Vector3f;
-
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import cn.nukkit.entity.Attribute;
+import cn.nukkit.entity.data.Skin;
+import cn.nukkit.item.Item;
+import cn.nukkit.math.BlockVector3;
+import cn.nukkit.math.Vector3f;
 
 /**
  * author: MagicDroidX
@@ -312,7 +311,7 @@ public class BinaryStream {
         }
 
         this.putVarInt(item.getId());
-        int auxValue = ((item.hasMeta() ? item.getDamage() : Short.MAX_VALUE) << 8) | item.getCount();
+        int auxValue = (((item.hasMeta() ? item.getDamage() : -1) & 0x7fff) << 8) | item.getCount();
         this.putVarInt(auxValue);
         byte[] nbt = item.getCompoundTag();
         this.putLShort(nbt.length);
@@ -363,15 +362,11 @@ public class BinaryStream {
         VarInt.writeVarLong(this, v);
     }
 
-    public BigInteger getUnsignedVarLong() {
+    public long getUnsignedVarLong() {
         return VarInt.readUnsignedVarLong(this);
     }
 
     public void putUnsignedVarLong(long v) {
-        VarInt.writeUnsignedVarLong(this, BigInteger.valueOf(v));
-    }
-
-    public void putUnsignedVarLong(BigInteger v) {
         VarInt.writeUnsignedVarLong(this, v);
     }
 

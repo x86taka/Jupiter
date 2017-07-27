@@ -1,5 +1,6 @@
 package cn.nukkit;
 
+import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -7,6 +8,7 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -309,16 +311,12 @@ public class Server implements ActionListener{
     private Level defaultLevel = null;
 
     private Thread currentThread;
-	private Map<String, Object> jupiterconfig;
+    private Map<String, Object> jupiterconfig;
 
-	private Image image;
-	private TrayIcon icon;
-	private String IconMessage = "";
-
-	private StringBuffer sb;
+    private StringBuffer sb;
 
     @SuppressWarnings("unchecked")
-	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
+    Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
         Preconditions.checkState(instance == null, "Already initialized!");
         currentThread = Thread.currentThread(); // Saves the current thread instance as a reference, used in Server#isPrimaryThread()
         instance = this;
@@ -464,27 +462,27 @@ public class Server implements ActionListener{
         this.logger.info(sb.toString());
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-	        if (advacedConf == null){
-	        	sb = new StringBuffer();
-		        sb.append(TextFormat.AQUA);
-		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-		        this.logger.error(sb.toString());
-	        }
+            InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+            if (advacedConf == null){
+                sb = new StringBuffer();
+                sb.append(TextFormat.AQUA);
+                sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
+                this.logger.error(sb.toString());
+            }
 
-	        try {
-	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-	        } catch (IOException e) {
-	            throw new RuntimeException(e);
-	        }
+            try {
+                Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-    	this.loadJupiterConfig();
+        this.loadJupiterConfig();
 
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
-        	Level.sendDestroyParticle = true;
+            Level.sendDestroyParticle = true;
         }else{
-        	Level.sendDestroyParticle = false;
+            Level.sendDestroyParticle = false;
         }
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
@@ -580,11 +578,9 @@ public class Server implements ActionListener{
         this.network.registerInterface(new RakNetInterface(this));
 
         try {
-			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
-	        this.defaultloadTrayIcon();
-		} catch (Exception e) {
-			this.logger.critical("TaskTrayでエラーが発生しました。");
-		}
+            this.defaultloadTrayIcon();
+        } catch (Exception e){
+        }
 
         Calendar now = Calendar.getInstance();
 
@@ -667,18 +663,18 @@ public class Server implements ActionListener{
         this.logger.info(TextFormat.AQUA + "==================================================================================");
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
-        	this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
-        	this.logger.info(TextFormat.AQUA + "コンパイルしています...");
-	        File f = new File(dataPath + "compileOrder/");
-	        File[] list = f.listFiles();
-	        int len = list.length;
-	        for(int i=0; i < len;i++){
-	        	if(new PluginCompiler().Compile(list[i]))
-	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
-	        	else
-	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
-	        }
-	        this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
+            this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
+            this.logger.info(TextFormat.AQUA + "コンパイルしています...");
+            File f = new File(dataPath + "compileOrder/");
+            File[] list = f.listFiles();
+            int len = list.length;
+            for(int i=0; i < len;i++){
+                if(new PluginCompiler().Compile(list[i]))
+                    this.logger.info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
+                else
+                    this.logger.info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
+            }
+            this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
         }
         /*
         logger.info(TextFormat.AQUA + "JavaScriptプラグインを読み込んでいます...");
@@ -687,11 +683,11 @@ public class Server implements ActionListener{
         JavaScriptPluginLoader loader = new JavaScriptPluginLoader();
         if(files != null){
         for(File f : files){
-        	try {
-				loader.loadPlugin(f);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            try {
+                loader.loadPlugin(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         }*/
 
@@ -740,7 +736,7 @@ public class Server implements ActionListener{
 
         try{
 
-        	this.getDefaultLevel().getName();
+            this.getDefaultLevel().getName();
 
         }catch(NullPointerException ex){
             String defaultName = this.getPropertyString("level-name", "world");
@@ -767,7 +763,7 @@ public class Server implements ActionListener{
         this.properties.save(true);
         try{
 
-        	this.getDefaultLevel().getName();
+            this.getDefaultLevel().getName();
 
         }catch(NullPointerException e){
             this.logger.emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
@@ -786,83 +782,67 @@ public class Server implements ActionListener{
         this.start();
     }
 
-	//TODO TrayIcon
-
-    public void setTrayMessage(String message){
-    	this.IconMessage = message;
-    }
-
-    public void setTrayImage(Image image){
-    	this.image = image;
-    }
-
     private Image getTrayImage(){
-    	if(image == null){
-			try {
-				image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-			return image;
-    	}
-    	return image;
-    }
-    public String getTrayMessage(){
-    	if(IconMessage == null){
-    		IconMessage = "";
-    	}
-    	return IconMessage;
+        BufferedImage image;
+        try {
+            image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
+        } catch (IOException e) {
+            this.getLogger().alert("Jupiter.pngがありません!");
+            return null;
+        }
+        return image;
     }
 
     public TrayIcon getTrayIcon(){
-    	if(icon == null){
-    		icon = new TrayIcon(getTrayImage());
-    	}
-    	return icon;
+        try {
+            return new TrayIcon(this.getTrayImage());
+        } catch (UnsupportedOperationException e){
+            this.getLogger().notice("TaskTrayに対応していないOSの為、表示しませんでした。");
+        }
+        return null;
     }
 
     public void setTrayIconPopupMenu(PopupMenu menu){
-    	this.getTrayIcon().setPopupMenu(menu);
-    }
-
-    public void setTrayIcon(TrayIcon icon){
-    	this.icon = icon;
+        this.getTrayIcon().setPopupMenu(menu);
     }
 
     public void trayMessage(String message){
-    	this.trayMessage(message, MessageType.INFO);
+        this.trayMessage(message, MessageType.INFO);
     }
 
     public void trayMessage(String message, MessageType type){
-    	this.trayMessage("Jupiter", message, type);
+        this.trayMessage("Jupiter", message, type);
     }
 
     public void trayMessage(String title, String message, MessageType type){
-    	this.getTrayIcon().displayMessage(title, message, type);
+        this.getTrayIcon().displayMessage(title, message, type);
     }
 
-    private void defaultloadTrayIcon() throws Exception{
+    private void defaultloadTrayIcon() throws IOException, AWTException{
 
-    		SystemTray.getSystemTray().remove(getTrayIcon());
+            SystemTray.getSystemTray().remove(getTrayIcon());
 
-			icon = this.getTrayIcon();
-			icon.removeActionListener(this);
-			icon.addActionListener(this);
+            TrayIcon icon = this.getTrayIcon();
+            if (icon == null) {
+                return;
+            }
 
-			SystemTray.getSystemTray().add(icon);
+            icon.removeActionListener(this);
+            icon.addActionListener(this);
 
-    	return;
+            SystemTray.getSystemTray().add(icon);
+
+        return;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
+        TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
         getPluginManager().callEvent(event);
         if(event.isCancelled()){
-        	return;
+            return;
         }
-        trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
+        trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players"));
     }
 
     /**
@@ -1718,7 +1698,7 @@ public class Server implements ActionListener{
     }
 
     public boolean isRunning() {
-    	return isRunning;
+        return isRunning;
     }
 
     /**
@@ -1726,7 +1706,7 @@ public class Server implements ActionListener{
      * @return String Nukkitバージョン
      */
     public String getNukkitVersion() {
-    	return Nukkit.VERSION;
+        return Nukkit.VERSION;
     }
 
     /**
@@ -1734,7 +1714,7 @@ public class Server implements ActionListener{
      * @return String コードネーム
      */
     public String getCodename() {
-    	return Nukkit.CODENAME;
+        return Nukkit.CODENAME;
     }
 
     /**
@@ -1742,7 +1722,7 @@ public class Server implements ActionListener{
      * @return String Minecraftバージョン
      */
     public String getVersion() {
-    	return ProtocolInfo.MINECRAFT_VERSION;
+        return ProtocolInfo.MINECRAFT_VERSION;
     }
 
     /**
@@ -1750,19 +1730,19 @@ public class Server implements ActionListener{
      * @return String APIバージョン
      */
     public String getApiVersion() {
-    	return Nukkit.API_VERSION;
+        return Nukkit.API_VERSION;
     }
 
     public String getJupiterVersion() {
-    	return Nukkit.JUPITER_VERSION;
-	}
+        return Nukkit.JUPITER_VERSION;
+    }
 
     /**
      * ファイルパスを取得します。
      * @return String ファイルパス
      */
     public String getFilePath() {
-    	return filePath;
+        return filePath;
     }
 
     /**
@@ -1771,7 +1751,7 @@ public class Server implements ActionListener{
      * @return String データパス
      */
     public String getDataPath() {
-    	return dataPath;
+        return dataPath;
     }
 
     /**
@@ -1781,13 +1761,13 @@ public class Server implements ActionListener{
      * @see Server#getDataPath()
      */
     public String getPluginPath() {
-    	return pluginPath;
+        return pluginPath;
     }
 
     public String getDefaultplugins(){
-    	synchronized(defaultplugin){
-    		return defaultplugin;
-    	}
+        synchronized(defaultplugin){
+            return defaultplugin;
+        }
     }
 
     /**
@@ -1795,7 +1775,7 @@ public class Server implements ActionListener{
      * @return int 最大参加可能人数
      */
     public int getMaxPlayers() {
-    	return maxPlayers;
+        return maxPlayers;
     }
 
     /**
@@ -1822,12 +1802,12 @@ public class Server implements ActionListener{
      * @return String IPアドレス
      */
     public String getIp() {
-    	return this.getPropertyString("server-ip", "0.0.0.0");
+        return this.getPropertyString("server-ip", "0.0.0.0");
 
     }
 
     public UUID getServerUniqueId() {
-    	return this.serverID;
+        return this.serverID;
     }
 
     /**
@@ -1858,7 +1838,7 @@ public class Server implements ActionListener{
      * @return String ワールドタイプ
      */
     public String getLevelType() {
-    	return this.getPropertyString("level-type", "DEFAULT");
+        return this.getPropertyString("level-type", "DEFAULT");
     }
 
     public boolean getGenerateStructures() {
@@ -2639,11 +2619,11 @@ public class Server implements ActionListener{
      * @return Config jupiter.ymlのオブジェクト
      */
     public Config getJupiterConfig(){
-    	return new Config(this.getDataPath() + "jupiter.yml");
+        return new Config(this.getDataPath() + "jupiter.yml");
     }
 
     public boolean isLoadedJupiterConfig(){
-    	return !this.jupiterconfig.isEmpty();
+        return !this.jupiterconfig.isEmpty();
     }
 
     /**
@@ -2651,7 +2631,7 @@ public class Server implements ActionListener{
      * @return void
      */
     public void loadJupiterConfig(){
-    	this.jupiterconfig = this.getJupiterConfig().getAll();
+        this.jupiterconfig = this.getJupiterConfig().getAll();
     }
 
     /**
@@ -2660,7 +2640,7 @@ public class Server implements ActionListener{
      * @return String 取得した値
      */
     public String getJupiterConfigString(String key){
-    	return (String) this.jupiterconfig.get(key);
+        return (String) this.jupiterconfig.get(key);
     }
 
     /**
@@ -2669,7 +2649,7 @@ public class Server implements ActionListener{
      * @return int 取得した値
      */
     public int getJupiterConfigInt(String key){
-    	return (int) this.jupiterconfig.get(key);
+        return (int) this.jupiterconfig.get(key);
     }
 
     /**
@@ -2679,7 +2659,7 @@ public class Server implements ActionListener{
      * @return Boolean 取得した値
      */
     public Boolean getJupiterConfigBoolean(String key){
-    	return this.getJupiterConfigBoolean(key, null);
+        return this.getJupiterConfigBoolean(key, null);
     }
 
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
@@ -2805,7 +2785,7 @@ public class Server implements ActionListener{
     }
 
     @SuppressWarnings("unchecked")
-	public Map<String, List<String>> getCommandAliases() {
+    public Map<String, List<String>> getCommandAliases() {
         Object section = this.getConfig("aliases");
         Map<String, List<String>> result = new LinkedHashMap<>();
         if (section instanceof Map) {

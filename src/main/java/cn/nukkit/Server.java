@@ -1,14 +1,11 @@
 package cn.nukkit;
 
 import java.awt.AWTException;
-import java.awt.Image;
-import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -578,8 +575,9 @@ public class Server implements ActionListener{
         this.network.registerInterface(new RakNetInterface(this));
 
         try {
-            this.defaultloadTrayIcon();
-        } catch (Exception e){
+            this.loadTrayIcon();
+        } catch (AWTException e) {
+        	this.getLogger().critical("TrayIconを実行できませんでした！");
         }
 
         Calendar now = Calendar.getInstance();
@@ -782,28 +780,16 @@ public class Server implements ActionListener{
         this.start();
     }
 
-    private Image getTrayImage(){
-        BufferedImage image;
-        try {
-            image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
-        } catch (IOException e) {
-            this.getLogger().alert("Jupiter.pngがありません!");
-            return null;
-        }
-        return image;
-    }
-
     public TrayIcon getTrayIcon(){
+    	TrayIcon icon = null;
         try {
-            return new TrayIcon(this.getTrayImage());
-        } catch (UnsupportedOperationException e){
-            this.getLogger().notice("TaskTrayに対応していないOSの為、表示しませんでした。");
+            icon = new TrayIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
+        } catch (IOException e) {
+        	this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
+        } catch (UnsupportedOperationException e) {
+            this.getLogger().notice("TaskTrayに対応していないOSの為、表示しませんでした。(エラーではありません)");
         }
-        return null;
-    }
-
-    public void setTrayIconPopupMenu(PopupMenu menu){
-        this.getTrayIcon().setPopupMenu(menu);
+        return icon;
     }
 
     public void trayMessage(String message){
@@ -815,10 +801,12 @@ public class Server implements ActionListener{
     }
 
     public void trayMessage(String title, String message, MessageType type){
-        this.getTrayIcon().displayMessage(title, message, type);
+        if (this.getTrayIcon() != null){
+            this.getTrayIcon().displayMessage(title, message, type);
+        }
     }
 
-    private void defaultloadTrayIcon() throws IOException, AWTException{
+    private void loadTrayIcon() throws AWTException{
 
             SystemTray.getSystemTray().remove(getTrayIcon());
 

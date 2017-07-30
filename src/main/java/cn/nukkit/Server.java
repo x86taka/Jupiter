@@ -6,11 +6,11 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -382,15 +382,15 @@ public class Server implements ActionListener{
             String language = null;
             while (language == null) {
                 String lang = this.console.readLine();
-                InputStream conf = this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini"));
+                BufferedInputStream conf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini")));
                 if (conf != null) {
                     language = lang;
                 }
             }
 
-            InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml"));
+            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml")));
             if (advacedConf == null) {
-                advacedConf = this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml"));
+                advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml")));
             }
 
             try {
@@ -441,7 +441,7 @@ public class Server implements ActionListener{
         this.logger.info(FastAppender.get(TextFormat.GREEN, "jupiter.yml", TextFormat.WHITE, "を読み込んでいます..."));
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-            InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
+            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
             if (advacedConf == null){
                 this.logger.error(FastAppender.get(TextFormat.AQUA, "Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい"));
             }

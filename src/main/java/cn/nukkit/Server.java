@@ -321,18 +321,17 @@ public class Server implements ActionListener{
         this.filePath = filePath;
         if (!new File(dataPath + "worlds/").exists()) {
             new File(dataPath + "worlds/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  was created!");
+            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  を作成しました。");
         }
 
         if (!new File(dataPath + "players/").exists()) {
             new File(dataPath + "players/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "players/  was created!");
+            this.logger.info(TextFormat.AQUA + dataPath + "players/  を作成しました。");
         }
 
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "plugins/  was created!");
-            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  を作成しました。");
+            this.logger.info(TextFormat.AQUA + dataPath + "plugins/  を作成しました。");
         }
 
         if (!new File(dataPath + "players/").exists()) {
@@ -367,7 +366,6 @@ public class Server implements ActionListener{
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
 
         this.console = new CommandReader();
-        //todo: VersionString ?在不必要
 
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
             this.getLogger().info(TextFormat.GREEN + "Welcome! Please choose a language first!");
@@ -597,7 +595,7 @@ public class Server implements ActionListener{
             File f = new File(dataPath + "compileOrder/");
             File[] list = f.listFiles();
             int len = list.length;
-            for(int i=0; i < len;i++){
+            for(int i = 0; i < len; i++){
                 if(new PluginCompiler().Compile(list[i]))
                     this.logger.info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
                 else
@@ -663,11 +661,11 @@ public class Server implements ActionListener{
             }
         }
 
-        try{
+        try {
 
             this.getDefaultLevel().getName();
 
-        }catch(NullPointerException ex){
+        }catch (NullPointerException ex) {
             String defaultName = this.getPropertyString("level-name", "world");
             if (defaultName == null || "".equals(defaultName.trim())) {
                 this.logger.warning("level-name cannot be null, using default");
@@ -694,7 +692,7 @@ public class Server implements ActionListener{
 
             this.getDefaultLevel().getName();
 
-        }catch(NullPointerException e){
+        }catch (NullPointerException e) {
             this.logger.emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
             this.forceShutdown();
 

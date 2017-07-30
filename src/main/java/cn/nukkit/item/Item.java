@@ -24,6 +24,7 @@ import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.DyeColor;
+import cn.nukkit.utils.FastAppender;
 
 /**
  * author: MagicDroidX
@@ -2127,7 +2128,7 @@ public class Item implements Cloneable {
 
     @Override
     final public String toString() {
-        return "Item " + this.name + " (" + this.id + ":" + (!this.hasMeta ? "?" : this.meta) + ")x" + this.count + (this.hasCompoundTag() ? " tags:0x" + Binary.bytesToHexString(this.getCompoundTag()) : "");
+        return FastAppender.get("Item ", this.name, " (", this.id, ":", (!this.hasMeta ? "?" : this.meta), ")x", this.count, (this.hasCompoundTag() ? " tags:0x" + Binary.bytesToHexString(this.getCompoundTag()) : ""));
     }
 
     public int getDestroySpeed(Block block, Player player) {

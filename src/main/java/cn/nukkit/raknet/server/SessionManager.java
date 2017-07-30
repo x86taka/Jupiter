@@ -1,18 +1,49 @@
 package cn.nukkit.raknet.server;
 
-import cn.nukkit.raknet.RakNet;
-import cn.nukkit.raknet.protocol.EncapsulatedPacket;
-import cn.nukkit.raknet.protocol.Packet;
-import cn.nukkit.raknet.protocol.packet.*;
-import cn.nukkit.utils.Binary;
-import cn.nukkit.utils.ThreadedLogger;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.socket.DatagramPacket;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import cn.nukkit.raknet.RakNet;
+import cn.nukkit.raknet.protocol.EncapsulatedPacket;
+import cn.nukkit.raknet.protocol.Packet;
+import cn.nukkit.raknet.protocol.packet.ACK;
+import cn.nukkit.raknet.protocol.packet.ADVERTISE_SYSTEM;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_0;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_1;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_2;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_3;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_4;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_5;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_6;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_7;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_8;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_9;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_A;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_B;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_C;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_D;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_E;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_F;
+import cn.nukkit.raknet.protocol.packet.NACK;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REPLY_1;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REPLY_2;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REQUEST_1;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REQUEST_2;
+import cn.nukkit.raknet.protocol.packet.UNCONNECTED_PING;
+import cn.nukkit.raknet.protocol.packet.UNCONNECTED_PING_OPEN_CONNECTIONS;
+import cn.nukkit.raknet.protocol.packet.UNCONNECTED_PONG;
+import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.FastAppender;
+import cn.nukkit.utils.ThreadedLogger;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.socket.DatagramPacket;
 
 /**
  * author: MagicDroidX
@@ -118,7 +149,7 @@ public class SessionManager {
 
         if ((this.ticks & 0b1111) == 0) {
             double diff = Math.max(5d, (double) time - this.lastMeasure);
-            this.streamOption("bandwidth", this.sendBytes / diff + ";" + this.receiveBytes / diff);
+            this.streamOption("bandwidth", FastAppender.get(this.sendBytes / diff, ";", this.receiveBytes / diff));
             this.lastMeasure = time;
             this.sendBytes = 0;
             this.receiveBytes = 0;
@@ -219,7 +250,7 @@ public class SessionManager {
     }
 
     public void streamEncapsulated(Session session, EncapsulatedPacket packet, int flags) {
-        String id = session.getAddress() + ":" + session.getPort();
+        String id = FastAppender.get(session.getAddress(), ":", session.getPort());
         byte[] buffer = Binary.appendBytes(
                 RakNet.PACKET_ENCAPSULATED,
                 new byte[]{(byte) (id.length() & 0xff)},
@@ -262,7 +293,7 @@ public class SessionManager {
     }
 
     protected void streamOpen(Session session) {
-        String identifier = session.getAddress() + ":" + session.getPort();
+        String identifier = FastAppender.get(session.getAddress(), ":", session.getPort());
         byte[] buffer = Binary.appendBytes(
                 RakNet.PACKET_OPEN_SESSION,
                 new byte[]{(byte) (identifier.length() & 0xff)},
@@ -412,7 +443,7 @@ public class SessionManager {
             if (timeout == -1) {
                 finalTime = Long.MAX_VALUE;
             } else {
-                this.getLogger().notice("Blocked " + address + " for " + timeout + " seconds");
+                this.getLogger().notice(FastAppender.get("Blocked ", address, " for ", timeout, " seconds"));
             }
             this.block.put(address, finalTime);
         } else if (this.block.get(address) < finalTime) {
@@ -421,7 +452,7 @@ public class SessionManager {
     }
 
     public Session getSession(String ip, int port) {
-        String id = ip + ":" + port;
+        String id = FastAppender.get(ip, ":", port);
         if (!this.sessions.containsKey(id)) {
             this.checkSessions();
             Session session = new Session(this, ip, port);
@@ -438,7 +469,7 @@ public class SessionManager {
     }
 
     public void removeSession(Session session, String reason) throws Exception {
-        String id = session.getAddress() + ":" + session.getPort();
+        String id = FastAppender.get(session.getAddress(), ":", session.getPort());
         if (this.sessions.containsKey(id)) {
             this.sessions.get(id).close();
             this.sessions.remove(id);
@@ -451,7 +482,7 @@ public class SessionManager {
     }
 
     public void notifyACK(Session session, int identifierACK) {
-        this.streamACK(session.getAddress() + ":" + session.getPort(), identifierACK);
+        this.streamACK(FastAppender.get(session.getAddress(), ":", session.getPort()), identifierACK);
     }
 
     public String getName() {

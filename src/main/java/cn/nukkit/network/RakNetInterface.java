@@ -20,6 +20,7 @@ import cn.nukkit.raknet.server.RakNetServer;
 import cn.nukkit.raknet.server.ServerHandler;
 import cn.nukkit.raknet.server.ServerInstance;
 import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
@@ -206,12 +207,12 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
     public void setName(String name) {
         QueryRegenerateEvent info = this.server.getQueryInformation();
 
-        this.handler.sendOption("name",
-                "MCPE;" + Utils.rtrim(name.replace(";", "\\;"), '\\') + ";" +
-                        ProtocolInfo.CURRENT_PROTOCOL + ";" +
-                        ProtocolInfo.MINECRAFT_VERSION_NETWORK + ";" +
-                        info.getPlayerCount() + ";" +
-                        info.getMaxPlayerCount());
+        this.handler.sendOption("name", FastAppender.get(
+                "MCPE;" , Utils.rtrim(name.replace(";", "\\;"), '\\'), ";",
+                        ProtocolInfo.CURRENT_PROTOCOL, ";",
+                        ProtocolInfo.MINECRAFT_VERSION_NETWORK, ";",
+                        info.getPlayerCount(), ";",
+                        info.getMaxPlayerCount()));
     }
 
     public void setPortCheck(boolean value) {

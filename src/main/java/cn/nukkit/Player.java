@@ -2,7 +2,6 @@ package cn.nukkit;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,6 +223,7 @@ import cn.nukkit.potion.Potion;
 import cn.nukkit.resourcepacks.ResourcePack;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.ClientChainData;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Zlib;
 import co.aikar.timings.Timing;
@@ -2137,7 +2137,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.setCanClimb(true);
 
         this.server.getLogger().info(this.getServer().getLanguage().translateString("nukkit.player.logIn",
-                TextFormat.AQUA + this.username + TextFormat.WHITE,
+        		FastAppender.get(TextFormat.AQUA, this.username, TextFormat.WHITE),
                 this.ip,
                 String.valueOf(this.port),
                 String.valueOf(this.id),
@@ -5279,20 +5279,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     /**
-     * @deprecated 別のメソッドに置き換えられました。 {@link #transferServer(String, int)}
-     */
-    public void transfer(InetSocketAddress address) {
-        String hostName = address.getHostName();
-        int port = address.getPort();
-        TransferPacket pk = new TransferPacket();
-        pk.address = hostName;
-        pk.port = port;
-        this.dataPacket(pk);
-        String message = "Transferred to " + address + ":" + port;
-        this.close(message, message, false);
-    }
-
-    /**
      * プレイヤー指定したサーバーに転送します。
      * @param ip 転送先サーバーのIPアドレス
      * @param port 転送先サーバーのポート
@@ -5304,7 +5290,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     	pk.address = ip;
     	pk.port = port;
     	this.dataPacket(pk);
-    	String mes = "IP: " + ip + "  ポート: " + port + "のサーバーに移動しました。";
+    	String mes = FastAppender.get("IP: ", ip, "  ポート: ", port, "のサーバーに移動しました。");
     	if(this.server.getJupiterConfigBoolean("transfer-server-message")){
     		this.server.broadcastMessage(this.getName() + "は別のサーバーへ移動しました。");
     	}

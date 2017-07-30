@@ -1,6 +1,7 @@
 package cn.nukkit.plugin;
 
 import cn.nukkit.Server;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.LogLevel;
 import cn.nukkit.utils.Logger;
 
@@ -14,7 +15,7 @@ public class PluginLogger implements Logger {
 
     public PluginLogger(Plugin context) {
         String prefix = context.getDescription().getPrefix();
-        this.pluginName = prefix != null ? "[" + prefix + "] " : "[" + context.getDescription().getName() + "] ";
+        this.pluginName = prefix != null ? FastAppender.get("[", prefix, "] ") : FastAppender.get("[", context.getDescription().getName(), "] ");
     }
 
     @Override

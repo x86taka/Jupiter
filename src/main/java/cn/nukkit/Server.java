@@ -736,20 +736,17 @@ public class Server implements ActionListener{
     }
 
     private void loadTrayIcon() throws AWTException{
+        SystemTray.getSystemTray().remove(getTrayIcon());
 
-            SystemTray.getSystemTray().remove(getTrayIcon());
+        TrayIcon icon = this.getTrayIcon();
+        if (icon == null) {
+            return;
+        }
 
-            TrayIcon icon = this.getTrayIcon();
-            if (icon == null) {
-                return;
-            }
+        icon.removeActionListener(this);
+        icon.addActionListener(this);
 
-            icon.removeActionListener(this);
-            icon.addActionListener(this);
-
-            SystemTray.getSystemTray().add(icon);
-
-        return;
+        SystemTray.getSystemTray().add(icon);
     }
 
     @Override

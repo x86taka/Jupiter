@@ -182,6 +182,7 @@ import cn.nukkit.scheduler.ServerScheduler;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.LevelException;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.ServerException;
@@ -310,8 +311,6 @@ public class Server implements ActionListener{
     private Thread currentThread;
     private Map<String, Object> jupiterconfig;
 
-    private StringBuffer sb;
-
     @SuppressWarnings("unchecked")
     Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
         Preconditions.checkState(instance == null, "Already initialized!");
@@ -405,21 +404,11 @@ public class Server implements ActionListener{
         }
 
         this.console.start();
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("nukkit.yml");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
+
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "nukkit.yml", TextFormat.WHITE, "を読み込んでいます..."));
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("server.properties");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
-
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "server.properties", TextFormat.WHITE, "を読み込んでいます..."));
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -451,20 +440,12 @@ public class Server implements ActionListener{
             }
         });
 
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("jupiter.yml");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "jupiter.yml", TextFormat.WHITE, "を読み込んでいます..."));
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
             InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
             if (advacedConf == null){
-                sb = new StringBuffer();
-                sb.append(TextFormat.AQUA);
-                sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-                this.logger.error(sb.toString());
+                this.logger.error(FastAppender.get(TextFormat.AQUA, "Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい"));
             }
 
             try {
@@ -599,64 +580,14 @@ public class Server implements ActionListener{
         this.logger.info("");
         this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
 
-        sb = new StringBuffer();
-        sb.append("日時:");
-        sb.append(TextFormat.BLUE);
-        sb.append(y);
-        sb.append("/");
-        sb.append(mo);
-        sb.append("/");
-        sb.append(d);
-        sb.append(" ");
-        sb.append(h);
-        sb.append("時");
-        sb.append(m);
-        sb.append("分");
-        sb.append(s);
-        sb.append("秒");
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("サーバー名: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getMotd());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("ip: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getIp());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("ポート: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getPort());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("Jupiterバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getJupiterVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("Nukkitバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getNukkitVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("APIバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getApiVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("コードネーム: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getCodename());
-        this.logger.info(sb.toString());
+        this.logger.info(FastAppender.get("日時:", TextFormat.BLUE, y, "/", mo, "/", d, " ", h, "時", m, "分", s, "秒"));
+        this.logger.info(FastAppender.get("サーバー名: ", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("IP: ", TextFormat.GREEN, this.getIp()));
+        this.logger.info(FastAppender.get("ポート: ", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("Jupiterバージョン: ", TextFormat.LIGHT_PURPLE, this.getJupiterVersion()));
+        this.logger.info(FastAppender.get("Nukkitバージョン: ", TextFormat.LIGHT_PURPLE, this.getNukkitVersion()));
+        this.logger.info(FastAppender.get("APIバージョン: ", TextFormat.LIGHT_PURPLE, this.getApiVersion()));
+        this.logger.info(FastAppender.get("コードネーム: ", TextFormat.LIGHT_PURPLE, this.getCodename()));
 
         this.logger.info(TextFormat.AQUA + "==================================================================================");
 
@@ -690,7 +621,7 @@ public class Server implements ActionListener{
         }*/
 
         this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
-        logger.info(TextFormat.AQUA + "プラグインを読み込んでいます...");
+        this.logger.info(TextFormat.AQUA + "プラグインを読み込んでいます...");
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);

@@ -787,7 +787,7 @@ public class Server implements ActionListener{
         } catch (IOException e) {
         	this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
         } catch (UnsupportedOperationException e) {
-            this.getLogger().notice("TaskTrayに対応していないOSの為、表示しませんでした。(エラーではありません)");
+            this.getLogger().notice("Trayに対応していないOSの為、表示しませんでした。(エラーではありません)");
         }
         return icon;
     }

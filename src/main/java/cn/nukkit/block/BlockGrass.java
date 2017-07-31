@@ -101,6 +101,13 @@ public class BlockGrass extends BlockDirt {
     }
 
     @Override
+    public Item[] getDrops(Item item) {
+        return new Item[]{
+                item.isSilkTouch() ? this.toItem() : Block.get(Block.DIRT).toItem()
+        };
+    }
+
+    @Override
     public BlockColor getColor() {
         return BlockColor.GRASS_BLOCK_COLOR;
     }

@@ -2122,6 +2122,10 @@ public class Item implements Cloneable {
         return 0;
     }
 
+    public boolean isSilkTouch() {
+        return false;
+    }
+
     public boolean isUnbreakable() {
         return false;
     }

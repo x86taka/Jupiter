@@ -38,6 +38,6 @@ public class BlockGlass extends BlockTransparent {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[0];
+        return item.isSilkTouch() ? new Item[]{this.toItem()} : new Item[0];
     }
 }

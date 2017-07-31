@@ -51,7 +51,8 @@ public class BlockIce extends BlockTransparent {
 
     @Override
     public boolean onBreak(Item item) {
-        this.getLevel().setBlock(this, new BlockWater(), true);
+        if (!item.isSilkTouch()) 
+            this.getLevel().setBlock(this, new BlockWater(), true);
         return true;
     }
 
@@ -68,7 +69,7 @@ public class BlockIce extends BlockTransparent {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[0];
+        return item.isSilkTouch() ? new Item[]{this.toItem()} : new Item[0];
     }
 
     @Override

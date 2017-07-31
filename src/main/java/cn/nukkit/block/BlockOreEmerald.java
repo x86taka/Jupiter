@@ -47,9 +47,15 @@ public class BlockOreEmerald extends BlockSolid {
     @Override
     public Item[] getDrops(Item item) {
         if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_IRON) {
-            return new Item[]{
-                    new ItemEmerald()
-            };
+            if (item.isSilkTouch()){
+                return new Item[]{
+                        this.toItem()
+                };
+            } else {
+                return new Item[]{
+                        new ItemEmerald()
+                };
+            }
         } else {
             return new Item[0];
         }

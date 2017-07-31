@@ -1,5 +1,9 @@
 package cn.nukkit.block;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityEnderChest;
@@ -11,10 +15,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class BlockEnderChest extends BlockTransparent {
 
@@ -139,9 +139,15 @@ public class BlockEnderChest extends BlockTransparent {
     @Override
     public Item[] getDrops(Item item) {
         if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_WOODEN) {
-            return new Item[]{
-                    Item.get(Item.OBSIDIAN, 0, 8)
-            };
+            if (item.isSilkTouch()){
+                return new Item[]{
+                        this.toItem()
+                };
+            } else {
+                return new Item[]{
+                        Item.get(Item.OBSIDIAN, 0, 8)
+                };
+            }
         } else {
             return new Item[0];
         }

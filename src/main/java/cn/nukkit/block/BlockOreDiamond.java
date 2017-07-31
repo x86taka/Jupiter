@@ -48,9 +48,15 @@ public class BlockOreDiamond extends BlockSolid {
     @Override
     public Item[] getDrops(Item item) {
         if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_IRON) {
-            return new Item[]{
-                    new ItemDiamond()
-            };
+            if (item.isSilkTouch()){
+                return new Item[]{
+                        this.toItem()
+                };
+            } else {
+                return new Item[]{
+                        new ItemDiamond()
+                };
+            }
         } else {
             return new Item[0];
         }

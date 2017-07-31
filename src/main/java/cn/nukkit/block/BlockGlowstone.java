@@ -44,9 +44,15 @@ public class BlockGlowstone extends BlockTransparent {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[]{
-                new ItemGlowstoneDust(0, ((int) (2d * Math.random()) + 2))
-        };
+        if (item.isSilkTouch()){
+            return new Item[]{
+                    this.toItem()
+            };
+        } else {
+            return new Item[]{
+                    new ItemGlowstoneDust(0, ((int) (2d * Math.random()) + 2))
+            };
+        }
     }
 
     @Override

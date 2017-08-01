@@ -69,6 +69,11 @@ public class EntityBoat extends EntityVehicle {
     }
 
     @Override
+    public String getInteractButtonText() {
+        return "ボートに乗る";
+    }
+
+    @Override
     public void spawnTo(Player player) {
         AddEntityPacket pk = new AddEntityPacket();
         pk.entityUniqueId = this.getId();

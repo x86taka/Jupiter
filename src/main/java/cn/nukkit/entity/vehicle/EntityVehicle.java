@@ -50,7 +50,7 @@ public abstract class EntityVehicle extends EntityInteractable implements Entity
 
     @Override
     public String getInteractButtonText() {
-        return "Mount";
+        return "トロッコに乗る";
     }
 
     @Override

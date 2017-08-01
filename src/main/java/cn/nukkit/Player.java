@@ -108,6 +108,7 @@ import cn.nukkit.event.player.PlayerToggleFlightEvent;
 import cn.nukkit.event.player.PlayerToggleGlideEvent;
 import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
+import cn.nukkit.event.player.PlayerUseFishingRodEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.inventory.AnvilInventory;
@@ -374,6 +375,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private boolean allowBow = true;
 
     private boolean allowSnowball = true;
+
+    private boolean allowFishingRod = true;
 
     private boolean keepInventory = true;
 
@@ -766,6 +769,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.allowXpBottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
         this.allowSplashPotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
         this.allowBow = this.server.getJupiterConfigBoolean("allow-bow");
+        this.allowFishingRod = this.server.getJupiterConfigBoolean("allow-fishing-rod");
     }
 
     /**
@@ -2664,7 +2668,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 snowball.spawnToAll();
                             }
-                             } else if (item.getId() == Item.EGG && this.allowEgg) {
+                        } else if (item.getId() == Item.EGG && this.allowEgg) {
                             EntityEgg egg = new EntityEgg(this.chunk, nbt, this);
 
                             egg.setMotion(egg.getMotion().multiply(f));
@@ -2684,7 +2688,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 egg.spawnToAll();
                             }
-                             } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.allowEnderpearl) {
+                        } else if (item.getId() == Item.ENDER_PEARL && (this.server.getTick() - this.lastEnderPearl) >= 20 && this.allowEnderpearl) {
                             EntityEnderPearl enderPearl = new EntityEnderPearl(this.chunk, nbt, this);
 
                             enderPearl.setMotion(enderPearl.getMotion().multiply(f));
@@ -2705,7 +2709,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 enderPearl.spawnToAll();
                             }
                             this.lastEnderPearl = this.server.getTick();
-                             } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.allowXpBottle) {
+                        } else if (item.getId() == Item.EXPERIENCE_BOTTLE && this.allowXpBottle) {
                             nbt.putInt("Potion", item.getDamage());
 
                             Entity bottle = new EntityExpBottle(this.chunk, nbt, this);
@@ -2727,7 +2731,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             } else {
                                 bottle.spawnToAll();
                             }
-                             } else if (item.getId() == Item.SPLASH_POTION && this.allowSplashPotion) {
+                        } else if (item.getId() == Item.SPLASH_POTION && this.allowSplashPotion) {
                             nbt.putShort("PotionId", item.getDamage());
 
                             Entity bottle = new EntityPotion(this.chunk, nbt, this);
@@ -2748,6 +2752,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 }
                             } else {
                                 bottle.spawnToAll();
+                            }
+                        } else if (item.getId() == Item.FISHING_ROD && this.allowFishingRod) {
+                            this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
+                            if (!ev.isCancelled()){
+                                if (this.isFishing()){
+                                    this.unlinkHookFromPlayer();
+                                } else {
+                                    EntityFishingHook entity = new EntityFishingHook(this.chunk, nbt, this);
+                                    entity.setMotion(entity.getMotion().multiply(f));
+                                    entity.spawnToAll();
+                                    this.linkHookToPlayer(entity);
+                                }
                             }
                         }
 

@@ -390,7 +390,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.fishingHook = entity;
         EntityEventPacket pk = new EntityEventPacket();
         pk.entityRuntimeId = this.getFishingHook().getId();
-        pk.event = EntityEventPacket.FISH_HOOK_POSITION;
+        pk.event = EntityEventPacket.FISH_HOOK_HOOK;
         Server.broadcastPacket(this.getLevel().getPlayers().values(), pk);
     }
 
@@ -2754,6 +2754,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 bottle.spawnToAll();
                             }
                         } else if (item.getId() == Item.FISHING_ROD && this.allowFishingRod) {
+                            f = 0.8f;
                             this.getServer().getPluginManager().callEvent(new PlayerUseFishingRodEvent(this, this.isFishing() ? PlayerUseFishingRodEvent.ACTION_STOP_FISHING : PlayerUseFishingRodEvent.ACTION_START_FISHING));
                             if (!ev.isCancelled()){
                                 if (this.isFishing()){

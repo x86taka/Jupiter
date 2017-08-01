@@ -40,6 +40,7 @@ import cn.nukkit.command.data.args.CommandArgBlockVector;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
+import cn.nukkit.entity.EntityInteractable;
 import cn.nukkit.entity.EntityLiving;
 import cn.nukkit.entity.data.EntityData;
 import cn.nukkit.entity.data.EntityMetadata;
@@ -59,6 +60,8 @@ import cn.nukkit.entity.projectile.EntityPotion;
 import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.entity.projectile.EntitySnowball;
 import cn.nukkit.entity.vehicle.EntityBoat;
+import cn.nukkit.entity.vehicle.EntityMinecartAbstract;
+import cn.nukkit.entity.vehicle.EntityMinecartEmpty;
 import cn.nukkit.entity.vehicle.EntityVehicle;
 import cn.nukkit.event.block.ItemFrameDropItemEvent;
 import cn.nukkit.event.block.SignChangeEvent;
@@ -187,6 +190,7 @@ import cn.nukkit.network.protocol.MobEquipmentPacket;
 import cn.nukkit.network.protocol.MovePlayerPacket;
 import cn.nukkit.network.protocol.PlayStatusPacket;
 import cn.nukkit.network.protocol.PlayerActionPacket;
+import cn.nukkit.network.protocol.PlayerInputPacket;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.network.protocol.RemoveBlockPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
@@ -200,7 +204,6 @@ import cn.nukkit.network.protocol.ResourcePacksInfoPacket;
 import cn.nukkit.network.protocol.RespawnPacket;
 import cn.nukkit.network.protocol.SetCommandsEnabledPacket;
 import cn.nukkit.network.protocol.SetEntityDataPacket;
-import cn.nukkit.network.protocol.SetEntityLinkPacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import cn.nukkit.network.protocol.SetPlayerGameTypePacket;
 import cn.nukkit.network.protocol.SetSpawnPositionPacket;
@@ -222,6 +225,7 @@ import cn.nukkit.potion.Effect;
 import cn.nukkit.potion.Potion;
 import cn.nukkit.resourcepacks.ResourcePack;
 import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.BlockIterator;
 import cn.nukkit.utils.ClientChainData;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.TextFormat;
@@ -1667,7 +1671,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             if (diffX != 0 || diffY != 0 || diffZ != 0) {
                 if (this.checkMovement && !server.getAllowFlight() && this.isSurvival()) {
-                    if (!this.isSleeping()) {
+                    if (!this.isSleeping() && this.riding == null) {
                         double diffHorizontalSqr = (diffX * diffX + diffZ * diffZ) / ((double) (tickDiff * tickDiff));
                         if (diffHorizontalSqr > 0.125) {
                         	if(!enableRevert){
@@ -1914,6 +1918,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         this.checkTeleportPosition();
+        this.checkInteractNearby();
 
         // TODO: remove this workaround (broken client MCPE 1.0.0)
         if (!messageQueue.isEmpty()) {
@@ -1924,6 +1929,69 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             messageQueue.clear();
         }
         return true;
+    }
+
+    public void checkInteractNearby(){
+        int interactDistance = isCreative() ? 5 : 3;
+        if(canInteract(this, interactDistance)){
+            if(getEntityPlayerLookingAt(interactDistance) != null){
+                EntityInteractable onInteract = getEntityPlayerLookingAt(interactDistance);
+                setButtonText(onInteract.getInteractButtonText());
+            } else {
+                setButtonText("");
+            }
+        } else {
+            setButtonText("");
+        }
+    }
+
+     /**
+     * Returns the Entity the player is looking at currently
+     *
+     * @param maxDistance the maximum distance to check for entities
+     * @return Entity|null    either NULL if no entity is found or an instance of the entity
+     */
+    public EntityInteractable getEntityPlayerLookingAt(int maxDistance) {
+        timing.startTiming();
+        
+        EntityInteractable entity = null;
+
+        // just a fix because player MAY not be fully initialized
+        if (temporalVector != null) {
+            Entity[] nearbyEntities = level.getNearbyEntities(boundingBox.grow(maxDistance, maxDistance, maxDistance), this);
+
+            // get all blocks in looking direction until the max interact distance is reached (it's possible that startblock isn't found!)
+            try {
+                BlockIterator itr = new BlockIterator(level, getPosition(), getDirectionVector(), getEyeHeight(), maxDistance);
+                if (itr.hasNext()) {
+                    Block block;
+                    while (itr.hasNext()) {
+                        block = itr.next();
+                        entity = getEntityAtPosition(nearbyEntities, block.getFloorX(), block.getFloorY(), block.getFloorZ());
+                        if (entity != null) {
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                // nothing to log here!
+            }
+        }
+
+        timing.stopTiming();
+
+        return entity;
+    }
+    
+    private EntityInteractable getEntityAtPosition(Entity[] nearbyEntities, int x, int y, int z) {
+        for (Entity nearestEntity : nearbyEntities) {
+            if (nearestEntity.getFloorX() == x && nearestEntity.getFloorY() == y && nearestEntity.getFloorZ() == z
+                    && nearestEntity instanceof EntityInteractable
+                    && ((EntityInteractable) nearestEntity).canDoInteraction()) {
+                return (EntityInteractable) nearestEntity;
+            }
+        }
+        return null;
     }
 
     private ArrayList<String> messageQueue = new ArrayList<String>();
@@ -2344,6 +2412,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     dataPacket.data = resourcePack.getPackChunk(1048576 * requestPacket.chunkIndex, 1048576);
                     dataPacket.progress = 1048576 * requestPacket.chunkIndex;
                     this.dataPacket(dataPacket);
+                    break;
+                case ProtocolInfo.PLAYER_INPUT_PACKET:
+                    if(!this.isAlive() || !this.spawned){
+                        break;
+                    }
+                    PlayerInputPacket ipk = (PlayerInputPacket) packet;
+                    if(riding instanceof EntityMinecartAbstract){
+                        ((EntityMinecartEmpty) riding).setCurrentSpeed(ipk.motionY);
+                    }
                     break;
                 case ProtocolInfo.MOVE_PLAYER_PACKET:
                     if (this.teleportPosition != null) {
@@ -3113,27 +3190,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                             break;
                         case InteractPacket.ACTION_VEHICLE_EXIT:
-                            if (!(targetEntity instanceof EntityVehicle)) {
+                            if (!(targetEntity instanceof EntityVehicle) || this.riding == null) {
                                 break;
                             }
 
-                            SetEntityLinkPacket pk;
-
-                            pk = new SetEntityLinkPacket();
-                            pk.rider = targetEntity.getId();
-                            pk.riding = this.id;
-                            pk.type = 3;
-                            Server.broadcastPacket(this.hasSpawned.values(), pk);
-
-                            pk = new SetEntityLinkPacket();
-                            pk.rider = targetEntity.getId();
-                            pk.riding = this.getId();
-                            pk.type = 3;
-                            dataPacket(pk);
-
-                            riding = null;
-                            ((EntityVehicle) targetEntity).linkedEntity = null;
-                            this.setDataFlag(DATA_FLAGS, DATA_FLAG_RIDING, false);
+                            ((EntityVehicle) riding).mountEntity(this);
                             break;
                     }
                     break;

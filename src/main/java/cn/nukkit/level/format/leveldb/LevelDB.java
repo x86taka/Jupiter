@@ -1,8 +1,25 @@
 package cn.nukkit.level.format.leveldb;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.Options;
+import org.iq80.leveldb.impl.Iq80DBFactory;
+
 import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
+import cn.nukkit.level.GameRules;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.ChunkSection;
 import cn.nukkit.level.format.FullChunk;
@@ -16,14 +33,11 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.scheduler.AsyncTask;
-import cn.nukkit.utils.*;
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.Options;
-import org.iq80.leveldb.impl.Iq80DBFactory;
-
-import java.io.*;
-import java.nio.ByteOrder;
-import java.util.*;
+import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.BinaryStream;
+import cn.nukkit.utils.ChunkException;
+import cn.nukkit.utils.LevelException;
+import cn.nukkit.utils.Utils;
 
 /**
  * author: MagicDroidX
@@ -505,6 +519,21 @@ public class LevelDB implements LevelProvider {
         this.levelData.putInt("SpawnX", (int) pos.x);
         this.levelData.putInt("SpawnY", (int) pos.y);
         this.levelData.putInt("SpawnZ", (int) pos.z);
+    }
+
+    @Override
+    public GameRules getGamerules() {
+        GameRules rules = new GameRules();
+
+        if (this.levelData.contains("GameRules"))
+            rules.readNBT(this.levelData.getCompound("GameRules"));
+
+        return rules;
+    }
+
+    @Override
+    public void setGameRules(GameRules rules) {
+        this.levelData.putCompound("GameRules", rules.writeNBT());
     }
 
     @Override

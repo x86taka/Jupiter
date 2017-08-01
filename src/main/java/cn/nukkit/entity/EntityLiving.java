@@ -10,6 +10,7 @@ import cn.nukkit.Server;
 import cn.nukkit.block.Block;
 import cn.nukkit.entity.animal.EntityWaterAnimal;
 import cn.nukkit.entity.data.ShortEntityData;
+import cn.nukkit.entity.vehicle.EntityVehicle;
 import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -27,10 +28,11 @@ import cn.nukkit.utils.BlockIterator;
 import co.aikar.timings.Timings;
 
 /**
- * author: MagicDroidX
+ * author: MagicDroidX 
  * Nukkit Project
  */
 public abstract class EntityLiving extends Entity implements EntityDamageable {
+
     public EntityLiving(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
@@ -88,6 +90,10 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
     public boolean hasLineOfSight(Entity entity) {
         //todo
         return true;
+    }
+
+    public void collidingWith(cn.nukkit.entity.vehicle.EntityVehicle ent) { // can override (IronGolem|Bats)
+        ent.applyEntityCollision(this);
     }
 
     @Override
@@ -174,8 +180,11 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         super.kill();
         EntityDeathEvent ev = new EntityDeathEvent(this, this.getDrops());
         this.server.getPluginManager().callEvent(ev);
-        for (cn.nukkit.item.Item item : ev.getDrops()) {
-            this.getLevel().dropItem(this, item);
+
+        if (this.level.getGameRules().getBoolean("doEntityDrops")) {
+            for (cn.nukkit.item.Item item : ev.getDrops()) {
+                this.getLevel().dropItem(this, item);
+            }
         }
     }
 
@@ -192,6 +201,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         boolean hasUpdate = super.entityBaseTick(tickDiff);
 
         if (this.isAlive()) {
+
             if (this.isInsideOfSolid()) {
                 hasUpdate = true;
                 this.attack(new EntityDamageEvent(this, DamageCause.SUFFOCATION, 1));
@@ -231,6 +241,14 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         if (this.attackTime > 0) {
             this.attackTime -= tickDiff;
         }
+        if (this.riding == null) {
+            for (Entity entity : level.getNearbyEntities(this.boundingBox.grow(0.20000000298023224D, 0.0D, 0.20000000298023224D), this)) {
+                if (entity instanceof EntityVehicle) {
+                    this.collidingWith((EntityVehicle) entity);
+                }
+            }
+        }
+
         Timings.livingEntityBaseTickTimer.stopTiming();
 
         return hasUpdate;
@@ -327,4 +345,8 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         return this.movementSpeed;
     }
 
+    @Override
+    public boolean doesTriggerPressurePlate() {
+        return true;
+    }
 }

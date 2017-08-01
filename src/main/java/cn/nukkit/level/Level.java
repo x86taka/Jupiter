@@ -316,6 +316,8 @@ public class Level implements ChunkManager, Metadatable {
 
     private int dimension;
 
+    public GameRules gameRules;
+
     public Level(Server server, String name, String path, Class<? extends LevelProvider> provider) {
         this.blockStates = Block.fullList;
         this.levelId = levelIdCounter++;
@@ -474,6 +476,7 @@ public class Level implements ChunkManager, Metadatable {
         }
         this.generatorInstance.init(this, new NukkitRandom(this.getSeed()));
         this.dimension = this.generatorInstance.getDimension();
+        this.gameRules = this.provider.getGamerules();
 
         this.registerGenerator();
     }
@@ -770,6 +773,10 @@ public class Level implements ChunkManager, Metadatable {
         pk.time = (int) this.time;
 
         Server.broadcastPacket(this.players.values().stream().toArray(Player[]::new), pk);
+    }
+
+    public GameRules getGameRules() {
+        return this.gameRules;
     }
 
     public void doTick(int currentTick) {

@@ -23,6 +23,8 @@ import cn.nukkit.entity.data.IntEntityData;
 import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.entity.data.StringEntityData;
+import cn.nukkit.entity.data.Vector3fEntityData;
+import cn.nukkit.entity.vehicle.EntityVehicle;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -44,9 +46,11 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
+import cn.nukkit.math.MathHelper;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.math.Vector3f;
 import cn.nukkit.metadata.MetadataValue;
 import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -249,6 +253,10 @@ public abstract class Entity extends Location implements Metadatable {
     public double lastYaw;
     public double lastPitch;
 
+    public double PitchDelta;
+    public double YawDelta;
+    
+    public double entityCollisionReduction = 0;
     public AxisAlignedBB boundingBox;
     public boolean onGround;
     public boolean inBlock = false;
@@ -1052,6 +1060,10 @@ public abstract class Entity extends Location implements Metadatable {
             return false;
         }
 
+        if (riding != null && !riding.isAlive()) {
+            ((EntityVehicle) riding).mountEntity(this);
+        }
+
         if (!this.effects.isEmpty()) {
             for (Effect effect : this.effects.values()) {
                 if (effect.canTick()) {
@@ -1202,6 +1214,53 @@ public abstract class Entity extends Location implements Metadatable {
         return hasUpdate;
     }
 
+    protected boolean updateRidden() {
+        if (this.linkedEntity != null) {
+            if (!linkedEntity.isAlive()) {
+                return false;
+            }
+            this.motionX = 0.0D;
+            this.motionY = 0.0D;
+            this.motionZ = 0.0D;
+            onUpdate(lastUpdate);
+            if (this.linkedEntity != null) {
+                this.YawDelta += this.linkedEntity.yaw - this.linkedEntity.lastYaw;
+                for (this.PitchDelta += this.linkedEntity.pitch - this.linkedEntity.lastPitch; this.YawDelta >= 180.0D; this.YawDelta -= 360.0D) {
+                }
+                while (this.YawDelta < -180.0D) {
+                    this.YawDelta += 360.0D;
+                }
+                while (this.PitchDelta >= 180.0D) {
+                    this.PitchDelta -= 360.0D;
+                }
+                while (this.PitchDelta < -180.0D) {
+                    this.PitchDelta += 360.0D;
+                }
+                double var1 = this.YawDelta * 0.5D;
+                double var3 = this.PitchDelta * 0.5D;
+                float var5 = 10.0F;
+                var1 = NukkitMath.clamp(var1, -var5, var5);
+                var3 = NukkitMath.clamp(var3, -var5, var5);
+                this.YawDelta -= var1;
+                this.PitchDelta -= var3;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected void updateRiderPosition(float offset) {
+        // Messy unknown variables
+        if (updateRidden()) {
+            linkedEntity.setDataProperty(new Vector3fEntityData(DATA_RIDER_SEAT_POSITION,
+                    new Vector3f(0, offset, 0)));
+        }
+    }
+
+    public float getMountedYOffset() {
+        return getHeight() * 0.75F;
+    }
+
     public final void scheduleUpdate() {
         this.level.updateEntities.put(this.id, this);
     }
@@ -1293,12 +1352,54 @@ public abstract class Entity extends Location implements Metadatable {
         //todo
     }
 
-    public void moveFlying() {
-        //todo
+    public void moveFlying(float strafe, float forward, float friction) {
+        float speed = strafe * strafe + forward * forward;
+        if (speed >= 1.0E-4F) {
+            speed = MathHelper.sqrt(speed);
+            if (speed < 1.0F) {
+                speed = 1.0F;
+            }
+            speed = friction / speed;
+            strafe *= speed;
+            forward *= speed;
+            float nest = MathHelper.sin((float) (this.yaw * 3.1415927F / 180.0F));
+            float place = MathHelper.cos((float) (this.yaw * 3.1415927F / 180.0F));
+            this.motionX += strafe * place - forward * nest;
+            this.motionZ += forward * place + strafe * nest;
+        }
     }
 
     public void onCollideWithPlayer(EntityHuman entityPlayer) {
 
+    }
+
+    public void applyEntityCollision(Entity entity) {
+        if (entity.riding != this && entity.linkedEntity != this) {
+            double dx = entity.x - this.x;
+            double dy = entity.z - this.z;
+            double dz = NukkitMath.getDirection(dx, dy);
+
+            if (dz >= 0.009999999776482582D) {
+                dz = MathHelper.sqrt((float) dz);
+                dx /= dz;
+                dy /= dz;
+                double d3 = 1.0D / dz;
+
+                if (d3 > 1.0D) {
+                    d3 = 1.0D;
+                }
+
+                dx *= d3;
+                dy *= d3;
+                dx *= 0.05000000074505806D;
+                dy *= 0.05000000074505806D;
+                dx *= 1.0F + entityCollisionReduction;
+                dz *= 1.0F + entityCollisionReduction;
+                if (this.riding == null) {
+                    setMotion(new Vector3(-dx, 0.0D, -dy));
+                }
+            }
+        }
     }
 
     public void onStruckByLightning(Entity entity) {
@@ -1738,9 +1839,9 @@ public abstract class Entity extends Location implements Metadatable {
             }
         }
 
-        this.motionX = motion.x;
-        this.motionY = motion.y;
-        this.motionZ = motion.z;
+        this.motionX += motion.x;
+        this.motionY += motion.y;
+        this.motionZ += motion.z;
 
         if (!this.justCreated) {
             this.updateMovement();

@@ -602,20 +602,6 @@ public class Server implements ActionListener{
             }
             this.logger.info(FastAppender.get(TextFormat.YELLOW, "----------------------------------------------------------------------------------"));
         }
-        /*
-        logger.info(TextFormat.AQUA + "JavaScriptプラグインを読み込んでいます...");
-        File file = new File(this.getDataPath() + "JavaScriptPlugin/");
-        File files[] = file.listFiles();
-        JavaScriptPluginLoader loader = new JavaScriptPluginLoader();
-        if(files != null){
-        for(File f : files){
-            try {
-                loader.loadPlugin(f);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        }*/
 
         this.logger.info(FastAppender.get(TextFormat.LIGHT_PURPLE, "----------------------------------------------------------------------------------"));
         this.logger.info(FastAppender.get(TextFormat.AQUA, "プラグインを読み込んでいます..."));

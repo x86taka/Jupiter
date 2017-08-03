@@ -1,14 +1,14 @@
 package cn.nukkit.command.defaults;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * author: MagicDroidX
@@ -35,10 +35,12 @@ public class HelpCommand extends VanillaCommand {
         int pageHeight = 5;
         if (args.length != 0) {
             try {
-                pageNumber = Integer.valueOf(args[args.length - 1]);
-                if (pageNumber <= 0) {
-                    pageNumber = 1;
-                }
+            	
+            	if(args[0] == null){
+            		pageNumber = 1;
+            	}else{
+	                pageNumber = Integer.valueOf(args[0]);
+            	}
 
                 String[] newargs = new String[args.length - 1];
                 System.arraycopy(args, 0, newargs, 0, newargs.length);

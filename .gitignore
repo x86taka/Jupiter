@@ -51,3 +51,4 @@ target/maven-status
 target/maven-archiver
 target/generated-sources
 target/classes
+/target/

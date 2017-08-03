@@ -61,4 +61,8 @@ public class PlayerActionPacket extends DataPacket {
         return NETWORK_ID;
     }
 
+    
+    public String getName(){
+    	return "PlayerActionPacket";
+    }
 }

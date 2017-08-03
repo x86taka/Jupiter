@@ -25,4 +25,9 @@ public class ShowCreditsPacket extends DataPacket {
         this.putVarLong(this.entityRuntimeId);
         this.putVarInt(this.status);
     }
+    
+    
+    public String getName(){
+    	return "ShowCreditsPacket";
+    }
 }

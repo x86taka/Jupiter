@@ -34,4 +34,8 @@ public class BlockEntityDataPacket extends DataPacket {
         this.putBlockCoords(this.x, this.y, this.z);
         this.put(this.namedTag);
     }
+    
+    public String getName(){
+    	return "BlockEntityDataPacket";
+    }
 }

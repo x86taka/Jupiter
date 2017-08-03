@@ -44,5 +44,9 @@ public class ExplodePacket extends DataPacket {
             }
         }
     }
+    
+    public String getName(){
+    	return "ExplodePacket";
+    }
 
 }

@@ -28,4 +28,9 @@ public class SetEntityMotionPacket extends DataPacket {
         this.putVarLong(this.eid);
         this.putVector3f(this.motionX, this.motionY, this.motionZ);
     }
+    
+    
+    public String getName(){
+    	return "SetEntityMotionPacket";
+    }
 }

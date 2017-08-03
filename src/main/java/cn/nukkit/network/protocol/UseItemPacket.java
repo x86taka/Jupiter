@@ -60,5 +60,10 @@ public class UseItemPacket extends DataPacket {
     public void encode() {
 
     }
+    
+    
+    public String getName(){
+    	return "UseItemPacket";
+    }
 
 }

@@ -24,4 +24,8 @@ public class ContainerClosePacket extends DataPacket {
         this.reset();
         this.putByte((byte) this.windowid);
     }
+    
+    public String getName(){
+    	return "ContainerClosePacket";
+    }
 }

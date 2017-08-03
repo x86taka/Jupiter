@@ -42,4 +42,9 @@ public class SetTitlePacket extends DataPacket {
         this.putVarInt(stayTime);
         this.putVarInt(fadeOutTime);
     }
+    
+    public String getName(){
+    	return "SetTitlePacket";
+    }
+
 }

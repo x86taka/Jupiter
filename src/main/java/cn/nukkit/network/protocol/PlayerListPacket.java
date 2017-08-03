@@ -1,8 +1,8 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.entity.data.Skin;
-
 import java.util.UUID;
+
+import cn.nukkit.entity.data.Skin;
 
 /**
  * @author Nukkit Project Team
@@ -62,6 +62,11 @@ public class PlayerListPacket extends DataPacket {
             this.name = name;
             this.skin = skin;
         }
+    }
+    
+    
+    public String getName(){
+    	return "PlayerListPacket";
     }
 
 }

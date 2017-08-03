@@ -28,4 +28,8 @@ public class FullChunkDataPacket extends DataPacket {
         this.putVarInt(this.chunkZ);
         this.putByteArray(this.data);
     }
+    
+    public String getName(){
+    	return "FullChunkDataPacket";
+    }
 }

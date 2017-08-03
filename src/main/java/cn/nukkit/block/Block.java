@@ -281,6 +281,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int JUNGLE_DOOR_BLOCK = 195;
     public static final int ACACIA_DOOR_BLOCK = 196;
     public static final int DARK_OAK_DOOR_BLOCK = 197;
+    //TODO GRASS_PATH
     public static final int GRASS_PATH = 198;
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;

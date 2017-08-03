@@ -24,4 +24,9 @@ public class RemoveEntityPacket extends DataPacket {
         this.reset();
         this.putVarLong(this.entityRuntimeId);
     }
+    
+    
+    public String getName(){
+    	return "RemoveEntityPacket";
+    }
 }

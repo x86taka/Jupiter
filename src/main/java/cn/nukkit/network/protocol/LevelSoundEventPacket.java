@@ -152,4 +152,9 @@ public class LevelSoundEventPacket extends DataPacket {
     public byte pid() {
         return NETWORK_ID;
     }
+    
+    
+    public String getName(){
+    	return "LevelSoundEventPacket";
+    }
 }

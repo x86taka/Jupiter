@@ -32,4 +32,8 @@ public class ContainerOpenPacket extends DataPacket {
         this.putBlockCoords(this.x, this.y, this.z);
         this.putVarLong(this.entityId);
     }
+    
+    public String getName(){
+    	return "ContainerOpenPacket";
+    }
 }

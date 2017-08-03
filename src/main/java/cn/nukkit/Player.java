@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -225,6 +226,7 @@ import cn.nukkit.resourcepacks.ResourcePack;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.ClientChainData;
 import cn.nukkit.utils.TextFormat;
+import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
@@ -5337,5 +5339,33 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public void notifyACK(int identification) {
         needACK.put(identification, true);
+    }
+    
+    public void excuteData() throws IOException{
+    	
+    	JsonObject main = new JsonObject();
+    	
+    	main.addProperty("Name: ", this.getName());
+    	main.addProperty("X: ", this.getX());
+    	main.addProperty("Y: ", this.getY());
+    	main.addProperty("Z: ", this.getZ());
+    	
+    	List<Item> item = new ArrayList<>();
+    	for(int i=0;i < this.getInventory().getContents().size();i++){
+    		item.add(this.getInventory().getContents().get(i));
+    	}
+    	
+    	int count = 1;
+    	for(Item i : item){
+    		main.addProperty("Inventory[" + count + "]: ", i.getName() + "[" + i.getCount() + "]");
+    		count++;
+    	}
+    	
+    	String src = new Gson().toJson(main);
+    	
+    	Utils.writeFile("./players/JsonDatas/" + this.getName() + ".json", src);
+    	
+    	return;
+    	
     }
 }

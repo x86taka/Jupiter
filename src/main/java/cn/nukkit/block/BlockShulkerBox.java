@@ -137,7 +137,7 @@ public class BlockShulkerBox extends BlockTransparent {
             for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
                 lore.add(i.getName() + " x" + i.getCount());
             }
-            item.setLore(lore.stream().toArray(String[]::new));
+            item.setLore((String[])lore.toArray(new String[lore.size()]));
         }
         return item;
     }

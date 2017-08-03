@@ -58,4 +58,8 @@ public class UpdateBlockPacket extends DataPacket {
             this.flags = flags;
         }
     }
+    
+    public String getName(){
+    	return "UpdateBlockPacket";
+    }
 }

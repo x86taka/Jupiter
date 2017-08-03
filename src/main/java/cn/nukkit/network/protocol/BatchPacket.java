@@ -24,4 +24,8 @@ public class BatchPacket extends DataPacket {
     	this.reset();
     	this.put(this.payload);
     }
+    
+    public String getName(){
+    	return "BatchPacket";
+    }
 }

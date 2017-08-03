@@ -89,4 +89,9 @@ public class LoginPacket extends DataPacket {
     public Skin getSkin() {
         return this.skin;
     }
+    
+    
+    public String getName(){
+    	return "LoginPacket";
+    }
 }

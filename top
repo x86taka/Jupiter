@@ -1,0 +1,145 @@
+[33me65d7f3[m HEAD@{0}: merge refs/remotes/origin/shulkerbox: Merge made by the 'recursive' strategy.
+[33m789407d[m HEAD@{1}: revert: Revert "Revert "b""
+[33m38b7283[m HEAD@{2}: commit: Revert "b"
+[33m73afb09[m HEAD@{3}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33med1ed70[m HEAD@{4}: commit: b
+[33m7337760[m HEAD@{5}: commit: a
+[33me27d52e[m HEAD@{6}: commit: MCPE v1.1.3
+[33md8adb19[m HEAD@{7}: commit: ClientChainData#getDeviceOSbyName()を追加
+[33m1e846f0[m HEAD@{8}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33md5692ab[m HEAD@{9}: commit: getName()の追加(暇なときにできればやってください。僕もやるので())
+[33mfed8366[m HEAD@{10}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m4ab4191[m HEAD@{11}: commit: Merge remote-tracking branch 'origin/master'
+[33mc5af30b[m HEAD@{12}: commit: ちょっと
+[33m6cf5935[m HEAD@{13}: commit: Merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git
+[33m52f4441[m HEAD@{14}: commit: a
+[33m281c8d9[m HEAD@{15}: commit: Merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git
+[33m571189a[m HEAD@{16}: commit: Test
+[33m4bbca9e[m HEAD@{17}: commit: ベッドのバグを修正
+[33m1ed2ca5[m HEAD@{18}: commit: -
+[33m609dbb9[m HEAD@{19}: commit: 砂類が消えるバグを修正
+[33mf7d6192[m HEAD@{20}: commit: getDirection()の修正(ブロックを置いたときに正しく自分の方に向かないバグを修正) - v1.1.2.6
+[33m319fa9f[m HEAD@{21}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m434b92a[m HEAD@{22}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m744601b[m HEAD@{23}: commit: Jupiter v1.1.2.3(MCPE v1.1.2)
+[33m622309c[m HEAD@{24}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m0b40f21[m HEAD@{25}: commit: ちょっとした変更
+[33mf7c493d[m HEAD@{26}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m34abd3d[m HEAD@{27}: commit: v1.1.0.2
+[33mf1e107b[m HEAD@{28}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m976055a[m HEAD@{29}: checkout: moving from mcpe-1.1.0 to master
+[33m44471d2[m HEAD@{30}: commit: Player,Entityに最も近いプレイヤーを算出する関数を追加/Jupiter.ymlの機能(これらはすべて再実装)
+[33mc66cf24[m HEAD@{31}: checkout: moving from master to mcpe-1.1.0
+[33m976055a[m HEAD@{32}: checkout: moving from mcpe-1.1.0 to master
+[33mc66cf24[m HEAD@{33}: checkout: moving from master to mcpe-1.1.0
+[33m976055a[m HEAD@{34}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m9adcd99[m HEAD@{35}: checkout: moving from mcpe-1.1.0 to master
+[33mc66cf24[m HEAD@{36}: commit: いろいろ&未実装要素
+[33ma0e2ed2[m HEAD@{37}: commit: Jupiterバージョンの追加
+[33m30203dd[m HEAD@{38}: merge branch 'mcpe-1.1.0' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33mfb0793a[m HEAD@{39}: commit: バグ修正/軽度な変更
+[33ma48c486[m HEAD@{40}: commit: 腰振りバグの修正
+[33m205d660[m HEAD@{41}: commit: そんなに腰振りたいのか？すちーぶくん。
+[33m7b41c32[m HEAD@{42}: merge branch 'mcpe-1.1.0' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m5e7c256[m HEAD@{43}: commit: 一向に直らない...
+[33mf69d9c8[m HEAD@{44}: commit: PlayerJumpEventの追加/いろいろ
+[33ma71633b[m HEAD@{45}: merge branch 'mcpe-1.1.0' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33ma7bd4f6[m HEAD@{46}: commit: The Big Update&Fixed bug
+[33m242d10d[m HEAD@{47}: commit: MCPE v1.1.0
+[33m76ebcee[m HEAD@{48}: commit: Merge branch 'mcpe-1.1.0' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git into mcpe-1.1.0
+[33mf4aa604[m HEAD@{49}: commit: 使用不可
+[33m9adcd99[m HEAD@{50}: checkout: moving from master to mcpe-1.1.0
+[33m9adcd99[m HEAD@{51}: commit: 致命的なバグを修正
+[33m13070a7[m HEAD@{52}: commit: Fixed bug
+[33mb5d3605[m HEAD@{53}: commit: ロールバックをさせないようにする機能を追加
+[33mb25be42[m HEAD@{54}: commit: コンパイルのバグを修正
+[33me314ea2[m HEAD@{55}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m026d0b5[m HEAD@{56}: commit: fix
+[33mb82de8d[m HEAD@{57}: commit: 修正
+[33ma165f8f[m HEAD@{58}: commit: 修正/日本語化/その他いろいろ
+[33m3fde985[m HEAD@{59}: commit: 簡単な軽量化
+[33m0b3b13c[m HEAD@{60}: commit: プラグインのonEnable()でtrayMessage()が呼ばれたときに何も起こらないバグを修正/仕様変更
+[33m0d9b650[m HEAD@{61}: commit: バグ修正
+[33me5b7ca1[m HEAD@{62}: commit: addTrayIconMenuでタスクアイコンにポップアップメニューを追加できるように/バグ修正
+[33mc2bb78e[m HEAD@{63}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m8f9a87c[m HEAD@{64}: commit: reloadされるたびにアイコンが増えていくバグの修正/アイコンがクリックされたときのイベントを追加
+[33macbf32a[m HEAD@{65}: commit: バグ修正
+[33mc2606cc[m HEAD@{66}: commit: 致命的なバグを修正
+[33md31f6fe[m HEAD@{67}: commit: タスクトレイ機能の追加(修正)
+[33me40eaab[m HEAD@{68}: commit: タスクトレイ機能の追加
+[33m35e6a51[m HEAD@{69}: commit: 軽量化
+[33m15d4838[m HEAD@{70}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m097d3db[m HEAD@{71}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m4e0d281[m HEAD@{72}: commit: Update
+[33m543f1e8[m HEAD@{73}: commit: 仕様変更(Nukkit準拠)
+[33mbb09d28[m HEAD@{74}: commit: コンパイラモード有効化の設定を追加
+[33m2604df6[m HEAD@{75}: commit: Add piston(can't be used)
+[33mfca0dfe[m HEAD@{76}: commit: Add piston(can't be used)
+[33mb49b7a5[m HEAD@{77}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33ma27aa04[m HEAD@{78}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m2aaf2c3[m HEAD@{79}: commit: 致命的なバグの修正
+[33m3e1e05c[m HEAD@{80}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33mc74a16d[m HEAD@{81}: commit: Jupiterの参照するキーが間違っていたため修正
+[33mc0c95b5[m HEAD@{82}: commit: kill()の修正
+[33m3d69db0[m HEAD@{83}: commit: 1.0.7対応
+[33m7f95bea[m HEAD@{84}: commit: JavaDocの追加
+[33mca33ba5[m HEAD@{85}: commit: JavaDocの追加
+[33mea45061[m HEAD@{86}: commit: setMute()の追加、それに伴う変更
+[33m7b09d62[m HEAD@{87}: commit: プレイヤー名が表示されないように...
+[33m8fbc6e1[m HEAD@{88}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33md06af3f[m HEAD@{89}: commit: コンソール表示の変更
+[33mdaaf227[m HEAD@{90}: commit: #105に伴う依存ライブラリの追加
+[33m865390a[m HEAD@{91}: commit: jupiter.ymlに新たな値が加わったときにクラッシュする問題を修正(ymlがアップデートしたら自動的に再生成されます)
+[33m5810421[m HEAD@{92}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m9b0e6eb[m HEAD@{93}: commit: 修正
+[33m60a2297[m HEAD@{94}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33madd409e[m HEAD@{95}: commit: プラグインソースコードをコンパイルする機能を実装
+[33md43406f[m HEAD@{96}: commit: 先にDestroy-Block-Particleを読み込むように...
+[33mfd60b50[m HEAD@{97}: commit: setDestroyBlockParticle()の実装
+[33m1a0573f[m HEAD@{98}: pull --progress --prune origin master: Merge made by the 'recursive' strategy.
+[33m1630eb4[m HEAD@{99}: commit: Circle CI
+[33ma328463[m HEAD@{100}: commit: getHeight(),getWidth(),getName()の追加
+[33mb878fe4[m HEAD@{101}: commit: Update v1.0.6
+[33m5afa762[m HEAD@{102}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m047f9a6[m HEAD@{103}: commit: 修正
+[33maaa44cc[m HEAD@{104}: commit: urlの追加
+[33m3bf5449[m HEAD@{105}: commit: 修正
+[33m48d0f9d[m HEAD@{106}: commit: muteコマンドの追加
+[33mb3766b2[m HEAD@{107}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m0ad10eb[m HEAD@{108}: commit: /muteの実装/sendImportantMessage()の実装 sendImportandMessage()はmute状態でもメッセージを送信するものです。
+[33mb3c1dab[m HEAD@{109}: commit: メモリ監視機能の分割
+[33m241018f[m HEAD@{110}: commit: CheckMemoryコマンドの削除
+[33m6ca8efd[m HEAD@{111}: commit: broadcastTitle()/broadcastSubtitle()
+[33m628bba2[m HEAD@{112}: commit: 軽量化
+[33m9ef555f[m HEAD@{113}: commit: transferServer()の調整/それに伴う変更
+[33me49dcbb[m HEAD@{114}: commit: 日本語化
+[33m0a011d0[m HEAD@{115}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33mda18e6d[m HEAD@{116}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m0602e19[m HEAD@{117}: commit: 種類の追加
+[33m0017310[m HEAD@{118}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33m198dbc0[m HEAD@{119}: commit: レールの種類を追加
+[33maec7f67[m HEAD@{120}: commit: メインクラスと開発者を取得できるように...
+[33mb482ac3[m HEAD@{121}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33mccf55a3[m HEAD@{122}: commit: /checkmemoryコマンドの追加
+[33md916c26[m HEAD@{123}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m573d4b9[m HEAD@{124}: commit: setJupiterPropertyBoolean()の追加
+[33m19bd721[m HEAD@{125}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33mee5ec66[m HEAD@{126}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Merge made by recursive.
+[33mcd813eb[m HEAD@{127}: commit: メモリ監視機能を追加
+[33m4655ae0[m HEAD@{128}: commit: メモリ監視機能を追加/完全日本語化
+[33m547ae67[m HEAD@{129}: commit: broadcastPopup()/broadcasttip()の実装
+[33macd1b4a[m HEAD@{130}: commit: sendImage(String, ItemMap, int, int)の追加
+[33m3bff54e[m HEAD@{131}: commit: Test#1
+[33maa466a9[m HEAD@{132}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m5789f4c[m HEAD@{133}: commit: エンダーパールの追加
+[33m3b5f491[m HEAD@{134}: commit: UnjarCommandの細かな修正, 引用明記
+[33m529485a[m HEAD@{135}: commit: /unjarコマンドの安定化
+[33me54f770[m HEAD@{136}: commit: jupiterが存在しないときの処理を追加
+[33m3a87054[m HEAD@{137}: commit: start.batの作成
+[33mb49f029[m HEAD@{138}: merge branch 'master' of https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.git: Fast-forward
+[33m5786969[m HEAD@{139}: commit: JoinMessage/QuitMessage機能の削除
+[33m8f23e7a[m HEAD@{140}: commit: 細かな修正
+[33m2f7515d[m HEAD@{141}: commit: 画像のリンク切れを修正
+[33m30788cb[m HEAD@{142}: commit: start.shの作成
+[33m8541445[m HEAD@{143}: commit: First Commit
+[33m7b03d55[m HEAD@{144}: commit (initial): :lollipop: Added .gitattributes & .gitignore files

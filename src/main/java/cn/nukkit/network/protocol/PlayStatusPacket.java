@@ -32,5 +32,10 @@ public class PlayStatusPacket extends DataPacket {
         this.reset();
         this.putInt(this.status);
     }
+    
+    
+    public String getName(){
+    	return "PlayStatusPacket";
+    }
 
 }

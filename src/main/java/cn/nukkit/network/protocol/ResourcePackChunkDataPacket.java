@@ -31,4 +31,9 @@ public class ResourcePackChunkDataPacket extends DataPacket {
     public byte pid() {
         return NETWORK_ID;
     }
+    
+    
+    public String getName(){
+    	return "ResourcePackChunkDataPacket";
+    }
 }

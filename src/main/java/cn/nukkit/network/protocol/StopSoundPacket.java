@@ -22,4 +22,9 @@ public class StopSoundPacket extends DataPacket {
         this.putString(this.name);
         this.putBoolean(this.stopAll);
     }
+    
+    
+    public String getName(){
+    	return "StopSoundPacket";
+    }
 }

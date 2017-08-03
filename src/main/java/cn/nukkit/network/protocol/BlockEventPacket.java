@@ -30,4 +30,8 @@ public class BlockEventPacket extends DataPacket {
         this.putVarInt(this.case1);
         this.putVarInt(this.case2);
     }
+    
+    public String getName(){
+    	return "BlockEventPacket";
+    }
 }

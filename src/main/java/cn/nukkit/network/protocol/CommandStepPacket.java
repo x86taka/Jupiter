@@ -1,7 +1,8 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.command.data.CommandArgs;
 import com.google.gson.Gson;
+
+import cn.nukkit.command.data.CommandArgs;
 
 /**
  * author: MagicDroidX
@@ -57,6 +58,11 @@ public class CommandStepPacket extends DataPacket {
 
     @Override
     public void encode() {
+    	
+    }
+    
+    public String getName(){
+    	return "CommandStepPacket";
     }
 
 }

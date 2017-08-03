@@ -29,5 +29,9 @@ public class DisconnectPacket extends DataPacket {
         }
     }
 
+    
+    public String getName(){
+    	return "DisconnectPacket";
+    }
 
 }

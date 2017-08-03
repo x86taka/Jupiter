@@ -49,4 +49,9 @@ public class MoveEntityPacket extends DataPacket {
         this.putBoolean(this.onGround);
         this.putBoolean(this.teleport);
     }
+    
+    
+    public String getName(){
+    	return "MoveEntityPacket";
+    }
 }

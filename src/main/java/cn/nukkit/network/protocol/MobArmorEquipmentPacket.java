@@ -36,4 +36,9 @@ public class MobArmorEquipmentPacket extends DataPacket {
         this.putSlot(this.slots[2]);
         this.putSlot(this.slots[3]);
     }
+    
+    
+    public String getName(){
+    	return "MobArmorEquipmentPacket";
+    }
 }

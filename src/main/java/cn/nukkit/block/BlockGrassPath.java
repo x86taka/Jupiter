@@ -52,7 +52,6 @@ public class BlockGrassPath extends BlockGrass {
 
     @Override
     public BlockColor getColor() {
-        //todo edit this after minecraft pc 1.9 come out
         return BlockColor.GRASS_BLOCK_COLOR;
     }
 

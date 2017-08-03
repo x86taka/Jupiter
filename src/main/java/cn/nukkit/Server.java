@@ -1,17 +1,16 @@
 package cn.nukkit;
 
-import java.awt.Image;
-import java.awt.PopupMenu;
+import java.awt.AWTException;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -183,6 +182,7 @@ import cn.nukkit.scheduler.ServerScheduler;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.LevelException;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.ServerException;
@@ -309,16 +309,10 @@ public class Server implements ActionListener{
     private Level defaultLevel = null;
 
     private Thread currentThread;
-	private Map<String, Object> jupiterconfig;
-
-	private Image image;
-	private TrayIcon icon;
-	private String IconMessage = "";
-
-	private StringBuffer sb;
+    private Map<String, Object> jupiterconfig;
 
     @SuppressWarnings("unchecked")
-	Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
+    Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
         Preconditions.checkState(instance == null, "Already initialized!");
         currentThread = Thread.currentThread(); // Saves the current thread instance as a reference, used in Server#isPrimaryThread()
         instance = this;
@@ -327,44 +321,43 @@ public class Server implements ActionListener{
         this.filePath = filePath;
         if (!new File(dataPath + "worlds/").exists()) {
             new File(dataPath + "worlds/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  was created!");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "worlds/  を作成しました。"));
         }
 
         if (!new File(dataPath + "players/").exists()) {
             new File(dataPath + "players/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "players/  was created!");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "players/  を作成しました。"));
         }
 
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "plugins/  was created!");
-            this.logger.info(TextFormat.AQUA + dataPath + "worlds/  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "plugins/  を作成しました。"));
         }
 
         if (!new File(dataPath + "players/").exists()) {
             new File(dataPath + "players/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "players/  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "players/  を作成しました。"));
         }
 
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "  を作成しました。"));
         }
 
         if (!new File(dataPath + "unpackedPlugins/").exists()) {
             new File(dataPath + "unpackedPlugins/").mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "unpackedPlugins/  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "unpackedPlugins/  を作成しました。"));
         }
 
         if (!new File(dataPath + "compileOrder/").exists()) {
             new File(dataPath + "compileOrder/").mkdirs();
-            this.logger.info(TextFormat.AQUA + pluginPath + "compileOrder/  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "compileOrder/  を作成しました。"));
         }
 
 
         if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
             new File(dataPath + "JavaScriptPlugin/").mkdirs();
-            this.logger.info(TextFormat.AQUA + dataPath + "JavaScriptPlugin/  を作成しました。");
+            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "JavaScriptPlugin/  を作成しました。"));
         }
 
 
@@ -373,10 +366,9 @@ public class Server implements ActionListener{
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
 
         this.console = new CommandReader();
-        //todo: VersionString ?在不必要
 
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
-            this.getLogger().info(TextFormat.GREEN + "Welcome! Please choose a language first!");
+            this.getLogger().info(FastAppender.get(TextFormat.GREEN, "Welcome! Please choose a language first!"));
             try {
                 String[] lines = Utils.readFile(this.getClass().getClassLoader().getResourceAsStream("lang/language.list")).split("\n");
                 for (String line : lines) {
@@ -390,15 +382,15 @@ public class Server implements ActionListener{
             String language = null;
             while (language == null) {
                 String lang = this.console.readLine();
-                InputStream conf = this.getClass().getClassLoader().getResourceAsStream("lang/" + lang + "/lang.ini");
+                BufferedInputStream conf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini")));
                 if (conf != null) {
                     language = lang;
                 }
             }
 
-            InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/" + language + "/nukkit.yml");
+            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml")));
             if (advacedConf == null) {
-                advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/" + fallback + "/nukkit.yml");
+                advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml")));
             }
 
             try {
@@ -410,21 +402,11 @@ public class Server implements ActionListener{
         }
 
         this.console.start();
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("nukkit.yml");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
+
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "nukkit.yml", TextFormat.WHITE, "を読み込んでいます..."));
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
 
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("server.properties");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
-
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "server.properties", TextFormat.WHITE, "を読み込んでいます..."));
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
                 put("motd", "Jupiter Server For Minecraft: PE");
@@ -456,41 +438,33 @@ public class Server implements ActionListener{
             }
         });
 
-        sb = new StringBuffer();
-        sb.append(TextFormat.GREEN);
-        sb.append("jupiter.yml");
-        sb.append(TextFormat.WHITE);
-        sb.append("を読み込んでいます...");
-        this.logger.info(sb.toString());
+        this.logger.info(FastAppender.get(TextFormat.GREEN, "jupiter.yml", TextFormat.WHITE, "を読み込んでいます..."));
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-	        InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml");
-	        if (advacedConf == null){
-	        	sb = new StringBuffer();
-		        sb.append(TextFormat.AQUA);
-		        sb.append("Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい");
-		        this.logger.error(sb.toString());
-	        }
+            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
+            if (advacedConf == null){
+                this.logger.error(FastAppender.get(TextFormat.AQUA, "Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい"));
+            }
 
-	        try {
-	            Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
-	        } catch (IOException e) {
-	            throw new RuntimeException(e);
-	        }
+            try {
+                Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-    	this.loadJupiterConfig();
+        this.loadJupiterConfig();
 
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
-        	Level.sendDestroyParticle = true;
+            Level.sendDestroyParticle = true;
         }else{
-        	Level.sendDestroyParticle = false;
+            Level.sendDestroyParticle = false;
         }
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
         this.logger.info(this.getLanguage().translateString("language.selected", new String[]{getLanguage().getName(), getLanguage().getLang()}));
-        this.logger.info(this.getLanguage().translateString("nukkit.server.start", TextFormat.AQUA + this.getVersion() + TextFormat.WHITE));
+        this.logger.info(this.getLanguage().translateString("nukkit.server.start", FastAppender.get(TextFormat.AQUA, this.getVersion(), TextFormat.WHITE)));
 
         Object poolSize = this.getConfig("settings.async-workers", "auto");
         if (!(poolSize instanceof Integer)) {
@@ -549,7 +523,6 @@ public class Server implements ActionListener{
         this.network = new Network(this);
         this.network.setName(this.getMotd());
 
-        this.logger.info(this.getLanguage().translateString("nukkit.server.info", this.getName(), TextFormat.YELLOW + this.getNukkitVersion() + TextFormat.WHITE, TextFormat.AQUA + this.getCodename() + TextFormat.WHITE, this.getApiVersion()));
         this.logger.info(this.getLanguage().translateString("nukkit.server.license", this.getName()));
 
 
@@ -580,11 +553,10 @@ public class Server implements ActionListener{
         this.network.registerInterface(new RakNetInterface(this));
 
         try {
-			this.setTrayImage(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
-	        this.defaultloadTrayIcon();
-		} catch (Exception e) {
-			this.logger.critical("TaskTrayでエラーが発生しました。");
-		}
+            this.loadTrayIcon();
+        } catch (AWTException e) {
+        	this.getLogger().critical("TrayIconを実行できませんでした！");
+        }
 
         Calendar now = Calendar.getInstance();
 
@@ -595,90 +567,40 @@ public class Server implements ActionListener{
         int m = now.get(Calendar.MINUTE);
         int s = now.get(Calendar.SECOND);
 
-        this.logger.info(TextFormat.AQUA + "==================================================================================");
-        this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
+        this.logger.info(FastAppender.get(TextFormat.AQUA,"=================================================================================="));
+        this.logger.info(FastAppender.get(TextFormat.AQUA, "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣"));
         this.logger.info("   |￣|  |￣| |￣|  |￣￣￣￣|  |￣|  |￣￣￣￣￣|  |￣￣￣￣| |￣￣￣￣|");
         this.logger.info("   |  |  |  | |  |  | |￣￣| |  |  |  ￣￣|  |￣￣  | |￣￣￣  | |￣￣| |");
         this.logger.info("   |  |  |  | |  |  | ￣￣￣ |  |  |      |  |      |  ￣￣￣| | ￣￣￣ | ");
         this.logger.info("  _|  |  |  | |  |  | |￣￣￣   |  |      |  |      | |￣￣￣  | |￣＼ ＼");
         this.logger.info(" |____|  |__￣___|  |_|         |__|      |__|      |  ￣￣￣| |_|    ＼_|");
         this.logger.info("");
-        this.logger.info(TextFormat.AQUA + "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣");
+        this.logger.info(FastAppender.get(TextFormat.AQUA, "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣"));
 
-        sb = new StringBuffer();
-        sb.append("日時:");
-        sb.append(TextFormat.BLUE);
-        sb.append(y);
-        sb.append("/");
-        sb.append(mo);
-        sb.append("/");
-        sb.append(d);
-        sb.append(" ");
-        sb.append(h);
-        sb.append("時");
-        sb.append(m);
-        sb.append("分");
-        sb.append(s);
-        sb.append("秒");
-        this.logger.info(sb.toString());
+        this.logger.info(FastAppender.get("日時:", TextFormat.BLUE, y, "/", mo, "/", d, " ", h, "時", m, "分", s, "秒"));
+        this.logger.info(FastAppender.get("サーバー名: ", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("IP: ", TextFormat.GREEN, this.getIp()));
+        this.logger.info(FastAppender.get("ポート: ", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("Jupiterバージョン: ", TextFormat.LIGHT_PURPLE, this.getJupiterVersion()));
+        this.logger.info(FastAppender.get("Nukkitバージョン: ", TextFormat.LIGHT_PURPLE, this.getNukkitVersion()));
+        this.logger.info(FastAppender.get("APIバージョン: ", TextFormat.LIGHT_PURPLE, this.getApiVersion()));
+        this.logger.info(FastAppender.get("コードネーム: ", TextFormat.LIGHT_PURPLE, this.getCodename()));
 
-        sb = new StringBuffer();
-        sb.append("サーバー名: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getMotd());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("ip: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getIp());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("ポート: ");
-        sb.append(TextFormat.GREEN);
-        sb.append(this.getPort());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("Jupiterバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getJupiterVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("Nukkitバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getNukkitVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("APIバージョン: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getApiVersion());
-        this.logger.info(sb.toString());
-
-        sb = new StringBuffer();
-        sb.append("コードネーム: ");
-        sb.append(TextFormat.LIGHT_PURPLE);
-        sb.append(this.getCodename());
-        this.logger.info(sb.toString());
-
-        this.logger.info(TextFormat.AQUA + "==================================================================================");
+        this.logger.info(FastAppender.get(TextFormat.AQUA, "=================================================================================="));
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
-        	this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
-        	this.logger.info(TextFormat.AQUA + "コンパイルしています...");
-	        File f = new File(dataPath + "compileOrder/");
-	        File[] list = f.listFiles();
-	        int len = list.length;
-	        for(int i=0; i < len;i++){
-	        	if(new PluginCompiler().Compile(list[i]))
-	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.GREEN + "完了");
-	        	else
-	        		this.logger.info(list[i].toPath().toString() + " :" + TextFormat.RED + "失敗");
-	        }
-	        this.logger.info(TextFormat.YELLOW + "----------------------------------------------------------------------------------");
+            this.logger.info(FastAppender.get(TextFormat.YELLOW, "----------------------------------------------------------------------------------"));
+            this.logger.info(FastAppender.get(TextFormat.AQUA, "コンパイルしています..."));
+            File f = new File(dataPath + "compileOrder/");
+            File[] list = f.listFiles();
+            int len = list.length;
+            for(int i = 0; i < len; i++){
+                if(new PluginCompiler().Compile(list[i]))
+                    this.logger.info(FastAppender.get(list[i].toPath().toString(), " :", TextFormat.GREEN, "完了"));
+                else
+                    this.logger.info(FastAppender.get(list[i].toPath().toString(), " :", TextFormat.RED, "失敗"));
+            }
+            this.logger.info(FastAppender.get(TextFormat.YELLOW, "----------------------------------------------------------------------------------"));
         }
         /*
         logger.info(TextFormat.AQUA + "JavaScriptプラグインを読み込んでいます...");
@@ -687,16 +609,16 @@ public class Server implements ActionListener{
         JavaScriptPluginLoader loader = new JavaScriptPluginLoader();
         if(files != null){
         for(File f : files){
-        	try {
-				loader.loadPlugin(f);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            try {
+                loader.loadPlugin(f);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         }*/
 
-        this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
-        logger.info(TextFormat.AQUA + "プラグインを読み込んでいます...");
+        this.logger.info(FastAppender.get(TextFormat.LIGHT_PURPLE, "----------------------------------------------------------------------------------"));
+        this.logger.info(FastAppender.get(TextFormat.AQUA, "プラグインを読み込んでいます..."));
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
@@ -715,13 +637,13 @@ public class Server implements ActionListener{
             if (!this.loadLevel(name)) {
                 long seed;
                 try {
-                    seed = ((Integer) this.getConfig("worlds." + name + ".seed")).longValue();
+                    seed = ((Integer) this.getConfig(FastAppender.get("worlds.", name, ".seed"))).longValue();
                 } catch (Exception e) {
                     seed = System.currentTimeMillis();
                 }
 
                 Map<String, Object> options = new HashMap<>();
-                String[] opts = ((String) this.getConfig("worlds." + name + ".generator", Generator.getGenerator("default").getSimpleName())).split(":");
+                String[] opts = ((String) this.getConfig(FastAppender.get("worlds.", name, ".generator"), Generator.getGenerator("default").getSimpleName())).split(":");
                 Class<? extends Generator> generator = Generator.getGenerator(opts[0]);
                 int len = opts.length;
                 if (len > 1) {
@@ -738,11 +660,11 @@ public class Server implements ActionListener{
             }
         }
 
-        try{
+        try {
 
-        	this.getDefaultLevel().getName();
+            this.getDefaultLevel().getName();
 
-        }catch(NullPointerException ex){
+        }catch (NullPointerException ex) {
             String defaultName = this.getPropertyString("level-name", "world");
             if (defaultName == null || "".equals(defaultName.trim())) {
                 this.logger.warning("level-name cannot be null, using default");
@@ -767,9 +689,9 @@ public class Server implements ActionListener{
         this.properties.save(true);
         try{
 
-        	this.getDefaultLevel().getName();
+            this.getDefaultLevel().getName();
 
-        }catch(NullPointerException e){
+        }catch (NullPointerException e) {
             this.logger.emergency(this.getLanguage().translateString("nukkit.level.defaultError"));
             this.forceShutdown();
 
@@ -781,88 +703,59 @@ public class Server implements ActionListener{
         }
 
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
-        this.logger.info(TextFormat.LIGHT_PURPLE + "----------------------------------------------------------------------------------");
+        this.logger.info(FastAppender.get(TextFormat.LIGHT_PURPLE, "----------------------------------------------------------------------------------"));
 
         this.start();
     }
 
-	//TODO TrayIcon
-
-    public void setTrayMessage(String message){
-    	this.IconMessage = message;
-    }
-
-    public void setTrayImage(Image image){
-    	this.image = image;
-    }
-
-    private Image getTrayImage(){
-    	if(image == null){
-			try {
-				image = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-			return image;
-    	}
-    	return image;
-    }
-    public String getTrayMessage(){
-    	if(IconMessage == null){
-    		IconMessage = "";
-    	}
-    	return IconMessage;
-    }
-
     public TrayIcon getTrayIcon(){
-    	if(icon == null){
-    		icon = new TrayIcon(getTrayImage());
-    	}
-    	return icon;
-    }
-
-    public void setTrayIconPopupMenu(PopupMenu menu){
-    	this.getTrayIcon().setPopupMenu(menu);
-    }
-
-    public void setTrayIcon(TrayIcon icon){
-    	this.icon = icon;
+    	TrayIcon icon = null;
+        try {
+            icon = new TrayIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
+        } catch (IOException e) {
+        	this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
+        } catch (UnsupportedOperationException e) {
+            this.getLogger().notice("Trayに対応していないOSの為、表示しませんでした。(エラーではありません)");
+        }
+        return icon;
     }
 
     public void trayMessage(String message){
-    	this.trayMessage(message, MessageType.INFO);
+        this.trayMessage(message, MessageType.INFO);
     }
 
     public void trayMessage(String message, MessageType type){
-    	this.trayMessage("Jupiter", message, type);
+        this.trayMessage("Jupiter", message, type);
     }
 
     public void trayMessage(String title, String message, MessageType type){
-    	this.getTrayIcon().displayMessage(title, message, type);
+        if (this.getTrayIcon() != null){
+            this.getTrayIcon().displayMessage(title, message, type);
+        }
     }
 
-    private void defaultloadTrayIcon() throws Exception{
+    private void loadTrayIcon() throws AWTException{
+        SystemTray.getSystemTray().remove(getTrayIcon());
 
-    		SystemTray.getSystemTray().remove(getTrayIcon());
+        TrayIcon icon = this.getTrayIcon();
+        if (icon == null) {
+            return;
+        }
 
-			icon = this.getTrayIcon();
-			icon.removeActionListener(this);
-			icon.addActionListener(this);
+        icon.removeActionListener(this);
+        icon.addActionListener(this);
 
-			SystemTray.getSystemTray().add(icon);
-
-    	return;
+        SystemTray.getSystemTray().add(icon);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
+        TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
         getPluginManager().callEvent(event);
         if(event.isCancelled()){
-        	return;
+            return;
         }
-        trayMessage("参加人数:" + getOnlinePlayers().size() + "/" + getPropertyInt("max-players") + IconMessage);
+        trayMessage(FastAppender.get("参加人数:", getOnlinePlayers().size(), "/", getPropertyInt("max-players")));
     }
 
     /**
@@ -1369,7 +1262,7 @@ public class Server implements ActionListener{
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getDefaultGamemode())));
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
-        this.trayMessage("サーバー起動完了(" + String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000) + "秒)", MessageType.INFO);
+        this.trayMessage(FastAppender.get("サーバー起動完了(", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000), "秒)"), MessageType.INFO);
 
         this.tickProcessor();
         this.forceShutdown();
@@ -1612,7 +1505,6 @@ public class Server implements ActionListener{
         }
 
         if ((this.tickCounter & 0b1111) == 0) {
-            this.titleTick();
             this.maxTick = 20;
             this.maxUse = 0;
 
@@ -1679,32 +1571,6 @@ public class Server implements ActionListener{
         return true;
     }
 
-    // TODO: Fix title tick
-    public void titleTick() {
-        if (true || !Nukkit.ANSI) {
-            return;
-        }
-
-        Runtime runtime = Runtime.getRuntime();
-        double used = NukkitMath.round((double) (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024, 2);
-        double max = NukkitMath.round(((double) runtime.maxMemory()) / 1024 / 1024, 2);
-        String usage = Math.round(used / max * 100) + "%";
-        String title = (char) 0x1b + "]0;" + this.getName() + " " +
-                this.getNukkitVersion() +
-                " | Online " + this.players.size() + "/" + this.getMaxPlayers() +
-                " | Memory " + usage;
-        if (!Nukkit.shortTitle) {
-            title += " | U " + NukkitMath.round((this.network.getUpload() / 1024 * 1000), 2)
-                    + " D " + NukkitMath.round((this.network.getDownload() / 1024 * 1000), 2) + " kB/s";
-        }
-        title += " | TPS " + this.getTicksPerSecond() +
-                " | Load " + this.getTickUsage() + "%" + (char) 0x07;
-
-        System.out.print(title);
-
-        this.network.resetStatistics();
-    }
-
     public QueryRegenerateEvent getQueryInformation() {
         return this.queryRegenerateEvent;
     }
@@ -1718,7 +1584,7 @@ public class Server implements ActionListener{
     }
 
     public boolean isRunning() {
-    	return isRunning;
+        return isRunning;
     }
 
     /**
@@ -1726,7 +1592,7 @@ public class Server implements ActionListener{
      * @return String Nukkitバージョン
      */
     public String getNukkitVersion() {
-    	return Nukkit.VERSION;
+        return Nukkit.VERSION;
     }
 
     /**
@@ -1734,7 +1600,7 @@ public class Server implements ActionListener{
      * @return String コードネーム
      */
     public String getCodename() {
-    	return Nukkit.CODENAME;
+        return Nukkit.CODENAME;
     }
 
     /**
@@ -1742,7 +1608,7 @@ public class Server implements ActionListener{
      * @return String Minecraftバージョン
      */
     public String getVersion() {
-    	return ProtocolInfo.MINECRAFT_VERSION;
+        return ProtocolInfo.MINECRAFT_VERSION;
     }
 
     /**
@@ -1750,19 +1616,19 @@ public class Server implements ActionListener{
      * @return String APIバージョン
      */
     public String getApiVersion() {
-    	return Nukkit.API_VERSION;
+        return Nukkit.API_VERSION;
     }
 
     public String getJupiterVersion() {
-    	return Nukkit.JUPITER_VERSION;
-	}
+        return Nukkit.JUPITER_VERSION;
+    }
 
     /**
      * ファイルパスを取得します。
      * @return String ファイルパス
      */
     public String getFilePath() {
-    	return filePath;
+        return filePath;
     }
 
     /**
@@ -1771,7 +1637,7 @@ public class Server implements ActionListener{
      * @return String データパス
      */
     public String getDataPath() {
-    	return dataPath;
+        return dataPath;
     }
 
     /**
@@ -1781,13 +1647,13 @@ public class Server implements ActionListener{
      * @see Server#getDataPath()
      */
     public String getPluginPath() {
-    	return pluginPath;
+        return pluginPath;
     }
 
     public String getDefaultplugins(){
-    	synchronized(defaultplugin){
-    		return defaultplugin;
-    	}
+        synchronized(defaultplugin){
+            return defaultplugin;
+        }
     }
 
     /**
@@ -1795,7 +1661,7 @@ public class Server implements ActionListener{
      * @return int 最大参加可能人数
      */
     public int getMaxPlayers() {
-    	return maxPlayers;
+        return maxPlayers;
     }
 
     /**
@@ -1822,12 +1688,12 @@ public class Server implements ActionListener{
      * @return String IPアドレス
      */
     public String getIp() {
-    	return this.getPropertyString("server-ip", "0.0.0.0");
+        return this.getPropertyString("server-ip", "0.0.0.0");
 
     }
 
     public UUID getServerUniqueId() {
-    	return this.serverID;
+        return this.serverID;
     }
 
     /**
@@ -1858,7 +1724,7 @@ public class Server implements ActionListener{
      * @return String ワールドタイプ
      */
     public String getLevelType() {
-    	return this.getPropertyString("level-type", "DEFAULT");
+        return this.getPropertyString("level-type", "DEFAULT");
     }
 
     public boolean getGenerateStructures() {
@@ -2153,13 +2019,13 @@ public class Server implements ActionListener{
     public CompoundTag getOfflinePlayerData(String name) {
         name = name.toLowerCase();
         String path = this.getDataPath() + "players/";
-        File file = new File(path + name + ".dat");
+        File file = new File(FastAppender.get(path, name, ".dat"));
 
         if (this.shouldSavePlayerData() && file.exists()) {
             try {
                 return NBTIO.readCompressed(new FileInputStream(file));
             } catch (Exception e) {
-                file.renameTo(new File(path + name + ".dat.bak"));
+                file.renameTo(new File(FastAppender.get(path, name, ".dat.bak")));
                 this.logger.notice(this.getLanguage().translateString("nukkit.data.playerCorrupted", name));
             }
         } else {
@@ -2204,9 +2070,9 @@ public class Server implements ActionListener{
         if (this.shouldSavePlayerData()) {
             try {
                 if (async) {
-                    this.getScheduler().scheduleAsyncTask(new FileWriteTask(this.getDataPath() + "players/" + name.toLowerCase() + ".dat", NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
+                    this.getScheduler().scheduleAsyncTask(new FileWriteTask(FastAppender.get(this.getDataPath() + "players/", name.toLowerCase(), ".dat"), NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 } else {
-                    Utils.writeFile(this.getDataPath() + "players/" + name.toLowerCase() + ".dat", new ByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
+                    Utils.writeFile(FastAppender.get(this.getDataPath(), "players/", name.toLowerCase(), ".dat"), new ByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 }
             } catch (Exception e) {
                 this.logger.critical(this.getLanguage().translateString("nukkit.data.saveError", new String[]{name, e.getMessage()}));
@@ -2359,7 +2225,7 @@ public class Server implements ActionListener{
         if (name.contains("/") || name.contains("\\")) {
             path = name;
         } else {
-            path = this.getDataPath() + "worlds/" + name + "/";
+            path = FastAppender.get(this.getDataPath(), "worlds/", name, "/");
         }
 
         Class<? extends LevelProvider> provider = LevelProviderManager.getProvider(path);
@@ -2431,7 +2297,7 @@ public class Server implements ActionListener{
         if (name.contains("/") || name.contains("\\")) {
             path = name;
         } else {
-            path = this.getDataPath() + "worlds/" + name + "/";
+            path = FastAppender.get(this.getDataPath(), "worlds/", name, "/");
         }
 
         Level level;
@@ -2492,7 +2358,7 @@ public class Server implements ActionListener{
             return false;
         }
 
-        String path = this.getDataPath() + "worlds/" + name + "/";
+        String path = FastAppender.get(this.getDataPath(), "worlds/", name, "/");
         if (this.getLevelByName(name) == null) {
 
             if (LevelProviderManager.getProvider(path) == null) {
@@ -2639,11 +2505,11 @@ public class Server implements ActionListener{
      * @return Config jupiter.ymlのオブジェクト
      */
     public Config getJupiterConfig(){
-    	return new Config(this.getDataPath() + "jupiter.yml");
+        return new Config(this.getDataPath() + "jupiter.yml");
     }
 
     public boolean isLoadedJupiterConfig(){
-    	return !this.jupiterconfig.isEmpty();
+        return !this.jupiterconfig.isEmpty();
     }
 
     /**
@@ -2651,7 +2517,7 @@ public class Server implements ActionListener{
      * @return void
      */
     public void loadJupiterConfig(){
-    	this.jupiterconfig = this.getJupiterConfig().getAll();
+        this.jupiterconfig = this.getJupiterConfig().getAll();
     }
 
     /**
@@ -2660,7 +2526,7 @@ public class Server implements ActionListener{
      * @return String 取得した値
      */
     public String getJupiterConfigString(String key){
-    	return (String) this.jupiterconfig.get(key);
+        return (String) this.jupiterconfig.get(key);
     }
 
     /**
@@ -2669,7 +2535,7 @@ public class Server implements ActionListener{
      * @return int 取得した値
      */
     public int getJupiterConfigInt(String key){
-    	return (int) this.jupiterconfig.get(key);
+        return (int) this.jupiterconfig.get(key);
     }
 
     /**
@@ -2679,7 +2545,7 @@ public class Server implements ActionListener{
      * @return Boolean 取得した値
      */
     public Boolean getJupiterConfigBoolean(String key){
-    	return this.getJupiterConfigBoolean(key, null);
+        return this.getJupiterConfigBoolean(key, null);
     }
 
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
@@ -2805,7 +2671,7 @@ public class Server implements ActionListener{
     }
 
     @SuppressWarnings("unchecked")
-	public Map<String, List<String>> getCommandAliases() {
+    public Map<String, List<String>> getCommandAliases() {
         Object section = this.getConfig("aliases");
         Map<String, List<String>> result = new LinkedHashMap<>();
         if (section instanceof Map) {

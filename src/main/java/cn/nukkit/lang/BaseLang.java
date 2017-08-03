@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.Server;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.Utils;
 
 /**
@@ -34,11 +35,11 @@ public class BaseLang {
 
         if (path == null) {
             path = "lang/";
-            this.lang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(path + this.langName + "/lang.ini"));
-            this.fallbackLang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(path + fallback + "/lang.ini"));
+            this.lang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, this.langName, "/lang.ini")));
+            this.fallbackLang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, fallback, "/lang.ini")));
         } else {
-            this.lang = this.loadLang(path + this.langName + "/lang.ini");
-            this.fallbackLang = this.loadLang(path + fallback + "/lang.ini");
+            this.lang = this.loadLang(FastAppender.get(path, this.langName, "/lang.ini"));
+            this.fallbackLang = this.loadLang(FastAppender.get(path, fallback, "/lang.ini"));
         }
 
 

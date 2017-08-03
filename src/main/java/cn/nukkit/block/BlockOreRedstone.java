@@ -1,12 +1,12 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemRedstone;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.NukkitRandom;
-
-import java.util.Random;
 
 /**
  * author: MagicDroidX
@@ -50,9 +50,15 @@ public class BlockOreRedstone extends BlockSolid {
     @Override
     public Item[] getDrops(Item item) {
         if (item.isPickaxe() && item.getTier() >= ItemTool.TIER_IRON) {
-            return new Item[]{
-                    new ItemRedstone(0, new Random().nextInt(1) + 4)
-            };
+            if (item.isSilkTouch()){
+                return new Item[]{
+                        this.toItem()
+                };
+            } else {
+                return new Item[]{
+                        new ItemRedstone(0, new Random().nextInt(1) + 4)
+                };
+            }
         } else {
             return new Item[0];
         }

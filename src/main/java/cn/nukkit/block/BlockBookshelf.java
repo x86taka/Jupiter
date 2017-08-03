@@ -55,9 +55,15 @@ public class BlockBookshelf extends BlockSolid {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[]{
-                new ItemBook(0, 3)
-        };
+        if (item.isSilkTouch()){
+            return new Item[]{
+                    this.toItem()
+            };
+        } else {
+            return new Item[]{
+                    new ItemBook(0, 3)
+            };
+        }
     }
 
     @Override

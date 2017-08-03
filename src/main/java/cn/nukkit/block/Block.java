@@ -22,6 +22,7 @@ import cn.nukkit.metadata.Metadatable;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockColor;
+import cn.nukkit.utils.FastAppender;
 
 /**
  * author: MagicDroidX
@@ -1012,7 +1013,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
     @Override
     public String toString() {
-        return "Block[" + this.getName() + "] (" + this.getId() + ":" + this.getDamage() + ")";
+        return FastAppender.get("Block[", this.getName(), "] (", this.getId(), ":", this.getDamage(), ")");
     }
 
     public boolean collidesWithBB(AxisAlignedBB bb) {
@@ -1185,7 +1186,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     }
 
     public String getLocationHash() {
-        return this.getFloorX() + ":" + this.getFloorY() + ":" + this.getFloorZ();
+        return FastAppender.get(this.getFloorX(), ":", this.getFloorY(), ":", this.getFloorZ());
     }
 
     public int getDropExp() {

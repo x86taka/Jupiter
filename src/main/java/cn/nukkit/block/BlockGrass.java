@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.block.BlockSpreadEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.generator.object.ObjectTallGrass;
 import cn.nukkit.math.NukkitRandom;
@@ -98,6 +99,13 @@ public class BlockGrass extends BlockDirt {
             }
         }
         return 0;
+    }
+
+    @Override
+    public Item[] getDrops(Item item) {
+        return new Item[]{
+                item.isSilkTouch() ? this.toItem() : new ItemBlock(new BlockDirt())
+        };
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cn.nukkit.block;
 
+import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 
 /**
@@ -34,5 +35,10 @@ public class BlockIcePacked extends BlockIce {
     @Override
     public int onUpdate(int type) {
         return 0; //not being melted
+    }
+
+    @Override
+    public Item[] getDrops(Item item) {
+        return item.isSilkTouch() ? new Item[]{this.toItem()} : new Item[0];
     }
 }

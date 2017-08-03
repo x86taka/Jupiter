@@ -1,5 +1,7 @@
 package cn.nukkit;
 
+import java.io.IOException;
+
 import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
@@ -45,11 +47,10 @@ public class Nukkit {
     public static void main(String[] args) {
     	Thread th1 = new Thread(new Runnable(){
     		public void run(){
-    			try {
+				try {
 					new Splash("起動しています");
-				} catch (Exception e) {
-					System.err.println("Splash画面の表示に失敗しました。");
-					e.printStackTrace();
+				} catch (InterruptedException | IOException e) {
+					Server.getInstance().getLogger().notice("Splashに対応していないOSの為、表示しませんでした。(エラーではありません)");
 				}
     		}
     	});

@@ -1,11 +1,11 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemMelon;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.utils.BlockColor;
-
-import java.util.Random;
 
 /**
  * Created on 2015/12/11 by Pub4Game.
@@ -42,9 +42,15 @@ public class BlockMelon extends BlockSolid {
 
     @Override
     public Item[] getDrops(Item item) {
-        return new Item[]{
-                new ItemMelon(0, new Random().nextInt(4) + 3)
-        };
+        if (item.isSilkTouch()){
+            return new Item[]{
+                    this.toItem()
+            };
+        } else {
+            return new Item[]{
+                    new ItemMelon(0, new Random().nextInt(4) + 3)
+            };
+        }
     }
 
     @Override

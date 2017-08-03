@@ -54,37 +54,37 @@ public class MainLogger extends ThreadedLogger {
 
     @Override
     public void emergency(String message) {
-        this.send(TextFormat.RED + "[EMERGENCY] " + message);
+        this.send(FastAppender.get(TextFormat.RED, "[EMERGENCY] ", message));
     }
 
     @Override
     public void alert(String message) {
-        this.send(TextFormat.RED + "[ALERT] " + message);
+        this.send(FastAppender.get(TextFormat.RED, "[ALERT] ", message));
     }
 
     @Override
     public void critical(String message) {
-        this.send(TextFormat.RED + "[CRITICAL] " + message);
+        this.send(FastAppender.get(TextFormat.RED, "[CRITICAL] ", message));
     }
 
     @Override
     public void error(String message) {
-        this.send(TextFormat.DARK_RED + "[ERROR] " + message);
+        this.send(FastAppender.get(TextFormat.DARK_RED, "[ERROR] ", message));
     }
 
     @Override
     public void warning(String message) {
-        this.send(TextFormat.YELLOW + "[WARNING] " + message);
+        this.send(FastAppender.get(TextFormat.YELLOW, "[WARNING] ", message));
     }
 
     @Override
     public void notice(String message) {
-        this.send(TextFormat.AQUA + "[NOTICE] " + message);
+        this.send(FastAppender.get(TextFormat.AQUA, "[NOTICE] ", message));
     }
 
     @Override
     public void info(String message) {
-        this.send(TextFormat.WHITE + "[INFO] " + message);
+        this.send(FastAppender.get(TextFormat.WHITE, "[INFO] ", message));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class MainLogger extends ThreadedLogger {
         if (!this.logDebug) {
             return;
         }
-        this.send(TextFormat.GRAY + "[DEBUG] " + message);
+        this.send(FastAppender.get(TextFormat.GRAY, "[DEBUG] ", message));
     }
 
     public void setLogDebug(Boolean logDebug) {
@@ -244,7 +244,7 @@ public class MainLogger extends ThreadedLogger {
                     writer.write(TextFormat.clean(message));
                     writer.write("\r\n");
                     CommandReader.getInstance().stashLine();
-                    System.out.println(colorize(TextFormat.AQUA + consoleDateFormat + TextFormat.RESET + message + TextFormat.RESET));
+                    System.out.println(colorize(FastAppender.get(TextFormat.AQUA, consoleDateFormat, TextFormat.RESET, message, TextFormat.RESET)));
                     CommandReader.getInstance().unstashLine();
                 }
             }
@@ -257,47 +257,47 @@ public class MainLogger extends ThreadedLogger {
 
     @Override
     public void emergency(String message, Throwable t) {
-        this.emergency(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.emergency(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void alert(String message, Throwable t) {
-        this.alert(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.alert(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void critical(String message, Throwable t) {
-        this.critical(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.critical(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void error(String message, Throwable t) {
-        this.error(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.error(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void warning(String message, Throwable t) {
-        this.warning(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.warning(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void notice(String message, Throwable t) {
-        this.notice(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.notice(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void info(String message, Throwable t) {
-        this.info(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.info(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void debug(String message, Throwable t) {
-        this.debug(message + "\r\n" + Utils.getExceptionMessage(t));
+        this.debug(FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
     @Override
     public void log(LogLevel level, String message, Throwable t) {
-        this.log(level, message + "\r\n" + Utils.getExceptionMessage(t));
+        this.log(level, FastAppender.get(message, "\r\n", Utils.getExceptionMessage(t)));
     }
 
 }

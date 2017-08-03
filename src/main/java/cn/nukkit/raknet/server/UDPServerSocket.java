@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.ThreadedLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
@@ -48,8 +49,8 @@ public class UDPServerSocket extends ChannelInboundHandlerAdapter {
                     .handler(this);
             channel = bootstrap.bind(interfaz, port).sync().channel();
         } catch (Exception e) {
-            this.logger.critical(interfaz + ":" + port + " 上でサーバーを開けませんでした。");
-            this.logger.critical("同じポートで別のサーバーを動かしている可能性があります。");
+            this.logger.critical(FastAppender.get(interfaz, ":", port, " 上でサーバーを開けませんでした。"));
+            this.logger.critical("同じポートで複数のサーバーを一度に開いていませんか？");
             System.exit(1);
         }
     }

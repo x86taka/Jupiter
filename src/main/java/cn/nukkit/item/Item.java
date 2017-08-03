@@ -23,6 +23,8 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.DyeColor;
+import cn.nukkit.utils.FastAppender;
 
 /**
  * author: MagicDroidX
@@ -983,22 +985,22 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.FENCE_GATE_ACACIA, 0));
         addCreativeItem(Item.get(Item.FENCE_GATE_DARK_OAK, 0));
         addCreativeItem(Item.get(Item.IRON_BARS, 0));
-        addCreativeItem(Item.get(Item.BED, 0));
-        addCreativeItem(Item.get(Item.BED, 8));
-        addCreativeItem(Item.get(Item.BED, 7));
-        addCreativeItem(Item.get(Item.BED, 15));
-        addCreativeItem(Item.get(Item.BED, 12));
-        addCreativeItem(Item.get(Item.BED, 14));
-        addCreativeItem(Item.get(Item.BED, 1));
-        addCreativeItem(Item.get(Item.BED, 4));
-        addCreativeItem(Item.get(Item.BED, 5));
-        addCreativeItem(Item.get(Item.BED, 13));
-        addCreativeItem(Item.get(Item.BED, 9));
-        addCreativeItem(Item.get(Item.BED, 3));
-        addCreativeItem(Item.get(Item.BED, 11));
-        addCreativeItem(Item.get(Item.BED, 10));
-        addCreativeItem(Item.get(Item.BED, 2));
-        addCreativeItem(Item.get(Item.BED, 6));
+        addCreativeItem(Item.get(Item.BED, DyeColor.WHITE.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.LIGHT_GRAY.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.GRAY.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.BLACK.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.BROWN.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.RED.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.ORANGE.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.YELLOW.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.LIME.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.GREEN.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.CYAN.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.LIGHT_BLUE.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.BLUE.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.PURPLE.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.MAGENTA.getDyedData()));
+        addCreativeItem(Item.get(Item.BED, DyeColor.PINK.getDyedData()));
         addCreativeItem(Item.get(Item.BOOKSHELF, 0));
         addCreativeItem(Item.get(Item.SIGN, 0));
         addCreativeItem(Item.get(Item.PAINTING, 0));
@@ -1013,6 +1015,22 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.NOTEBLOCK, 0));
         addCreativeItem(Item.get(Item.END_ROD, 0));
         addCreativeItem(Item.get(Item.END_PORTAL_FRAME, 0));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.WHITE.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.LIGHT_GRAY.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.GRAY.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.BLACK.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.BROWN.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.RED.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.ORANGE.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.YELLOW.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.LIME.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.GREEN.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.CYAN.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.LIGHT_BLUE.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.BLUE.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.PURPLE.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.MAGENTA.getDyedData()));
+        addCreativeItem(Item.get(Item.SHULKER_BOX, DyeColor.PINK.getDyedData()));
         addCreativeItem(Item.get(Item.ANVIL, 0));
         addCreativeItem(Item.get(Item.ANVIL, 4));
         addCreativeItem(Item.get(Item.ANVIL, 8));
@@ -2104,13 +2122,17 @@ public class Item implements Cloneable {
         return 0;
     }
 
+    public boolean isSilkTouch() {
+        return false;
+    }
+
     public boolean isUnbreakable() {
         return false;
     }
 
     @Override
     final public String toString() {
-        return "Item " + this.name + " (" + this.id + ":" + (!this.hasMeta ? "?" : this.meta) + ")x" + this.count + (this.hasCompoundTag() ? " tags:0x" + Binary.bytesToHexString(this.getCompoundTag()) : "");
+        return FastAppender.get("Item ", this.name, " (", this.id, ":", (!this.hasMeta ? "?" : this.meta), ")x", this.count, (this.hasCompoundTag() ? " tags:0x" + Binary.bytesToHexString(this.getCompoundTag()) : ""));
     }
 
     public int getDestroySpeed(Block block, Player player) {

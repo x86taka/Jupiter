@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.item.Item;
+
 /**
  * Created on 2015/11/22 by xtypr.
  * Package cn.nukkit.block in project Nukkit .
@@ -24,4 +26,10 @@ public class BlockPodzol extends BlockDirt {
         return "Podzol";
     }
 
+    @Override
+    public Item[] getDrops(Item item) {
+        return new Item[]{
+                item.isSilkTouch() ? this.toItem() : Block.get(Block.DIRT).toItem()
+        };
+    }
 }

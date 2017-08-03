@@ -1,17 +1,23 @@
 #!/bin/bash
 set -e
-rm -rf public || exit 0;
-mkdir public
 
-# publicフォルダに開発用ファイルを展開する。
-cp -r src/* public
+SOURCE_BRANCH="master"
+TARGET_BRANCH="master"
 
-cd public
+git clone https://github.com/JupiterDevelopmentTeam/Jupiter.git
+mkdir -p artifact
+cp -R ./target/nukkit-1.0-SNAPSHOT.jar artifact
+git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
-git config user.email "example@example.com"
-git config user.name "Travis-CI"
+cd artifact
+git config --global user.name "Travis CI"
+git config --global user.email "noreply@travis-ci.org"
 
-git init
-git add .
-git commit -m "Deploy to GitHub Pages. #$TRAVIS_BUILD_NUMBER"
-git push --force --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam.github.io.git" master:master > /dev/null 2>&1
+if [ -z 'git diff --exit-code' ]; then
+    echo "No changes to the spec on this push; exiting."
+    exit 0
+fi
+
+git add nukkit-1.0-SNAPSHOT.jar
+git commit -m "#$TRAVIS_BUILD_NUMBERでの成果物の更新. [skip ci]"
+git push --quiet "https://${GH_TOKEN}@github.com/JupiterDevelopmentTeam/Jupiter.git" $SOURCE_BRANCH:$TARGET_BRANCH

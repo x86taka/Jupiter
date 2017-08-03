@@ -1,11 +1,12 @@
 package cn.nukkit.level.format;
 
+import java.util.Map;
+
+import cn.nukkit.level.GameRules;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.format.generic.BaseFullChunk;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.AsyncTask;
-
-import java.util.Map;
 
 /**
  * author: MagicDroidX
@@ -96,4 +97,8 @@ public interface LevelProvider {
     void saveLevelData();
 
     void updateLevelName(String name);
+
+    GameRules getGamerules();
+
+    void setGameRules(GameRules rules);
 }

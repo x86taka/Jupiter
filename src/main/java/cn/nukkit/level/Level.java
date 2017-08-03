@@ -50,6 +50,7 @@ import cn.nukkit.block.BlockSugarcane;
 import cn.nukkit.block.BlockWheat;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityChest;
+import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityXPOrb;
@@ -126,6 +127,7 @@ import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.timings.LevelTimings;
 import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.BlockUpdateEntry;
+import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.LevelException;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.TextFormat;
@@ -314,6 +316,8 @@ public class Level implements ChunkManager, Metadatable {
 
     private int dimension;
 
+    public GameRules gameRules;
+
     public Level(Server server, String name, String path, Class<? extends LevelProvider> provider) {
         this.blockStates = Block.fullList;
         this.levelId = levelIdCounter++;
@@ -324,7 +328,7 @@ public class Level implements ChunkManager, Metadatable {
         boolean convert = provider == McRegion.class || provider == LevelDB.class;
         try {
             if (convert) {
-                String newPath = new File(path).getParent() + "/" + name + ".old/";
+                String newPath = FastAppender.get(new File(path).getParent(), "/", name, ".old/");
                 new File(path).renameTo(new File(newPath));
                 this.provider = provider.getConstructor(Level.class, String.class).newInstance(this, newPath);
             } else {
@@ -338,7 +342,7 @@ public class Level implements ChunkManager, Metadatable {
 
         if (convert) {
             this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.updating",
-                    TextFormat.GREEN + this.provider.getName() + TextFormat.WHITE));
+            		FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
             LevelProvider old = this.provider;
             try {
                 this.provider = new LevelProviderConverter(this, path)
@@ -354,7 +358,7 @@ public class Level implements ChunkManager, Metadatable {
         this.provider.updateLevelName(name);
 
         this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.preparing",
-                TextFormat.GREEN + this.provider.getName() + TextFormat.WHITE));
+        		FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
 
         this.generator = Generator.getGenerator(this.provider.getGenerator());
 
@@ -472,6 +476,7 @@ public class Level implements ChunkManager, Metadatable {
         }
         this.generatorInstance.init(this, new NukkitRandom(this.getSeed()));
         this.dimension = this.generatorInstance.getDimension();
+        this.gameRules = this.provider.getGamerules();
 
         this.registerGenerator();
     }
@@ -637,7 +642,7 @@ public class Level implements ChunkManager, Metadatable {
         }
 
         this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.unloading",
-                TextFormat.GREEN + this.getName() + TextFormat.WHITE));
+        		FastAppender.get(TextFormat.GREEN, this.getName(), TextFormat.WHITE)));
         Level defaultLevel = this.server.getDefaultLevel();
 
         for (Player player : new ArrayList<>(this.getPlayers().values())) {
@@ -770,6 +775,10 @@ public class Level implements ChunkManager, Metadatable {
         Server.broadcastPacket(this.players.values().stream().toArray(Player[]::new), pk);
     }
 
+    public GameRules getGameRules() {
+        return this.gameRules;
+    }
+
     public void doTick(int currentTick) {
         this.timings.doTick.startTiming();
 
@@ -878,7 +887,7 @@ public class Level implements ChunkManager, Metadatable {
         if (!this.updateEntities.isEmpty()) {
             for (long id : new ArrayList<>(this.updateEntities.keySet())) {
                 Entity entity = this.updateEntities.get(id);
-                if (entity.closed || !entity.onUpdate(currentTick)) {
+                if (entity == null || entity.closed || !entity.onUpdate(currentTick)) {
                     this.updateEntities.remove(id);
                 }
             }
@@ -1946,8 +1955,10 @@ public class Level implements ChunkManager, Metadatable {
                     ((BlockEntityChest) blockEntity).unpair();
                 }
 
-                for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
-                    this.dropItem(target, chestItem);
+                if (!(blockEntity instanceof BlockEntityShulkerBox)) {
+                    for (Item chestItem : ((InventoryHolder) blockEntity).getInventory().getContents().values()) {
+                        this.dropItem(target, chestItem);
+                    }
                 }
             }
 

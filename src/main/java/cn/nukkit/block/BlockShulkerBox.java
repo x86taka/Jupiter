@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
@@ -66,6 +66,10 @@ public class BlockShulkerBox extends BlockTransparent {
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
 
+        if (item.getNamedTag() != null && item.getNamedTag().contains("List")){
+        	nbt.putList(item.getNamedTag().getList("Items"));
+        }
+
         if (item.hasCustomName()) {
             nbt.putString("CustomName", item.getCustomName());
         }
@@ -95,7 +99,6 @@ public class BlockShulkerBox extends BlockTransparent {
                 shulkerBox = (BlockEntityShulkerBox) t;
             } else {
                 CompoundTag nbt = new CompoundTag("")
-                        .putList(new ListTag<>("Items"))
                         .putString("id", BlockEntity.SHULKER_BOX)
                         .putInt("x", (int) this.x)
                         .putInt("y", (int) this.y)
@@ -129,13 +132,20 @@ public class BlockShulkerBox extends BlockTransparent {
 
     @Override
     public Item toItem() {
-        Item item = Item.get(Item.SHULKER_BOX, this.meta, 1);
+        Item item = Item.get(Item.SHULKER_BOX, this.meta);
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityShulkerBox) {
             item.setNamedTag(blockEntity.namedTag);
             List<String> lore = new ArrayList<>();
-            for (Item i : ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values()) {
+            int count = 0;
+            Collection<Item> items = ((BlockEntityShulkerBox) blockEntity).getInventory().getContents().values();
+            for (Item i : items) {
                 lore.add(i.getName() + " x" + i.getCount());
+                ++count;
+                if (count == 5 && items.size() - count > 0){
+                	lore.add("and " + (items.size() - count) + " more...");
+                	break;
+                }
             }
             item.setLore((String[])lore.toArray(new String[lore.size()]));
         }

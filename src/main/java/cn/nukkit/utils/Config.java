@@ -1,5 +1,6 @@
 package cn.nukkit.utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -179,7 +180,7 @@ public class Config {
         if (this.correct) {
             String content;
             try {
-                content = Utils.readFile(inputStream);
+                content = Utils.readFile(new BufferedInputStream(inputStream));
             } catch (IOException e) {
                 Server.getInstance().getLogger().logException(e);
                 return false;

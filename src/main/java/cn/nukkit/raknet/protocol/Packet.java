@@ -1,10 +1,11 @@
 package cn.nukkit.raknet.protocol;
 
-import cn.nukkit.utils.Binary;
-
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+
+import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.FastAppender;
 
 /**
  * author: MagicDroidX
@@ -78,7 +79,7 @@ public abstract class Packet implements Cloneable {
     protected InetSocketAddress getAddress() {
         byte version = this.getByte();
         if (version == 4) {
-            String addr = ((~this.getByte()) & 0xff) + "." + ((~this.getByte()) & 0xff) + "." + ((~this.getByte()) & 0xff) + "." + ((~this.getByte()) & 0xff);
+            String addr = FastAppender.get(((~this.getByte()) & 0xff), ".", ((~this.getByte()) & 0xff), ".", ((~this.getByte()) & 0xff), ".", ((~this.getByte()) & 0xff));
             int port = this.getShort();
             return new InetSocketAddress(addr, port);
         } else {

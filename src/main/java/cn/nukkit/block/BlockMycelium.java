@@ -51,7 +51,7 @@ public class BlockMycelium extends BlockSolid {
     @Override
     public Item[] getDrops(Item item) {
         return new Item[]{
-                new ItemBlock(new BlockDirt())
+                item.isSilkTouch() ? this.toItem() : new ItemBlock(new BlockDirt())
         };
     }
 

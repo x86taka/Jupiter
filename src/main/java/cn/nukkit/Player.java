@@ -1775,12 +1775,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (this.inAirTicks == 3 && swimming == 0) {
                             jump = 0.7;
                         }
-                        this.getFoodData().updateFoodExpLevel(0.1 * distance + jump + swimming);
+                        this.getFoodData().updateFoodExpLevel(0.1 * distance + jump + swimming * 0.25);
                     } else {
                         if (this.inAirTicks == 3 && swimming == 0) {
                             jump = 0.2;
                         }
-                        this.getFoodData().updateFoodExpLevel(0.01 * distance + jump + swimming);
+                        this.getFoodData().updateFoodExpLevel(0.01 * distance + jump + swimming * 0.25);
                     }
                 }
             }

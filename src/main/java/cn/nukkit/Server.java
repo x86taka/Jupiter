@@ -580,7 +580,7 @@ public class Server implements ActionListener{
         this.logger.info(FastAppender.get("日時:", TextFormat.BLUE, y, "/", mo, "/", d, " ", h, "時", m, "分", s, "秒"));
         this.logger.info(FastAppender.get("サーバー名: ", TextFormat.GREEN, this.getMotd()));
         this.logger.info(FastAppender.get("IP: ", TextFormat.GREEN, this.getIp()));
-        this.logger.info(FastAppender.get("ポート: ", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("ポート: ", TextFormat.GREEN, this.getPort()));
         this.logger.info(FastAppender.get("Jupiterバージョン: ", TextFormat.LIGHT_PURPLE, this.getJupiterVersion()));
         this.logger.info(FastAppender.get("Nukkitバージョン: ", TextFormat.LIGHT_PURPLE, this.getNukkitVersion()));
         this.logger.info(FastAppender.get("APIバージョン: ", TextFormat.LIGHT_PURPLE, this.getApiVersion()));

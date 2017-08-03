@@ -34,8 +34,20 @@ Jupiterはこのようなきっかけを持つために、__日本語に特化__
 Mavenリポジトリ / Maven Repositories
 --------------------
 
-Mavenリポジトリはありませんが、プラグインを作ることはできます。
+Mavenリポジトリはありませんが、プラグインを作ることはできます。  
 
 __Jupiterプラグインの作り方__
-
+  
 作り方は非常に簡単です。ビルドパスにJupiterを追加するだけで作成することができます。
+  
+  
+#### ローカルMavenリポジトリの構築  
+&lt;dependencies><br>
+&nbsp;&nbsp;&lt;dependency><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId>cn.nukkit&lt;/groupId><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId>nukkit&lt;/artifactId><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;version>1.0-SNAPSHOT&lt;/version><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;scope>system&lt;/scope><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;systemPath>\path\jupiter.jar&lt;/systemPath><br>
+&nbsp;&nbsp;&lt;/dependency><br>
+&lt;/dependencies><br>

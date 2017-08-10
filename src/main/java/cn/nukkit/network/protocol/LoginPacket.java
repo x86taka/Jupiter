@@ -26,8 +26,15 @@ public class LoginPacket extends DataPacket {
     public UUID clientUUID;
     public long clientId;
     public String deviceModel;
+    
+    public String gameVersion;
+    public String language;
+    public int guiScale;
 
     public Skin skin;
+    
+    //デバッグ用
+	private String data = "";
 
     @Override
     public byte pid() {
@@ -41,6 +48,15 @@ public class LoginPacket extends DataPacket {
         this.setBuffer(this.getByteArray(), 0);
         decodeChainData();
         decodeSkinData();
+        /* デバッグ用
+         * Json出力
+        try {
+			Utils.writeFile("./logindata/data.json", data);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		*/
     }
 
     @Override
@@ -60,18 +76,26 @@ public class LoginPacket extends DataPacket {
         List<String> chains = map.get("chain");
         for (String c : chains) {
             JsonObject chainMap = decodeToken(c);
+            data += new Gson().toJson(chainMap);
             if (chainMap == null) continue;
             if (chainMap.has("extraData")) {
                 JsonObject extra = chainMap.get("extraData").getAsJsonObject();
+                data += new Gson().toJson(extra);
                 if (extra.has("displayName")) this.username = extra.get("displayName").getAsString();
                 if (extra.has("deviceModel")) this.deviceModel = extra.get("deviceModel").getAsString();
                 if (extra.has("identity")) this.clientUUID = UUID.fromString(extra.get("identity").getAsString());
+                
+                if (extra.has("GameVersion")) this.gameVersion = extra.get("GameVersion").getAsString();
+                //日本語=ja_JP
+                if (extra.has("LanguageCode")) this.language = extra.get("LanguageCode").getAsString();
+                if (extra.has("GuiScale")) this.guiScale = extra.get("GuiScale").getAsInt();
             }
         }
     }
 
     private void decodeSkinData() {
         JsonObject skinToken = decodeToken(new String(this.get(this.getLInt())));
+        data += new Gson().toJson(skinToken);
         String skinId = null;
         if (skinToken.has("ClientRandomId")) this.clientId = skinToken.get("ClientRandomId").getAsLong();
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();

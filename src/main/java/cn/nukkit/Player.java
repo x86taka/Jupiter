@@ -1373,7 +1373,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (newSettings == null) {
             newSettings = this.getAdventureSettings().clone(this);
             newSettings.setCanDestroyBlock((gamemode & 0x02) == 0);
-            newSettings.setCanFly((gamemode & 0x01) > 0);
+            if(gamemode == 0)newSettings.setCanFly(false);
+            else if(gamemode == 1)newSettings.setCanFly(true);
+            else if(gamemode == 2)newSettings.setCanFly(false);
+            else if(gamemode == 3)newSettings.setCanFly(true);
+            //newSettings.setCanFly((gamemode & 0x01) > 0);
             newSettings.setNoclip(gamemode == 0x03);
             newSettings.setFlying(gamemode == 0x03);
         }
@@ -1680,7 +1684,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     if (!this.isSleeping() && this.riding == null) {
                         double diffHorizontalSqr = (diffX * diffX + diffZ * diffZ) / ((double) (tickDiff * tickDiff));
                         if (diffHorizontalSqr > 0.125) {
-                            if(!enableRevert){
+                            if(enableRevert){
                                 PlayerInvalidMoveEvent ev;
                                 this.getServer().getPluginManager().callEvent(ev = new PlayerInvalidMoveEvent(this, true));
                                 if (!ev.isCancelled()) {
@@ -1956,7 +1960,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public EntityInteractable getEntityPlayerLookingAt(int maxDistance) {
         timing.startTiming();
-        
+
         EntityInteractable entity = null;
 
         // just a fix because player MAY not be fully initialized
@@ -1985,7 +1989,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         return entity;
     }
-    
+
     private EntityInteractable getEntityAtPosition(Entity[] nearbyEntities, int x, int y, int z) {
         for (Entity nearestEntity : nearbyEntities) {
             if (nearestEntity.getFloorX() == x && nearestEntity.getFloorY() == y && nearestEntity.getFloorZ() == z
@@ -5035,7 +5039,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.getLevel().sendWeather(this);
             //Update time
             this.getLevel().sendTime(this);
-            
+
             if (from.getLevel().getId() != to.level.getId()) {
                 if (this.spawned) {
                     //TODO: remove this in future version
@@ -5067,7 +5071,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }, 9);
                 }
             }
-            
+
             return true;
         }
 
@@ -5435,35 +5439,35 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void notifyACK(int identification) {
         needACK.put(identification, true);
     }
-    
+
     public void excuteData() throws IOException{
-    	
+
     	JsonObject main = new JsonObject();
-    	
+
     	main.addProperty("Name: ", this.getName());
     	main.addProperty("X: ", this.getX());
     	main.addProperty("Y: ", this.getY());
     	main.addProperty("Z: ", this.getZ());
-    	
+
     	List<Item> item = new ArrayList<>();
     	for(int i=0;i < this.getInventory().getContents().size();i++){
     		item.add(this.getInventory().getContents().get(i));
     	}
-    	
+
     	int count = 1;
     	for(Item i : item){
     		main.addProperty("Inventory[" + count + "]: ", i.getName() + "[" + i.getCount() + "]");
     		count++;
     	}
-    	
+
     	String src = new Gson().toJson(main);
-    	
+
     	Utils.writeFile("./players/JsonDatas/" + this.getName() + ".json", src);
-    	
+
     	return;
-    	
+
     }
-    
+
     protected void forceSendEmptyChunks() {
         int chunkPositionX = this.getFloorX() >> 4;
         int chunkPositionZ = this.getFloorZ() >> 4;

@@ -2,18 +2,21 @@
 ![jupiter](https://github.com/JupiterDevelopmentTeam/JupiterDevelopmentTeam/blob/master/Banner.jpg)
 
 Jupiterについて / About Jupiter
--------------
-#### ビルドステータス
-[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)
-[![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)
+--------------------
 
 Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェアです。コードの多くは[Nukkit](https://github.com/Nukkit/Nukkit/)のものを使用しています。
 
 * 日本人開発者チームが日本のユーザーのために作っています
 
 * Nukkitプラグインはもちろん、Jupiterの独自メソッドを使ったプラグインも使用できます   
+
+ビルドステータス
+--------------------
+[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)
+[![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)
   
-#### 開発に至ったきっかけ  
+開発に至ったきっかけ
+--------------------
 日本ではPHPのサーバーソフトを使ったサーバーが主流です。  
 Javaのものはほとんど使われていなく、Java(Nukkit)を使ったサーバーは人数が少なくなるという傾向がありました。  
 こういったイメージを払拭すべく、そして日本でもっとJavaのサーバーソフトを普及させるべく、このプロジェクトが立ち上がりました。  
@@ -21,6 +24,8 @@ Jupiterはこのようなきっかけを持つために、__日本語に特化__
 
 ダウンロード & インフォメーション / Download & Information
 -------------
+
+* __[最新ビルドのjarファイルをダウンロード](https://github.com/JupiterDevelopmentTeam/Jupiter/blob/master/artifact/nukkit-1.0-SNAPSHOT.jar?raw=true)__
 
 * __[公式サイト](https://jupiterdevelopmentteam.github.io/)__
 * __[Lobiグループ](https://web.lobi.co/group/5f56c6d4c43cdb8c63541731b2ea8533ac4b50f1)__
@@ -42,12 +47,14 @@ __Jupiterプラグインの作り方__
   
   
 #### ローカルMavenリポジトリの構築  
-&lt;dependencies><br>
-&nbsp;&nbsp;&lt;dependency><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId>cn.nukkit&lt;/groupId><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId>nukkit&lt;/artifactId><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;version>1.0-SNAPSHOT&lt;/version><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;scope>system&lt;/scope><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;systemPath>\path\jupiter.jar&lt;/systemPath><br>
-&nbsp;&nbsp;&lt;/dependency><br>
-&lt;/dependencies><br>
+```xml:pom.xml
+<dependencies>
+		<dependency>
+			<groupId>cn.nukkit</groupId>
+			<artifactId>nukkit</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>\path\jupiter.jar</systemPath>
+		</dependency>
+</dependencies>
+```

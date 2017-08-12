@@ -4875,8 +4875,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (damager instanceof Player) {
                 ((Player) damager).getFoodData().updateFoodExpLevel(0.3);
             }
-            //暴?
-            boolean add = false;
+
             if (!damager.onGround) {
                 NukkitRandom random = new NukkitRandom();
                 for (int i = 0; i < 5; i++) {
@@ -4884,22 +4883,22 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.getLevel().addParticle(par);
                 }
 
-                add = true;
+                source.setDamage((float) (source.getDamage() * 1.5));
             }
-            if (add) source.setDamage((float) (source.getDamage() * 1.5));
         }
 
         if (super.attack(source)) { //!source.isCancelled()
-        if (this.getLastDamageCause() == source && this.spawned) {
-            this.getFoodData().updateFoodExpLevel(0.3);
-            EntityEventPacket pk = new EntityEventPacket();
-            pk.entityRuntimeId = this.id;
-            pk.event = EntityEventPacket.HURT_ANIMATION;
-            this.dataPacket(pk);
-        }
-        return true;
+            if (this.getLastDamageCause() == source && this.spawned) {
+                this.getFoodData().updateFoodExpLevel(0.3);
+                EntityEventPacket pk = new EntityEventPacket();
+                pk.entityRuntimeId = this.id;
+                pk.event = EntityEventPacket.HURT_ANIMATION;
+                this.dataPacket(pk);
+            }
+            return true;
+
         } else {
-             return false;
+            return false;
         }
     }
 

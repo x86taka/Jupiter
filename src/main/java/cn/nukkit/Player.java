@@ -354,7 +354,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private int hash;
 
-    private String buttonText = "Button";
+    private String buttonText = "";
 
     protected boolean enableClientCommand = true;
 
@@ -865,8 +865,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void setButtonText(String text) {
-        this.buttonText = text;
-        this.setDataProperty(new StringEntityData(Entity.DATA_INTERACTIVE_TAG, this.buttonText));
+        if (text != this.getButtonText()) {
+            this.buttonText = text;
+            this.setDataProperty(new StringEntityData(Entity.DATA_INTERACTIVE_TAG, this.buttonText));
+        }
     }
 
     @Override

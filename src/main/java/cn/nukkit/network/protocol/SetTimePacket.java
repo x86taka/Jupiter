@@ -24,10 +24,4 @@ public class SetTimePacket extends DataPacket {
         this.reset();
         this.putVarInt(this.time);
     }
-    
-    
-    public String getName(){
-    	return "SetTimePacket";
-    }
-
 }

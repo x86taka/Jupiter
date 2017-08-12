@@ -40,9 +40,4 @@ public class MobEffectPacket extends DataPacket {
         this.putVarInt(this.duration);
     }
 
-
-    public String getName(){
-    	return "MobEffectPacket";
-    }
-
 }

@@ -38,8 +38,4 @@ public class ContainerSetSlotPacket extends DataPacket {
         this.putSlot(this.item);
         this.putByte((byte) this.selectedSlot);
     }
-    
-    public String getName(){
-    	return "ContainerSetSlotPacket";
-    }
 }

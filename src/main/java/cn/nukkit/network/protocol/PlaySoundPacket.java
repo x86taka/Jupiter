@@ -28,8 +28,4 @@ public class PlaySoundPacket extends DataPacket {
         this.putLFloat(this.volume);
         this.putLFloat(this.pitch);
     }
-    
-    public String getName(){
-    	return "PlaySoundPacket";
-    }
 }

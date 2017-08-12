@@ -39,10 +39,4 @@ public class UpdateAttributesPacket extends DataPacket {
             }
         }
     }
-    
-    
-    public String getName(){
-    	return "UpdateAttributesPacket";
-    }
-
 }

@@ -76,8 +76,4 @@ public class ContainerSetContentPacket extends DataPacket {
         pk.slots = this.slots.clone();
         return pk;
     }
-    
-    public String getName(){
-    	return "ContainerSetContentPacket";
-    }
 }

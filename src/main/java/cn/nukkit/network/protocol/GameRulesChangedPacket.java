@@ -28,9 +28,4 @@ public class GameRulesChangedPacket extends DataPacket {
             this.putRuleData(rule);
         }
     }
-    
-    
-    public String getName(){
-    	return "GameRulesChangedPacket";
-    }
 }

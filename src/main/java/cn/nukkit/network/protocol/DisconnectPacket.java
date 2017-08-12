@@ -28,10 +28,4 @@ public class DisconnectPacket extends DataPacket {
             this.putString(this.message);
         }
     }
-
-    
-    public String getName(){
-    	return "DisconnectPacket";
-    }
-
 }

@@ -55,8 +55,4 @@ public class AddEntityPacket extends DataPacket {
             this.putByte((byte) link[2]);
         }
     }
-    
-    public String getName(){
-    	return "AddEntityPacket";
-    }
 }

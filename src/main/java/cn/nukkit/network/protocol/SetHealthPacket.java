@@ -21,9 +21,4 @@ public class SetHealthPacket extends DataPacket {
         this.reset();
         this.putUnsignedVarInt(this.health);
     }
-    
-    
-    public String getName(){
-    	return "SetHealthPacket";
-    }
 }

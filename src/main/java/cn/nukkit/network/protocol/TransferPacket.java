@@ -23,9 +23,4 @@ public class TransferPacket extends DataPacket {
     public byte pid() {
         return ProtocolInfo.TRANSFER_PACKET;
     }
-    
-    
-    public String getName(){
-    	return "TransferPacket";
-    }
 }

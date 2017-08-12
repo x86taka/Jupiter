@@ -58,11 +58,6 @@ public class CommandStepPacket extends DataPacket {
 
     @Override
     public void encode() {
-    	
-    }
-    
-    public String getName(){
-    	return "CommandStepPacket";
-    }
 
+    }
 }

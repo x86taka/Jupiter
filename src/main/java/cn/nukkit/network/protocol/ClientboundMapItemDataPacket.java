@@ -113,8 +113,4 @@ public class ClientboundMapItemDataPacket extends DataPacket {
         public String label;
         public Color color;
     }
-    
-    public String getName(){
-    	return "ClientboundMapItemDataPacket";
-    }
 }

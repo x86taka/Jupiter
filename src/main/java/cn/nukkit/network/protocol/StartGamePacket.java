@@ -81,10 +81,4 @@ public class StartGamePacket extends DataPacket {
         this.putBoolean(this.unknown);
         this.putLLong(this.currentTick);
     }
-    
-    
-    public String getName(){
-    	return "StartGamePacket";
-    }
-
 }

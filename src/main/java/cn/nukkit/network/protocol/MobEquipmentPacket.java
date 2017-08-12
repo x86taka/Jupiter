@@ -38,8 +38,4 @@ public class MobEquipmentPacket extends DataPacket {
         this.putByte((byte) this.selectedSlot);
         this.putByte((byte) this.windowId);
     }
-    
-    public String getName(){
-    	return "MobEquipmentPacket";
-    }
 }

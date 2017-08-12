@@ -30,8 +30,4 @@ public class BossEventPacket extends DataPacket {
         this.putVarLong(this.entityRuntimeId);
         this.putUnsignedVarInt(this.type);
     }
-    
-    public String getName(){
-    	return "BossEventPacket";
-    }
 }

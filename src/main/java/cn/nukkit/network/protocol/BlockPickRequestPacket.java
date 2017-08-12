@@ -29,8 +29,4 @@ public class BlockPickRequestPacket extends DataPacket {
     public void encode() {
 
     }
-    
-    public String getName(){
-    	return "BlockPickRequestPacket";
-    }
 }

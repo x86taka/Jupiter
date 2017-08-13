@@ -1,5 +1,8 @@
 package cn.nukkit.block;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
@@ -7,9 +10,7 @@ import cn.nukkit.level.sound.PistonInSound;
 import cn.nukkit.level.sound.PistonOutSound;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
-
-import java.util.ArrayList;
-import java.util.List;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author CreeperFace
@@ -20,6 +21,11 @@ public abstract class BlockPistonBase extends BlockSolid {
 
     public BlockPistonBase() {
         this(0);
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     public BlockPistonBase(int meta) {

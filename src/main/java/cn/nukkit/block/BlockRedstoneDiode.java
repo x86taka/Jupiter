@@ -6,6 +6,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author CreeperFace
@@ -31,6 +32,11 @@ public abstract class BlockRedstoneDiode extends BlockFlowable {
             this.level.updateAroundRedstone(pos.getSide(face), null);
         }
         return true;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

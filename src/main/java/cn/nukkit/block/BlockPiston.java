@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.utils.BlockColor;
+
 /**
  * @author CreeperFace
  */
@@ -21,5 +23,10 @@ public class BlockPiston extends BlockPistonBase {
     @Override
     public String getName() {
         return "Piston";
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 }

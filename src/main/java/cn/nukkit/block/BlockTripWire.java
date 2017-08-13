@@ -7,6 +7,7 @@ import cn.nukkit.item.ItemString;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author CreeperFace
@@ -39,6 +40,11 @@ public class BlockTripWire extends BlockFlowable {
     @Override
     public double getResistance() {
         return 0;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.AIR_BLOCK_COLOR;
     }
 
     @Override

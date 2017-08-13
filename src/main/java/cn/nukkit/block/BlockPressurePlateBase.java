@@ -8,6 +8,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.sound.ClickSound;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by Snake1999 on 2016/1/11.
@@ -29,6 +30,11 @@ public abstract class BlockPressurePlateBase extends BlockFlowable {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

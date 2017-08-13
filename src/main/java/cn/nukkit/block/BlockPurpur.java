@@ -5,6 +5,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.utils.BlockColor;
 
 public class BlockPurpur extends BlockSolid {
 
@@ -29,6 +30,11 @@ public class BlockPurpur extends BlockSolid {
         };
 
         return names[this.meta & 0x03];
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.PURPLE_BLOCK_COLOR;
     }
 
     @Override

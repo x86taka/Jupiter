@@ -8,6 +8,7 @@ import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by Pub4Game on 15.01.2016.
@@ -35,6 +36,11 @@ public class BlockVine extends BlockTransparent {
     @Override
     public double getHardness() {
         return 0.2;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.AIR_BLOCK_COLOR;
     }
 
     @Override

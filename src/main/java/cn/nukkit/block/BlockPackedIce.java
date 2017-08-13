@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -34,5 +35,10 @@ public class BlockPackedIce extends BlockIce {
     @Override
     public int onUpdate(int type) {
         return 0; //not being melted
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.ICE_BLOCK_COLOR;
     }
 }

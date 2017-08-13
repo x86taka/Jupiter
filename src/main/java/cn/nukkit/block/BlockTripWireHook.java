@@ -7,6 +7,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author CreeperFace
@@ -49,6 +50,11 @@ public class BlockTripWireHook extends BlockFlowable {
         }
 
         return 0;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.AIR_BLOCK_COLOR;
     }
 
     @Override

@@ -25,9 +25,4 @@ public class AvailableCommandsPacket extends DataPacket {
         this.putString(this.commands);
         this.putString(this.unknown);
     }
-    
-    public String getName(){
-    	return "AvaliableCommandsPacket";
-    }
-
 }

@@ -22,8 +22,4 @@ public class AddItemPacket extends DataPacket {
         this.reset();
         this.putSlot(item);
     }
-    
-    public String getName(){
-    	return "AddItemPacket";
-    }
 }

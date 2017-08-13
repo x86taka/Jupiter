@@ -54,8 +54,4 @@ public class AddPlayerPacket extends DataPacket {
 
         this.put(Binary.writeMetadata(this.metadata));
     }
-    
-    public String getName(){
-    	return "AddPlayerPacket";
-    }
 }

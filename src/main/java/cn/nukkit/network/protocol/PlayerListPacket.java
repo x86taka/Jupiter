@@ -63,10 +63,4 @@ public class PlayerListPacket extends DataPacket {
             this.skin = skin;
         }
     }
-    
-    
-    public String getName(){
-    	return "PlayerListPacket";
-    }
-
 }

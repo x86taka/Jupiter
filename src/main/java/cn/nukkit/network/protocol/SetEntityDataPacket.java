@@ -29,9 +29,4 @@ public class SetEntityDataPacket extends DataPacket {
         this.putVarLong(this.eid);
         this.put(Binary.writeMetadata(this.metadata));
     }
-    
-    
-    public String getName(){
-    	return "SetEntityDataPacket";
-    }
 }

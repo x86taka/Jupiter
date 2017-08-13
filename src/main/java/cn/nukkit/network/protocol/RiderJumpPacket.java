@@ -21,9 +21,4 @@ public class RiderJumpPacket extends DataPacket {
     	this.reset();
         this.putVarInt(this.unknown);
     }
-    
-    
-    public String getName(){
-    	return "RiderJumpPacket";
-    }
 }

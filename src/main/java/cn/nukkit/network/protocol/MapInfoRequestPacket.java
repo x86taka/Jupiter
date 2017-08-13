@@ -20,9 +20,4 @@ public class MapInfoRequestPacket extends DataPacket {
     public void encode() {
 
     }
-    
-    
-    public String getName(){
-    	return "MapInfoRequestPacket";
-    }
 }

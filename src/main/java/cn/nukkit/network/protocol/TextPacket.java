@@ -75,10 +75,4 @@ public class TextPacket extends DataPacket {
                 }
         }
     }
-    
-    
-    public String getName(){
-    	return "TextPacket";
-    }
-
 }

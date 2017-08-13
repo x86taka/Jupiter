@@ -28,8 +28,4 @@ public class ContainerSetDataPacket extends DataPacket {
         this.putVarInt(this.property);
         this.putVarInt(this.value);
     }
-    
-    public String getName(){
-    	return "ContainerSetDataPacket";
-    }
 }

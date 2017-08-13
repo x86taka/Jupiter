@@ -8,6 +8,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.sound.DoorSound;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -32,6 +33,11 @@ public abstract class BlockDoor extends BlockTransparent {
     @Override
     public boolean canPassThrough() {
         return true;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.WOOD_BLOCK_COLOR;
     }
 
     private int getFullDamage() {

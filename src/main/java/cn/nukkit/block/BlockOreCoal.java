@@ -4,6 +4,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemCoal;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -32,6 +33,11 @@ public class BlockOreCoal extends BlockSolid {
     @Override
     public double getResistance() {
         return 15;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

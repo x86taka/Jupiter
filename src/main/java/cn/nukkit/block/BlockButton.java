@@ -7,6 +7,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.sound.ButtonClickSound;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by CreeperFace on 27. 11. 2016.
@@ -24,6 +25,11 @@ public abstract class BlockButton extends BlockFlowable {
     @Override
     public double getResistance() {
         return 2.5;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

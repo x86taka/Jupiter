@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by CreeperFace on 26. 11. 2016.
@@ -19,6 +20,11 @@ public class BlockDoubleSlabRedSandstone extends BlockSolid {
     @Override
     public int getId() {
         return DOUBLE_RED_SANDSTONE_SLAB;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.RED_BLOCK_COLOR;
     }
 
     @Override

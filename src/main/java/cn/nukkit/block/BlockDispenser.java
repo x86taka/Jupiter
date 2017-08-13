@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.utils.BlockColor;
+
 /**
  * Created by CreeperFace on 15.4.2017.
  */
@@ -26,6 +28,11 @@ public class BlockDispenser extends BlockSolid {
     @Override
     public int getId() {
         return DISPENSER;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

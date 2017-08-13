@@ -3,6 +3,7 @@ package cn.nukkit.block;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemApple;
 import cn.nukkit.item.ItemBlock;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created on 2015/12/1 by xtypr.
@@ -26,6 +27,11 @@ public class BlockLeaves2 extends BlockLeaves {
                 "Jungle Leaves"
         };
         return names[this.meta & 0x01];
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.FOLIAGE_BLOCK_COLOR;
     }
 
     @Override

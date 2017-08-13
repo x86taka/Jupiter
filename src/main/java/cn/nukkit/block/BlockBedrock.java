@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: Angelic47
@@ -14,6 +15,12 @@ public class BlockBedrock extends BlockSolid {
 
     public BlockBedrock(int meta) {
         super(meta);
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return new BlockColor(0, 0, 0);
     }
 
     @Override

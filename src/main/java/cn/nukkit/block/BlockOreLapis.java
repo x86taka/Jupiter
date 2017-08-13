@@ -6,6 +6,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -25,6 +26,11 @@ public class BlockOreLapis extends BlockSolid {
     @Override
     public int getId() {
         return LAPIS_ORE;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

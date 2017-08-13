@@ -4,6 +4,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDiamond;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -23,6 +24,11 @@ public class BlockOreDiamond extends BlockSolid {
     @Override
     public int getId() {
         return DIAMOND_ORE;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

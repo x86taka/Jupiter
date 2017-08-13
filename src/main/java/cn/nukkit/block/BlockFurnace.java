@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.utils.BlockColor;
+
 /**
  * author: Angelic47
  * Nukkit Project
@@ -27,5 +29,10 @@ public class BlockFurnace extends BlockFurnaceBurning {
     @Override
     public int getLightLevel() {
         return 0;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 }

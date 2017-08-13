@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created on 2015/11/24 by xtypr.
@@ -29,6 +30,12 @@ public class BlockCoal extends BlockSolid {
     @Override
     public double getResistance() {
         return 30;
+    }
+    
+
+    @Override
+    public BlockColor getColor(){
+    	return new BlockColor(131, 170, 180);
     }
 
     @Override

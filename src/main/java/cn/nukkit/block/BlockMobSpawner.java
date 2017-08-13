@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by Pub4Game on 27.12.2015.
@@ -24,6 +25,11 @@ public class BlockMobSpawner extends BlockSolid {
     @Override
     public int getId() {
         return MONSTER_SPAWNER;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.BLACK_BLOCK_COLOR;
     }
 
     @Override

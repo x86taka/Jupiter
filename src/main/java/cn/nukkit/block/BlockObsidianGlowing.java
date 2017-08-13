@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created on 2015/11/22 by xtypr.
@@ -20,6 +21,11 @@ public class BlockObsidianGlowing extends BlockSolid {
     @Override
     public int getId() {
         return GLOWING_OBSIDIAN;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.OBSIDIAN_BLOCK_COLOR;
     }
 
     @Override

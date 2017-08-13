@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.block.BlockGrowEvent;
@@ -10,8 +12,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.particle.BoneMealParticle;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
-
-import java.util.Random;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by CreeperFace on 27. 10. 2016.
@@ -39,6 +40,11 @@ public class BlockCocoa extends BlockTransparent {
     @Override
     public String getName() {
         return "Cocoa";
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.ORANGE_BLOCK_COLOR;
     }
 
     @Override

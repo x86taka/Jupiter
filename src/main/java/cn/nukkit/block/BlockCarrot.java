@@ -1,9 +1,10 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemCarrot;
-
-import java.util.Random;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author Nukkit Project Team
@@ -22,7 +23,12 @@ public class BlockCarrot extends BlockCrops {
     public String getName() {
         return "Carrot Block";
     }
-
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.ORANGE_BLOCK_COLOR;
+    }
+    
     @Override
     public int getId() {
         return CARROT_BLOCK;

@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.level.Level;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: Angelic47
@@ -24,6 +25,12 @@ public class BlockLavaStill extends BlockLava {
     @Override
     public String getName() {
         return "Still Lava";
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.LAVA_BLOCK_COLOR;
     }
 
     @Override

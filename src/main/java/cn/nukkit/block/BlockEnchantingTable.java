@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityEnchantTable;
@@ -11,8 +13,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
-
-import java.util.Map;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created on 2015/11/22 by CreeperFace.
@@ -45,6 +46,12 @@ public class BlockEnchantingTable extends BlockTransparent {
     @Override
     public double getHardness() {
         return 5;
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.RED_BLOCK_COLOR;
     }
 
     @Override

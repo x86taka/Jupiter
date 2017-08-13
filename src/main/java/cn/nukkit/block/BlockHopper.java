@@ -11,6 +11,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author CreeperFace
@@ -33,6 +34,11 @@ public class BlockHopper extends BlockTransparent {
     @Override
     public String getName() {
         return "Hopper Block";
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.BLACK_BLOCK_COLOR;
     }
 
     @Override

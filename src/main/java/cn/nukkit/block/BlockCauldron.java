@@ -1,18 +1,25 @@
 package cn.nukkit.block;
 
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityCauldron;
 import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerBucketFillEvent;
-import cn.nukkit.item.*;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
+import cn.nukkit.item.ItemBucket;
+import cn.nukkit.item.ItemCauldron;
+import cn.nukkit.item.ItemGlassBottle;
+import cn.nukkit.item.ItemPotion;
+import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.sound.ExplodeSound;
 import cn.nukkit.level.sound.SplashSound;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
-
-import java.util.Map;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: CreeperFace
@@ -35,6 +42,12 @@ public class BlockCauldron extends BlockSolid {
 
     public String getName() {
         return "Cauldron Block";
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.BLACK_BLOCK_COLOR;
     }
 
     @Override

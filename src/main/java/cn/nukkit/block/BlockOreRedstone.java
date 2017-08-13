@@ -7,6 +7,7 @@ import cn.nukkit.item.ItemRedstone;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -30,6 +31,11 @@ public class BlockOreRedstone extends BlockSolid {
     @Override
     public double getHardness() {
         return 3;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

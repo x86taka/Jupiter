@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -25,6 +26,12 @@ public class BlockBricksStone extends BlockSolid {
     @Override
     public int getId() {
         return STONE_BRICKS;
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

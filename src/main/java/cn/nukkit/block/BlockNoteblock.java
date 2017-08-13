@@ -6,6 +6,7 @@ import cn.nukkit.item.ItemTool;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.sound.NoteBoxSound;
 import cn.nukkit.network.protocol.BlockEventPacket;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by Snake1999 on 2016/1/17.
@@ -34,6 +35,11 @@ public class BlockNoteblock extends BlockSolid {
     @Override
     public int getToolType() {
         return ItemTool.TYPE_AXE;
+    }
+
+    @Override
+    public BlockColor getColor(){
+        return BlockColor.BROWN_BLOCK_COLOR;
     }
 
     @Override

@@ -43,7 +43,7 @@ public class BlockBedrockInvisible extends BlockSolid {
 
     @Override
     public BlockColor getColor() {
-        return BlockColor.TRANSPARENT_BLOCK_COLOR;
+        return BlockColor.BLACK_BLOCK_COLOR;
     }
 
     @Override

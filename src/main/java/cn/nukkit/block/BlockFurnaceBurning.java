@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityFurnace;
@@ -12,8 +14,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.nbt.tag.Tag;
-
-import java.util.Map;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * author: Angelic47
@@ -42,6 +43,11 @@ public class BlockFurnaceBurning extends BlockSolid {
     @Override
     public boolean canBeActivated() {
         return true;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override

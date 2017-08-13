@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created on 2015/11/22 by xtypr.
@@ -23,6 +24,12 @@ public class BlockBeetroot extends BlockCrops {
     @Override
     public String getName() {
         return "Beetroot Block";
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return new BlockColor(237, 171, 73);
     }
 
     @Override

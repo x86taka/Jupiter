@@ -9,6 +9,7 @@ import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * @author Nukkit Project Team
@@ -40,6 +41,12 @@ public class BlockFlowerPot extends BlockFlowable {
             default:
                 return false;
         }
+    }
+    
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.BROWN_BLOCK_COLOR;
     }
 
     @Override

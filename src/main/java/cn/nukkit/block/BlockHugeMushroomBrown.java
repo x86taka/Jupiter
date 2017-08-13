@@ -4,6 +4,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.NukkitRandom;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by Pub4Game on 28.01.2016.
@@ -31,6 +32,11 @@ public class BlockHugeMushroomBrown extends BlockSolid {
     @Override
     public int getToolType() {
         return ItemTool.TYPE_AXE;
+    }
+    
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.BROWN_BLOCK_COLOR;
     }
 
     @Override

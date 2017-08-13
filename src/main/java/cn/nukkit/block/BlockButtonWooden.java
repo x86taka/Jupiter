@@ -1,6 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.utils.BlockColor;
 
 /**
  * Created by CreeperFace on 27. 11. 2016.
@@ -28,5 +29,11 @@ public class BlockButtonWooden extends BlockButton {
     @Override
     public int getToolType() {
         return ItemTool.TYPE_AXE;
+    }
+    
+
+    @Override
+    public BlockColor getColor(){
+    	return BlockColor.WOOD_BLOCK_COLOR;
     }
 }

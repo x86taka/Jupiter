@@ -1,5 +1,6 @@
 package cn.nukkit;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteOrder;
@@ -1654,6 +1655,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     if (this.chunk != null) {
                         this.chunk.removeEntity(this);
                     }
+
                     this.chunk = chunk;
                 }
             }
@@ -2002,7 +2004,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     private ArrayList<String> messageQueue = new ArrayList<String>();
-	private boolean isLevelChange;
+    private boolean isLevelChange;
 
     public void checkNetwork() {
         if (!this.isOnline()) {
@@ -4340,6 +4342,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void sendImage(String path, ItemMap item) throws IOException{
         this.sendImage(path, item, 128, 128);
     }
+    
+    /**
+     * 128x128の大きさでMapに画像を貼り付けます。
+     * @param img 画像
+     * @param item Map
+     * @return void
+     * @author Megapix96
+     * @see "幅と高さを指定する場合"
+     * @see Player#sendImage(String, ItemMap, int, int) sendImage(String, ItemMap, int, int)
+     */
+    public void sendImage(BufferedImage img, ItemMap item) throws IOException{
+        this.sendImage(img, item, 128, 128);
+    }
 
     /**
      * Mapにpathの画像を貼り付けます。
@@ -4352,6 +4367,31 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public void sendImage(String path, ItemMap item, int width, int height) throws IOException{
         item.setImage(new File(path));
+
+        ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
+        pk.mapId = item.getMapId();
+        pk.update = 2;
+        pk.scale = 0;
+        pk.width = width;
+        pk.height = height;
+        pk.offsetX = 0;
+        pk.offsetZ = 0;
+        pk.image = item.loadImageFromNBT();
+
+        this.dataPacket(pk);
+    }
+
+    /**
+     * Mapにpathの画像を貼り付けます。
+     * @param img 画像
+     * @param item Map
+     * @param width 幅
+     * @param height 高さ
+     * @return void
+     * @author Megapix96
+     */
+    public void sendImage(BufferedImage img, ItemMap item, int width, int height) throws IOException{
+        item.setImage(img);
 
         ClientboundMapItemDataPacket pk = new ClientboundMapItemDataPacket();
         pk.mapId = item.getMapId();
@@ -4997,7 +5037,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public boolean teleport(Location location, TeleportCause cause) {
         if (!this.isOnline()) {
             return false;
@@ -5442,29 +5482,29 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void excuteData() throws IOException{
 
-    	JsonObject main = new JsonObject();
+        JsonObject main = new JsonObject();
 
-    	main.addProperty("Name: ", this.getName());
-    	main.addProperty("X: ", this.getX());
-    	main.addProperty("Y: ", this.getY());
-    	main.addProperty("Z: ", this.getZ());
+        main.addProperty("Name: ", this.getName());
+        main.addProperty("X: ", this.getX());
+        main.addProperty("Y: ", this.getY());
+        main.addProperty("Z: ", this.getZ());
 
-    	List<Item> item = new ArrayList<>();
-    	for(int i=0;i < this.getInventory().getContents().size();i++){
-    		item.add(this.getInventory().getContents().get(i));
-    	}
+        List<Item> item = new ArrayList<>();
+        for(int i=0;i < this.getInventory().getContents().size();i++){
+            item.add(this.getInventory().getContents().get(i));
+        }
 
-    	int count = 1;
-    	for(Item i : item){
-    		main.addProperty("Inventory[" + count + "]: ", i.getName() + "[" + i.getCount() + "]");
-    		count++;
-    	}
+        int count = 1;
+        for(Item i : item){
+            main.addProperty("Inventory[" + count + "]: ", i.getName() + "[" + i.getCount() + "]");
+            count++;
+        }
 
-    	String src = new Gson().toJson(main);
+        String src = new Gson().toJson(main);
 
-    	Utils.writeFile("./players/JsonDatas/" + this.getName() + ".json", src);
+        Utils.writeFile("./players/JsonDatas/" + this.getName() + ".json", src);
 
-    	return;
+        return;
 
     }
 

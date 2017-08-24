@@ -16,6 +16,27 @@ import cn.nukkit.network.protocol.LoginPacket;
 
 public final class ClientChainData {
 
+    public final static int DEVICE_OS_ANDROID = 1;
+    public final static int DEVICE_OS_iOS = 2;
+    public final static int DEVICE_OS_OSX = 3;
+    public final static int DEVICE_OS_FIREOS = 4;
+    public final static int DEVICE_OS_GEARVR = 5;
+    public final static int DEVICE_OS_HOLOLENS = 6;
+    public final static int DEVICE_OS_WINDOWS10 = 7;
+    public final static int DEVICE_OS_WINDOWS32 = 8;
+    public final static int DEVICE_OS_DEDICATED = 9;
+
+    public final static int GUI_SCALE_MINIMUM = -2;
+    public final static int GUI_SCALE_MEDIUM = -1;
+    public final static int GUI_SCALE_MAXIMUM = 0;
+    
+    public final static int INPUT_MODE_KEYBOARD = 1;
+    public final static int INPUT_MODE_TOUCH = 2;
+    public final static int INPUT_MODE_CONTROLLER = 3;
+
+    public final static int UI_PROFILE_CLASSIC = 0;
+    public final static int UI_PROFILE_POCKET = 1;
+
     private String username;
     private UUID clientUUID;
     private String xuid;
@@ -63,15 +84,6 @@ public final class ClientChainData {
         return this.deviceModel;
     }
 
-    public final static int DEVICE_OS_ANDROID = 1;
-    public final static int DEVICE_OS_iOS = 2;
-    public final static int DEVICE_OS_OSX = 3;
-    public final static int DEVICE_OS_FIREOS = 4;
-    public final static int DEVICE_OS_GEARVR = 5;
-    public final static int DEVICE_OS_HOLOLENS = 6;
-    public final static int DEVICE_OS_WINDOWS10 = 7;
-    public final static int DEVICE_OS_WINDOWS32 = 8;
-
     public int getDeviceOS() {
         return this.deviceOS;
     }
@@ -102,6 +114,9 @@ public final class ClientChainData {
 
             case DEVICE_OS_WINDOWS32:
                 return "Windows 32";
+
+            case DEVICE_OS_DEDICATED:
+                return "Dedicated";
 
             default:
                 return "unknown";
@@ -139,9 +154,6 @@ public final class ClientChainData {
     public String getTenantId() {
         return this.tenantId;
     }
-
-    public final static int UI_PROFILE_CLASSIC = 0;
-    public final static int UI_PROFILE_POCKET = 1;
 
     public int getUIProfile() {
         return this.UIProfile;

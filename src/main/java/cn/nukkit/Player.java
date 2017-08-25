@@ -1,5 +1,7 @@
 package cn.nukkit;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -3995,6 +3997,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                                 if (itemFrame1.getItem() instanceof ItemMap && ((ItemMap) itemFrame1.getItem()).getMapId() == pk.mapId) {
                                     ((ItemMap) itemFrame1.getItem()).sendImage(this);
+
                                     break;
                                 }
                             }
@@ -4007,6 +4010,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                         if (!event.isCancelled()) {
                             ((ItemMap) mapItem).sendImage(this);
+                            try {
+                                ItemMap map2 = new ItemMap();
+                                this.sendImage(this.createMap((ItemMap)map2), (ItemMap)map2);//TODO sendImage
+                                this.getInventory().addItem(map2);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }
                     break;
@@ -4016,6 +4026,26 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
+
+    public BufferedImage createMap(ItemMap mapItem) {
+        List<Integer> ids = new ArrayList<Integer>();
+        List<BaseFullChunk> chunks = new ArrayList<BaseFullChunk>();
+        Color[][] blockColors = new Color[16][16];
+        BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = (Graphics2D)img.getGraphics();
+
+        chunks.add(this.level.getChunk((int) this.x >> 4, (int) this.z >> 4, false));
+        for(int x=0;x < 16;x++){
+            for( int y=0;y < 16;y++){
+                blockColors[x][y] = Block.get(chunks.get(0).getHighestBlockAt((int)this.x, (int)this.z)).getColor();
+                g2.drawImage(img, x, y, blockColors[x][y], null);
+            }
+        }
+
+        BufferedImage data = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+        data.createGraphics().drawImage(img, 0, 0, null);
+        return data;
+    }
 
     /**
      * プレイヤーをサーバーから追放します。
@@ -4344,7 +4374,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void sendImage(String path, ItemMap item) throws IOException{
         this.sendImage(path, item, 128, 128);
     }
-    
+
     /**
      * 128x128の大きさでMapに画像を貼り付けます。
      * @param img 画像

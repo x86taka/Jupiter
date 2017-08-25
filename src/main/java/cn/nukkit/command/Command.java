@@ -1,5 +1,9 @@
 package cn.nukkit.command;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.data.CommandData;
@@ -12,10 +16,6 @@ import cn.nukkit.permission.Permissible;
 import cn.nukkit.utils.TextFormat;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * author: MagicDroidX
@@ -207,7 +207,7 @@ public abstract class Command {
     }
 
     public boolean allowChangesFrom(CommandMap commandMap) {
-        return commandMap == null || commandMap.equals(this.commandMap);
+        return commandMap != null && !commandMap.equals(this.commandMap);
     }
 
     public boolean isRegistered() {

@@ -1,10 +1,10 @@
 package cn.nukkit.raknet.server;
 
+import java.nio.charset.StandardCharsets;
+
 import cn.nukkit.raknet.RakNet;
 import cn.nukkit.raknet.protocol.EncapsulatedPacket;
 import cn.nukkit.utils.Binary;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * author: MagicDroidX
@@ -74,6 +74,15 @@ public class ServerHandler {
                 new byte[]{(byte) (address.length() & 0xff)},
                 address.getBytes(StandardCharsets.UTF_8),
                 Binary.writeInt(timeout)
+        );
+        this.server.pushMainToThreadPacket(buffer);
+    }
+
+    public void unblockAddress(String address) {
+        byte[] buffer = Binary.appendBytes(
+                RakNet.PACKET_UNBLOCK_ADDRESS,
+                new byte[]{(byte) (address.length() & 0xff)},
+                address.getBytes(StandardCharsets.UTF_8)
         );
         this.server.pushMainToThreadPacket(buffer);
     }

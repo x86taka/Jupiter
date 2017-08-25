@@ -451,6 +451,10 @@ public class SessionManager {
         }
     }
 
+    public void unblockAddress(String address) {
+        this.block.remove(address);
+    }
+
     public Session getSession(String ip, int port) {
         String id = FastAppender.get(ip, ":", port);
         if (!this.sessions.containsKey(id)) {

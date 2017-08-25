@@ -1562,11 +1562,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 pk.target = entity.getId();
                 Server.broadcastPacket(entity.getViewers().values(), pk);
 
-                pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.id;
-                pk.target = entity.getId();
-                this.dataPacket(pk);
-
                 this.inventory.addItem(item.clone());
                 entity.kill();
             } else if (entity instanceof EntityItem) {
@@ -1606,11 +1601,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         pk.entityRuntimeId = this.getId();
                         pk.target = entity.getId();
                         Server.broadcastPacket(entity.getViewers().values(), pk);
-
-                        pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.id;
-                        pk.target = entity.getId();
-                        this.dataPacket(pk);
 
                         this.inventory.addItem(item.clone());
                         entity.kill();

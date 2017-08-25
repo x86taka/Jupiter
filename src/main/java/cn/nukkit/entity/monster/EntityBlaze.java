@@ -20,7 +20,7 @@ public class EntityBlaze extends EntityMonster {
     protected void initEntity() {
         super.initEntity();
     }
-    
+
     @Override
     public float getWidth() {
         return 0.3f;

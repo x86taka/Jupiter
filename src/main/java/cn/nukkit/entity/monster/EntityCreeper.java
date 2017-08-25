@@ -60,6 +60,7 @@ public class EntityCreeper extends EntityMonster {
             this.dataProperties.putBoolean(DATA_POWERED, true);
         }
     }
+
     @Override
     public String getName() {
         return "Creeper";

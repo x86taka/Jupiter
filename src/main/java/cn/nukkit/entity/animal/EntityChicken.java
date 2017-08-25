@@ -18,13 +18,16 @@ public class EntityChicken extends EntityAnimal {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.2f;
+        }
         return 0.4f;
     }
 
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.51f;
+            return 0.35f;
         }
         return 0.7f;
     }
@@ -44,7 +47,11 @@ public class EntityChicken extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.RAW_CHICKEN), Item.get(Item.FEATHER)};
+        if (this.isOnFire()) {
+            return new Item[]{Item.get(Item.COOKED_CHICKEN), Item.get(Item.FEATHER)};
+        } else {
+            return new Item[]{Item.get(Item.RAW_CHICKEN), Item.get(Item.FEATHER)};
+        }
     }
 
     @Override
@@ -54,8 +61,8 @@ public class EntityChicken extends EntityAnimal {
 
     @Override
     protected void initEntity() {
+        this.setMaxHealth(4);
         super.initEntity();
-        setMaxHealth(4);
     }
 
     @Override

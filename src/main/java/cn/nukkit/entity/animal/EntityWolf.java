@@ -18,6 +18,9 @@ public class EntityWolf extends EntityAnimal {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.3f;
+        }
         return 0.6f;
     }
 
@@ -29,9 +32,9 @@ public class EntityWolf extends EntityAnimal {
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.8f; // No have information
+            return 0.425f;
         }
-        return 0.8f;
+        return 0.85f;
     }
 
     @Override

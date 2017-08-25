@@ -18,15 +18,18 @@ public class EntityCow extends EntityAnimal {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.45f;
+        }
         return 0.9f;
     }
 
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.65f;
+            return 0.7f;
         }
-        return 1.3f;
+        return 1.4f;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class EntityCow extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.LEATHER), Item.get(Item.RAW_BEEF)};
+        if (this.isOnFire()) {
+            return new Item[]{Item.get(Item.LEATHER), Item.get(Item.COOKED_BEEF)};
+        } else {
+            return new Item[]{Item.get(Item.LEATHER), Item.get(Item.RAW_BEEF)};
+        }
     }
 
     @Override

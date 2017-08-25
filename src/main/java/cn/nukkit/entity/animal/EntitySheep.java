@@ -30,13 +30,16 @@ public class EntitySheep extends EntityAnimal {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.45f;
+        }
         return 0.9f;
     }
 
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.9f; // No have information
+            return 0.65f;
         }
         return 1.3f;
     }

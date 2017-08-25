@@ -24,6 +24,23 @@ public class EntityLlama extends EntityAnimal {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(22);
         super.initEntity();
+    }
+
+    @Override
+    public float getWidth() {
+        if (isBaby()) {
+            return 0.45f;
+        }
+        return 0.9f;
+    }
+
+    @Override
+    public float getHeight() {
+        if (isBaby()) {
+            return 0.935f;
+        }
+        return 1.87f;
     }
 }

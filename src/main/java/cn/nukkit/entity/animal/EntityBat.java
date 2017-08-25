@@ -27,4 +27,14 @@ public class EntityBat extends EntityAnimal {
     	this.setMaxHealth(6);
         super.initEntity();
     }
+
+    @Override
+    public float getWidth() {
+        return 0.5f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 0.9f;
+    }
 }

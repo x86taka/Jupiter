@@ -27,6 +27,9 @@ public class EntityVillager extends EntityCreature implements EntityAgeable {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.3f;
+        }
         return 0.6f;
     }
 
@@ -37,7 +40,10 @@ public class EntityVillager extends EntityCreature implements EntityAgeable {
 
     @Override
     public float getHeight() {
-        return 1.8f;
+        if (isBaby()) {
+            return 0.975f;
+        }
+        return 1.95f;
     }
 
     @Override
@@ -52,6 +58,7 @@ public class EntityVillager extends EntityCreature implements EntityAgeable {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(20);
         super.initEntity();
         if (!this.namedTag.contains("Profession")) {
             this.setProfession(PROFESSION_GENERIC);

@@ -24,6 +24,17 @@ public class EntitySquid extends EntityAnimal {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(10);
         super.initEntity();
+    }
+
+    @Override
+    public float getWidth() {
+        return 0.8f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 0.8f;
     }
 }

@@ -18,13 +18,16 @@ public class EntityPig extends EntityAnimal {
 
     @Override
     public float getWidth() {
+        if (isBaby()) {
+            return 0.45f;
+        }
         return 0.9f;
     }
 
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.9f; // No have information
+            return 0.45f;
         }
         return 0.9f;
     }
@@ -32,7 +35,7 @@ public class EntityPig extends EntityAnimal {
     @Override
     public float getEyeHeight() {
         if (isBaby()) {
-            return 0.9f; // No have information
+            return 0.45f; // No have information
         }
         return 0.9f;
     }
@@ -44,7 +47,11 @@ public class EntityPig extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.RAW_PORKCHOP)};
+        if (this.isOnFire()) {
+            return new Item[]{Item.get(Item.COOKED_PORKCHOP)};
+        } else {
+            return new Item[]{Item.get(Item.RAW_PORKCHOP)};
+        }
     }
 
     @Override
@@ -54,8 +61,8 @@ public class EntityPig extends EntityAnimal {
 
     @Override
     protected void initEntity() {
+        this.setMaxHealth(10);
         super.initEntity();
-        setMaxHealth(10);
     }
 
     @Override

@@ -18,23 +18,26 @@ public class EntityRabbit extends EntityAnimal {
 
     @Override
     public float getWidth() {
-        return 0.9f;
+        if (isBaby()) {
+            return 0.2f;
+        }
+        return 0.4f;
     }
 
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.9f; // No have information
+            return 0.25f;
         }
-        return 0.9f;
+        return 0.5f;
     }
 
     @Override
     public float getEyeHeight() {
         if (isBaby()) {
-            return 0.9f; // No have information
+            return 0.25f; //TODO: No have information
         }
-        return 0.9f;
+        return 0.5f;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class EntityRabbit extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{Item.get(Item.RAW_RABBIT), Item.get(Item.RABBIT_HIDE), Item.get(Item.RABBIT_FOOT)};
+        if (this.isOnFire()) {
+            return new Item[]{Item.get(Item.RAW_RABBIT), Item.get(Item.RABBIT_HIDE), Item.get(Item.RABBIT_FOOT)};
+        } else {
+            return new Item[]{Item.get(Item.COOKED_RABBIT), Item.get(Item.RABBIT_HIDE), Item.get(Item.RABBIT_FOOT)};
+        }
     }
 
     @Override
@@ -54,7 +61,7 @@ public class EntityRabbit extends EntityAnimal {
 
     @Override
     protected void initEntity() {
+        this.setMaxHealth(3);
         super.initEntity();
-        setMaxHealth(10);
     }
 }

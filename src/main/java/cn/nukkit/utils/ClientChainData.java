@@ -17,7 +17,7 @@ import cn.nukkit.network.protocol.LoginPacket;
 public final class ClientChainData {
 
     public final static int DEVICE_OS_ANDROID = 1;
-    public final static int DEVICE_OS_iOS = 2;
+    public final static int DEVICE_OS_IOS = 2;
     public final static int DEVICE_OS_OSX = 3;
     public final static int DEVICE_OS_FIREOS = 4;
     public final static int DEVICE_OS_GEARVR = 5;
@@ -94,7 +94,7 @@ public final class ClientChainData {
             case DEVICE_OS_ANDROID:
                 return "Android";
 
-            case DEVICE_OS_iOS:
+            case DEVICE_OS_IOS:
                 return "iOS";
 
             case DEVICE_OS_OSX:

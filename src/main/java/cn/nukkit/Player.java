@@ -445,8 +445,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     /**
-     * This might disappear in the future.
-     * Please use getUniqueId() instead (IP + clientId + name combo, in the future it'll change to real UUID for online auth)
+     * ClientChainDataクラスを使用してください。
      */
     @Deprecated
     public Long getClientId() {
@@ -2311,30 +2310,30 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    this.username = TextFormat.clean(loginPacket.username);
+                    this.loginChainData = new ClientChainData(loginPacket);
+
+                    this.username = TextFormat.clean(this.loginChainData.getUsername());
                     this.displayName = this.username;
                     this.iusername = this.username.toLowerCase();
                     this.setDataProperty(new StringEntityData(DATA_NAMETAG, this.username), false);
-
-                    this.loginChainData = ClientChainData.read(loginPacket);
 
                     if (this.server.getOnlinePlayers().size() >= this.server.getMaxPlayers() && this.kick(PlayerKickEvent.Reason.SERVER_FULL, "disconnectionScreen.serverFull", false)) {
                         break;
                     }
 
-                    this.randomClientId = loginPacket.clientId;
+                    this.randomClientId = this.loginChainData.getClientId();
 
-                    this.uuid = loginPacket.clientUUID;
+                    this.uuid = this.loginChainData.getClientUUID();
                     this.rawUUID = Binary.writeUUID(this.uuid);
 
                     boolean valid = true;
-                    int len = loginPacket.username.length();
+                    int len = this.username.length();
                     if (len > 16 || len < 3) {
                         valid = false;
                     }
 
                     for (int i = 0; i < len && valid; i++) {
-                        char c = loginPacket.username.charAt(i);
+                        char c = this.username.charAt(i);
                         if ((c >= 'a' && c <= 'z') ||
                                 (c >= 'A' && c <= 'Z') ||
                                 (c >= '0' && c <= '9') ||
@@ -2353,11 +2352,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    if (!loginPacket.skin.isValid()) {
+                    if (!this.loginChainData.getSkin().isValid()) {
                         this.close("", "disconnectionScreen.invalidSkin");
                         break;
                     } else {
-                        this.setSkin(loginPacket.getSkin());
+                        this.setSkin(this.loginChainData.getSkin());
                     }
 
                     PlayerPreLoginEvent playerPreLoginEvent;

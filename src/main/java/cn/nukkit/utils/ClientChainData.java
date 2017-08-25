@@ -11,9 +11,31 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import cn.nukkit.entity.data.Skin;
 import cn.nukkit.network.protocol.LoginPacket;
 
 public final class ClientChainData {
+
+    public final static int DEVICE_OS_ANDROID = 1;
+    public final static int DEVICE_OS_iOS = 2;
+    public final static int DEVICE_OS_OSX = 3;
+    public final static int DEVICE_OS_FIREOS = 4;
+    public final static int DEVICE_OS_GEARVR = 5;
+    public final static int DEVICE_OS_HOLOLENS = 6;
+    public final static int DEVICE_OS_WINDOWS10 = 7;
+    public final static int DEVICE_OS_WINDOWS32 = 8;
+    public final static int DEVICE_OS_DEDICATED = 9;
+
+    public final static int GUI_SCALE_MINIMUM = -2;
+    public final static int GUI_SCALE_MEDIUM = -1;
+    public final static int GUI_SCALE_MAXIMUM = 0;
+    
+    public final static int INPUT_MODE_KEYBOARD = 1;
+    public final static int INPUT_MODE_TOUCH = 2;
+    public final static int INPUT_MODE_CONTROLLER = 3;
+
+    public final static int UI_PROFILE_CLASSIC = 0;
+    public final static int UI_PROFILE_POCKET = 1;
 
     private String username;
     private UUID clientUUID;
@@ -31,8 +53,10 @@ public final class ClientChainData {
     private int defaultInputMode;
     private String ADRole;
     private String tenantId;
-
     private int UIProfile;
+    private Skin skin;
+    private int protocol;
+    private byte gameEdition;
 
     private BinaryStream bs = new BinaryStream();
 
@@ -60,48 +84,43 @@ public final class ClientChainData {
         return this.deviceModel;
     }
 
-    public final static int DEVICE_OS_ANDROID = 1;
-    public final static int DEVICE_OS_iOS = 2;
-    public final static int DEVICE_OS_OSX = 3;
-    public final static int DEVICE_OS_FIREOS = 4;
-    public final static int DEVICE_OS_GEARVR = 5;
-    public final static int DEVICE_OS_HOLOLENS = 6;
-    public final static int DEVICE_OS_WINDOWS10 = 7;
-    public final static int DEVICE_OS_WINDOWS32 = 8;
-
     public int getDeviceOS() {
         return this.deviceOS;
     }
-    
-    public String getDeviceOSbyName(){
-    	switch(this.deviceOS){
-    		case DEVICE_OS_ANDROID:
-    			return "Android";
-    			
-    		case DEVICE_OS_iOS:
-    			return "iOS";
-    			
-    		case DEVICE_OS_OSX:
-    			return "OSX";
-    			
-    		case DEVICE_OS_FIREOS:
-    			return "FireOS";
-    			
-    		case DEVICE_OS_GEARVR:
-    			return "Gear VR";
-    			
-    		case DEVICE_OS_HOLOLENS:
-    			return "HoloLens";
-    			
-    		case DEVICE_OS_WINDOWS10:
-    			return "Windows 10";
-    			
-    		case DEVICE_OS_WINDOWS32:
-    			return "Windows 32";
-    			
-    			default:
-    				return null;
-    	}
+
+    //TODO: 1.2 Update
+    public String getDeviceOSByName(){
+        switch(this.deviceOS){
+            case DEVICE_OS_ANDROID:
+                return "Android";
+
+            case DEVICE_OS_iOS:
+                return "iOS";
+
+            case DEVICE_OS_OSX:
+                return "OSX";
+
+            case DEVICE_OS_FIREOS:
+                return "FireOS";
+
+            case DEVICE_OS_GEARVR:
+                return "Gear VR";
+
+            case DEVICE_OS_HOLOLENS:
+                return "HoloLens";
+
+            case DEVICE_OS_WINDOWS10:
+                return "Windows 10";
+
+            case DEVICE_OS_WINDOWS32:
+                return "Windows 32";
+
+            case DEVICE_OS_DEDICATED:
+                return "Dedicated";
+
+            default:
+                return "unknown";
+        }
     }
 
     public String getGameVersion() {
@@ -136,25 +155,45 @@ public final class ClientChainData {
         return this.tenantId;
     }
 
-    public final static int UI_PROFILE_CLASSIC = 0;
-    public final static int UI_PROFILE_POCKET = 1;
-
     public int getUIProfile() {
         return this.UIProfile;
     }
 
+    public Skin getSkin() {
+        return this.skin;
+    }
+
+    public int getProtocol() {
+        return this.protocol;
+    }
+
+    public byte getGameEdition() {
+        return this.gameEdition;
+    }
+
+    @Deprecated
     public static ClientChainData of(byte[] buffer) {
         return new ClientChainData(buffer);
     }
 
+    @Deprecated
     public static ClientChainData read(LoginPacket pk) {
         return of(pk.getBuffer());
     }
 
+    @Deprecated
     private ClientChainData(byte[] buffer) {
         bs.setBuffer(buffer, 0);
         this.decodeChainData();
         this.decodeSkinData();
+    }
+
+    public ClientChainData(LoginPacket pk) {
+        bs.setBuffer(pk.getBuffer(), 0);
+        this.decodeChainData();
+        this.decodeSkinData();
+        this.protocol = pk.getProtocol();
+        this.gameEdition = pk.gameEdition;
     }
 
     private void decodeChainData() {
@@ -191,6 +230,9 @@ public final class ClientChainData {
         if (skinToken.has("ADRole")) this.ADRole = skinToken.get("ADRole").getAsString();
         if (skinToken.has("TenantId")) this.tenantId = skinToken.get("TenantId").getAsString();
         if (skinToken.has("UIProfile")) this.UIProfile = skinToken.get("UIProfile").getAsInt();
+        String skinId = null;
+        if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
+        if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
     }
 
     private JsonObject decodeToken(String token) {

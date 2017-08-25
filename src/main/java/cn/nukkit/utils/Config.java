@@ -576,4 +576,29 @@ public class Config {
         if (this.correct) return config.getKeys(child);
         return new HashSet<>();
     }
+
+    /**
+     * @author itsu
+     * @return String
+     * toStringメソッド[Jupiter]
+     * キーと値のセットを次のような形で返します。(...は入りません。)
+     * [key1:value1, key2:value2, key3:value3...]
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public String toString(){
+        Map<String, Object> lists = this.getAll();
+        List<Object> values = (List<Object>) lists.values();
+        List<String> keys = (List<String>) this.getKeys();
+
+        String newKeys = "[" + keys.get(0) + ":" + String.valueOf(values.get(0));
+
+        for(int i=1;i < keys.size();i++){
+            newKeys += ", " + keys.get(i) + ":" + String.valueOf(values.get(i));
+        }
+
+        newKeys = newKeys + "]";
+
+        return newKeys;
+    }
 }

@@ -354,13 +354,6 @@ public class Server implements ActionListener{
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "compileOrder/  を作成しました。"));
         }
 
-
-        if (!new File(dataPath + "JavaScriptPlugin/").exists()) {
-            new File(dataPath + "JavaScriptPlugin/").mkdirs();
-            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "JavaScriptPlugin/  を作成しました。"));
-        }
-
-
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
@@ -2790,5 +2783,4 @@ public class Server implements ActionListener{
     public static Server getInstance() {
         return instance;
     }
-
 }

@@ -1,6 +1,12 @@
 package cn.nukkit;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
@@ -43,6 +49,9 @@ public class Nukkit {
     public static boolean ANSI = true;
     public static boolean shortTitle = false;
     public static int DEBUG = 1;
+    
+    private static Collection<Callable<Server>> jobs = new ArrayList<Callable<Server>>();
+    private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
     	Thread th1 = new Thread(new Runnable(){
@@ -75,41 +84,51 @@ public class Nukkit {
 
 		        MainLogger logger = new MainLogger(DATA_PATH + "server.log");
 
-		        try {
-		            if (ANSI) {
-		                System.out.println("Minecraft PE用Jupiterサーバーを開始しています...");
-		            }
-		            new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
-		        } catch (Exception e) {
-		            logger.logException(e);
-		        }
+                System.out.println("Minecraft PE用Jupiterサーバーを開始しています。");
 
-		        if (ANSI) {
-		            System.out.println("サーバーを停止しています...");
-		        }
-		        logger.info("スレッドが停止しました。");
+                jobs.add(new Callable<Server>(){
+                    @Override
+                    public Server call() throws Exception {
+                        return new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
+                    }
 
-		        for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
-		            if (!(thread instanceof InterruptibleThread)) {
-		                continue;
-		            }
-		            logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
-		            if (thread.isAlive()) {
-		                thread.interrupt();
-		            }
-		        }
+                });
 
-		        ServerKiller killer = new ServerKiller(8);
-		        killer.start();
+                try {
+                    threadpool.invokeAll(jobs);
+                    threadpool.shutdown();
+                    if(threadpool.awaitTermination(1L,TimeUnit.MINUTES)){// 1 minutes
+                        System.out.println("サーバーを停止しています...");
+                        logger.info("スレッドが停止しました。");
 
-		        logger.shutdown();
-		        logger.interrupt();
-		        CommandReader.getInstance().removePromptLine();
+                        for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
+                            if (!(thread instanceof InterruptibleThread)) {
+                                continue;
+                            }
+                            logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
+                            if (thread.isAlive()) {
+                                thread.interrupt();
+                            }
+                        }
 
-		        if (ANSI) {
-		            System.out.println("サーバーが停止しました。");
-		        }
-		        System.exit(0);
+                        ServerKiller killer = new ServerKiller(8);
+                        killer.start();
+
+                        logger.shutdown();
+                        logger.interrupt();
+
+                        CommandReader.getInstance().removePromptLine();
+
+                        System.out.println("サーバーが停止しました。");
+
+                        System.exit(0);
+                    }else{
+                        System.out.println("サーバーの停止に失敗しました。");
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    threadpool.shutdown();
+                }
     }
 
 }

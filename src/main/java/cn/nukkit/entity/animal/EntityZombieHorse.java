@@ -26,4 +26,20 @@ public class EntityZombieHorse extends EntityAnimal {
     public void initEntity() {
         super.initEntity();
     }
+
+    @Override
+    public float getWidth() {
+        if (isBaby()) {
+            return 0.6982f; // No have information
+        }
+        return 1.3965f;
+    }
+
+    @Override
+    public float getHeight() {
+        if (isBaby()) {
+            return 0.8f; // No have information
+        }
+        return 1.6f;
+    }
 }

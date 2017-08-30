@@ -3,27 +3,47 @@
 rem Jupiter 起動バッチファイル(Windows専用)
 
 rem 作成: Itsu
-rem 最終更新: 2017/5/31 23:10
+rem 最終更新: 2017/8/30 13:51
+
+
+setlocal enabledelayedexpansion
+
+rem Autorestart変数が0の場合は自動再起動、それ以外は終了
+set Autorestart=0
+
+rem count変数は起動回数の保持に使われます。いじらないでください。
+set count=1
+
+rem Soft変数は起動するjarの名前です。
+set Soft=nukkit-1.0-SNAPSHOT.jar
+
+
 
 goto Main
 
 :Main
-set Jupiter=nukkit-1.0-SNAPSHOT.jar
-cls
-chcp 932 > nul
-echo %Jupiter%を起動しています...
-if not exist %Jupiter% (
-	goto Finish
-)
-
-java -Djline.terminal=jline.UnsupportedTerminal -jar %Jupiter%
-
-goto END
+	if not exist %Soft% (
+		goto Finish
+	)
+	
+	cls
+	chcp 932 > nul
+	
+	echo !count!回目の起動です。
+	
+	java -Djline.terminal=jline.UnsupportedTerminal -jar %Soft%
+	
+	goto END
 
 :Finish
-	echo [ERROR]%Jupiter%が見つかりませんでした。
+	echo %Soft%がありません。
 	echo キーを押して終了してください。
 	pause > nul
 
 :END
+	if %Autorestart%==0 (
+		set /a count=!count!+1
+		goto Main
+	)
+
 	timeout /t 1 > nul

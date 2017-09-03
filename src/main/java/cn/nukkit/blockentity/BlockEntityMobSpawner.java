@@ -7,7 +7,6 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.level.format.Chunk;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
-import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
@@ -114,11 +113,11 @@ public class BlockEntityMobSpawner extends BlockEntitySpawnable {
             NukkitRandom random = new NukkitRandom();
             for (int i = 0; i < this.namedTag.getInt("SpawnCount"); ++i) {
                 Vector3 pos = this.add(
-                        Math.random() * this.namedTag.getInt("SpawnRange"), 
+                        this.getRandomSpawn(), 
                         NukkitMath.randomRange(random, -1, 1), 
-                        Math.random() * this.namedTag.getInt("SpawnRange"));
+                        this.getRandomSpawn());
                 Block target = this.getLevel().getBlock(pos);
-                Block ground = target.getSide(BlockFace.DOWN);
+                Block ground = target.down();
                 if (target.getId() == Block.AIR && ground.isSolid()) {
                     ++success;
                     CompoundTag nbt = new CompoundTag()
@@ -150,6 +149,10 @@ public class BlockEntityMobSpawner extends BlockEntitySpawnable {
         this.timing.stopTiming();
 
         return true;
+    }
+
+    public double getRandomSpawn() {
+        return (Math.random() * (this.namedTag.getInt("SpawnRange") * 2)) - this.namedTag.getInt("SpawnRange");
     }
 
     @Override

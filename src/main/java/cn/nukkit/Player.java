@@ -410,7 +410,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
-
     public boolean isFishing(){
         return this.fishingHook != null;
     }

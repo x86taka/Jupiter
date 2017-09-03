@@ -16,7 +16,7 @@ import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 
 /**
- * @author CreeperFace
+ * @author Megapix96
  */
 public class BlockEntityMobSpawner extends BlockEntitySpawnable {
 

@@ -85,7 +85,7 @@ public class BlockEntityMobSpawner extends BlockEntitySpawnable {
             }
         }
 
-        if (hasPlayer && count <= 6) {
+        if (hasPlayer && count < 6) {
             return true;
         }
 

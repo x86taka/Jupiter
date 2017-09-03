@@ -72,7 +72,7 @@ public class BlockMobSpawner extends BlockSolid {
 
     @Override
     public boolean onActivate(Item item, Player player) {
-        if (this.getDamage() == 0 && item.getId() == Item.SPAWN_EGG) {
+        if (item.getId() == Item.SPAWN_EGG) {
             BlockEntity blockEntity = this.getLevel().getBlockEntity(this);
             if (blockEntity instanceof BlockEntityMobSpawner) {
                 this.setDamage(item.getDamage());

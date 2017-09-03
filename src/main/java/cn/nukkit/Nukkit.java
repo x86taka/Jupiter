@@ -1,6 +1,5 @@
 package cn.nukkit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
@@ -12,7 +11,6 @@ import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.ServerKiller;
-import cn.nukkit.utils.Splash;
 
 /**
  * `_   _       _    _    _ _
@@ -34,7 +32,7 @@ import cn.nukkit.utils.Splash;
 public class Nukkit {
 
     public final static String VERSION = "1.0dev";
-    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".3";
+    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".4";
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "Jupiter";
     @Deprecated
@@ -54,17 +52,6 @@ public class Nukkit {
     private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
-    	Thread th1 = new Thread(new Runnable(){
-    		public void run(){
-				try {
-					new Splash("起動しています");
-				} catch (InterruptedException | IOException e) {
-					Server.getInstance().getLogger().notice("Splashに対応していないOSの為、表示しませんでした。(エラーではありません)");
-				}
-    		}
-    	});
-
-    	th1.start();
 		        //Shorter title for windows 8/2012
 		        String osName = System.getProperty("os.name").toLowerCase();
 		        if (osName.contains("windows")) {

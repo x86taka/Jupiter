@@ -546,10 +546,12 @@ public class Server implements ActionListener{
 
         this.network.registerInterface(new RakNetInterface(this));
 
-        try {
-            this.loadTrayIcon();
-        } catch (AWTException e) {
-        	this.getLogger().critical("TrayIconを実行できませんでした！");
+        if(this.checkingUsingGUI()){
+            try {
+                this.loadTrayIcon();
+            } catch (AWTException e) {
+                this.getLogger().critical("TrayIconを実行できませんでした！");
+            }
         }
 
         Calendar now = Calendar.getInstance();
@@ -689,11 +691,12 @@ public class Server implements ActionListener{
     }
 
     public TrayIcon getTrayIcon(){
-    	TrayIcon icon = null;
+        if(!this.checkingUsingGUI()) return null;
+        TrayIcon icon = null;
         try {
             icon = new TrayIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
         } catch (IOException e) {
-        	this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
+            this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
         } catch (UnsupportedOperationException e) {
             this.getLogger().notice("Trayに対応していないOSの為、表示しませんでした。(エラーではありません)");
         }
@@ -701,20 +704,24 @@ public class Server implements ActionListener{
     }
 
     public void trayMessage(String message){
+        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
         this.trayMessage(message, MessageType.INFO);
     }
 
     public void trayMessage(String message, MessageType type){
+        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
         this.trayMessage("Jupiter", message, type);
     }
 
     public void trayMessage(String title, String message, MessageType type){
+        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
         if (this.getTrayIcon() != null){
             this.getTrayIcon().displayMessage(title, message, type);
         }
     }
 
     private void loadTrayIcon() throws AWTException{
+        if(!this.checkingUsingGUI()) return;
         SystemTray.getSystemTray().remove(getTrayIcon());
 
         TrayIcon icon = this.getTrayIcon();
@@ -1067,10 +1074,17 @@ public class Server implements ActionListener{
         }
     }
 
+    /**
+     * 引数で指定したプラグインを有効にします。
+     * @param plugin 有効にするプラグイン
+     */
     public void enablePlugin(Plugin plugin) {
         this.pluginManager.enablePlugin(plugin);
     }
 
+    /**
+     * 全てのプラグインを無効にします。
+     */
     public void disablePlugins() {
         this.pluginManager.disablePlugins();
     }
@@ -1599,6 +1613,10 @@ public class Server implements ActionListener{
         return Nukkit.API_VERSION;
     }
 
+    /**
+     * Jupiterバージョンを取得します。
+     * @return String Jupiterバージョン
+     */
     public String getJupiterVersion() {
         return Nukkit.JUPITER_VERSION;
     }
@@ -1613,7 +1631,7 @@ public class Server implements ActionListener{
 
     /**
      * データパスを取得します。
-     * <br>この場合、jarがあるパスです。
+     * <br>この場合、jarがあるディレクトリのパスです。
      * @return String データパス
      */
     public String getDataPath() {
@@ -1631,9 +1649,7 @@ public class Server implements ActionListener{
     }
 
     public String getDefaultplugins(){
-        synchronized(defaultplugin){
-            return defaultplugin;
-        }
+        return defaultplugin;
     }
 
     /**
@@ -1888,8 +1904,9 @@ public class Server implements ActionListener{
     /**
      * プラグインマネージャを取得します。
      * <br>
-     * <br>[よく使う方法: Itsuのメモ]
-     * <br>・イベント登録
+     * <br>[Itsuのメモ: イベント登録]
+     * <br>(Listenerインターフェースを実装/PluginBaseクラスを継承している場合)
+     * <br>
      * <br>{@code this.getLogger().getPluginManager().registerEvents(this, this);}
      * @return PluginManager
      * @see PluginManager#registerEvents(cn.nukkit.event.Listener, Plugin)
@@ -1917,7 +1934,7 @@ public class Server implements ActionListener{
     /**
      * スケジューラを取得します。
      * <br>
-     * <br>[スケジューラの使い方:Itsuのメモ]
+     * <br>[Itsuのメモ: スケジューラの使い方]
      * <pre>
      * ・繰り返し
      * {@code
@@ -2454,6 +2471,13 @@ public class Server implements ActionListener{
         return this.getPropertyBoolean(variable, null);
     }
 
+    /**
+     * server.propertiesの引数で指定したキーの値をboolean型で取得します。
+     * <br>第二引数はデフォルトの値です。
+     * @param variable キー
+     * @param defaultValue デフォルトの値
+     * @return boolean 取得した値
+     */
     public boolean getPropertyBoolean(String variable, Object defaultValue) {
         Object value = this.properties.exists(variable) ? this.properties.get(variable) : defaultValue;
         if (value instanceof Boolean) {
@@ -2488,6 +2512,12 @@ public class Server implements ActionListener{
         return new Config(this.getDataPath() + "jupiter.yml");
     }
 
+    
+    /**
+     * jupiter.ymlが読み込まれているかを取得します。
+     * <br>!(getJupiterConfig().isEmpty())の戻り値と同等です。
+     * @return boolean
+     */
     public boolean isLoadedJupiterConfig(){
         return !this.jupiterconfig.isEmpty();
     }
@@ -2520,14 +2550,22 @@ public class Server implements ActionListener{
 
     /**
      * jupiter.ymlの引数で指定したキーの値をBoolean型で取得します。
-     * <br>注意:戻り値はbooleanのラッパークラスです。
+     * <br>デフォルトではtrueが返ります。
      * @param key キー
-     * @return Boolean 取得した値
+     * @return boolean 取得した値
      */
     public Boolean getJupiterConfigBoolean(String key){
         return this.getJupiterConfigBoolean(key, null);
     }
 
+
+    /**
+     * jupiter.ymlの引数で指定したキーの値をBoolean型で取得します。
+     * <br>第二引数はデフォルトの値です。
+     * @param key キー
+     * @param defaultValue キーが存在しない場合に返すもの
+     * @return boolean 取得した値
+     */
     public boolean getJupiterConfigBoolean(String variable, Object defaultValue) {
         Object value = this.jupiterconfig.containsKey(variable) ? this.jupiterconfig.get(variable) : defaultValue;
         if (value instanceof Boolean) {
@@ -2634,14 +2672,26 @@ public class Server implements ActionListener{
         return this.operators.exists(name, true);
     }
 
+    /**
+     * ホワイトリストをコンフィグから取得します。
+     * @return Config サーバーのホワイトリストのメンバー
+     */
     public Config getWhitelist() {
         return whitelist;
     }
 
+    /**
+     * OPをコンフィグから取得します。
+     * @return Config サーバーのOPメンバー
+     */
     public Config getOps() {
         return operators;
     }
 
+    /**
+     * ホワリスをリロードします。
+     * @return void
+     */
     public void reloadWhitelist() {
         this.whitelist.reload();
     }
@@ -2784,5 +2834,13 @@ public class Server implements ActionListener{
      */
     public static Server getInstance() {
         return instance;
+    }
+
+    /**
+     * GUI機能を使うかどうかを取得します。
+     * @return boolean 使う場合はtrue、使わない場合はfalse
+     */
+    public boolean checkingUsingGUI(){
+        return this.getJupiterConfigBoolean("using-gui", true);
     }
 }

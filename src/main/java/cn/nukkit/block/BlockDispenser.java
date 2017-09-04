@@ -1,5 +1,6 @@
 package cn.nukkit.block;
 
+import cn.nukkit.item.ItemTool;
 import cn.nukkit.utils.BlockColor;
 
 /**
@@ -44,5 +45,10 @@ public class BlockDispenser extends BlockSolid {
         }*/
 
         return super.getComparatorInputOverride();
+    }
+
+    @Override
+    public int getToolType() {
+        return ItemTool.TYPE_PICKAXE;
     }
 }

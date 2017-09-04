@@ -3991,9 +3991,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 }
                             }
                         }
-                    }
-
-                    if (mapItem != null) {
+                    } else {
                         PlayerMapInfoRequestEvent event;
                         getServer().getPluginManager().callEvent(event = new PlayerMapInfoRequestEvent(this, mapItem));
 

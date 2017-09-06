@@ -5,7 +5,11 @@ package cn.nukkit.block;
  */
 public class BlockChorusFlower extends BlockTransparent {
 
-    protected BlockChorusFlower(int meta) {
+    public BlockChorusFlower() {
+        super(0);
+    }
+
+    public BlockChorusFlower(int meta) {
         super(meta);
     }
 

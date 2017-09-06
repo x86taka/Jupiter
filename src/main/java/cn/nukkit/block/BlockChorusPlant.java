@@ -5,10 +5,13 @@ package cn.nukkit.block;
  */
 public class BlockChorusPlant extends BlockTransparent {
 
-    protected BlockChorusPlant(int meta) {
-        super(meta);
+    public BlockChorusPlant() {
+        super(0);
     }
 
+    public BlockChorusPlant(int meta) {
+        super(meta);
+    }
     //TODO
 
     @Override

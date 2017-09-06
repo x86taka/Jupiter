@@ -12,7 +12,7 @@ public class BlockObserver extends BlockSolid {
     }
 
     public BlockObserver(int meta) {
-        super(0);
+        super(meta);
     }
 
     @Override

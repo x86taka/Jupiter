@@ -32,16 +32,6 @@ public class BlockWeightedPressurePlateLight extends BlockPressurePlateBase {
     }
 
     @Override
-    public double getHardness() {
-        return 0.5D;
-    }
-
-    @Override
-    public double getResistance() {
-        return 2.5D;
-    }
-
-    @Override
     public int getToolType() {
         return ItemTool.TYPE_PICKAXE;
     }

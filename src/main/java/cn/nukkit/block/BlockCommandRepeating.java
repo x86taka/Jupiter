@@ -3,6 +3,9 @@ package cn.nukkit.block;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 
+/**
+ * @author Megapix96
+ */
 public class BlockCommandRepeating extends BlockCommand {
 
     public BlockCommandRepeating() {

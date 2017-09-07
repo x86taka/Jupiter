@@ -32,6 +32,16 @@ public class BlockTorch extends BlockFlowable {
     }
 
     @Override
+    public double getHardness() {
+        return 0;
+    }
+
+    @Override
+    public double getResistance() {
+        return 0;
+    }
+
+    @Override
     public int getLightLevel() {
         return 15;
     }

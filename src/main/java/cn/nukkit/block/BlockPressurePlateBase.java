@@ -38,6 +38,16 @@ public abstract class BlockPressurePlateBase extends BlockFlowable {
     }
 
     @Override
+    public double getHardness() {
+        return 0.5;
+    }
+
+    @Override
+    public double getResistance() {
+        return 2.5;
+    }
+
+    @Override
     protected AxisAlignedBB recalculateBoundingBox() {
         if (isActivated()) {
             return new AxisAlignedBB(this.x + 0.0625, this.y, this.z + 0.0625, this.x + 0.9375, this.y + 0.03125, this.z + 0.9375);
@@ -74,7 +84,6 @@ public abstract class BlockPressurePlateBase extends BlockFlowable {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz) {
-//        System.out.println("place");
         if (block.down().isTransparent()) {
             return false;
         }

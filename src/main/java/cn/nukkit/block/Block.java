@@ -212,7 +212,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int BIRCH_WOODEN_STAIRS = 135;
     public static final int JUNGLE_WOOD_STAIRS = 136;
     public static final int JUNGLE_WOODEN_STAIRS = 136;
-
+    public static final int COMMAND_BLOCK = 137;
     public static final int BEACON = 138;
     public static final int COBBLE_WALL = 139;
     public static final int STONE_WALL = 139;
@@ -276,6 +276,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int FENCE_GATE_JUNGLE = 185;
     public static final int FENCE_GATE_DARK_OAK = 186;
     public static final int FENCE_GATE_ACACIA = 187;
+    public static final int REPEATING_COMMAND_BLOCK = 188;
+    public static final int CHAIN_COMMAND_BLOCK = 189;
 
     public static final int SPRUCE_DOOR_BLOCK = 193;
     public static final int BIRCH_DOOR_BLOCK = 194;
@@ -491,7 +493,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[SPRUCE_WOOD_STAIRS] = BlockStairsSpruce.class; //134
             list[BIRCH_WOOD_STAIRS] = BlockStairsBirch.class; //135
             list[JUNGLE_WOOD_STAIRS] = BlockStairsJungle.class; //136
-
+            list[COMMAND_BLOCK] = BlockCommand.class;
             list[BEACON] = BlockBeacon.class; //138
             list[STONE_WALL] = BlockWall.class; //139
             list[FLOWER_POT_BLOCK] = BlockFlowerPot.class; //140
@@ -500,7 +502,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[WOODEN_BUTTON] = BlockButtonWooden.class; //143
             list[SKULL_BLOCK] = BlockSkull.class; //144
             list[ANVIL] = BlockAnvil.class; //145
-            list[TRAPPED_CHEST] = BlockTrappedChest.class; //146
+            list[TRAPPED_CHEST] = BlockChestTrapped.class; //146
             list[LIGHT_WEIGHTED_PRESSURE_PLATE] = BlockWeightedPressurePlateLight.class; //147
             list[HEAVY_WEIGHTED_PRESSURE_PLATE] = BlockWeightedPressurePlateHeavy.class; //148
             list[UNPOWERED_COMPARATOR] = BlockRedstoneComparatorUnpowered.class; //149
@@ -542,6 +544,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[FENCE_GATE_JUNGLE] = BlockFenceGateJungle.class; //185
             list[FENCE_GATE_DARK_OAK] = BlockFenceGateDarkOak.class; //186
             list[FENCE_GATE_ACACIA] = BlockFenceGateAcacia.class; //187
+            list[REPEATING_COMMAND_BLOCK] = BlockCommandRepeating.class; //188
+            list[CHAIN_COMMAND_BLOCK] = BlockCommandChain.class; //188
 
             list[SPRUCE_DOOR_BLOCK] = BlockDoorSpruce.class; //193
             list[BIRCH_DOOR_BLOCK] = BlockDoorBirch.class; //194

@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityChest;
@@ -10,15 +12,13 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.nbt.tag.Tag;
 
-import java.util.Map;
+public class BlockChestTrapped extends BlockChest {
 
-public class BlockTrappedChest extends BlockChest {
-
-    public BlockTrappedChest() {
+    public BlockChestTrapped() {
         this(0);
     }
 
-    public BlockTrappedChest(int meta) {
+    public BlockChestTrapped(int meta) {
         super(meta);
     }
 
@@ -46,7 +46,7 @@ public class BlockTrappedChest extends BlockChest {
                 continue;
             }
             Block c = this.getSide(side);
-            if (c instanceof BlockTrappedChest && c.getDamage() == this.meta) {
+            if (c instanceof BlockChestTrapped && c.getDamage() == this.meta) {
                 BlockEntity blockEntity = this.getLevel().getBlockEntity(c);
                 if (blockEntity instanceof BlockEntityChest && !((BlockEntityChest) blockEntity).isPaired()) {
                     chest = (BlockEntityChest) blockEntity;

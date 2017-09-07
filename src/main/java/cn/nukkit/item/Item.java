@@ -231,7 +231,7 @@ public class Item implements Cloneable {
     public static final int BIRCH_WOODEN_STAIRS = 135;
     public static final int JUNGLE_WOOD_STAIRS = 136;
     public static final int JUNGLE_WOODEN_STAIRS = 136;
-
+    public static final int COMMAND_BLOCK = 137;
     public static final int BEACON = 138;
     public static final int COBBLE_WALL = 139;
     public static final int STONE_WALL = 139;
@@ -295,6 +295,8 @@ public class Item implements Cloneable {
     public static final int FENCE_GATE_JUNGLE = 185;
     public static final int FENCE_GATE_DARK_OAK = 186;
     public static final int FENCE_GATE_ACACIA = 187;
+    public static final int REPEATING_COMMAND_BLOCK = 188;
+    public static final int CHAIN_COMMAND_BLOCK = 189;
 
     public static final int SPRUCE_DOOR_BLOCK = 193;
     public static final int BIRCH_DOOR_BLOCK = 194;

@@ -12,6 +12,9 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 
+/**
+ * @author Megapix96
+ */
 public class BlockEntityDropper extends BlockEntitySpawnable implements InventoryHolder, BlockEntityContainer, BlockEntityNameable {
 
     protected final DropperInventory inventory;

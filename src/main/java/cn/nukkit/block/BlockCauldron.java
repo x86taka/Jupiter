@@ -228,7 +228,7 @@ public class BlockCauldron extends BlockSolid {
                     this.meta = 0x00;
 
                 if (item.getCount() == 1) {
-                    player.getInventory().setItemInHand(new ItemPotion());
+                    player.getInventory().setItemInHand(new ItemPotion(cauldron.getPotionId()));
                 } else if (item.getCount() > 1) {
                     item.setCount(item.getCount() - 1);
                     player.getInventory().setItemInHand(item);

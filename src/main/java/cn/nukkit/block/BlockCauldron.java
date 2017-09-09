@@ -45,8 +45,7 @@ public class BlockCauldron extends BlockSolid {
     public String getName() {
         return "Cauldron Block";
     }
-    
-    
+
     @Override
     public BlockColor getColor(){
     	return BlockColor.BLACK_BLOCK_COLOR;
@@ -170,10 +169,6 @@ public class BlockCauldron extends BlockSolid {
                 }
                 break;
             case Item.POTION:
-                if (isFull()) {
-                    break;
-                }
-
                 if (!(cauldron.hasPotion()) && !(this.isEmpty())) {
                     this.meta = 0;
                     cauldron.setPotionId(0xffff);

@@ -1,7 +1,8 @@
 package cn.nukkit.item;
 
+import java.awt.Color;
+
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.utils.BlockColor;
 
 /**
  * author: MagicDroidX
@@ -59,7 +60,7 @@ abstract public class ItemArmor extends Item {
         return 0;
     }
 
-    public void setCustomColor(BlockColor color){
+    public void setCustomColor(Color color){
         CompoundTag tag;
         if(this.hasCompoundTag()){
             tag = this.getNamedTag();

@@ -154,13 +154,14 @@ public class BlockCauldron extends BlockSolid {
                     break;
                 }
 
-                --this.meta;
+                this.meta = this.meta - 2;
                 if (this.meta < 0x00) {
                     this.meta = 0x00;
                 }
                 this.level.setBlock(this, this, true);
 
                 ((ItemArmor) item).setCustomColor(cauldron.getCustomColor());
+                player.getInventory().setItemInHand(item);
 
                 if (this.meta == 0) {
                     cauldron.setPotionId(0xffff);
@@ -169,7 +170,7 @@ public class BlockCauldron extends BlockSolid {
                 }
                 break;
             case Item.POTION:
-                if (!(cauldron.hasPotion()) && !(this.isEmpty())) {
+                if (cauldron.hasPotion() && cauldron.getPotionId() != item.getDamage() || !(isEmpty()) && !(cauldron.hasPotion())) {
                     this.meta = 0;
                     cauldron.setPotionId(0xffff);
                     cauldron.setSplashPotion(false);
@@ -195,11 +196,13 @@ public class BlockCauldron extends BlockSolid {
                     break;
                 }
 
-                ++this.meta;
+                this.meta = this.meta + 2;
                 if (this.meta > 0x06)
                     this.meta = 0x06;
 
-                cauldron.setPotionId(item.getDamage());
+                if (item.getDamage() != ItemPotion.NO_EFFECTS) {
+                    cauldron.setPotionId(item.getDamage());
+                }
                 this.level.setBlock(this, this, true);
 
                 if (item.getCount() == 1) {
@@ -223,7 +226,7 @@ public class BlockCauldron extends BlockSolid {
                     break;
                 }
 
-                --this.meta;
+                this.meta = this.meta - 2;
                 if (this.meta < 0x00)
                     this.meta = 0x00;
 
@@ -246,6 +249,7 @@ public class BlockCauldron extends BlockSolid {
                     cauldron.setSplashPotion(false);
                     cauldron.clearCustomColor();
                 }
+                this.level.setBlock(this, this, true);
 
                 this.level.addSound(new SplashSound(this.add(0.5, 0.5, 0.5)));
                 break;

@@ -9,7 +9,6 @@ import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerBucketFillEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemArmor;
-import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemBucket;
 import cn.nukkit.item.ItemCauldron;
 import cn.nukkit.item.ItemDye;
@@ -159,6 +158,7 @@ public class BlockCauldron extends BlockSolid {
                 if (this.meta < 0x00) {
                     this.meta = 0x00;
                 }
+                this.level.setBlock(this, this, true);
 
                 ((ItemArmor) item).setCustomColor(cauldron.getCustomColor());
 
@@ -177,17 +177,19 @@ public class BlockCauldron extends BlockSolid {
                     this.level.setBlock(this, this, true);
                     this.level.addSound(new ExplodeSound(this.add(0.5, 0, 0.5)));
 
-                    if (item.getCount() == 1) {
-                        player.getInventory().setItemInHand(new ItemBlock(new BlockAir()));
-                    } else if (item.getCount() > 1) {
-                        item.setCount(item.getCount() - 1);
-                        player.getInventory().setItemInHand(item);
-
-                        Item bottle = new ItemGlassBottle();
-                        if (player.getInventory().canAddItem(bottle)) {
-                            player.getInventory().addItem(bottle);
-                        } else {
-                            player.getLevel().dropItem(player.add(0, 1.3, 0), bottle, player.getDirectionVector().multiply(0.4));
+                    if (player.isSurvival()) {
+                        if (item.getCount() == 1) {
+                            player.getInventory().setItemInHand(new ItemGlassBottle());
+                        } else if (item.getCount() > 1) {
+                            item.setCount(item.getCount() - 1);
+                            player.getInventory().setItemInHand(item);
+    
+                            Item bottle = new ItemGlassBottle();
+                            if (player.getInventory().canAddItem(bottle)) {
+                                player.getInventory().addItem(bottle);
+                            } else {
+                                player.getLevel().dropItem(player.add(0, 1.3, 0), bottle, player.getDirectionVector().multiply(0.4));
+                            }
                         }
                     }
                     break;
@@ -198,9 +200,10 @@ public class BlockCauldron extends BlockSolid {
                     this.meta = 0x06;
 
                 cauldron.setPotionId(item.getDamage());
+                this.level.setBlock(this, this, true);
 
                 if (item.getCount() == 1) {
-                    player.getInventory().setItemInHand(new ItemBlock(new BlockAir()));
+                    player.getInventory().setItemInHand(new ItemGlassBottle());
                 } else if (item.getCount() > 1) {
                     item.setCount(item.getCount() - 1);
                     player.getInventory().setItemInHand(item);

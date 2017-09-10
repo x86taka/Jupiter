@@ -9,6 +9,7 @@ import cn.nukkit.event.player.PlayerBucketEmptyEvent;
 import cn.nukkit.event.player.PlayerBucketFillEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemArmor;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemBucket;
 import cn.nukkit.item.ItemCauldron;
 import cn.nukkit.item.ItemDye;
@@ -145,12 +146,22 @@ public class BlockCauldron extends BlockSolid {
                     break;
                 }
                 cauldron.setCustomColor(((ItemDye) item).getDyeColor().getColor());
+                this.level.setBlock(this, this, true);
+
+                if (player.isSurvival()) {
+                    if (item.getCount() == 1) {
+                        player.getInventory().setItemInHand(new ItemBlock(new BlockAir()));
+                    } else if (item.getCount() > 1) {
+                        item.setCount(item.getCount() - 1);
+                        player.getInventory().setItemInHand(item);
+                    }
+                }
                 break;
             case Item.LEATHER_CAP:
             case Item.LEATHER_TUNIC:
             case Item.LEATHER_PANTS:
             case Item.LEATHER_BOOTS:
-                if (isEmpty()) {
+                if (cauldron.hasPotion() || isEmpty()) {
                     break;
                 }
 
@@ -164,7 +175,6 @@ public class BlockCauldron extends BlockSolid {
                     if (this.meta == 0) {
                         cauldron.setPotionId(0xffff);
                         cauldron.setSplashPotion(false);
-                        cauldron.clearCustomColor();
                     }
                     this.level.setBlock(this, this, true);
                     break;

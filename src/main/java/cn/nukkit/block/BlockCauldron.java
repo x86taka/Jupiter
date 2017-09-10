@@ -192,29 +192,31 @@ public class BlockCauldron extends BlockSolid {
                 break;
             case Item.POTION:
                 if (cauldron.hasPotion() && cauldron.getPotionId() != item.getDamage() || !(isEmpty()) && !(cauldron.hasPotion())) {
-                    this.meta = 0;
-                    cauldron.setPotionId(0xffff);
-                    cauldron.setSplashPotion(false);
-                    cauldron.clearCustomColor();
-                    this.level.setBlock(this, this, true);
-                    this.level.addSound(new ExplodeSound(this.add(0.5, 0, 0.5)));
-
-                    if (player.isSurvival()) {
-                        if (item.getCount() == 1) {
-                            player.getInventory().setItemInHand(new ItemGlassBottle());
-                        } else if (item.getCount() > 1) {
-                            item.setCount(item.getCount() - 1);
-                            player.getInventory().setItemInHand(item);
+                    if (item.getDamage() != ItemPotion.NO_EFFECTS) {
+                        this.meta = 0;
+                        cauldron.setPotionId(0xffff);
+                        cauldron.setSplashPotion(false);
+                        cauldron.clearCustomColor();
+                        this.level.setBlock(this, this, true);
+                        this.level.addSound(new ExplodeSound(this.add(0.5, 0, 0.5)));
     
-                            Item bottle = new ItemGlassBottle();
-                            if (player.getInventory().canAddItem(bottle)) {
-                                player.getInventory().addItem(bottle);
-                            } else {
-                                player.getLevel().dropItem(player.add(0, 1.3, 0), bottle, player.getDirectionVector().multiply(0.4));
+                        if (player.isSurvival()) {
+                            if (item.getCount() == 1) {
+                                player.getInventory().setItemInHand(new ItemGlassBottle());
+                            } else if (item.getCount() > 1) {
+                                item.setCount(item.getCount() - 1);
+                                player.getInventory().setItemInHand(item);
+        
+                                Item bottle = new ItemGlassBottle();
+                                if (player.getInventory().canAddItem(bottle)) {
+                                    player.getInventory().addItem(bottle);
+                                } else {
+                                    player.getLevel().dropItem(player.add(0, 1.3, 0), bottle, player.getDirectionVector().multiply(0.4));
+                                }
                             }
                         }
+                        break;
                     }
-                    break;
                 }
 
                 this.meta = this.meta + 2;

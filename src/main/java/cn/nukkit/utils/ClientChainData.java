@@ -25,6 +25,10 @@ public final class ClientChainData {
     public final static int DEVICE_OS_WINDOWS10 = 7;
     public final static int DEVICE_OS_WINDOWS32 = 8;
     public final static int DEVICE_OS_DEDICATED = 9;
+    /* TODO 1.2 Xbox OneとNintendo Switch追加
+    public final static int DEVICE_OS_XBOXONE = x;
+    public final static int DEVICE_OS_NINTENDOSWITCH = x;
+    */
 
     public final static int GUI_SCALE_MINIMUM = -2;
     public final static int GUI_SCALE_MEDIUM = -1;
@@ -34,6 +38,7 @@ public final class ClientChainData {
     public final static int INPUT_MODE_TOUCH = 2;
     public final static int INPUT_MODE_CONTROLLER = 3;
 
+    //TODO 1.2でなくなる可能性。
     public final static int UI_PROFILE_CLASSIC = 0;
     public final static int UI_PROFILE_POCKET = 1;
 
@@ -117,6 +122,13 @@ public final class ClientChainData {
 
             case DEVICE_OS_DEDICATED:
                 return "Dedicated";
+            /* TODO 1.2 Xbox OneとNintendo Switch追加
+            case DEVICE_OS_XBOXONE:
+                return "Xbox One";
+                
+            case DEVICE_OS_NINTENDOSWITCH:
+                return "Nintendo Switch";
+             */
 
             default:
                 return "unknown";

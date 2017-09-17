@@ -265,8 +265,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
-    public static final int STANDING_BANNER = 176;
-    public static final int WALL_BANNER = 177;
 
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
@@ -332,7 +330,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int PISTON_EXTENSION = 250;
 
     public static final int OBSERVER = 251;
-    public static final int STRUCTURE_BLOCK  = 252;
 
     public static Class[] list = null;
     public static Block[] fullList = null;

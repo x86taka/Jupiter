@@ -32,7 +32,7 @@ import cn.nukkit.utils.ServerKiller;
 public class Nukkit {
 
     public final static String VERSION = "1.0dev";
-    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".5";
+    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".4";
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "Jupiter";
     @Deprecated
@@ -47,29 +47,29 @@ public class Nukkit {
     public static boolean ANSI = true;
     public static boolean shortTitle = false;
     public static int DEBUG = 1;
-
+    
     private static Collection<Callable<Server>> jobs = new ArrayList<Callable<Server>>();
     private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
-                //Shorter title for windows 8/2012
-                String osName = System.getProperty("os.name").toLowerCase();
-                if (osName.contains("windows")) {
-                    if (osName.contains("windows 8") || osName.contains("2012")) {
-                        shortTitle = true;
-                    }
-                }
+		        //Shorter title for windows 8/2012
+		        String osName = System.getProperty("os.name").toLowerCase();
+		        if (osName.contains("windows")) {
+		            if (osName.contains("windows 8") || osName.contains("2012")) {
+		                shortTitle = true;
+		            }
+		        }
 
-                //启动参数
-                for (String arg : args) {
-                    switch (arg) {
-                        case "disable-ansi":
-                            ANSI = false;
-                            break;
-                    }
-                }
+		        //启动参数
+		        for (String arg : args) {
+		            switch (arg) {
+		                case "disable-ansi":
+		                    ANSI = false;
+		                    break;
+		            }
+		        }
 
-                MainLogger logger = new MainLogger(DATA_PATH + "server.log");
+		        MainLogger logger = new MainLogger(DATA_PATH + "server.log");
 
                 System.out.println("Minecraft PE用Jupiterサーバーを開始しています。");
 

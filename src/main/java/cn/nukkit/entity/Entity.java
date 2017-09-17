@@ -1198,7 +1198,6 @@ public abstract class Entity extends Location implements Metadatable {
             }
             return this.deadTicks < 10;
         }
-
         int tickDiff = currentTick - this.lastUpdate;
 
         if (tickDiff <= 0) {

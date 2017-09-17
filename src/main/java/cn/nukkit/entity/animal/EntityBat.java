@@ -37,4 +37,9 @@ public class EntityBat extends EntityAnimal {
     public float getHeight() {
         return 0.9f;
     }
+
+    @Override
+    public String getName() {
+        return this.getNameTag();
+    }
 }

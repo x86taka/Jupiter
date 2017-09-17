@@ -4,7 +4,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public class EntityHorse extends EntityAnimal {
+public class EntityHorse extends EntityAnimal{
 
     public static final int NETWORK_ID = 23;
 
@@ -13,8 +13,24 @@ public class EntityHorse extends EntityAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[]{};
+    public float getWidth() {
+        if (isBaby()) {
+            return 0.6982f;
+        }
+        return 1.3965f;
+    }
+
+    @Override
+    public float getHeight() {
+        if (isBaby()) {
+            return 0.8f;
+        }
+        return 1.6f;
+    }
+
+    @Override
+    public String getName() {
+        return this.getNameTag();
     }
 
     @Override
@@ -24,22 +40,12 @@ public class EntityHorse extends EntityAnimal {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(30);
         super.initEntity();
     }
 
     @Override
-    public float getWidth() {
-        if (isBaby()) {
-            return 0.6982f; // No have information
-        }
-        return 1.3965f;
-    }
-
-    @Override
-    public float getHeight() {
-        if (isBaby()) {
-            return 0.8f; // No have information
-        }
-        return 1.6f;
+    public Item[] getDrops() {
+        return new Item[]{};
     }
 }

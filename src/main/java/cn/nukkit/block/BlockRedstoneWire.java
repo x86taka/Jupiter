@@ -1,5 +1,9 @@
 package cn.nukkit.block;
 
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+
 import cn.nukkit.Player;
 import cn.nukkit.event.block.BlockRedstoneEvent;
 import cn.nukkit.item.Item;
@@ -9,10 +13,6 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockFace.Plane;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.utils.BlockColor;
-
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * author: Angelic47
@@ -39,6 +39,16 @@ public class BlockRedstoneWire extends BlockFlowable {
     @Override
     public int getId() {
         return REDSTONE_WIRE;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0;
+    }
+
+    @Override
+    public double getResistance() {
+        return 0;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package cn.nukkit.block;
 
-import cn.nukkit.level.Level;
-
 /**
  * author: Angelic47
  * Nukkit Project
@@ -30,5 +28,4 @@ public class BlockWaterStill extends BlockWater {
     public BlockLiquid getBlock(int meta) {
         return new BlockWaterStill(meta);
     }
-
 }

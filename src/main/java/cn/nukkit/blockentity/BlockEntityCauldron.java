@@ -1,10 +1,10 @@
 package cn.nukkit.blockentity;
 
+import java.awt.Color;
+
 import cn.nukkit.block.Block;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-
-import java.awt.*;
 
 /**
  * author: CreeperFace

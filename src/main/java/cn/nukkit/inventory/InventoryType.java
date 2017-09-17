@@ -4,7 +4,7 @@ package cn.nukkit.inventory;
  * author: MagicDroidX
  * Nukkit Project
  */
-public enum InventoryType implements InventoryNetworkId{
+public enum InventoryType implements InventoryNetworkId {
 
     CHEST(27, "Chest", WINDOW_CONTAINER),
     ENDER_CHEST(27, "Ender Chest", WINDOW_CONTAINER),
@@ -20,10 +20,10 @@ public enum InventoryType implements InventoryNetworkId{
     DISPENSER(9, "Dispenser", WINDOW_DISPENSER), //9 CONTAINER
     DROPPER(9, "Dropper", WINDOW_DROPPER), //9 CONTAINER
     HOPPER(5, "Hopper", WINDOW_HOPPER), //5 CONTAINER
-    MINECART_CHEST(27, "Minecart Chest", WINDOW_MINECART_CHEST), // 29 CONTAINER
+    MINECART_CHEST(27, "Minecart Chest", WINDOW_MINECART_CHEST), // 27 CONTAINER
     MINECART_HOPPER(5, "Minecart Hopper", WINDOW_MINECART_HOPPER), // 5 CONTAINER
     HORSE(2, "Horse", WINDOW_HORSE), // 2 INPUT(サドル, 馬鎧)
-    //TODO: 15 Structure Editor?
+    //TODO: 15 Structure Editor? 1.2
     TRADING(3, "Trading", WINDOW_TRADING), // 2 INPUT, 1 OUTPUT
 	COMMAND_BLOCK(0, "Command Block", WINDOW_COMMAND_BLOCK);
 

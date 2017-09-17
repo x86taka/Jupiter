@@ -13,8 +13,24 @@ public class EntityLlama extends EntityAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[]{};
+    public float getWidth() {
+        if (isBaby()) {
+            return 0.45f;
+        }
+        return 0.9f;
+    }
+
+    @Override
+    public float getHeight() {
+        if (isBaby()) {
+            return 0.935f;
+        }
+        return 1.87f;
+    }
+
+    @Override
+    public String getName() {
+        return this.getNameTag();
     }
 
     @Override
@@ -29,18 +45,7 @@ public class EntityLlama extends EntityAnimal {
     }
 
     @Override
-    public float getWidth() {
-        if (isBaby()) {
-            return 0.45f;
-        }
-        return 0.9f;
-    }
-
-    @Override
-    public float getHeight() {
-        if (isBaby()) {
-            return 0.935f;
-        }
-        return 1.87f;
+    public Item[] getDrops() {
+        return new Item[]{};
     }
 }

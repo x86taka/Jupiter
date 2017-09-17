@@ -1,6 +1,6 @@
 package cn.nukkit.inventory;
 
-public interface InventoryNetworkId{
+public interface InventoryNetworkId {
 
     public final static int WINDOW_INVENTORY = -1;
     public final static int WINDOW_CONTAINER = 0;

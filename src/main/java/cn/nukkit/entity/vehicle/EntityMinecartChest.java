@@ -35,7 +35,4 @@ public class EntityMinecartChest extends EntityMinecartAbstract {
     public void dropItem() {
         level.dropItem(this, new ItemMinecartChest());
     }
-
-
-
 }

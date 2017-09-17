@@ -1,10 +1,13 @@
 package cn.nukkit.block;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityBed;
+import cn.nukkit.event.block.BedExplosionEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBed;
+import cn.nukkit.level.Explosion;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
@@ -71,8 +74,16 @@ public class BlockBed extends BlockTransparent {
     @Override
     public boolean onActivate(Item item, Player player) {
 
-        if(this.getLevel().getDimension() == Level.DIMENSION_NETHER){
-        	//TODO: ベッドを爆発させる
+        if(this.getLevel().getDimension() != Level.DIMENSION_OVERWORLD) {
+            BedExplosionEvent event = new BedExplosionEvent(player, this, 4);
+            Server.getInstance().getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return true;
+            }
+            Explosion explosion = new Explosion(this, event.getForce(), this);
+            explosion.explodeA();
+
+            return false;
         } 
 
         int time = this.getLevel().getTime() % Level.TIME_FULL;

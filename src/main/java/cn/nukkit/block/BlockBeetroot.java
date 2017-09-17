@@ -25,8 +25,7 @@ public class BlockBeetroot extends BlockCrops {
     public String getName() {
         return "Beetroot Block";
     }
-    
-    
+
     @Override
     public BlockColor getColor(){
     	return new BlockColor(237, 171, 73);

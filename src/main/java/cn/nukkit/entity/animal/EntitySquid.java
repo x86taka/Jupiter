@@ -13,8 +13,13 @@ public class EntitySquid extends EntityAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[]{};
+    public float getWidth() {
+        return 0.8f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 0.8f;
     }
 
     @Override
@@ -29,12 +34,7 @@ public class EntitySquid extends EntityAnimal {
     }
 
     @Override
-    public float getWidth() {
-        return 0.8f;
-    }
-
-    @Override
-    public float getHeight() {
-        return 0.8f;
+    public Item[] getDrops() {
+        return new Item[]{};
     }
 }

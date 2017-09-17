@@ -31,6 +31,8 @@ public abstract class BlockEntity extends Position {
     public static final String DAYLIGHT_DETECTOR = "DaylightDetector";
     public static final String MUSIC = "Music";
     public static final String ITEM_FRAME = "ItemFrame";
+    public static final String DISPENSER = "Dispenser";
+    public static final String DROPPER = "Dropper";
     public static final String CAULDRON = "Cauldron";
     public static final String BEACON = "Beacon";
     public static final String PISTON_ARM = "PistonArm";
@@ -39,7 +41,6 @@ public abstract class BlockEntity extends Position {
     public static final String HOPPER = "Hopper";
     public static final String BED = "Bed";
     public static final String SHULKER_BOX = "ShulkerBox";
-
 
     public static long count = 1;
 

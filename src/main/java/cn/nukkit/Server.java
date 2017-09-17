@@ -36,6 +36,8 @@ import cn.nukkit.blockentity.BlockEntityBeacon;
 import cn.nukkit.blockentity.BlockEntityBrewingStand;
 import cn.nukkit.blockentity.BlockEntityCauldron;
 import cn.nukkit.blockentity.BlockEntityChest;
+import cn.nukkit.blockentity.BlockEntityDispenser;
+import cn.nukkit.blockentity.BlockEntityDropper;
 import cn.nukkit.blockentity.BlockEntityEnchantTable;
 import cn.nukkit.blockentity.BlockEntityEnderChest;
 import cn.nukkit.blockentity.BlockEntityFlowerPot;
@@ -2749,7 +2751,7 @@ public class Server implements ActionListener{
         Entity.registerEntity("Painting", EntityPainting.class);
         Entity.registerEntity("FishingHook", EntityFishingHook.class);
         Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
-        //敵対Mob
+        //Monsters
         Entity.registerEntity("Blaze", EntityBlaze.class);
         Entity.registerEntity("CaveSpider", EntityCaveSpider.class);
         Entity.registerEntity("Creeper", EntityCreeper.class);
@@ -2773,7 +2775,7 @@ public class Server implements ActionListener{
         Entity.registerEntity("Zombie", EntityZombie.class);
         Entity.registerEntity("ZombiePigman", EntityZombiePigman.class);
         Entity.registerEntity("ZombieVillager", EntityZombieVillager.class);
-
+        //Animals
         Entity.registerEntity("Bat", EntityBat.class);
         Entity.registerEntity("Chicken", EntityChicken.class);
         Entity.registerEntity("Cow", EntityCow.class);
@@ -2826,6 +2828,8 @@ public class Server implements ActionListener{
         BlockEntity.registerBlockEntity(BlockEntity.BEACON, BlockEntityBeacon.class);
         BlockEntity.registerBlockEntity(BlockEntity.SHULKER_BOX, BlockEntityShulkerBox.class);
         BlockEntity.registerBlockEntity(BlockEntity.MOB_SPAWNER, BlockEntityMobSpawner.class);
+        BlockEntity.registerBlockEntity(BlockEntity.DISPENSER, BlockEntityDispenser.class);
+        BlockEntity.registerBlockEntity(BlockEntity.DROPPER, BlockEntityDropper.class);
     }
 
     /**

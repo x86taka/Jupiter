@@ -13,22 +13,6 @@ public class EntityPolarBear extends EntityAnimal {
     }
 
     @Override
-    public Item[] getDrops() {
-        return new Item[]{};
-    }
-
-    @Override
-    public int getNetworkId() {
-        return NETWORK_ID;
-    }
-
-    @Override
-    public void initEntity() {
-    	this.setMaxHealth(30);
-        super.initEntity();
-    }
-
-    @Override
     public float getWidth() {
         if (isBaby()) {
             return 0.65f;
@@ -42,5 +26,21 @@ public class EntityPolarBear extends EntityAnimal {
             return 0.7f;
         }
         return 1.4f;
+    }
+
+    @Override
+    public int getNetworkId() {
+        return NETWORK_ID;
+    }
+
+    @Override
+    public void initEntity() {
+        this.setMaxHealth(30);
+        super.initEntity();
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{};
     }
 }

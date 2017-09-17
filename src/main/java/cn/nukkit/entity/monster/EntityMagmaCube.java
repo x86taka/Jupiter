@@ -1,6 +1,8 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemMagmaCream;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -33,6 +35,7 @@ public class EntityMagmaCube extends EntityMonster {
 
     @Override
     public float getHeight() {
+        //TODO: ageable
         return 5f;
     }
 
@@ -58,5 +61,10 @@ public class EntityMagmaCube extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemMagmaCream(0, random.nextRange(0, 1))};
     }
 }

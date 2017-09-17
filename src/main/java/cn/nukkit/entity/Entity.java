@@ -48,6 +48,7 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.MathHelper;
 import cn.nukkit.math.NukkitMath;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
@@ -302,6 +303,8 @@ public abstract class Entity extends Location implements Metadatable {
     protected Timing timing;
 
     protected boolean isPlayer = false;
+
+    protected NukkitRandom random = new NukkitRandom();
 
     public float getHeight() {
         return 0;

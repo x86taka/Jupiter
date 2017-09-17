@@ -1,6 +1,7 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBone;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -19,6 +20,6 @@ public class EntitySkeletonHorse extends EntityHorse {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{};
+        return new Item[]{new ItemBone(0, random.nextRange(0, 2))};
     }
 }

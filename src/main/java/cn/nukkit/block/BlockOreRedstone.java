@@ -1,7 +1,5 @@
 package cn.nukkit.block;
 
-import java.util.Random;
-
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemRedstone;
 import cn.nukkit.item.ItemTool;
@@ -62,7 +60,7 @@ public class BlockOreRedstone extends BlockSolid {
                 };
             } else {
                 return new Item[]{
-                        new ItemRedstone(0, new Random().nextInt(1) + 4)
+                        new ItemRedstone(0, new NukkitRandom().nextRange(4, 5))
                 };
             }
         } else {

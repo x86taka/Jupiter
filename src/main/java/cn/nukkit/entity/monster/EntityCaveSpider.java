@@ -1,6 +1,9 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSpiderEye;
+import cn.nukkit.item.ItemString;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -57,5 +60,10 @@ public class EntityCaveSpider extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemString(0, random.nextRange(0, 2)), new ItemSpiderEye(0, random.nextRange(0, 1))};
     }
 }

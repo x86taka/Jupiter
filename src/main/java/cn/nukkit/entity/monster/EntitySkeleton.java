@@ -1,6 +1,9 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemArrow;
+import cn.nukkit.item.ItemBone;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -33,7 +36,7 @@ public class EntitySkeleton extends EntityMonster {
 
     @Override
     public float getHeight() {
-        return 1.8f;
+        return 1.99f;
     }
 
     @Override
@@ -57,5 +60,10 @@ public class EntitySkeleton extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemArrow(0, random.nextRange(0, 2)), new ItemBone(0, random.nextRange(0, 2))};
     }
 }

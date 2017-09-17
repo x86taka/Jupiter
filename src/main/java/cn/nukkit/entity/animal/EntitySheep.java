@@ -5,10 +5,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import cn.nukkit.Player;
 import cn.nukkit.block.BlockWool;
 import cn.nukkit.entity.data.ByteEntityData;
-import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemDye;
+import cn.nukkit.item.ItemMuttonCooked;
+import cn.nukkit.item.ItemMuttonRaw;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.DyeColor;
@@ -113,10 +114,19 @@ public class EntitySheep extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        if (this.lastDamageCause instanceof EntityDamageByEntityEvent) {
-            return new Item[]{Item.get(Item.WOOL, getColor(), 1)};
+        if (!(this.sheared)) {
+            if (this.isOnFire()) {
+                return new Item[]{new ItemBlock(new BlockWool()), new ItemMuttonCooked(0, random.nextRange(1, 3))};
+            } else {
+                return new Item[]{new ItemBlock(new BlockWool()), new ItemMuttonRaw(0, random.nextRange(1, 3))};
+            }
+        } else {
+            if (this.isOnFire()) {
+                return new Item[]{new ItemMuttonCooked(0, random.nextRange(1, 3))};
+            } else {
+                return new Item[]{new ItemMuttonRaw(0, random.nextRange(1, 3))};
+            }
         }
-        return new Item[0];
     }
 
     public void setColor(int color) {

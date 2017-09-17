@@ -2,6 +2,7 @@ package cn.nukkit.block;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemGlowstoneDust;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.utils.BlockColor;
 
 /**
@@ -50,7 +51,7 @@ public class BlockGlowstone extends BlockTransparent {
             };
         } else {
             return new Item[]{
-                    new ItemGlowstoneDust(0, ((int) (2d * Math.random()) + 2))
+                    new ItemGlowstoneDust(0, new NukkitRandom().nextRange(2, 4))
             };
         }
     }

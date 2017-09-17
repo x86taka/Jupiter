@@ -1,10 +1,11 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemLeather;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public class EntityHorse extends EntityAnimal{
+public class EntityHorse extends EntityAnimal {
 
     public static final int NETWORK_ID = 23;
 
@@ -46,6 +47,6 @@ public class EntityHorse extends EntityAnimal{
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{};
+        return new Item[]{new ItemLeather(0, random.nextRange(0, 2))};
     }
 }

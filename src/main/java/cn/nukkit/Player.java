@@ -239,8 +239,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public static final int CRAFTING_ENCHANT = 3;
     public static final int CRAFTING_STONECUTTER = 4;//使用されていない(PMMPから引用)
 
-    public static final float DEFAULT_SPEED = 0.1f;
-    public static final float MAXIMUM_SPEED = 0.5f;
+    public static final float DEFAULT_SPEED = 0.2f;//オリジナル; 0.1 (wikiのわずかに速度が上昇という記述による)
+    public static final float MAXIMUM_SPEED = 0.6f;//オリジナル:0.5 (wikiのわずかに速度が上昇という記述による)
 
     protected final SourceInterface interfaz;
 

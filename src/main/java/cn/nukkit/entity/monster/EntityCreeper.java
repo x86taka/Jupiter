@@ -4,7 +4,9 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.entity.weather.EntityLightningStrike;
 import cn.nukkit.event.entity.CreeperPowerEvent;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 
@@ -82,5 +84,14 @@ public class EntityCreeper extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+    
+    @Override
+    public Item[] getDrops(){
+    	if(this.getLastDamageCause().getEntity() instanceof EntitySkeleton){
+    		return new Item[]{Item.get(500 + new NukkitRandom().randomInt(12), 0, 1)};
+    	}else{
+    		return new Item[]{Item.get(289, 0, new NukkitRandom().randomInt(3))};
+    	}
     }
 }

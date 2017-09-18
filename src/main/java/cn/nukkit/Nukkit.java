@@ -71,8 +71,8 @@ public class Nukkit {
 
                 MainLogger logger = new MainLogger(DATA_PATH + "server.log");
 
-                System.out.println("Minecraft PE用Jupiterサーバーを開始しています。");
-
+                System.out.println("Minecraft用 Jupiterサーバーを開始しています。");
+                
                 jobs.add(new Callable<Server>(){
                     @Override
                     public Server call() throws Exception {

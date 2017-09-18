@@ -320,7 +320,12 @@ public class Server implements ActionListener{
         currentThread = Thread.currentThread(); // Saves the current thread instance as a reference, used in Server#isPrimaryThread()
         instance = this;
         this.logger = logger;
-
+        
+        this.logger.info("");
+        this.logger.info(FastAppender.get(TextFormat.BLUE, "Jupiter", TextFormat.WHITE, " by JupiterDevelopmentTeam"));
+        this.logger.info("");
+        this.logger.info("");
+        
         this.filePath = filePath;
         if (!new File(dataPath + "worlds/").exists()) {
             new File(dataPath + "worlds/").mkdirs();
@@ -364,7 +369,7 @@ public class Server implements ActionListener{
         this.console = new CommandReader();
 
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
-            this.getLogger().info(FastAppender.get(TextFormat.GREEN, "Welcome! Please choose a language first!"));
+            this.getLogger().info(FastAppender.get(TextFormat.GREEN, "ようこそ。言語を選択してください。"));
             try {
                 String[] lines = Utils.readFile(this.getClass().getClassLoader().getResourceAsStream("lang/language.list")).split("\n");
                 for (String line : lines) {
@@ -565,29 +570,18 @@ public class Server implements ActionListener{
         int m = now.get(Calendar.MINUTE);
         int s = now.get(Calendar.SECOND);
 
-        this.logger.info(FastAppender.get(TextFormat.AQUA,"=================================================================================="));
-        this.logger.info(FastAppender.get(TextFormat.AQUA, "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣"));
-        this.logger.info("   |￣|  |￣| |￣|  |￣￣￣￣|  |￣|  |￣￣￣￣￣|  |￣￣￣￣| |￣￣￣￣|");
-        this.logger.info("   |  |  |  | |  |  | |￣￣| |  |  |  ￣￣|  |￣￣  | |￣￣￣  | |￣￣| |");
-        this.logger.info("   |  |  |  | |  |  | ￣￣￣ |  |  |      |  |      |  ￣￣￣| | ￣￣￣ | ");
-        this.logger.info("  _|  |  |  | |  |  | |￣￣￣   |  |      |  |      | |￣￣￣  | |￣＼ ＼");
-        this.logger.info(" |____|  |__￣___|  |_|         |__|      |__|      |  ￣￣￣| |_|    ＼_|");
         this.logger.info("");
-        this.logger.info(FastAppender.get(TextFormat.AQUA, "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣"));
-
-        this.logger.info(FastAppender.get("日時:", TextFormat.BLUE, y, "/", mo, "/", d, " ", h, "時", m, "分", s, "秒"));
-        this.logger.info(FastAppender.get("サーバー名: ", TextFormat.GREEN, this.getMotd()));
-        this.logger.info(FastAppender.get("IP: ", TextFormat.GREEN, this.getIp()));
-        this.logger.info(FastAppender.get("ポート: ", TextFormat.GREEN, this.getPort()));
-        this.logger.info(FastAppender.get("Jupiterバージョン: ", TextFormat.LIGHT_PURPLE, this.getJupiterVersion()));
-        this.logger.info(FastAppender.get("Nukkitバージョン: ", TextFormat.LIGHT_PURPLE, this.getNukkitVersion()));
-        this.logger.info(FastAppender.get("APIバージョン: ", TextFormat.LIGHT_PURPLE, this.getApiVersion()));
-        this.logger.info(FastAppender.get("コードネーム: ", TextFormat.LIGHT_PURPLE, this.getCodename()));
-
-        this.logger.info(FastAppender.get(TextFormat.AQUA, "=================================================================================="));
+        this.logger.info(FastAppender.get("日時: \t\t\t", TextFormat.BLUE, y, "/", mo, "/", d, " ", h, "時", m, "分", s, "秒"));
+        this.logger.info(FastAppender.get("サーバー名: \t\t", TextFormat.GREEN, this.getMotd()));
+        this.logger.info(FastAppender.get("IP: \t\t\t", TextFormat.GREEN, this.getIp()));
+        this.logger.info(FastAppender.get("ポート: \t\t", TextFormat.GREEN, this.getPort()));
+        this.logger.info(FastAppender.get("Jupiterバージョン: \t", TextFormat.GREEN, this.getJupiterVersion()));
+        this.logger.info(FastAppender.get("Nukkitバージョン: \t", TextFormat.GREEN, this.getNukkitVersion()));
+        this.logger.info(FastAppender.get("APIバージョン: \t", TextFormat.GREEN, this.getApiVersion()));
+        this.logger.info(FastAppender.get("コードネーム: \t\t", TextFormat.GREEN, this.getCodename()));
+        this.logger.info("");
 
         if(this.getJupiterConfigBoolean("jupiter-compiler-mode")){
-            this.logger.info(FastAppender.get(TextFormat.YELLOW, "----------------------------------------------------------------------------------"));
             this.logger.info(FastAppender.get(TextFormat.AQUA, "コンパイルしています..."));
             File f = new File(dataPath + "compileOrder/");
             File[] list = f.listFiles();
@@ -598,14 +592,15 @@ public class Server implements ActionListener{
                 else
                     this.logger.info(FastAppender.get(list[i].toPath().toString(), " :", TextFormat.RED, "失敗"));
             }
-            this.logger.info(FastAppender.get(TextFormat.YELLOW, "----------------------------------------------------------------------------------"));
+            this.logger.info("");
         }
 
-        this.logger.info(FastAppender.get(TextFormat.LIGHT_PURPLE, "----------------------------------------------------------------------------------"));
         this.logger.info(FastAppender.get(TextFormat.AQUA, "プラグインを読み込んでいます..."));
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
+        
+        this.logger.info("");
 
         LevelProviderManager.addProvider(this, Anvil.class);
         LevelProviderManager.addProvider(this, McRegion.class);
@@ -685,9 +680,10 @@ public class Server implements ActionListener{
         if ((int) this.getConfig("ticks-per.autosave", 6000) > 0) {
             this.autoSaveTicks = (int) this.getConfig("ticks-per.autosave", 6000);
         }
-
+        
+        this.logger.info("");
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
-        this.logger.info(FastAppender.get(TextFormat.LIGHT_PURPLE, "----------------------------------------------------------------------------------"));
+        this.logger.info("");
 
         this.start();
     }
@@ -1256,7 +1252,6 @@ public class Server implements ActionListener{
         this.tickCounter = 0;
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getDefaultGamemode())));
-
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
         this.trayMessage(FastAppender.get("サーバー起動完了(", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000), "秒)"), MessageType.INFO);
 

@@ -87,6 +87,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_TYPE_POS = 6;
     public static final int DATA_TYPE_LONG = 7;
     public static final int DATA_TYPE_VECTOR3F = 8;
+    public static final int DATA_JUMP_DURATION = 10; //long
     public static final int DATA_FLAGS = 0;
     public static final int DATA_HEALTH = 1; //int (minecart/boat)
     public static final int DATA_VARIANT = 2; //int
@@ -110,6 +111,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_ENDERMAN_HELD_ITEM_ID = 23; //short
     public static final int DATA_ENDERMAN_HELD_ITEM_DAMAGE = 24; //short
     public static final int DATA_ENTITY_AGE = 25; //short
+    public static final int DATA_PLAYER_FLAGS = 29; //byte
     /* 27 (byte) player-specific flags
      * 28 (int) player "index"?
      * 29 (block coords) bed position */
@@ -203,7 +205,10 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_FLAG_IDLING = 39;
     public static final int DATA_FLAG_EVOKER_SPELL = 40;
     public static final int DATA_FLAG_CHARGE_ATTACK = 41;
+    public static final int DATA_FLAG_IS_WASD_CONTROLLED = 43;
+    public static final int DATA_FLAG_CAN_POWER_JUMP = 44;
     public static final int DATA_FLAG_LINGER = 45;
+    public static final int DATA_FLAG_GRAVITY = 46;
 
     public static long entityCount = 1;
 

@@ -75,7 +75,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         super.setHealth(health);
         if (this.isAlive() && !wasAlive) {
             EntityEventPacket pk = new EntityEventPacket();
-            pk.entityRuntimeId = this.getId();
+            pk.eid = this.getId();
             pk.event = EntityEventPacket.RESPAWN;
             Server.broadcastPacket(this.level.getPlayers().values(), pk);
         }
@@ -132,7 +132,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
             }
 
             EntityEventPacket pk = new EntityEventPacket();
-            pk.entityRuntimeId = this.getId();
+            pk.eid = this.getId();
             pk.event = this.getHealth() <= 0 ? EntityEventPacket.DEATH_ANIMATION : EntityEventPacket.HURT_ANIMATION;
             Server.broadcastPacket(this.level.getPlayers().values(), pk);
 

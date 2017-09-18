@@ -55,7 +55,6 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
         this.raknet = new RakNetServer(this.server.getLogger(), this.server.getPort(), this.server.getIp().equals("") ? "0.0.0.0" : this.server.getIp());
         this.handler = new ServerHandler(this.raknet, this);
     }
-
     @Override
     public void setNetwork(Network network) {
         this.network = network;

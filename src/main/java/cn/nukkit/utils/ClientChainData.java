@@ -56,12 +56,13 @@ public final class ClientChainData {
     private String languageCode;
     private int currentInputMode;
     private int defaultInputMode;
-    private String ADRole;
-    private String tenantId;
     private int UIProfile;
     private Skin skin;
+    public String skinGeometryName;
+    public byte[] skinGeometry;
     private int protocol;
     private byte gameEdition;
+    private String capeData;
 
     private BinaryStream bs = new BinaryStream();
 
@@ -159,14 +160,6 @@ public final class ClientChainData {
         return this.defaultInputMode;
     }
 
-    public String getADRole() {
-        return this.ADRole;
-    }
-
-    public String getTenantId() {
-        return this.tenantId;
-    }
-
     public int getUIProfile() {
         return this.UIProfile;
     }
@@ -181,6 +174,10 @@ public final class ClientChainData {
 
     public byte getGameEdition() {
         return this.gameEdition;
+    }
+    
+    public String getCapeData() {
+    	 return capeData;
     }
 
     @Deprecated
@@ -205,7 +202,6 @@ public final class ClientChainData {
         this.decodeChainData();
         this.decodeSkinData();
         this.protocol = pk.getProtocol();
-        this.gameEdition = pk.gameEdition;
     }
 
     private void decodeChainData() {
@@ -239,11 +235,12 @@ public final class ClientChainData {
         if (skinToken.has("LanguageCode")) this.languageCode = skinToken.get("LanguageCode").getAsString();
         if (skinToken.has("CurrentInputMode")) this.currentInputMode = skinToken.get("CurrentInputMode").getAsInt();
         if (skinToken.has("DefaultInputMode")) this.defaultInputMode = skinToken.get("DefaultInputMode").getAsInt();
-        if (skinToken.has("ADRole")) this.ADRole = skinToken.get("ADRole").getAsString();
-        if (skinToken.has("TenantId")) this.tenantId = skinToken.get("TenantId").getAsString();
         if (skinToken.has("UIProfile")) this.UIProfile = skinToken.get("UIProfile").getAsInt();
+        if (skinToken.has("CapeData")) this.capeData = skinToken.get("CapeData").getAsString();
         String skinId = null;
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
+        if (skinToken.has("SkinGeometryName")) this.skinGeometryName = skinToken.get("SkinGeometryName").getAsString();
+        if (skinToken.has("SkinGeometry")) this.skinGeometry = Base64.getDecoder().decode(skinToken.get("SkinGeometry").getAsString());
         if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
     }
 

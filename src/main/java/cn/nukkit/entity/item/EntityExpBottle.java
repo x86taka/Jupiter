@@ -1,7 +1,8 @@
-package cn.nukkit.entity.projectile;
+package cn.nukkit.entity.item;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.entity.projectile.EntityProjectile;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.EnchantParticle;
 import cn.nukkit.level.particle.Particle;

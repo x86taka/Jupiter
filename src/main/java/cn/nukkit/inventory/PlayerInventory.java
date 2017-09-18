@@ -12,10 +12,11 @@ import cn.nukkit.event.entity.EntityInventoryChangeEvent;
 import cn.nukkit.event.player.PlayerItemHeldEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
-import cn.nukkit.network.protocol.ContainerSetContentPacket;
-import cn.nukkit.network.protocol.ContainerSetSlotPacket;
+import cn.nukkit.network.protocol.InventoryContentPacket;
+import cn.nukkit.network.protocol.InventorySlotPacket;
 import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
+import cn.nukkit.network.protocol.PlayerHotbarPacket;
 
 /**
  * author: MagicDroidX
@@ -95,7 +96,7 @@ public class PlayerInventory extends BaseInventory {
                 PlayerItemHeldEvent ev = new PlayerItemHeldEvent((Player) this.getHolder(), item, slot, itemIndex);
                 Server.getInstance().getPluginManager().callEvent(ev);
                 if (ev.isCancelled()) {
-                    this.sendContents((Player) this.getHolder());
+                	this.sendHotbarContents();
                     return;
                 }
             }
@@ -318,9 +319,8 @@ public class PlayerInventory extends BaseInventory {
 
         for (Player player : players) {
             if (player.equals(this.getHolder())) {
-                ContainerSetContentPacket pk2 = new ContainerSetContentPacket();
-                pk2.windowid = ContainerSetContentPacket.SPECIAL_ARMOR;
-                pk2.entityRuntimeId = player.getId();
+            	InventoryContentPacket pk2 = new InventoryContentPacket();
+                pk2.inventoryId = InventoryContentPacket.SPECIAL_ARMOR;
                 pk2.slots = armor;
                 player.dataPacket(pk2);
             } else {
@@ -368,8 +368,8 @@ public class PlayerInventory extends BaseInventory {
 
         for (Player player : players) {
             if (player.equals(this.getHolder())) {
-                ContainerSetSlotPacket pk2 = new ContainerSetSlotPacket();
-                pk2.windowid = ContainerSetContentPacket.SPECIAL_ARMOR;
+            	InventorySlotPacket pk2 = new InventorySlotPacket();
+                pk2.inventoryId = InventoryContentPacket.SPECIAL_ARMOR;
                 pk2.slot = index - this.getSize();
                 pk2.item = this.getItem(index);
                 player.dataPacket(pk2);
@@ -395,27 +395,19 @@ public class PlayerInventory extends BaseInventory {
 
     @Override
     public void sendContents(Player[] players) {
-        ContainerSetContentPacket pk = new ContainerSetContentPacket();
+    	InventoryContentPacket pk = new InventoryContentPacket();
         pk.slots = new Item[this.getSize()];
-        for (int i = 0; i < this.getSize(); ++i) {
-            pk.slots[i] = this.getItem(i);
-        }
+        //for (int i = 0; i < this.getSize(); ++i) {
+        //    pk.slots[i] = this.getItem(i);
+        //}
 
         for (Player player : players) {
-            if (player.equals(this.getHolder())) {
-                pk.hotbar = new int[this.getHotbarSize()];
-                for (int i = 0; i < this.getHotbarSize(); ++i) {
-                    int index = this.getHotbarSlotIndex(i);
-                    pk.hotbar[i] = index <= -1 ? -1 : index + 9;
-                }
-            }
             int id = player.getWindowId(this);
             if (id == -1 || !player.spawned) {
                 this.close(player);
                 continue;
             }
-            pk.entityRuntimeId = player.getId();
-            pk.windowid = (byte) id;
+            pk.inventoryId = id;
             player.dataPacket(pk.clone());
         }
     }
@@ -429,16 +421,28 @@ public class PlayerInventory extends BaseInventory {
     public void sendSlot(int index, Collection<Player> players) {
         this.sendSlot(index, players.stream().toArray(Player[]::new));
     }
+    
+    public void sendHotbarContents() {
+        if (this.getHolder() instanceof Player) {
+        	PlayerHotbarPacket playerHotbarPacket = new PlayerHotbarPacket();
+        	playerHotbarPacket.data = new int[this.getHotbarSize()];
+        	for (int i = 0; i < this.getHotbarSize(); ++i) {
+        		int index = this.getHotbarSlotIndex(i);
+    	        	playerHotbarPacket.data[i] = index <= -1 ? -1 : index + 9;
+    	 	}
+        	((Player) holder).dataPacket(playerHotbarPacket);
+    	}
+    }
 
     @Override
     public void sendSlot(int index, Player[] players) {
-        ContainerSetSlotPacket pk = new ContainerSetSlotPacket();
+    	InventorySlotPacket pk = new InventorySlotPacket();
         pk.slot = index;
         pk.item = this.getItem(index).clone();
 
         for (Player player : players) {
             if (player.equals(this.getHolder())) {
-                pk.windowid = 0;
+                pk.inventoryId = 0;
                 player.dataPacket(pk);
             } else {
                 int id = player.getWindowId(this);
@@ -446,7 +450,7 @@ public class PlayerInventory extends BaseInventory {
                     this.close(player);
                     continue;
                 }
-                pk.windowid = (byte) id;
+                pk.inventoryId = id;
                 player.dataPacket(pk.clone());
             }
         }

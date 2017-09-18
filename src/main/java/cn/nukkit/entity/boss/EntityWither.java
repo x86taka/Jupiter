@@ -45,6 +45,6 @@ public class EntityWither extends EntityBoss {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{new ItemNetherStar(0, 1)};
+        return new Item[]{new ItemNetherStar()};
     }
 }

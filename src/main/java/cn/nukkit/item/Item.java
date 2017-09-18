@@ -555,6 +555,8 @@ public class Item implements Cloneable {
 
     public static final int SHULKER_SHELL = 445;
 
+    public static final int TOTEM = 450;
+
     public static final int BEETROOT = 457;
     public static final int BEETROOT_SEEDS = 458;
     public static final int BEETROOT_SEED = 458;

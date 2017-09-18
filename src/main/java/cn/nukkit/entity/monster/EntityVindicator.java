@@ -1,6 +1,9 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemAxeIron;
+import cn.nukkit.item.ItemEmerald;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -59,5 +62,14 @@ public class EntityVindicator extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        if (random.nextRange(1, 100) <= 15) {
+            return new Item[]{new ItemEmerald(0, random.nextRange(0, 1)), new ItemAxeIron()};
+        } else {
+            return new Item[]{new ItemEmerald(0, random.nextRange(0, 1))};
+        }
     }
 }

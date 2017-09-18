@@ -21,6 +21,7 @@ public class EntitySkeleton extends EntityMonster {
     }
     @Override
     protected void initEntity() {
+        this.setMaxHealth(20);
         super.initEntity();
     }
     

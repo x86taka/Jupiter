@@ -1,6 +1,11 @@
 package cn.nukkit.entity.animal;
 
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemRabbitCooked;
+import cn.nukkit.item.ItemRabbitFoot;
+import cn.nukkit.item.ItemRabbitHide;
+import cn.nukkit.item.ItemRabbitRaw;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -47,11 +52,15 @@ public class EntityRabbit extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        if (this.isOnFire()) {
-            return new Item[]{Item.get(Item.RAW_RABBIT), Item.get(Item.RABBIT_HIDE), Item.get(Item.RABBIT_FOOT)};
-        } else {
-            return new Item[]{Item.get(Item.COOKED_RABBIT), Item.get(Item.RABBIT_HIDE), Item.get(Item.RABBIT_FOOT)};
+        Item drops[] = new Item[3];
+        drops[0] = this.isOnFire() ? new ItemRabbitCooked(0, random.nextRange(0, 1)) : new ItemRabbitRaw(0, random.nextRange(0, 1));
+        drops[1] = new ItemRabbitHide(0, random.nextRange(0, 1));
+
+        if (this.getLastDamageCause() instanceof EntityDamageByEntityEvent && random.nextRange(1, 10) == 1) {
+            drops[2] = new ItemRabbitFoot(random.nextRange(0, 1));
         }
+
+        return drops;
     }
 
     @Override

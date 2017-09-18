@@ -4,10 +4,9 @@ import cn.nukkit.entity.monster.EntityMonster;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public abstract class EntityBoss extends EntityMonster{
+public abstract class EntityBoss extends EntityMonster {
 
-	public EntityBoss(FullChunk chunk, CompoundTag nbt) {
-		super(chunk, nbt);
-	}
-
+    public EntityBoss(FullChunk chunk, CompoundTag nbt) {
+        super(chunk, nbt);
+    }
 }

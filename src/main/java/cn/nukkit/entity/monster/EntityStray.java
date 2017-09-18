@@ -1,6 +1,10 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemArrow;
+import cn.nukkit.item.ItemBone;
+import cn.nukkit.item.ItemPotion;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -16,11 +20,13 @@ public class EntityStray extends EntityMonster {
     public EntityStray(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
+
     @Override
     protected void initEntity() {
+        this.setMaxHealth(20);
         super.initEntity();
     }
-    
+
     @Override
     public float getWidth() {
         return 0.6f;
@@ -57,5 +63,13 @@ public class EntityStray extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{
+                new ItemArrow(0, random.nextRange(0, 2)), 
+                new ItemBone(0, random.nextRange(0, 2)),
+                new ItemArrow(ItemPotion.SLOWNESS, random.nextRange(0, 1))};
     }
 }

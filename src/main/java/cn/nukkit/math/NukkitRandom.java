@@ -2,6 +2,7 @@ package cn.nukkit.math;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Random;
 import java.util.zip.CRC32;
 
 /**
@@ -74,5 +75,9 @@ public class NukkitRandom {
 
     public int nextBoundedInt(int bound) {
         return this.nextInt() % bound;
+    }
+    
+    public int randomInt(int bound){
+    	return new Random().nextInt(bound);
     }
 }

@@ -3350,7 +3350,24 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                         switch (par.type) {
                                             case CommandParameter.ARG_TYPE_TARGET:
                                                 CommandArg rules = new Gson().fromJson(arg, CommandArg.class);
-                                                commandText += " " + rules.getRules()[0].getValue();
+                                                if (rules.getRules()[0].getName().equals("type")) {
+                                                    switch (rules.getSelector().trim()) {
+                                                        case "allPlayers":
+                                                            commandText += " @a";
+                                                            break;
+                                                        case "allEntities":
+                                                            commandText += " @e";
+                                                            break;
+                                                        case "nearestPlayer":
+                                                            commandText += " @p";
+                                                            break;
+                                                        case "randomPlayer":
+                                                            commandText += " @r";
+                                                            break;
+                                                    }
+                                                } else {
+                                                    commandText += " " + rules.getRules()[0].getValue();
+                                                }
                                                 break;
                                             case CommandParameter.ARG_TYPE_BLOCK_POS:
                                                 CommandArgBlockVector bv = new Gson().fromJson(arg, CommandArgBlockVector.class);

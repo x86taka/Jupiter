@@ -33,12 +33,12 @@ public class CommandParameter {
         this.optional = optional;
     }
 
-    public CommandParameter(String name, boolean optional) {
-        this(name, ARG_TYPE_RAW_TEXT, optional);
-    }
-
     public CommandParameter(String name) {
         this(name, false);
+    }
+
+    public CommandParameter(String name, boolean optional) {
+        this(name, ARG_TYPE_RAW_TEXT, optional);
     }
 
     public CommandParameter(String name, boolean optional, String enumType){

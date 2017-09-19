@@ -33,7 +33,7 @@ public class TeleportCommand extends VanillaCommand {
                 new CommandParameter("x-rot", CommandParameter.ARG_TYPE_INT, true)*/
         });
         this.commandParameters.put("->Pos", new CommandParameter[]{
-                new CommandParameter("pos", CommandParameter.ARG_TYPE_BLOCK_POS, false),
+                new CommandParameter("destination", CommandParameter.ARG_TYPE_BLOCK_POS, false),
                 /*new CommandParameter("y-rot", CommandParameter.ARG_TYPE_INT, true), //TODO
                 new CommandParameter("x-rot", CommandParameter.ARG_TYPE_INT, true)*/
         });

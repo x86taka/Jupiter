@@ -9,7 +9,6 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.entity.EntityHuman;
 import cn.nukkit.item.Item;
 import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
@@ -64,12 +63,8 @@ public class GiveCommand extends VanillaCommand {
             if (sender instanceof ConsoleCommandSender) {
                 sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
                 return true;
-            } else {
-                if (((EntityHuman) sender).getMinDistancePlayer() == null) {
-                    players = new Player[]{(Player) sender};
-                } else {
-                    players = new Player[]{((EntityHuman) sender).getMinDistancePlayer()};
-                }
+            } else {//TODO: CommandBlockCommandSender
+                players = new Player[]{(Player) sender};
             }
         } else if (args[0].equals("@r")) {
             List<Player> list = Arrays.asList(sender.getServer().getOnlinePlayers().values().toArray(new Player[0]));

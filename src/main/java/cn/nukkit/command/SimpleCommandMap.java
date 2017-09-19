@@ -42,6 +42,7 @@ import cn.nukkit.command.defaults.SetWorldSpawnCommand;
 import cn.nukkit.command.defaults.SpawnpointCommand;
 import cn.nukkit.command.defaults.StatusCommand;
 import cn.nukkit.command.defaults.StopCommand;
+import cn.nukkit.command.defaults.SummonCommand;
 import cn.nukkit.command.defaults.TeleportCommand;
 import cn.nukkit.command.defaults.TellCommand;
 import cn.nukkit.command.defaults.TimeCommand;
@@ -104,6 +105,7 @@ public class SimpleCommandMap implements CommandMap {
         this.register("nukkit", new SaveOnCommand("save-on"));
         this.register("nukkit", new SaveOffCommand("save-off"));
         this.register("nukkit", new SaveCommand("save-all"));
+        this.register("nukkit", new SummonCommand("summon"));
         this.register("nukkit", new GiveCommand("give"));
         this.register("nukkit", new EffectCommand("effect"));
         this.register("nukkit", new EnchantCommand("enchant"));

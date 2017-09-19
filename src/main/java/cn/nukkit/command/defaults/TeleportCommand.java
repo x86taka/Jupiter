@@ -20,18 +20,22 @@ public class TeleportCommand extends VanillaCommand {
         this.setPermission("nukkit.command.teleport");
         this.commandParameters.clear();
         this.commandParameters.put("->Player", new CommandParameter[]{
-                new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
+                new CommandParameter("destination", CommandParameter.ARG_TYPE_TARGET, false),
         });
         this.commandParameters.put("Player->Player", new CommandParameter[]{
-                new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
-                new CommandParameter("target", CommandParameter.ARG_TYPE_TARGET, false),
+                new CommandParameter("victim", CommandParameter.ARG_TYPE_TARGET, false),
+                new CommandParameter("destination", CommandParameter.ARG_TYPE_TARGET, false),
         });
         this.commandParameters.put("Player->Pos", new CommandParameter[]{
-                new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
-                new CommandParameter("pos", CommandParameter.ARG_TYPE_BLOCK_POS, false),
+                new CommandParameter("victim", CommandParameter.ARG_TYPE_TARGET, false),
+                new CommandParameter("destination", CommandParameter.ARG_TYPE_BLOCK_POS, false),
+                /*new CommandParameter("y-rot", CommandParameter.ARG_TYPE_INT, true), //TODO
+                new CommandParameter("x-rot", CommandParameter.ARG_TYPE_INT, true)*/
         });
         this.commandParameters.put("->Pos", new CommandParameter[]{
                 new CommandParameter("pos", CommandParameter.ARG_TYPE_BLOCK_POS, false),
+                /*new CommandParameter("y-rot", CommandParameter.ARG_TYPE_INT, true), //TODO
+                new CommandParameter("x-rot", CommandParameter.ARG_TYPE_INT, true)*/
         });
     }
 

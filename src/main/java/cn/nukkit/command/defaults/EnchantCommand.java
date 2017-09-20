@@ -20,12 +20,12 @@ public class EnchantCommand extends VanillaCommand {
         this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
                 new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
-                new CommandParameter("enchantment ID", CommandParameter.ARG_TYPE_INT, false),
+                new CommandParameter("enchantmentId", CommandParameter.ARG_TYPE_INT, false),
                 new CommandParameter("level", CommandParameter.ARG_TYPE_INT, true)
         });
         this.commandParameters.put("byName", new CommandParameter[]{
                 new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
-                new CommandParameter("id", false, CommandParameter.ENUM_TYPE_ENCHANTMENT_LIST),
+                new CommandParameter("enchantmentName", false, CommandParameter.ENUM_TYPE_ENCHANTMENT_LIST),
                 new CommandParameter("level", CommandParameter.ARG_TYPE_INT, true)
         });
     }

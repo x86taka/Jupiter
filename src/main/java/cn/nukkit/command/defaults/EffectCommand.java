@@ -28,7 +28,7 @@ public class EffectCommand extends Command {
         });
         this.commandParameters.put("clear", new CommandParameter[]{
                 new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false),
-                new CommandParameter("clear", new String[]{"clear"})
+                new CommandParameter("clear", false, new String[]{"clear"})
         });
     }
 

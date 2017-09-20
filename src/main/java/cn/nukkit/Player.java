@@ -239,7 +239,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public static final int CRAFTING_ENCHANT = 3;
     public static final int CRAFTING_STONECUTTER = 4;//使用されていない(PMMPから引用)
 
-    public static final float DEFAULT_SPEED = 0.2f;//オリジナル; 0.1 (wikiのわずかに速度が上昇という記述による)
+    public static final float DEFAULT_SPEED = 0.2f;//オリジナル: 0.1 (wikiのわずかに速度が上昇という記述による)
     public static final float MAXIMUM_SPEED = 0.6f;//オリジナル:0.5 (wikiのわずかに速度が上昇という記述による)
 
     protected final SourceInterface interfaz;
@@ -369,6 +369,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected boolean enableRevert = true;
 
     public ClientChainData loginChainData;
+
+    //看板関係
+
+    private String signText1;
+
+    private String signText2;
+
+    private String signText3;
+
+    private String signText4;
+
+    private BlockEntity blockEntity;
 
     public void linkHookToPlayer(EntityFishingHook entity){
         this.fishingHook = entity;
@@ -3042,6 +3054,27 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.craftingType = CRAFTING_SMALL;
                     this.currentTransaction = null;
                     if (this.windowIndex.containsKey(containerClosePacket.windowid)) {
+                        /*
+                         * TODO PreSignChangeEvent
+                         * 看板を変更する画面を閉じたときにだけ呼ぶイベント。
+                         * XがウィンドウIDだが、それが看板(未調査)の場合のみ実行。
+
+                        if(containerClosePacket.windowid == X){
+                            PreSignChangeEvent presignchangeevent = new PreSignChangeEvent(blockEntity.getBlock(), this, new String[]{
+                                    signText1,
+                                    signText2,
+                                    signText3,
+                                    signText4
+                            });
+
+
+                            if (!blockEntity.namedTag.contains("Creator") || !Objects.equals(this.getUniqueId().toString(), blockEntity.namedTag.getString("Creator"))) {
+                                presignchangeevent.setCancelled();
+                            }
+
+                            this.server.getPluginManager().callEvent(presignchangeevent);
+                        }
+                        */
                         this.server.getPluginManager().callEvent(new InventoryCloseEvent(this.windowIndex.get(containerClosePacket.windowid), this));
                         this.removeWindow(this.windowIndex.get(containerClosePacket.windowid));
                     } else {
@@ -3539,11 +3572,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (!BlockEntity.SIGN.equals(nbt.getString("id"))) {
                             ((BlockEntitySign) t).spawnTo(this);
                         } else {
-                            SignChangeEvent signChangeEvent = new SignChangeEvent(t.getBlock(), this, new String[]{
-                                    this.removeFormat ? TextFormat.clean(nbt.getString("Text1")) : nbt.getString("Text1"),
-                                    this.removeFormat ? TextFormat.clean(nbt.getString("Text2")) : nbt.getString("Text2"),
-                                    this.removeFormat ? TextFormat.clean(nbt.getString("Text3")) : nbt.getString("Text3"),
-                                    this.removeFormat ? TextFormat.clean(nbt.getString("Text4")) : nbt.getString("Text4")
+                           blockEntity = t;
+
+                            signText1 = this.removeFormat ? TextFormat.clean(nbt.getString("Text1")) : nbt.getString("Text1");
+                            signText2 = this.removeFormat ? TextFormat.clean(nbt.getString("Text2")) : nbt.getString("Text2");
+                            signText3 = this.removeFormat ? TextFormat.clean(nbt.getString("Text3")) : nbt.getString("Text3");
+                            signText4 = this.removeFormat ? TextFormat.clean(nbt.getString("Text4")) : nbt.getString("Text4");
+
+                            SignChangeEvent signChangeEvent = new SignChangeEvent(blockEntity.getBlock(), this, new String[]{
+                                    signText1,
+                                    signText2,
+                                    signText3,
+                                    signText4
                             });
 
                             if (!t.namedTag.contains("Creator") || !Objects.equals(this.getUniqueId().toString(), t.namedTag.getString("Creator"))) {

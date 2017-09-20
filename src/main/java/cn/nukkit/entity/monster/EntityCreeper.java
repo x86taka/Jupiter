@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.entity.weather.EntityLightningStrike;
 import cn.nukkit.event.entity.CreeperPowerEvent;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.NukkitRandom;
@@ -85,13 +86,16 @@ public class EntityCreeper extends EntityMonster {
 
         super.spawnTo(player);
     }
-    
+
     @Override
     public Item[] getDrops(){
-    	if(this.getLastDamageCause().getEntity() instanceof EntitySkeleton){
-    		return new Item[]{Item.get(500 + new NukkitRandom().randomInt(12), 0, 1)};
-    	}else{
-    		return new Item[]{Item.get(289, 0, new NukkitRandom().randomInt(3))};
-    	}
+        if(this.getLastDamageCause() instanceof EntityDamageByEntityEvent){
+            if(((EntityDamageByEntityEvent) this.getLastDamageCause()).getDamager() instanceof EntitySkeleton){
+                return new Item[]{Item.get(500 + new NukkitRandom().nextRange(0, 12), 0, 1)}; //レコード
+            }else{
+                return new Item[]{Item.get(289, 0, new NukkitRandom().nextRange(0, 3))}; //火薬を0-3個のうちどれか
+            }
+        }
+        return new Item[]{};
     }
 }

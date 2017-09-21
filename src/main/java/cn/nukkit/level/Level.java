@@ -2846,7 +2846,8 @@ public class Level implements ChunkManager, Metadatable {
                 }
 
                 for (; y >= 0 && y < 256; ++y) {
-                    int b = chunk.getFullBlock(x, y + 1, z);
+                    int b = chunk.getFullBlock(x, y, z);
+                    //int b = chunk.getFullBlock(x, y + 1, z);
                     Block block = Block.get(b >> 4, b & 0x0f);
                     if (!this.isFullBlock(block)) {
                         b = chunk.getFullBlock(x, y, z);

@@ -1,6 +1,8 @@
 package cn.nukkit.network.protocol;
 
 public class SubClientLoginPacket extends DataPacket {
+	
+	public String connectionRequestData;
 
     @Override
     public byte pid() {
@@ -9,11 +11,12 @@ public class SubClientLoginPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.connectionRequestData = this.getString();
     }
 
     @Override
     public void encode() {
-        //TODO
+        this.reset();
+        this.putString(this.connectionRequestData);
     }
 }

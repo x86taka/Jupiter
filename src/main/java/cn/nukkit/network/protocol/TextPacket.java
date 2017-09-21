@@ -16,10 +16,11 @@ public class TextPacket extends DataPacket {
     public static final byte TYPE_CHAT = 1;
     public static final byte TYPE_TRANSLATION = 2;
     public static final byte TYPE_POPUP = 3;
-    public static final byte TYPE_TIP = 4;
-    public static final byte TYPE_SYSTEM = 5;
-    public static final byte TYPE_WHISPER = 6;
-    public static final byte TYPE_ANNOUNCEMENT = 7;
+    public static final byte TYPE_JUKEBOX_POPUP = 4;
+    public static final byte TYPE_TIP = 5;
+    public static final byte TYPE_SYSTEM = 6;
+    public static final byte TYPE_WHISPER = 7;
+    public static final byte TYPE_ANNOUNCEMENT = 8;
 
     public byte type;
     public String source = "";
@@ -42,7 +43,7 @@ public class TextPacket extends DataPacket {
             case TYPE_SYSTEM:
                 this.message = this.getString();
                 break;
-
+            case TYPE_JUKEBOX_POPUP:
             case TYPE_TRANSLATION:
                 this.message = this.getString();
                 int count = (int) this.getUnsignedVarInt();
@@ -69,7 +70,7 @@ public class TextPacket extends DataPacket {
             case TYPE_SYSTEM:
                 this.putString(this.message);
                 break;
-
+            case TYPE_JUKEBOX_POPUP:
             case TYPE_TRANSLATION:
                 this.putString(this.message);
                 this.putUnsignedVarInt(this.parameters.length);

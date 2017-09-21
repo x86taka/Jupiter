@@ -32,10 +32,38 @@ public class AddPlayerPacket extends DataPacket {
     public float yaw;
     public Item item;
     public EntityMetadata metadata = new EntityMetadata();
+    
+    public long ubarInt1 = 0;
+    public long ubarInt2 = 0;
+    public long ubarInt3 = 0;
+    public long ubarInt4 = 0;
+    public long ubarInt5 = 0;
+    
+    public long long1;
 
     @Override
     public void decode() {
-
+    	this.uuid = this.getUUID();
+    	this.username = this.getString();
+    	this.entityUniqueId = this.getVarLong();
+    	this.entityRuntimeId = this.getVarLong();
+    	this.x = this.getVector3f().x;
+    	this.y = this.getVector3f().y;
+    	this.z = this.getVector3f().z;
+    	this.speedX = this.getVector3f().x;
+    	this.speedY = this.getVector3f().y;
+    	this.speedZ = this.getVector3f().z;
+    	this.pitch = this.getLFloat();
+    	this.yaw = this.getLFloat();
+    	this.item = this.getSlot();
+    	
+    	this.long1 = this.getLLong();
+    	
+    	this.ubarInt1 = this.getUnsignedVarInt();
+    	this.ubarInt2 = this.getUnsignedVarInt();
+    	this.ubarInt3 = this.getUnsignedVarInt();
+    	this.ubarInt4 = this.getUnsignedVarInt();
+    	this.ubarInt5 = this.getUnsignedVarInt();
     }
 
     @Override
@@ -51,6 +79,14 @@ public class AddPlayerPacket extends DataPacket {
         this.putLFloat(this.yaw); //TODO headrot
         this.putLFloat(this.yaw);
         this.putSlot(this.item);
+        
+        this.putLLong(long1);
+        
+        this.putUnsignedVarInt(ubarInt1);
+        this.putUnsignedVarInt(ubarInt2);
+        this.putUnsignedVarInt(ubarInt3);
+        this.putUnsignedVarInt(ubarInt4);
+        this.putUnsignedVarInt(ubarInt5);
 
         this.put(Binary.writeMetadata(this.metadata));
     }

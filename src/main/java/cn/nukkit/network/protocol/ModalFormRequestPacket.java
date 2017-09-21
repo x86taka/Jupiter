@@ -12,7 +12,8 @@ public class ModalFormRequestPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.formId = (int) this.getUnsignedVarInt();
+    	this.data = this.getString();
     }
 
     @Override

@@ -1188,7 +1188,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
         
-        System.out.println("send>>>" + packet.getClass().getName());
+        this.getServer().getLogger().info(TextFormat.YELLOW + "[DATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -1223,7 +1223,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
         
-        System.out.println("sendDir>>>" + packet.getClass().getName());
+        this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[DIRECTDATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -2275,6 +2275,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 System.out.println(pkpk.action);
             }
             */
+            this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
             if (ev.isCancelled()) {
                 timing.stopTiming();
                 return;

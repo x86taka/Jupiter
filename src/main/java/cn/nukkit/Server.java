@@ -313,6 +313,7 @@ public class Server implements ActionListener{
 
     private Thread currentThread;
     private Map<String, Object> jupiterconfig;
+	private List<Player> loggedInPlayers = new ArrayList<Player>();
 
     @SuppressWarnings("unchecked")
     Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -550,7 +551,7 @@ public class Server implements ActionListener{
         this.pluginManager.registerInterface(JavaPluginLoader.class);
 
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
-
+        
         this.network.registerInterface(new RakNetInterface(this));
 
         if(this.checkingUsingGUI()){
@@ -1041,6 +1042,7 @@ public class Server implements ActionListener{
         } else {
             try {
                 this.broadcastPacketsCallback(Zlib.deflate(data, this.networkCompressionLevel), targets);
+            	//this.broadcastPacketsCallback(data, targets);  非圧縮
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -1298,7 +1300,17 @@ public class Server implements ActionListener{
     public void onPlayerLogin(Player player) {
         if (this.sendUsageTicker > 0) {
             this.uniquePlayers.add(player.getUniqueId());
+      		this.loggedInPlayers.add(player);
         }
+    }
+    
+    public void onPlayerCompleteLoginSequence(Player player){
+  		this.sendFullPlayerListData(player);
+  		player.dataPacket(this.craftingManager.getCraftingDataPacket());
+  	}
+    
+    public void onPlayerLogout(Player player){
+    	this.loggedInPlayers.remove(player.getUniqueId());
     }
 
     public void addPlayer(String identifier, Player player) {
@@ -1315,11 +1327,14 @@ public class Server implements ActionListener{
         if (this.playerList.containsKey(player.getUniqueId())) {
             this.playerList.remove(player.getUniqueId());
 
+            /*
             PlayerListPacket pk = new PlayerListPacket();
             pk.type = PlayerListPacket.TYPE_REMOVE;
             pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(player.getUniqueId())};
-
             Server.broadcastPacket(this.playerList.values(), pk);
+            */
+            
+            this.removePlayerListData(player.getUniqueId());
         }
     }
 
@@ -1348,8 +1363,10 @@ public class Server implements ActionListener{
     public void removePlayerListData(UUID uuid, Player[] players) {
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_REMOVE;
-        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
+        //pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
+        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid).createRemovalEntry(uuid)};
         Server.broadcastPacket(players, pk);
+    	
     }
 
     public void removePlayerListData(UUID uuid, Collection<Player> players) {
@@ -1360,6 +1377,7 @@ public class Server implements ActionListener{
         final UUID uuid = player.getUniqueId();
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
+        /*
         pk.entries = this.playerList.values()
                 .stream()
                 .filter(p -> !p.getUniqueId().equals(uuid))
@@ -1369,6 +1387,13 @@ public class Server implements ActionListener{
                         p.getDisplayName(),
                         p.getSkin()))
                 .toArray(PlayerListPacket.Entry[]::new);
+                */
+        int i = 0;
+        pk.entries = new PlayerListPacket.Entry[this.playerList.values().size() + 1];
+        for(Player p : this.playerList.values()){
+        	pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId()).createAdditionEntry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
+        	i++;
+        }
 
         player.dataPacket(pk);
     }

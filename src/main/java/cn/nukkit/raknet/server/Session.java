@@ -1,16 +1,33 @@
 package cn.nukkit.raknet.server;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 import cn.nukkit.raknet.RakNet;
 import cn.nukkit.raknet.protocol.DataPacket;
 import cn.nukkit.raknet.protocol.EncapsulatedPacket;
 import cn.nukkit.raknet.protocol.Packet;
-import cn.nukkit.raknet.protocol.packet.*;
+import cn.nukkit.raknet.protocol.packet.ACK;
+import cn.nukkit.raknet.protocol.packet.CLIENT_CONNECT_DataPacket;
+import cn.nukkit.raknet.protocol.packet.CLIENT_DISCONNECT_DataPacket;
+import cn.nukkit.raknet.protocol.packet.CLIENT_HANDSHAKE_DataPacket;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_0;
+import cn.nukkit.raknet.protocol.packet.DATA_PACKET_4;
+import cn.nukkit.raknet.protocol.packet.NACK;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REPLY_1;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REPLY_2;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REQUEST_1;
+import cn.nukkit.raknet.protocol.packet.OPEN_CONNECTION_REQUEST_2;
+import cn.nukkit.raknet.protocol.packet.PING_DataPacket;
+import cn.nukkit.raknet.protocol.packet.PONG_DataPacket;
+import cn.nukkit.raknet.protocol.packet.SERVER_HANDSHAKE_DataPacket;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * author: MagicDroidX
@@ -202,7 +219,7 @@ public class Session {
     }
 
     private void addToQueue(EncapsulatedPacket pk, int flags) throws Exception {
-        int priority = flags & 0b0000111;
+        int priority = flags & 0b00000111;
         if (pk.needACK && pk.messageIndex != null) {
             if (!this.needACK.containsKey(pk.identifierACK)) {
                 this.needACK.put(pk.identifierACK, new HashMap<>());
@@ -263,7 +280,7 @@ public class Session {
         }
 
         if (packet.getTotalLength() + 4 > this.mtuSize) {
-            byte[][] buffers = Binary.splitBytes(packet.buffer, this.mtuSize - 34);
+            byte[][] buffers = Binary.splitBytes(packet.buffer, this.mtuSize - 60);//34
             int splitID = ++this.splitID % 65536;
             for (int count = 0; count < buffers.length; count++) {
                 byte[] buffer = buffers[count];
@@ -546,6 +563,7 @@ public class Session {
     public void close() throws Exception {
         byte[] data = new byte[]{0x60, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x15}; //CLIENT_DISCONNECT packet 0x15
         this.addEncapsulatedToQueue(EncapsulatedPacket.fromBinary(data));
+        this.sendQueue();
         this.sessionManager = null;
     }
 }

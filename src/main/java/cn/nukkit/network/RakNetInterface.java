@@ -284,6 +284,7 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
 
             if (pk == null) {
                 pk = new EncapsulatedPacket();
+                pk.identifierACK = this.identifiersACK.get(identifier);
                 pk.buffer = Binary.appendBytes((byte) 0xfe, buffer);
                 if (packet.getChannel() != 0) {
                     packet.reliability = 3;
@@ -292,13 +293,13 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
                 } else {
                     packet.reliability = 2;
                 }
-
-                if (needACK) {
-                    int iACK = this.identifiersACK.get(identifier);
-                    iACK++;
-                    pk.identifierACK = iACK;
-                    this.identifiersACK.put(identifier, iACK);
-                }
+                
+                //if(needACK){
+                int iACK = this.identifiersACK.get(identifier);
+                iACK++;
+                pk.identifierACK = iACK;
+                this.identifiersACK.put(identifier, iACK);
+                //}
             }
 
             this.handler.sendEncapsulated(identifier, pk, (needACK ? RakNet.FLAG_NEED_ACK : 0) | (immediate ? RakNet.PRIORITY_IMMEDIATE : RakNet.PRIORITY_NORMAL));

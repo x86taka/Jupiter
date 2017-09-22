@@ -19,7 +19,20 @@ public class PlayerListPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.type = (byte) this.getByte();
+    	int count = (int) this.getUnsignedVarInt();
+    	for(int i=0;i<count;i++){
+    		entries[i] = new Entry(this.getUUID());
+    		if(this.type == TYPE_ADD){
+    			entries[i].entityId = this.getVarLong();
+    			entries[i].name = this.getString();
+    			entries[i].skin = this.getSkin();
+    			entries[i].capeData = this.getString();
+    			entries[i].geometryModel = this.getString();
+    			entries[i].geometryData = this.getString();
+    			entries[i].xboxUserId = this.getString();
+    		}
+    	}
     }
 
     @Override
@@ -33,6 +46,10 @@ public class PlayerListPacket extends DataPacket {
                 this.putVarLong(entry.entityId);
                 this.putString(entry.name);
                 this.putSkin(entry.skin);
+                this.putString(entry.capeData);
+                this.putString(entry.geometryModel);
+                this.putString(entry.geometryData);
+                this.putString(entry.xboxUserId);
             } else {
                 this.putUUID(entry.uuid);
             }
@@ -51,6 +68,11 @@ public class PlayerListPacket extends DataPacket {
         public long entityId = 0;
         public String name = "";
         public Skin skin;
+        
+        public String capeData = "";
+        public String xboxUserId = "";
+        public String geometryModel = "";
+        public String geometryData = "";
 
         public Entry(UUID uuid) {
             this.uuid = uuid;

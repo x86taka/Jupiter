@@ -18,14 +18,26 @@ public class UpdateAttributesPacket extends DataPacket {
     }
 
     public void decode() {
-
+    	try{
+	    	this.entityRuntimeId = this.getVarLong();
+	    	this.entries = this.getAttributeList();
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 
     public void encode() {
         this.reset();
 
         this.putVarLong(this.entityRuntimeId);
-
+        
+        if (this.entries == null) {
+            this.putUnsignedVarInt(0);
+        }else{
+        	this.putAttributeList(entries);
+        }
+        
+        /*
         if (this.entries == null) {
             this.putUnsignedVarInt(0);
         } else {
@@ -38,5 +50,6 @@ public class UpdateAttributesPacket extends DataPacket {
                 this.putString(entry.getName());
             }
         }
+        */
     }
 }

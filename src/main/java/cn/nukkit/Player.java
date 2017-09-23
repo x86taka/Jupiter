@@ -111,6 +111,7 @@ import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.Recipe;
 import cn.nukkit.inventory.ShapedRecipe;
 import cn.nukkit.inventory.ShapelessRecipe;
+import cn.nukkit.inventory.transaction.BaseTransaction;
 import cn.nukkit.inventory.transaction.BaseTransactionGroup;
 import cn.nukkit.inventory.transaction.ContainerTransaction;
 import cn.nukkit.inventory.transaction.NormalTransactionGroup;
@@ -727,7 +728,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
         if (count > 0) {
             //TODO: structure checking
-            pk.commands = new Gson().toJson(data);
+            pk.commands = data;
             int identifier = this.dataPacket(pk, true); // We *need* ACK so we can be sure that the client received the packet or not
             Thread t = new Thread() {
                 public void run() {
@@ -3451,7 +3452,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     Inventory inv;
-                    ContainerTransaction transaction;
+                    BaseTransaction transaction;
                     if (inventorySlotPacket.inventoryId == 0) { //Our inventory
                         inv = this.inventory;
                         if (inventorySlotPacket.slot >= this.inventory.getSize()) {
@@ -3470,7 +3471,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
                         transaction = new ContainerTransaction(0, inventorySlotPacket.slot + this.inventory.getSize(), this.inventory.getArmorItem(inventorySlotPacket.slot), inventorySlotPacket.item);
-                     } else if (this.windowIndex.containsKey(inventorySlotPacket.inventoryId)) {
+                    } else if (this.windowIndex.containsKey(inventorySlotPacket.inventoryId)) {
                         inv = this.windowIndex.get(inventorySlotPacket.inventoryId);
 
                         if (!(inv instanceof AnvilInventory)) {

@@ -216,6 +216,7 @@ import cn.nukkit.plugin.Plugin;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.potion.Potion;
 import cn.nukkit.resourcepacks.ResourcePack;
+import cn.nukkit.resourcepacks.ResourcePackManager;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BlockIterator;
 import cn.nukkit.utils.ClientChainData;
@@ -2202,7 +2203,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         StartGamePacket startGamePacket = new StartGamePacket();
         startGamePacket.entityUniqueId = this.id;
         startGamePacket.entityRuntimeId = this.id;
-        startGamePacket.playerGamemode = this.getGamemode();
+        //startGamePacket.playerGamemode = this.getGamemode();
         startGamePacket.x = (float) this.x;
         startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
@@ -2268,6 +2269,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.forceMovement = this.teleportPosition = this.getPosition();
 
         this.server.onPlayerLogin(this);
+        
+        ResourcePacksInfoPacket pk = new ResourcePacksInfoPacket();
+        ResourcePackManager manager = this.server.getResourcePackManager();
+        pk.resourcePackEntries = manager.getResourceStack();
+        pk.mustAccept = true;
+        this.dataPacket(pk);
     }
 
     public void handleDataPacket(DataPacket packet) {

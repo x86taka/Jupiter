@@ -20,8 +20,6 @@ public class SetEntityDataPacket extends DataPacket {
 
     @Override
     public void decode() {
-    	this.eid = this.getVarLong();
-    	this.metadata = Binary.readMetadata(this.get());
     }
 
     @Override

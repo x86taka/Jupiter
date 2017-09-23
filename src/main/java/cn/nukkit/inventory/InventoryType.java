@@ -10,7 +10,7 @@ public enum InventoryType implements InventoryNetworkId {
     ENDER_CHEST(27, "Ender Chest", WINDOW_CONTAINER),
     SHULKER_BOX(27, "Shulker Box", WINDOW_CONTAINER), 
     DOUBLE_CHEST(27 + 27, "Double Chest", WINDOW_CONTAINER),
-    PLAYER(40, "Player", WINDOW_CONTAINER), //36 CONTAINER, 4 ARMOR
+    PLAYER(40, "Player", WINDOW_INVENTORY), //36 CONTAINER, 4 ARMOR
     FURNACE(3, "Furnace", WINDOW_FURNACE),
     CRAFTING(5, "Crafting", WINDOW_WORKBENCH), //4 CRAFTING slots, 1 RESULT
     WORKBENCH(10, "Crafting", WINDOW_WORKBENCH), //9 CRAFTING slots, 1 RESULT
@@ -20,6 +20,7 @@ public enum InventoryType implements InventoryNetworkId {
     DISPENSER(9, "Dispenser", WINDOW_DISPENSER), //9 CONTAINER
     DROPPER(9, "Dropper", WINDOW_DROPPER), //9 CONTAINER
     HOPPER(5, "Hopper", WINDOW_HOPPER), //5 CONTAINER
+    CURSOR(1, "Cursor", WINDOW_INVENTORY),
     MINECART_CHEST(27, "Minecart Chest", WINDOW_MINECART_CHEST), // 27 CONTAINER
     MINECART_HOPPER(5, "Minecart Hopper", WINDOW_MINECART_HOPPER), // 5 CONTAINER
     HORSE(2, "Horse", WINDOW_HORSE), // 2 INPUT(サドル, 馬鎧)

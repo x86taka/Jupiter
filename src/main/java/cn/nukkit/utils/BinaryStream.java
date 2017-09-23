@@ -9,6 +9,7 @@ import java.util.UUID;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.item.Item;
+import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3f;
 
@@ -404,6 +405,14 @@ public class BinaryStream {
         this.putString(rule.name);
         this.putBoolean(rule.unknown1);
         this.putBoolean(rule.unknown2);
+    }
+    
+    public BlockFace getBlockFace() {
+    	return BlockFace.fromIndex(this.getVarInt());
+    }
+
+    public void putBlockFace(BlockFace face) {
+    	this.putVarInt(face.getIndex());
     }
 
     public boolean feof() {

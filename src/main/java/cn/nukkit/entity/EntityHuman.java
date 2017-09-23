@@ -99,10 +99,6 @@ public class EntityHuman extends EntityHumanType {
         }
 
         super.initEntity();
-
-        if (this instanceof Player) {
-            ((Player) this).addWindow(this.inventory, 0);
-        }
     }
 
     @Override

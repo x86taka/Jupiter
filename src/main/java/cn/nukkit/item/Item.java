@@ -17,6 +17,7 @@ import cn.nukkit.inventory.Fuel;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -800,10 +801,10 @@ public class Item implements Cloneable {
             list[PRISMARINE_CRYSTALS] = ItemPrismarineCrystals.class; //422
             list[RAW_MUTTON] = ItemMuttonRaw.class; //423
             list[COOKED_MUTTON] = ItemMuttonCooked.class; //424
-            
+
             //TODO 1.2 防具立て
             list[ARMOR_STAND] = ItemArmorStand.class; //425
-            
+
             list[END_CRYSTAL] = ItemEndCrystal.class; //426
             list[SPRUCE_DOOR] = ItemDoorSpruce.class; //427
             list[BIRCH_DOOR] = ItemDoorBirch.class; //428
@@ -1577,7 +1578,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.WEAKNESS));
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.WEAKNESS_LONG));
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.DECAY));
-        
+
         //TODO 1.2
         addCreativeItem(Item.get(Item.ARMOR_STAND, 0));
     }
@@ -2211,5 +2212,21 @@ public class Item implements Cloneable {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    public boolean isNull(){
+        return this.count <= 0 || this.id == AIR;
+    }
+
+    public boolean onClickAir(Player player, Vector3 directionVector) {
+        return false;
+    }
+
+    public boolean onReleaseUsing(Player player) {
+        return false;
+    }
+
+    public final boolean equalsExact(Item other) {
+        return this.equals(other, true, true) && this.count == other.count;
     }
 }

@@ -80,6 +80,31 @@ public class Binary {
     public static byte[] writeUUID(UUID uuid) {
     	return appendBytes(writeLLong(uuid.getMostSignificantBits()), writeLLong(uuid.getLeastSignificantBits()));
     }
+    
+    public static int signByte(int value) {
+        return value << 56 >> 56;
+    }
+
+    public static int unsignByte(int value) {
+        return value & 0xff;
+    }
+
+    public static int signShort(int value) {
+        return value << 48 >> 48;
+    }
+
+    public int unsignShort(int value) {
+        return value & 0xffff;
+    }
+
+    public static int signInt(int value) {
+        return value << 32 >> 32;
+    }
+
+    public static int unsignInt(int value) {
+        return value;
+    }
+
 
     public static byte[] writeMetadata(EntityMetadata metadata) {
         BinaryStream stream = new BinaryStream();

@@ -116,8 +116,6 @@ import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.network.protocol.LevelEventPacket;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
-import cn.nukkit.network.protocol.MoveEntityPacket;
-import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import cn.nukkit.network.protocol.SetSpawnPositionPacket;
 import cn.nukkit.network.protocol.SetTimePacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
@@ -161,7 +159,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public static final int DIMENSION_OVERWORLD = 0;
     public static final int DIMENSION_NETHER = 1;
-    
+
     public static boolean sendDestroyParticle;
 
     // Lower values use less memory
@@ -342,7 +340,7 @@ public class Level implements ChunkManager, Metadatable {
 
         if (convert) {
             this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.updating",
-            		FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
+                    FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
             LevelProvider old = this.provider;
             try {
                 this.provider = new LevelProviderConverter(this, path)
@@ -358,7 +356,7 @@ public class Level implements ChunkManager, Metadatable {
         this.provider.updateLevelName(name);
 
         this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.preparing",
-        		FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
+                FastAppender.get(TextFormat.GREEN, this.provider.getName(), TextFormat.WHITE)));
 
         this.generator = Generator.getGenerator(this.provider.getGenerator());
 
@@ -542,19 +540,11 @@ public class Level implements ChunkManager, Metadatable {
         DataPacket[] packets = sound.encode();
 
         if (players == null) {
-            if (packets != null) {
-                for (DataPacket packet : packets) {
-                    this.addChunkPacket((int) sound.x >> 4, (int) sound.z >> 4, packet);
-                }
+            for (DataPacket packet : packets) {
+                this.addChunkPacket((int) sound.x >> 4, (int) sound.z >> 4, packet);
             }
         } else {
-            if (packets != null) {
-                if (packets.length == 1) {
-                    Server.broadcastPacket(players, packets[0]);
-                } else {
-                    this.server.batchPackets(players, packets, false);
-                }
-            }
+                this.server.batchPackets(players, packets, false);
         }
     }
 
@@ -596,19 +586,11 @@ public class Level implements ChunkManager, Metadatable {
         DataPacket[] packets = particle.encode();
 
         if (players == null) {
-            if (packets != null) {
-                for (DataPacket packet : packets) {
-                    this.addChunkPacket((int) particle.x >> 4, (int) particle.z >> 4, packet);
-                }
+            for (DataPacket packet : packets) {
+                this.addChunkPacket((int) particle.x >> 4, (int) particle.z >> 4, packet);
             }
         } else {
-            if (packets != null) {
-                if (packets.length == 1) {
-                    Server.broadcastPacket(players, packets[0]);
-                } else {
-                    this.server.batchPackets(players, packets, false);
-                }
-            }
+            this.server.batchPackets(players, packets, false);
         }
     }
 
@@ -642,7 +624,7 @@ public class Level implements ChunkManager, Metadatable {
         }
 
         this.server.getLogger().info(this.server.getLanguage().translateString("nukkit.level.unloading",
-        		FastAppender.get(TextFormat.GREEN, this.getName(), TextFormat.WHITE)));
+                FastAppender.get(TextFormat.GREEN, this.getName(), TextFormat.WHITE)));
         Level defaultLevel = this.server.getDefaultLevel();
 
         for (Player player : new ArrayList<>(this.getPlayers().values())) {
@@ -1020,9 +1002,9 @@ public class Level implements ChunkManager, Metadatable {
     public void sendBlockExtraData(int x, int y, int z, int id, int data, Player[] players) {
         LevelEventPacket pk = new LevelEventPacket();
         pk.evid = LevelEventPacket.EVENT_SET_DATA;
-        pk.x = x + 0.5f;
-        pk.y = y + 0.5f;
-        pk.z = z + 0.5f;
+        pk.x = x;
+        pk.y = y;
+        pk.z = z;
         pk.data = (data << 8) | id;
 
         Server.broadcastPacket(players, pk);
@@ -1031,9 +1013,9 @@ public class Level implements ChunkManager, Metadatable {
     public void sendBlockExtraData(int x, int y, int z, int id, int data, Collection<Player> players) {
         LevelEventPacket pk = new LevelEventPacket();
         pk.evid = LevelEventPacket.EVENT_SET_DATA;
-        pk.x = x + 0.5f;
-        pk.y = y + 0.5f;
-        pk.z = z + 0.5f;
+        pk.x = x;
+        pk.y = y;
+        pk.z = z;
         pk.data = (data << 8) | id;
 
         Server.broadcastPacket(players, pk);
@@ -1065,23 +1047,23 @@ public class Level implements ChunkManager, Metadatable {
 
                 if (b instanceof Block) {
                     UpdateBlockPacket.Entry entry = new UpdateBlockPacket.Entry(
-                    		(int) b.x,
-                    		(int) b.y,
-                    		(int) b.z,
-                    		((Block) b).getId(),
-                    		((Block) b).getDamage(),
-                    		first ? flags : UpdateBlockPacket.FLAG_NONE
+                            (int) b.x,
+                            (int) b.y,
+                            (int) b.z,
+                            ((Block) b).getId(),
+                            ((Block) b).getDamage(),
+                            first ? flags : UpdateBlockPacket.FLAG_NONE
                     );
                     entries.add(entry);
                 } else {
                     int fullBlock = this.getFullBlock((int) b.x, (int) b.y, (int) b.z);
                     UpdateBlockPacket.Entry entry = new UpdateBlockPacket.Entry(
-                    		(int) b.x,
-                    		(int) b.y,
-                    		(int) b.z,
-                    		fullBlock >> 4,
-                    		fullBlock & 0xf,
-                    		first ? flags : UpdateBlockPacket.FLAG_NONE
+                            (int) b.x,
+                            (int) b.y,
+                            (int) b.z,
+                            fullBlock >> 4,
+                            fullBlock & 0xf,
+                            first ? flags : UpdateBlockPacket.FLAG_NONE
                     );
                     entries.add(entry);
                 }
@@ -1093,24 +1075,24 @@ public class Level implements ChunkManager, Metadatable {
                 }
                 UpdateBlockPacket packet = new UpdateBlockPacket();
                 if (b instanceof Block) {
-                	UpdateBlockPacket.Entry entry = new UpdateBlockPacket.Entry(
-                    		(int) b.x,
-                    		(int) b.y,
-                    		(int) b.z,
-                    		((Block) b).getId(),
-                    		((Block) b).getDamage(),
-                    		flags
+                    UpdateBlockPacket.Entry entry = new UpdateBlockPacket.Entry(
+                            (int) b.x,
+                            (int) b.y,
+                            (int) b.z,
+                            ((Block) b).getId(),
+                            ((Block) b).getDamage(),
+                            flags
                     );
                     entries.add(entry);
                 } else {
                     int fullBlock = this.getFullBlock((int) b.x, (int) b.y, (int) b.z);
                     UpdateBlockPacket.Entry entry = new UpdateBlockPacket.Entry(
-                    		(int) b.x,
-                    		(int) b.y,
-                    		(int) b.z,
-                    		fullBlock >> 4,
-                    		fullBlock & 0xf,
-                    		flags
+                            (int) b.x,
+                            (int) b.y,
+                            (int) b.z,
+                            fullBlock >> 4,
+                            fullBlock & 0xf,
+                            flags
                     );
                     entries.add(entry);
                 }
@@ -1132,10 +1114,6 @@ public class Level implements ChunkManager, Metadatable {
             this.chunkCache.clear();
             this.blockCache.clear();
         } else {
-            if (this.chunkCache.size() > 2048) {
-                this.chunkCache.clear();
-            }
-
             if (this.blockCache.size() > 2048) {
                 this.blockCache.clear();
             }
@@ -1607,6 +1585,18 @@ public class Level implements ChunkManager, Metadatable {
         return block;
     }
 
+    protected boolean checkSpawnProtection(Player player, Vector3 vec){
+        int distance;
+        if (!player.isOp() && (distance = this.server.getSpawnRadius()) > -1) {
+            Vector2 t = new Vector2(vec.x, vec.z);
+            Vector2 s = new Vector2(this.getSpawnLocation().x, this.getSpawnLocation().z);
+            if (!this.server.getOps().getAll().isEmpty() && t.distance(s) <= distance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void updateAllLight(Vector3 pos) {
         this.updateBlockSkyLight((int) pos.x, (int) pos.y, (int) pos.z); //TODO: check if dimension has sky
         this.updateBlockLight((int) pos.x, (int) pos.y, (int) pos.z);
@@ -1854,7 +1844,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     @SuppressWarnings("unchecked")
-	public Item useBreakOn(Vector3 vector, Item item, Player player, boolean createParticles) {
+    public Item useBreakOn(Vector3 vector, Item item, Player player, boolean createParticles) {
         if (player != null && player.getGamemode() > 1) {
             return null;
         }
@@ -1896,12 +1886,8 @@ public class Level implements ChunkManager, Metadatable {
             double distance;
             if (player.isSurvival() && !target.isBreakable(item)) {
                 ev.setCancelled();
-            } else if (!player.isOp() && (distance = this.server.getSpawnRadius()) > -1) {
-                Vector2 t = new Vector2(target.x, target.z);
-                Vector2 s = new Vector2(this.getSpawnLocation().x, this.getSpawnLocation().z);
-                if (!this.server.getOps().getAll().isEmpty() && t.distance(s) <= distance) {
-                    ev.setCancelled();
-                }
+            } else if (checkSpawnProtection(player, target)) {
+                ev.setCancelled();
             }
 
             this.server.getPluginManager().callEvent(ev);
@@ -1949,7 +1935,7 @@ public class Level implements ChunkManager, Metadatable {
 
         if (createParticles) {
             Map<Integer, Player> players = this.getChunkPlayers((int) target.x >> 4, (int) target.z >> 4);
-            
+
             if(sendDestroyParticle)this.addParticle(new DestroyBlockParticle(target.add(0.5), target), players.values());
 
             if (player != null) {
@@ -2036,7 +2022,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public Item useItemOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player) {
-    	
+
         Block target = this.getBlock(vector);
         Block block = target.getSide(face);
 
@@ -2056,13 +2042,8 @@ public class Level implements ChunkManager, Metadatable {
                 ev.setCancelled();
             }
 
-            int distance = this.server.getSpawnRadius();
-            if (!player.isOp() && distance > -1) {
-                Vector2 t = new Vector2(target.x, target.z);
-                Vector2 s = new Vector2(this.getSpawnLocation().x, this.getSpawnLocation().z);
-                if (!this.server.getOps().getAll().isEmpty() && t.distance(s) <= distance) {
-                    ev.setCancelled();
-                }
+            if (checkSpawnProtection(player, target)) {
+                ev.setCancelled();
             }
 
             this.server.getPluginManager().callEvent(ev);
@@ -2087,15 +2068,15 @@ public class Level implements ChunkManager, Metadatable {
         }
         return null;
     }
-    
+
     public Item usePlaceOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz) {
         return this.usePlaceOn(vector, item, face, fx, fy, fz, null);
     }
-    
+
     public Item usePlaceOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player) {
         return this.usePlaceOn(vector, item, face, fx, fy, fz, player, false);
     }
-    
+
     public Item usePlaceOn(Vector3 vector, Item item, BlockFace face, float fx, float fy, float fz, Player player, boolean playSound) {
         Block target = this.getBlock(vector);
         Block block = target.getSide(face);
@@ -2103,11 +2084,11 @@ public class Level implements ChunkManager, Metadatable {
         if (block.y > 255 || block.y < 0) {
               return null;
         }
-    
+
         if (target.getId() == Item.AIR) {
-    	      return null;
-    	}
-    
+              return null;
+        }
+
         Block hand;
         if (item.canBePlaced()) {
             hand = item.getBlock();
@@ -2170,13 +2151,8 @@ public class Level implements ChunkManager, Metadatable {
 
         if (player != null) {
             BlockPlaceEvent event = new BlockPlaceEvent(player, hand, block, target, item);
-            int distance = this.server.getSpawnRadius();
-            if (!player.isOp() && distance > -1) {
-                Vector2 t = new Vector2(target.x, target.z);
-                Vector2 s = new Vector2(this.getSpawnLocation().x, this.getSpawnLocation().z);
-                if (!this.server.getOps().getAll().isEmpty() && t.distance(s) <= distance) {
-                    event.setCancelled();
-                }
+            if (checkSpawnProtection(player, target)) {
+                event.setCancelled();
             }
 
             this.server.getPluginManager().callEvent(event);
@@ -3071,35 +3047,12 @@ public class Level implements ChunkManager, Metadatable {
         this.server.getLevelMetadata().removeMetadata(this, metadataKey, owningPlugin);
     }
 
-    public void addEntityMotion(int chunkX, int chunkZ, long entityId, double x, double y, double z) {
-        SetEntityMotionPacket pk = new SetEntityMotionPacket();
-        pk.eid = entityId;
-        pk.motionX = (float) x;
-        pk.motionY = (float) y;
-        pk.motionZ = (float) z;
-
-        this.addChunkPacket(chunkX, chunkZ, pk);
-    }
-
-    public void addEntityMovement(int chunkX, int chunkZ, long entityId, double x, double y, double z, double yaw, double pitch, double headYaw) {
-        MoveEntityPacket pk = new MoveEntityPacket();
-        pk.entityRuntimeId = entityId;
-        pk.x = (float) x;
-        pk.y = (float) y;
-        pk.z = (float) z;
-        pk.yaw = (float) yaw;
-        pk.headYaw = (float) yaw;
-        pk.pitch = (float) pitch;
-
-        this.addChunkPacket(chunkX, chunkZ, pk);
-    }
-
     public boolean isRaining() {
         return this.raining;
     }
 
     public boolean setRaining(boolean raining) {
-    	if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
+        if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
         WeatherChangeEvent ev = new WeatherChangeEvent(this, raining);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -3139,7 +3092,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean setThundering(boolean thundering) {
-    	if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
+        if (!this.getServer().getJupiterConfigBoolean("weather"))return false;
         ThunderChangeEvent ev = new ThunderChangeEvent(this, thundering);
         this.getServer().getPluginManager().callEvent(ev);
 
@@ -3178,7 +3131,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void sendWeather(Player[] players) {
-    	if (!this.getServer().getJupiterConfigBoolean("weather"))return;
+        if (!this.getServer().getJupiterConfigBoolean("weather"))return;
         if (players == null) {
             players = this.getPlayers().values().stream().toArray(Player[]::new);
         }

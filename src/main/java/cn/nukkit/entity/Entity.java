@@ -58,6 +58,7 @@ import cn.nukkit.nbt.tag.DoubleTag;
 import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.MobEffectPacket;
+import cn.nukkit.network.protocol.MoveEntityPacket;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
 import cn.nukkit.network.protocol.SetEntityDataPacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
@@ -260,7 +261,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     public double PitchDelta;
     public double YawDelta;
-    
+
     public double entityCollisionReduction = 0;
     public AxisAlignedBB boundingBox;
     public boolean onGround;
@@ -1148,7 +1149,8 @@ public abstract class Entity extends Location implements Metadatable {
             this.lastYaw = this.yaw;
             this.lastPitch = this.pitch;
 
-            this.addMovement(this.x, this.y + this.getBaseOffset(), this.z, this.yaw, this.pitch, this.yaw);
+            this.broadcastMovement();
+            //this.addMovement(this.x, this.y + this.getBaseOffset(), this.z, this.yaw, this.pitch, this.yaw);
         }
 
         if (diffMotion > 0.0025 || (diffMotion > 0.0001 && this.getMotion().lengthSquared() <= 0.0001)) { //0.05 ** 2
@@ -1156,12 +1158,14 @@ public abstract class Entity extends Location implements Metadatable {
             this.lastMotionY = this.motionY;
             this.lastMotionZ = this.motionZ;
 
-            this.addMotion(this.motionX, this.motionY, this.motionZ);
+            this.broadcastMotion();
+            //this.addMotion(this.motionX, this.motionY, this.motionZ);
         }
     }
 
     public void addMovement(double x, double y, double z, double yaw, double pitch, double headYaw) {
-        this.level.addEntityMovement(this.chunk.getX(), this.chunk.getZ(), this.id, x, y, z, yaw, pitch, headYaw);
+        //this.level.addEntityMovement(this.chunk.getX(), this.chunk.getZ(), this.id, x, y, z, yaw, pitch, headYaw);
+        this.broadcastMotion();
     }
 
     public void addMotion(double motionX, double motionY, double motionZ) {
@@ -1186,6 +1190,33 @@ public abstract class Entity extends Location implements Metadatable {
 
     public BlockFace getHorizontalFacing() {
         return BlockFace.fromHorizontalIndex(NukkitMath.floorDouble((this.yaw * 4.0F / 360.0F) + 0.5D) & 3);
+    }
+
+    public Vector3 getOffsetPosition(Vector3 vec){
+        return new Vector3(vec.x, vec.y + this.getBaseOffset(), vec.z);
+    }
+
+    protected void broadcastMovement() {
+        MoveEntityPacket pk = new MoveEntityPacket();
+        pk.entityRuntimeId = this.id;
+        pk.x = this.getOffsetPosition(this).x;
+        pk.y = this.getOffsetPosition(this).y;
+        pk.z = this.getOffsetPosition(this).z;
+        pk.yaw = this.yaw;
+        pk.pitch = this.pitch;
+        pk.headYaw = this.yaw;
+
+        this.level.addChunkPacket(this.chunk.getX(), this.chunk.getZ(), pk);
+    }
+
+    protected void broadcastMotion(){
+        SetEntityMotionPacket pk = new SetEntityMotionPacket();
+        pk.eid = this.id;
+        pk.motionX = (float) this.getMotion().x;
+        pk.motionY = (float) this.getMotion().y;
+        pk.motionZ = (float) this.getMotion().z;
+
+        this.level.addChunkPacket(this.chunk.getX(), this.chunk.getZ(), pk);
     }
 
     public boolean onUpdate(int currentTick) {
@@ -1788,47 +1819,47 @@ public abstract class Entity extends Location implements Metadatable {
 
         return true;
     }
-    
+
     public Entity getMinDistanceEntity(){
-    	return this.getMinDistanceEntity(0);
+        return this.getMinDistanceEntity(0);
     }
 
     public Entity getMinDistanceEntity(double maxDistance){
-    	Entity result = null;
-    	double distance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Entity entity : this.getLevel().getEntities()){
-    		if (maxDistance != 0){
-    			if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) > maxDistance){
-    				result = entity;
-    				distance = this.distance(entity);
-    			}
-    		}
-    	}
+        Entity result = null;
+        double distance = Double.MAX_VALUE;
+        if (maxDistance <= 0)
+            maxDistance = Double.MAX_VALUE;
+        for (Entity entity : this.getLevel().getEntities()){
+            if (maxDistance != 0){
+                if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) > maxDistance){
+                    result = entity;
+                    distance = this.distance(entity);
+                }
+            }
+        }
 
-    	return result;
+        return result;
     }
 
     public Player getMinDistancePlayer(){
-    	return this.getMinDistancePlayer(0);
+        return this.getMinDistancePlayer(0);
     }
 
     public Player getMinDistancePlayer(double maxDistance){
-    	Player result = null;
-    	double distance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Player player : this.getLevel().getPlayers().values()){
-    		if (maxDistance != 0){
-    			if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) > maxDistance){
-    				result = player;
-    				distance = this.distance(player);
-    			}
-    		}
-    	}
+        Player result = null;
+        double distance = Double.MAX_VALUE;
+        if (maxDistance <= 0)
+            maxDistance = Double.MAX_VALUE;
+        for (Player player : this.getLevel().getPlayers().values()){
+            if (maxDistance != 0){
+                if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) > maxDistance){
+                    result = player;
+                    distance = this.distance(player);
+                }
+            }
+        }
 
-    	return result;
+        return result;
     }
 
     public Vector3 getMotion() {

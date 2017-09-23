@@ -1187,7 +1187,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.connected) {
             return -1;
         }
-        
+
         this.getServer().getLogger().info(TextFormat.YELLOW + "[DATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
@@ -1222,7 +1222,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.connected) {
             return -1;
         }
-        
+
         this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[DIRECTDATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
@@ -1754,7 +1754,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     if (!to.equals(ev.getTo())) { //If plugins modify the destination
                         this.teleport(ev.getTo(), null);
                     } else {
-                        this.addMovement(this.x, this.y + this.getEyeHeight(), this.z, this.yaw, this.pitch, this.yaw);
+                        this.broadcastMovement();
+                        //this.addMovement(this.x, this.y + this.getEyeHeight(), this.z, this.yaw, this.pitch, this.yaw);
                     }
                 } else {
                     this.blocksAround = blocksAround;
@@ -1827,7 +1828,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public boolean setMotion(Vector3 motion) {
         if (super.setMotion(motion)) {
             if (this.chunk != null) {
-                this.getLevel().addEntityMotion(this.chunk.getX(), this.chunk.getZ(), this.getId(), this.motionX, this.motionY, this.motionZ);  //Send to others
+                //this.getLevel().addEntityMotion(this.chunk.getX(), this.chunk.getZ(), this.getId(), this.motionX, this.motionY, this.motionZ);  //Send to others
+                this.broadcastMotion();
                 SetEntityMotionPacket pk = new SetEntityMotionPacket();
                 pk.eid = this.id;
                 pk.motionX = (float) motion.x;

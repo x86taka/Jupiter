@@ -116,6 +116,7 @@ public abstract class Entity extends Location implements Metadatable {
     /* 27 (byte) player-specific flags
      * 28 (int) player "index"?
      * 29 (block coords) bed position */
+    public static final int DATA_PLAYER_BED_POSITION = 29;
     public static final int DATA_FIREBALL_POWER_X = 30; //float
     public static final int DATA_FIREBALL_POWER_Y = 31;
     public static final int DATA_FIREBALL_POWER_Z = 32;
@@ -134,6 +135,7 @@ public abstract class Entity extends Location implements Metadatable {
     /* 45 (byte) container stuff
      * 46 (int) container stuff
      * 47 (int) container stuff */
+    
     public static final int DATA_BLOCK_TARGET = 48; //block coords (ender crystal)
     public static final int DATA_WITHER_INVULNERABLE_TICKS = 49; //int
     public static final int DATA_WITHER_TARGET_1 = 50; //long

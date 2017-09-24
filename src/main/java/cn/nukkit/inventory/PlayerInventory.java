@@ -82,7 +82,7 @@ public class PlayerInventory extends BaseInventory {
             this.getHolder().getLevel().getServer().getPluginManager().callEvent(ev);
 
             if (ev.isCancelled()) {
-                this.sendContents(this.getViewers());
+            	this.sendHotbarContents();
                 return false;
             }
         }
@@ -476,21 +476,15 @@ public class PlayerInventory extends BaseInventory {
     }
 
     public void sendHotbarContents() {
-        if (this.getHolder() instanceof Player) {
-            PlayerHotbarPacket pk = new PlayerHotbarPacket();
-            pk.windowId = cn.nukkit.utils.ContainerIds.INVENTORY;
-            pk.selectedHotbarSlot = this.getHeldItemIndex();
-            pk.slots = new int[this.getHotbarSize()];
-
-            System.arraycopy(this.hotbar, 0, pk.slots, 0, pk.slots.length);
-
-            for (int i = 0; i < pk.slots.length; i++) {
-                pk.slots[i] = pk.slots[i] + 9;
-            }
-
-            ((Player) holder).dataPacket(pk);
-
-        }
+    	if (this.getHolder() instanceof Player) {
+    		PlayerHotbarPacket playerHotbarPacket = new PlayerHotbarPacket();
+    	 	playerHotbarPacket.slots = new int[this.getHotbarSize()];
+    	 	for (int i = 0; i < this.getHotbarSize(); ++i) {
+    	 		int index = this.getHotbarSlotIndex(i);
+    	 		playerHotbarPacket.slots[i] = index <= -1 ? -1 : index + 9;
+    	 	}
+    	 	((Player) holder).dataPacket(playerHotbarPacket);
+    	}
     }
 
     @Override

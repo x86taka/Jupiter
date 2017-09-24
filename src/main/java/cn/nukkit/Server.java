@@ -314,6 +314,8 @@ public class Server implements ActionListener{
     private Thread currentThread;
     private Map<String, Object> jupiterconfig;
 	private List<Player> loggedInPlayers = new ArrayList<Player>();
+	
+	private boolean printPackets = false;
 
     @SuppressWarnings("unchecked")
     Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -553,6 +555,8 @@ public class Server implements ActionListener{
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
         
         this.network.registerInterface(new RakNetInterface(this));
+        
+        this.printPackets = this.getJupiterConfigBoolean("print-packets");
 
         if(this.checkingUsingGUI()){
             try {
@@ -2866,5 +2870,13 @@ public class Server implements ActionListener{
      */
     public boolean checkingUsingGUI(){
         return this.getJupiterConfigBoolean("using-gui", true);
+    }
+    
+    /**
+     * 送受信しているパケットを表示するかどうかを取得します。
+     * @return boolean する場合はtrue、しない場合はfalse
+     */
+    public boolean printPackets(){
+        return this.printPackets;
     }
 }

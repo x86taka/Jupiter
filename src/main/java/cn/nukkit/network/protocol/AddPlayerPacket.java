@@ -59,11 +59,11 @@ public class AddPlayerPacket extends DataPacket {
     	
     	this.long1 = this.getLLong();
     	
-    	this.ubarInt1 = this.getUnsignedVarInt();
-    	this.ubarInt2 = this.getUnsignedVarInt();
-    	this.ubarInt3 = this.getUnsignedVarInt();
-    	this.ubarInt4 = this.getUnsignedVarInt();
-    	this.ubarInt5 = this.getUnsignedVarInt();
+    	this.ubarInt1 = (int) this.getUnsignedVarInt();
+    	this.ubarInt2 = (int) this.getUnsignedVarInt();
+    	this.ubarInt3 = (int) this.getUnsignedVarInt();
+    	this.ubarInt4 = (int) this.getUnsignedVarInt();
+    	this.ubarInt5 = (int) this.getUnsignedVarInt();
     }
 
     @Override

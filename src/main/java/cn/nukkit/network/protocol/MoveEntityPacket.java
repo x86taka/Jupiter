@@ -16,8 +16,8 @@ public class MoveEntityPacket extends DataPacket {
     public double yaw;
     public double headYaw;
     public double pitch;
-    public boolean onGround;
-    public boolean teleport;
+    public boolean onGround = true;
+    public boolean teleport = false;
 
     @Override
     public byte pid() {

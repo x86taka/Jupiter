@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import cn.nukkit.block.Block;
@@ -39,9 +38,6 @@ import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandDataVersions;
-import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.command.data.args.CommandArg;
-import cn.nukkit.command.data.args.CommandArgBlockVector;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
@@ -400,6 +396,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private BlockEntity blockEntity;
 
     private Map<Integer, WindowBase> activeWindows = new LinkedHashMap<Integer, WindowBase>();
+    
+    private boolean printPackets;
 
     public void linkHookToPlayer(EntityFishingHook entity){
         this.fishingHook = entity;
@@ -803,6 +801,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.allowSplashPotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
         this.allowBow = this.server.getJupiterConfigBoolean("allow-bow");
         this.allowFishingRod = this.server.getJupiterConfigBoolean("allow-fishing-rod");
+        
+        this.printPackets = this.getServer().printPackets();
     }
 
     /**
@@ -1207,7 +1207,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return -1;
         }
 
-        this.getServer().getLogger().info(TextFormat.YELLOW + "[DATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+        if(this.printPackets)
+        	this.getServer().getLogger().info(TextFormat.YELLOW + "[DATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -1241,8 +1242,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.connected) {
             return -1;
         }
-
-        this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[DIRECTDATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+        
+        if(this.printPackets)
+        	this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[DIRECTDATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -2212,7 +2214,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.entityRuntimeId = this.id;
         //startGamePacket.playerGamemode = this.getGamemode();
         startGamePacket.x = (float) this.x;
-        startGamePacket.y = (float) this.y;
+        startGamePacket.y = (float) (this.y + this.getBaseOffset());
         startGamePacket.z = (float) this.z;
         startGamePacket.yaw = (float) this.yaw;
         startGamePacket.pitch = (float) this.pitch;
@@ -2302,7 +2304,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 System.out.println(pkpk.action);
             }
             */
-            this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+            if(this.printPackets)
+            	this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
             if (ev.isCancelled()) {
                 timing.stopTiming();
                 return;
@@ -2908,42 +2911,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
                     this.craftingType = 0;
                     CommandRequestPacket commandRequestPacket = (CommandRequestPacket) packet;
-                    String commandText = commandRequestPacket.command;
-                    Command command = this.getServer().getCommandMap().getCommand(commandText);
-                    if (command != null) {
-                        if (commandRequestPacket.args != null && commandRequestPacket.args.size() > 0) {
-                            CommandParameter[] pars = command.getCommandParameters(commandRequestPacket.overload);
-                            if (pars != null) {
-                                for (CommandParameter par : pars) {
-                                    JsonElement arg = commandRequestPacket.args.get(par.name);
-                                    if (arg != null) {
-                                        switch (par.type) {
-                                            case CommandParameter.ARG_TYPE_TARGET:
-                                                CommandArg rules = new Gson().fromJson(arg, CommandArg.class);
-                                                commandText += " " + rules.getRules()[0].getValue();
-                                                break;
-                                            case CommandParameter.ARG_TYPE_BLOCK_POS:
-                                                CommandArgBlockVector bv = new Gson().fromJson(arg, CommandArgBlockVector.class);
-                                                commandText += " " + bv.getX() + " " + bv.getY() + " " + bv.getZ();
-                                                break;
-                                            case CommandParameter.ARG_TYPE_STRING:
-                                            case CommandParameter.ARG_TYPE_STRING_ENUM:
-                                            case CommandParameter.ARG_TYPE_RAW_TEXT:
-                                                String string = new Gson().fromJson(arg, String.class);
-                                                commandText += " " + string;
-                                                break;
-                                            default:
-                                                commandText += " " + arg.toString();
-                                                break;
-                                        }
-                                    }
-                                }
-                            } else {
-                                this.sendMessage(this.getServer().getLanguage().translateString(command.getUsage()));
-                            }
-                        }
-                    }
-                    PlayerCommandPreprocessEvent playerCommandPreprocessEvent = new PlayerCommandPreprocessEvent(this, "/" + commandText);
+                    PlayerCommandPreprocessEvent playerCommandPreprocessEvent = new PlayerCommandPreprocessEvent(this, commandRequestPacket.command);
                     this.server.getPluginManager().callEvent(playerCommandPreprocessEvent);
                     if (playerCommandPreprocessEvent.isCancelled()) {
                         break;
@@ -3858,7 +3826,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket mfrp = (ModalFormResponsePacket) packet;
-
 
                     if(this.activeWindows.containsKey(mfrp.formId)){
                         this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, mfrp.data, this.activeWindows.get(mfrp.formId)));

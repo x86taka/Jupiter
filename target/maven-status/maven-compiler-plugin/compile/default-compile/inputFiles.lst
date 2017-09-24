@@ -90,6 +90,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\entity\EntityArmorChangeEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\plugin\PluginDescription.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockDandelion.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\server\ModalFormReceiveEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemNetherBrick.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\FakeBlockMenu.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemArmorStand.java
@@ -247,6 +248,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemGlowstoneDust.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\format\generic\BaseRegionLoader.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\co\aikar\timings\TimingData.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\ModalFormWindow.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemBlazeRod.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockWeightedPressurePlate.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\entity\EntityCombustByBlockEvent.java
@@ -290,6 +292,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\particle\SpellParticle.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\LevelSoundEventPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\plugin\service\ServiceManager.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Slider.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockPressurePlateStone.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockStairsBirch.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockStairsBrick.java
@@ -345,6 +348,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemCauldron.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\metadata\BlockMetadataStore.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\CLIENT_CONNECT_DataPacket.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Element.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\FurnaceInventory.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\nbt\tag\ByteTag.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\SimpleEventPacket.java
@@ -376,6 +380,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockVine.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerBucketEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\utils\EnumFacing.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Dropdown.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockEnderChest.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\entity\EntityBlockChangeEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\Recipe.java
@@ -383,6 +388,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\UpdateAttributesPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\biome\SnowyBiome.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\format\generic\EmptyChunkSection.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Toggle.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\DATA_PACKET_C.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockFlower.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\biome\IcePlainsBiome.java
@@ -504,6 +510,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemClock.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\rcon\RCON.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\randomitem\ConstantItemSelector.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\CustomFormWindow.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemHoeGold.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\utils\ChunkException.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockOreRedstone.java
@@ -915,6 +922,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerItemHeldEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\utils\TextFormat.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\biome\ForestBiome.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\WindowType.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\math\AxisAlignedBB.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\utils\Zlib.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\SetEntityLinkPacket.java
@@ -1007,6 +1015,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\scheduler\TaskHandler.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\command\defaults\KillCommand.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemFlintSteel.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Button.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemChickenCooked.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockFenceGateDarkOak.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemRedstone.java
@@ -1090,6 +1099,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\DATA_PACKET_1.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\sound\ClickSound.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\Attribute.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\SimpleFormWindow.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntityComparator.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockStairsSandstone.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerCommandPreprocessEvent.java
@@ -1195,6 +1205,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\command\defaults\VanillaCommand.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemIngotIron.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\ResourcePacksInfoPacket.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\StepSlider.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockHugeMushroomRed.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockDoubleSlab.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntityDispenser.java
@@ -1242,10 +1253,12 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemBootsLeather.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\animal\EntityDonkey.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\enchantment\protection\EnchantmentProtectionFall.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Label.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemDoorDarkOak.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\EntityEventPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockFenceNetherBrick.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemClay.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\element\Input.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\level\ChunkPopulateEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockNoteblock.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\command\data\CommandParameter.java
@@ -1258,6 +1271,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\permission\PermissionRemovedExecutor.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockRail.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntityHopper.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\WrongElementException.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\entity\EntityExplodeEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\PlayerFood.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemShears.java
@@ -1343,5 +1357,6 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemBlazePowder.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\populator\PopulatorDeadBush.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\OPEN_CONNECTION_REQUEST_1.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\window\WindowBase.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\EntityLiving.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerTeleportEvent.java

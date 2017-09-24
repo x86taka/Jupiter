@@ -72,6 +72,9 @@ kick-outdated-server: true
 #GUI機能全般を使うかどうか
 using-gui: true
 
+#送受信パケットの表示
+print-packets: false
+
 
 #[level]
 

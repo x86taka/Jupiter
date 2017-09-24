@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -104,6 +105,7 @@ import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
+import cn.nukkit.event.server.ModalFormReceiveEvent;
 import cn.nukkit.inventory.AnvilInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.BigShapedRecipe;
@@ -181,6 +183,8 @@ import cn.nukkit.network.protocol.LevelEventPacket;
 import cn.nukkit.network.protocol.LoginPacket;
 import cn.nukkit.network.protocol.MapInfoRequestPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
+import cn.nukkit.network.protocol.ModalFormRequestPacket;
+import cn.nukkit.network.protocol.ModalFormResponsePacket;
 import cn.nukkit.network.protocol.MovePlayerPacket;
 import cn.nukkit.network.protocol.PlayStatusPacket;
 import cn.nukkit.network.protocol.PlayerActionPacket;
@@ -227,6 +231,7 @@ import cn.nukkit.utils.NetworkInventoryAction;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
+import cn.nukkit.window.WindowBase;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 
@@ -393,6 +398,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private String signText4;
 
     private BlockEntity blockEntity;
+
+    private Map<Integer, WindowBase> activeWindows = new LinkedHashMap<Integer, WindowBase>();
 
     public void linkHookToPlayer(EntityFishingHook entity){
         this.fishingHook = entity;
@@ -2269,7 +2276,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.forceMovement = this.teleportPosition = this.getPosition();
 
         this.server.onPlayerLogin(this);
-        
+
         ResourcePacksInfoPacket pk = new ResourcePacksInfoPacket();
         ResourcePackManager manager = this.server.getResourcePackManager();
         pk.resourcePackEntries = manager.getResourceStack();
@@ -3848,6 +3855,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     this.inventory.equipItem(playerHotbarPacket.selectedHotbarSlot);
+                    break;
+                case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
+                    ModalFormResponsePacket mfrp = (ModalFormResponsePacket) packet;
+
+
+                    if(this.activeWindows.containsKey(mfrp.formId)){
+                        this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, mfrp.data, this.activeWindows.get(mfrp.formId)));
+                        this.activeWindows.remove(mfrp.formId);
+                    }
+
                     break;
 
                 default:
@@ -5506,6 +5523,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public boolean isUsingItem(){
         return this.getDataFlag(DATA_FLAGS, DATA_FLAG_ACTION) && this.startAction > 1;
+    }
+
+    public void sendWindow(WindowBase window){
+        ModalFormRequestPacket pk = new ModalFormRequestPacket();
+        pk.data = window.toJson();
+        pk.formId = window.getId();
+
+        this.activeWindows.put(window.getId(), window);
+
+        this.dataPacket(pk);
     }
 
 }

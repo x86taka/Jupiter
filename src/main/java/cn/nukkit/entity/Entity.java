@@ -89,7 +89,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_TYPE_POS = 6;
     public static final int DATA_TYPE_LONG = 7;
     public static final int DATA_TYPE_VECTOR3F = 8;
-    public static final int DATA_JUMP_DURATION = 10; //long
+
     public static final int DATA_FLAGS = 0;
     public static final int DATA_HEALTH = 1; //int (minecart/boat)
     public static final int DATA_VARIANT = 2; //int
@@ -113,10 +113,8 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_ENDERMAN_HELD_ITEM_ID = 23; //short
     public static final int DATA_ENDERMAN_HELD_ITEM_DAMAGE = 24; //short
     public static final int DATA_ENTITY_AGE = 25; //short
-    public static final int DATA_PLAYER_FLAGS = 29; //byte
     /* 27 (byte) player-specific flags
-     * 28 (int) player "index"?
-     * 29 (block coords) bed position */
+     * 28 (int) player "index"?*/
     public static final int DATA_PLAYER_BED_POSITION = 29;
     public static final int DATA_FIREBALL_POWER_X = 30; //float
     public static final int DATA_FIREBALL_POWER_Y = 31;
@@ -136,7 +134,6 @@ public abstract class Entity extends Location implements Metadatable {
     /* 45 (byte) container stuff
      * 46 (int) container stuff
      * 47 (int) container stuff */
-    
     public static final int DATA_BLOCK_TARGET = 48; //block coords (ender crystal)
     public static final int DATA_WITHER_INVULNERABLE_TICKS = 49; //int
     public static final int DATA_WITHER_TARGET_1 = 50; //long
@@ -167,6 +164,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_MAX_STRENGTH = 76; //int
     /* 77 (int)
      * 78 (int) */
+
     public static final int DATA_FLAG_ONFIRE = 0;
     public static final int DATA_FLAG_SNEAKING = 1;
     public static final int DATA_FLAG_RIDING = 2;
@@ -183,7 +181,9 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_FLAG_CRITICAL = 13;
     public static final int DATA_FLAG_CAN_SHOW_NAMETAG = 14;
     public static final int DATA_FLAG_ALWAYS_SHOW_NAMETAG = 15;
-    public static final int DATA_FLAG_IMMOBILE = 16, DATA_FLAG_NO_AI = 16;
+    public static final int DATA_FLAG_IMMOBILE = 16;
+    @Deprecated
+    public static final int DATA_FLAG_NO_AI = 16;
     public static final int DATA_FLAG_SILENT = 17;
     public static final int DATA_FLAG_WALLCLIMBING = 18;
     public static final int DATA_FLAG_CAN_CLIMB = 19;
@@ -213,6 +213,8 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_FLAG_CAN_POWER_JUMP = 44;
     public static final int DATA_FLAG_LINGER = 45;
     public static final int DATA_FLAG_GRAVITY = 46;
+    public static final int DATA_FLAG_FIRE_IMMUNE = 47;
+    public static final int DATA_FLAG_DANCING = 48;
 
     public static long entityCount = 1;
 

@@ -896,7 +896,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void setButtonText(String text) {
-        if (text != this.getButtonText()) {
+        if (!(text.equals(this.getButtonText()))) {
             this.buttonText = text;
             this.setDataProperty(new StringEntityData(Entity.DATA_INTERACTIVE_TAG, this.buttonText));
         }

@@ -24,10 +24,6 @@ public class GameruleCommand extends VanillaCommand {
                 new CommandParameter("rule", false, CommandParameter.GAMERULE_LIST),
                 new CommandParameter("value", CommandParameter.ARG_TYPE_BOOL, false)
         });
-        this.commandParameters.put("byInt", new CommandParameter[]{
-                new CommandParameter("rule", false, CommandParameter.GAMERULE_LIST),
-                new CommandParameter("value", CommandParameter.ARG_TYPE_INT, false)
-        });
     }
 
     @Override

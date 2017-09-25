@@ -1830,14 +1830,13 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public Entity getMinDistanceEntity(double maxDistance){
-<<<<<<< HEAD
         Entity result = null;
         double distance = Double.MAX_VALUE;
         if (maxDistance <= 0)
             maxDistance = Double.MAX_VALUE;
         for (Entity entity : this.getLevel().getEntities()){
             if (maxDistance != 0){
-                if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) > maxDistance){
+                if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) < maxDistance){
                     result = entity;
                     distance = this.distance(entity);
                 }
@@ -1845,22 +1844,6 @@ public abstract class Entity extends Location implements Metadatable {
         }
 
         return result;
-=======
-    	Entity result = null;
-    	double distance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Entity entity : this.getLevel().getEntities()){
-    		if (maxDistance != 0){
-    			if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) < maxDistance){
-    				result = entity;
-    				distance = this.distance(entity);
-    			}
-    		}
-    	}
-
-    	return result;
->>>>>>> master
     }
 
     public Player getMinDistancePlayer(){
@@ -1868,14 +1851,13 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public Player getMinDistancePlayer(double maxDistance){
-<<<<<<< HEAD
         Player result = null;
         double distance = Double.MAX_VALUE;
         if (maxDistance <= 0)
             maxDistance = Double.MAX_VALUE;
         for (Player player : this.getLevel().getPlayers().values()){
             if (maxDistance != 0){
-                if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) > maxDistance){
+                if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) < maxDistance){
                     result = player;
                     distance = this.distance(player);
                 }
@@ -1883,22 +1865,6 @@ public abstract class Entity extends Location implements Metadatable {
         }
 
         return result;
-=======
-    	Player result = null;
-    	double distance = Double.MAX_VALUE;
-    	if (maxDistance <= 0)
-    		maxDistance = Double.MAX_VALUE;
-    	for (Player player : this.getLevel().getPlayers().values()){
-    		if (maxDistance != 0){
-    			if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) < maxDistance){
-    				result = player;
-    				distance = this.distance(player);
-    			}
-    		}
-    	}
-
-    	return result;
->>>>>>> master
     }
 
     public Vector3 getMotion() {

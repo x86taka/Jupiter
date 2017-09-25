@@ -17,8 +17,8 @@ import cn.nukkit.event.entity.EntityInventoryChangeEvent;
 import cn.nukkit.event.inventory.InventoryOpenEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
-import cn.nukkit.network.protocol.ContainerSetContentPacket;
-import cn.nukkit.network.protocol.ContainerSetSlotPacket;
+import cn.nukkit.network.protocol.InventoryContentPacket;
+import cn.nukkit.network.protocol.InventorySlotPacket;
 
 /**
  * author: MagicDroidX
@@ -146,7 +146,7 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public boolean setItem(int index, Item item) {
+    public boolean setItem(int index, Item item, boolean send) {
         item = item.clone();
         if (index < 0 || index >= this.size) {
             return false;
@@ -168,7 +168,7 @@ public abstract class BaseInventory implements Inventory {
 
         Item old = this.getItem(index);
         this.slots.put(index, item.clone());
-        this.onSlotChange(index, old);
+        this.onSlotChange(index, old, send);
 
         return true;
     }
@@ -216,12 +216,12 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public int first(Item item) {
+    public int first(Item item, boolean exact) {
         int count = Math.max(1, item.getCount());
         boolean checkDamage = item.hasMeta();
         boolean checkTag = item.getCompoundTag() != null;
         for (Map.Entry<Integer, Item> entry : this.getContents().entrySet()) {
-            if (item.equals(entry.getValue(), checkDamage, checkTag) && entry.getValue().getCount() >= count) {
+        	if (item.equals(entry.getValue(), checkDamage, checkTag) && (entry.getValue().getCount() == count || (!exact && entry.getValue().getCount() > count))) {
                 return entry.getKey();
             }
         }
@@ -357,7 +357,7 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public boolean clear(int index) {
+    public boolean clear(int index, boolean send) {
         if (this.slots.containsKey(index)) {
             Item item = new ItemBlock(new BlockAir(), null, 0);
             Item old = this.slots.get(index);
@@ -378,7 +378,7 @@ public abstract class BaseInventory implements Inventory {
                 this.slots.remove(index);
             }
 
-            this.onSlotChange(index, old);
+            this.onSlotChange(index, old, send);
         }
 
         return true;
@@ -434,8 +434,10 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public void onSlotChange(int index, Item before) {
-        this.sendSlot(index, this.getViewers());
+    public void onSlotChange(int index, Item before, boolean send) {
+    	if (send) {
+	        this.sendSlot(index, this.getViewers());
+    	}
     }
 
     @Override
@@ -444,21 +446,20 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public void sendContents(Player[] players) {
-        ContainerSetContentPacket pk = new ContainerSetContentPacket();
+    public void sendContents(Player... players) {
+    	InventoryContentPacket pk = new InventoryContentPacket();
         pk.slots = new Item[this.getSize()];
         for (int i = 0; i < this.getSize(); ++i) {
             pk.slots[i] = this.getItem(i);
         }
 
         for (Player player : players) {
-            pk.entityRuntimeId = player.getId();
             int id = player.getWindowId(this);
             if (id == -1 || !player.spawned) {
                 this.close(player);
                 continue;
             }
-            pk.windowid = (byte) id;
+            pk.inventoryId = id;
             player.dataPacket(pk);
         }
     }
@@ -522,8 +523,8 @@ public abstract class BaseInventory implements Inventory {
     }
 
     @Override
-    public void sendSlot(int index, Player[] players) {
-        ContainerSetSlotPacket pk = new ContainerSetSlotPacket();
+    public void sendSlot(int index, Player... players) {
+    	InventorySlotPacket pk = new InventorySlotPacket();
         pk.slot = index;
         pk.item = this.getItem(index).clone();
 
@@ -533,7 +534,7 @@ public abstract class BaseInventory implements Inventory {
                 this.close(player);
                 continue;
             }
-            pk.windowid = (byte) id;
+            pk.inventoryId = id;
             player.dataPacket(pk);
         }
     }

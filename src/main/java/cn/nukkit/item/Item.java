@@ -17,6 +17,7 @@ import cn.nukkit.inventory.Fuel;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -494,6 +495,8 @@ public class Item implements Cloneable {
     public static final int SPAWN_EGG = 383;
     public static final int EXPERIENCE_BOTTLE = 384;
     public static final int FIRE_CHARGE = 385;
+    public static final int WRITABLE_BOOK = 386;
+    public static final int WRITTEN_BOOK = 387;
 
     public static final int EMERALD = 388;
     public static final int ITEM_FRAME = 389;
@@ -511,7 +514,9 @@ public class Item implements Cloneable {
     public static final int CARROT_ON_A_STICK = 398;
     public static final int NETHER_STAR = 399;
     public static final int PUMPKIN_PIE = 400;
-
+    public static final int FIREWORKS = 401;
+    public static final int FIREWORKSCHARGE = 402;
+    public static final int FIREWORKS_CHARGE = 402;
     public static final int ENCHANTED_BOOK = 403;
     public static final int ENCHANT_BOOK = 403;
     public static final int COMPARATOR = 404;
@@ -536,7 +541,7 @@ public class Item implements Cloneable {
     public static final int PRISMARINE_CRYSTALS = 422;
     public static final int RAW_MUTTON = 423;
     public static final int COOKED_MUTTON = 424;
-
+    public static final int ARMOR_STAND = 425;
     public static final int END_CRYSTAL = 426;
     public static final int SPRUCE_DOOR = 427;
     public static final int BIRCH_DOOR = 428;
@@ -554,6 +559,7 @@ public class Item implements Cloneable {
     public static final int ELYTRA = 444;
 
     public static final int SHULKER_SHELL = 445;
+    public static final int BANNER = 446;
 
     public static final int TOTEM = 450;
 
@@ -568,8 +574,21 @@ public class Item implements Cloneable {
 
     public static final int GOLDEN_APPLE_ENCHANTED = 466;
 
+    public static final int RECORD_13 = 500;
+    public static final int RECORD_CAT = 501;
+    public static final int RECORD_BLOCKS = 502;
+    public static final int RECORD_CHIRP = 503;
+    public static final int RECORD_FAR = 504;
+    public static final int RECORD_MALL = 505;
+    public static final int RECORD_MELLOHI = 506;
+    public static final int RECORD_STAL = 507;
+    public static final int RECORD_STRAD = 508;
+    public static final int RECORD_WARD = 509;
+    public static final int RECORD_11 = 510;
+    public static final int RECORD_WAIT = 511;
+
     @SuppressWarnings("rawtypes")
-	public static Class[] list = null;
+    public static Class[] list = null;
 
     protected Block block = null;
     protected final int id;
@@ -784,6 +803,9 @@ public class Item implements Cloneable {
             list[PRISMARINE_CRYSTALS] = ItemPrismarineCrystals.class; //422
             list[RAW_MUTTON] = ItemMuttonRaw.class; //423
             list[COOKED_MUTTON] = ItemMuttonCooked.class; //424
+
+            //TODO 1.2 防具立て
+            list[ARMOR_STAND] = ItemArmorStand.class; //425
 
             list[END_CRYSTAL] = ItemEndCrystal.class; //426
             list[SPRUCE_DOOR] = ItemDoorSpruce.class; //427
@@ -1156,7 +1178,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.GREEN_GLAZED_TERRACOTTA, 0));
         addCreativeItem(Item.get(Item.RED_GLAZED_TERRACOTTA, 0));
         addCreativeItem(Item.get(Item.BLACK_GLAZED_TERRACOTTA, 0));
-        
+
         addCreativeItem(Item.get(Item.CONCRETE, 0));
         addCreativeItem(Item.get(Item.CONCRETE, 8));
         addCreativeItem(Item.get(Item.CONCRETE, 7));
@@ -1173,7 +1195,7 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.CONCRETE, 10));
         addCreativeItem(Item.get(Item.CONCRETE, 2));
         addCreativeItem(Item.get(Item.CONCRETE, 6));
-        
+
         addCreativeItem(Item.get(Item.CONCRETE_POWDER, 0));
         addCreativeItem(Item.get(Item.CONCRETE_POWDER, 8));
         addCreativeItem(Item.get(Item.CONCRETE_POWDER, 7));
@@ -1558,6 +1580,9 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.WEAKNESS));
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.WEAKNESS_LONG));
         addCreativeItem(Item.get(Item.LINGERING_POTION, ItemPotion.DECAY));
+
+        //TODO 1.2
+        addCreativeItem(Item.get(Item.ARMOR_STAND, 0));
     }
 
     public static void clearCreativeItems() {
@@ -1614,10 +1639,10 @@ public class Item implements Cloneable {
     }
 
     @SuppressWarnings("unchecked")
-	public static Item get(int id, Integer meta, int count, byte[] tags) {
+    public static Item get(int id, Integer meta, int count, byte[] tags) {
         try {
             @SuppressWarnings("rawtypes")
-			Class c = list[id];
+            Class c = list[id];
             Item item;
 
             if (c == null) {
@@ -2189,5 +2214,21 @@ public class Item implements Cloneable {
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    public boolean isNull(){
+        return this.count <= 0 || this.id == AIR;
+    }
+
+    public boolean onClickAir(Player player, Vector3 directionVector) {
+        return false;
+    }
+
+    public boolean onReleaseUsing(Player player) {
+        return false;
+    }
+
+    public final boolean equalsExact(Item other) {
+        return this.equals(other, true, true) && this.count == other.count;
     }
 }

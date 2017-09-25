@@ -23,6 +23,9 @@ public class WeatherCommand extends VanillaCommand {
                 new CommandParameter("type", false, CommandParameter.WEATHER_LIST),
                 new CommandParameter("duration", CommandParameter.ARG_TYPE_INT, true)
         });
+        this.commandParameters.put("query", new CommandParameter[]{
+                new CommandParameter("type", CommandParameter.ARG_TYPE_STRING, false)
+        });
     }
 
     @Override

@@ -19,7 +19,7 @@ import cn.nukkit.utils.MinecartType;
 public class EntityMinecartTNT extends EntityMinecartAbstract implements EntityExplosive {
 
     public static final int NETWORK_ID = 97; //wtf?
-    private int fuse = 0;
+    private int fuse;
     private boolean activated;
 
     public EntityMinecartTNT(FullChunk chunk, CompoundTag nbt) {

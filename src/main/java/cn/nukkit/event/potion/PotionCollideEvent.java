@@ -1,6 +1,6 @@
 package cn.nukkit.event.potion;
 
-import cn.nukkit.entity.projectile.EntityPotion;
+import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.potion.Potion;
@@ -19,9 +19,9 @@ public class PotionCollideEvent extends PotionEvent implements Cancellable {
 
     private final EntityPotion thrownPotion;
 
-    public PotionCollideEvent(Potion potion, EntityPotion thrownPotion) {
+    public PotionCollideEvent(Potion potion, EntityPotion entityPotion) {
         super(potion);
-        this.thrownPotion = thrownPotion;
+        this.thrownPotion = entityPotion;
     }
 
     public EntityPotion getThrownPotion() {

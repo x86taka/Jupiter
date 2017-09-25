@@ -19,23 +19,27 @@ public class CommandParameter {
     public static final String ENUM_TYPE_ENTITY_LIST = "entityType";
     public static final String ENUM_TYPE_EFFECT_LIST = "effectType";
     public static final String ENUM_TYPE_PARTICLE_LIST = "particleType";
+    public static final String ENUM_TYPE_DIFFICULTY_LIST = "difficultyType";
 
     public static final String[] GAMERULE_LIST = new String[]{
-            "sendcommandfeedback",
-            "pvp",
-            "mobgriefing",
-            "doweathercycle",
-            "firedamage",
-            "domobspawning",
-            "drowningdamage",
-            "falldamage",
-            "domobloot",
+            "drowingdamage",
+            "commandblockoutput",
             "dotiledrops",
-            "dofiretick",
-            "doentitydrops",
-            "dodaylightcycle",
+            "domobloot",
             "keepinventory",
-            "commandblockoutput"
+            "dodaylightcycle",
+            "domobspawning",
+            "doentitydrops",
+            "dofiretick",
+            "doweathercycle",
+            "pvp",
+            "falldamage",
+            "firedamage",
+            "mobgriefing",
+            "showcoordinates",
+            "naturalregeneration",
+            "tntexplodes",
+            "sendcommandfeedback"
     };
 
     public static final String[] WEATHER_LIST = new String[]{

@@ -1,5 +1,16 @@
 package cn.nukkit.level.format.anvil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.level.Level;
@@ -11,13 +22,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.ChunkException;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * author: MagicDroidX
@@ -342,7 +346,7 @@ public class Anvil extends BaseLevelProvider {
         nbt.putByteArray("Data", new byte[2048]);
         byte[] sl = new byte[2048];
         Arrays.fill(sl, (byte) 0xff);
-        nbt.putByteArray("SkyLight", sl);
+        nbt.putByteArray("SkyLight", sl);    
         nbt.putByteArray("BlockLight", new byte[2048]);
         return new ChunkSection(nbt);
     }

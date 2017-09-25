@@ -36,6 +36,13 @@ public class BlockGlass extends BlockTransparent {
     public BlockColor getColor(){
         return BlockColor.AIR_BLOCK_COLOR;
     }
+    
+    /* TODO 1.2 カラフルなガラス
+    @Override
+    public BlockColor getColor() {
+        return DyeColor.getByDyedData(meta).getColor();
+    }
+     */
 
     @Override
     public double getHardness() {

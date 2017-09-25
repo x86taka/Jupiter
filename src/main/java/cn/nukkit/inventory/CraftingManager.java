@@ -1,12 +1,27 @@
 package cn.nukkit.inventory;
 
-import cn.nukkit.block.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import cn.nukkit.block.BlockBricksStone;
+import cn.nukkit.block.BlockPlanks;
+import cn.nukkit.block.BlockQuartz;
+import cn.nukkit.block.BlockSandstone;
+import cn.nukkit.block.BlockSlabStone;
+import cn.nukkit.block.BlockStone;
+import cn.nukkit.block.BlockWall;
+import cn.nukkit.block.BlockWood;
+import cn.nukkit.block.BlockWood2;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
 import cn.nukkit.item.ItemPotion;
+import cn.nukkit.network.protocol.CraftingDataPacket;
+import cn.nukkit.network.protocol.DataPacket;
 import cn.nukkit.utils.Utils;
-
-import java.util.*;
 
 /**
  * author: MagicDroidX
@@ -23,6 +38,8 @@ public class CraftingManager {
     public final Map<String, BrewingRecipe> brewingRecipes = new HashMap<>();
 
     private static int RECIPE_COUNT = 0;
+    
+    public CraftingDataPacket packetCashe;
 
     public CraftingManager() {
         this.registerFurnace();
@@ -803,6 +820,8 @@ public class CraftingManager {
                 "ICI",
                 " I "
         ).setIngredient("I", Item.get(Item.IRON_INGOT, 0, 5)).setIngredient("C", Item.get(Item.CHEST, 0, 1)));
+        
+        this.makeCraftingPacket();
     }
 
     protected void registerFurnace() {
@@ -1389,4 +1408,33 @@ public class CraftingManager {
             this.resultAmount = resultAmount;
         }
     }
+
+	public DataPacket getCraftingDataPacket() {
+		if(this.packetCashe == null){
+			this.makeCraftingPacket();
+		}
+		
+		return this.packetCashe;
+	}
+	
+	public void makeCraftingPacket(){
+		CraftingDataPacket pk = new CraftingDataPacket();
+		pk.cleanRecipes = true;
+		
+		for(Recipe r : this.recipes.values()){
+			if(r instanceof ShapedRecipe){
+				pk.addShapedRecipe((ShapedRecipe) r);
+			}else if(r instanceof ShapelessRecipe){
+				pk.addShapelessRecipe((ShapelessRecipe) r);
+			}
+		}
+		
+		for(Recipe r : this.furnaceRecipes.values()){
+			pk.addFurnaceRecipe((FurnaceRecipe) r);
+		}
+		
+		pk.encode();
+		
+		this.packetCashe = pk;
+	}
 }

@@ -4,9 +4,11 @@ import cn.nukkit.Player;
 import cn.nukkit.entity.data.ByteEntityData;
 import cn.nukkit.entity.weather.EntityLightningStrike;
 import cn.nukkit.event.entity.CreeperPowerEvent;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemGunpowder;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 
@@ -87,8 +89,14 @@ public class EntityCreeper extends EntityMonster {
     }
 
     @Override
-    public Item[] getDrops() {
-        //TODO: Add Music Disc
-        return new Item[]{new ItemGunpowder(0, random.nextRange(0, 2))};
+    public Item[] getDrops(){
+        if(this.getLastDamageCause() instanceof EntityDamageByEntityEvent){
+            if(((EntityDamageByEntityEvent) this.getLastDamageCause()).getDamager() instanceof EntitySkeleton){
+                return new Item[]{Item.get(500 + new NukkitRandom().nextRange(0, 12), 0, 1)}; //レコード
+            }else{
+                return new Item[]{new ItemGunpowder(0, new NukkitRandom().nextRange(0, 2))};
+            }
+        }
+        return new Item[]{};
     }
 }

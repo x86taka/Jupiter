@@ -1,13 +1,13 @@
 package cn.nukkit.inventory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.sound.AnvilUseSound;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * author: MagicDroidX
@@ -130,6 +130,7 @@ public class AnvilInventory extends ContainerInventory {
     public void onClose(Player who) {
         super.onClose(who);
         who.craftingType = Player.CRAFTING_SMALL;
+        who.resetCraftingGridType();
 
         for (int i = 0; i < 2; ++i) {
             this.getHolder().getLevel().dropItem(this.getHolder().add(0.5, 0.5, 0.5), this.getItem(i));

@@ -1,5 +1,9 @@
 package cn.nukkit.level.format.anvil;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
@@ -7,10 +11,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.Binary;
-
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * author: MagicDroidX
@@ -52,8 +52,6 @@ public class ChunkRequestTask extends AsyncTask {
         Chunk chunk = Chunk.fromFastBinary(this.chunk);
         byte[] ids = chunk.getBlockIdArray();
         byte[] meta = chunk.getBlockDataArray();
-        byte[] blockLight = chunk.getBlockLightArray();
-        byte[] skyLight = chunk.getBlockSkyLightArray();
         int[] heightMap = chunk.getHeightMapArray();
         int[] biomeColors = chunk.getBiomeColorArray();
         ByteBuffer buffer = ByteBuffer.allocate(
@@ -65,15 +63,11 @@ public class ChunkRequestTask extends AsyncTask {
 
         ByteBuffer orderedIds = ByteBuffer.allocate(16 * 16 * 128);
         ByteBuffer orderedData = ByteBuffer.allocate(16 * 16 * 64);
-        ByteBuffer orderedSkyLight = ByteBuffer.allocate(16 * 16 * 64);
-        ByteBuffer orderedLight = ByteBuffer.allocate(16 * 16 * 64);
 
         for (int x = 0; x < 16; ++x) {
             for (int z = 0; z < 16; ++z) {
                 orderedIds.put(this.getColumn(ids, x, z));
                 orderedData.put(this.getHalfColumn(meta, x, z));
-                orderedSkyLight.put(this.getHalfColumn(skyLight, x, z));
-                orderedLight.put(this.getHalfColumn(blockLight, x, z));
             }
         }
 
@@ -90,8 +84,6 @@ public class ChunkRequestTask extends AsyncTask {
                 buffer
                         .put(orderedIds)
                         .put(orderedData)
-                        .put(orderedSkyLight)
-                        .put(orderedLight)
                         .put(orderedHeightMap)
                         .put(orderedBiomeColors)
                         .put(this.blockEntities)

@@ -1,5 +1,7 @@
 package cn.nukkit.blockentity;
 
+import java.util.HashSet;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -17,8 +19,6 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.ContainerSetDataPacket;
-
-import java.util.HashSet;
 
 /**
  * @author MagicDroidX
@@ -262,13 +262,13 @@ public class BlockEntityFurnace extends BlockEntitySpawnable implements Inventor
             int windowId = player.getWindowId(this.getInventory());
             if (windowId > 0) {
                 ContainerSetDataPacket pk = new ContainerSetDataPacket();
-                pk.windowid = (byte) windowId;
+                pk.windowid = windowId;
                 pk.property = 0;
                 pk.value = cookTime;
                 player.dataPacket(pk);
 
                 pk = new ContainerSetDataPacket();
-                pk.windowid = (byte) windowId;
+                pk.windowid = windowId;
                 pk.property = 1;
                 pk.value = burnDuration;
                 player.dataPacket(pk);

@@ -1,6 +1,11 @@
 package cn.nukkit.blockentity;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -15,11 +20,6 @@ import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.network.protocol.ContainerSetDataPacket;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 public class BlockEntityBrewingStand extends BlockEntitySpawnable implements InventoryHolder, BlockEntityContainer, BlockEntityNameable {
 
@@ -188,7 +188,7 @@ public class BlockEntityBrewingStand extends BlockEntitySpawnable implements Inv
                 int windowId = player.getWindowId(this.inventory);
                 if (windowId > 0) {
                     ContainerSetDataPacket pk = new ContainerSetDataPacket();
-                    pk.windowid = (byte) windowId;
+                    pk.windowid = windowId;
                     pk.property = 0;
                     pk.value = this.brewTime;
                     player.dataPacket(pk);

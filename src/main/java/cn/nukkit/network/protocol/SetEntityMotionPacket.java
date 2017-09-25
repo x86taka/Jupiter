@@ -19,7 +19,10 @@ public class SetEntityMotionPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.eid = this.getVarLong();
+    	this.motionX = this.getVector3f().x;
+    	this.motionY = this.getVector3f().y;
+    	this.motionZ = this.getVector3f().z;
     }
 
     @Override

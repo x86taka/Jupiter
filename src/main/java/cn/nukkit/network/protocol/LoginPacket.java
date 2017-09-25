@@ -8,7 +8,6 @@ public class LoginPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.LOGIN_PACKET;
 
     public int protocol;
-    public byte gameEdition;
     
     //デバッグ用
 	private String data = "";
@@ -21,7 +20,6 @@ public class LoginPacket extends DataPacket {
     @Override
     public void decode() {
         this.protocol = this.getInt();
-        this.gameEdition = (byte) this.getByte();
         this.setBuffer(this.getByteArray(), 0);
         /* デバッグ用
          * Json出力

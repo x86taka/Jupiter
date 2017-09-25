@@ -1208,7 +1208,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         if(this.printPackets)
-        	this.getServer().getLogger().info(TextFormat.YELLOW + "[DATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+        	this.getServer().getLogger().info(TextFormat.YELLOW + "[SEND] " + TextFormat.WHITE + packet.getName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -1244,7 +1244,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
         
         if(this.printPackets)
-        	this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[DIRECTDATAPACKET] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+        	this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[SEND-DIRECT] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -2562,7 +2562,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    playerActionPacket.entityId = this.id;
+                    playerActionPacket.entityRuntimeId = this.id;
                     Vector3 pos = new Vector3(playerActionPacket.x, playerActionPacket.y, playerActionPacket.z);
                     BlockFace face = BlockFace.fromIndex(playerActionPacket.face);
 
@@ -2630,9 +2630,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         case PlayerActionPacket.ACTION_DIMENSION_CHANGE_ACK:
                             break; //TODO
 
-                        case PlayerActionPacket.ACTION_CHANGE_SKIN:
-                            break; //TODO
-
                         case PlayerActionPacket.ACTION_RESPAWN:
                             if (!this.spawned || this.isAlive() || !this.isOnline()) {
                                 break;
@@ -2691,7 +2688,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                             PlayerActionPacket pkpk = (PlayerActionPacket) packet;
                             pkpk.action = PlayerActionPacket.ACTION_JUMP;
-                            pkpk.entityId = this.getId();
+                            pkpk.entityRuntimeId = this.getId();
                             pkpk.x = (int) this.x;
                             pkpk.y = (int) this.y;
                             pkpk.z = (int) this.z;

@@ -79,6 +79,7 @@ import cn.nukkit.network.protocol.ServerSettingsRequestPacket;
 import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
 import cn.nukkit.network.protocol.ServerToClientHandshakePacket;
 import cn.nukkit.network.protocol.SetCommandsEnabledPacket;
+import cn.nukkit.network.protocol.SetDefaultGameTypePacket;
 import cn.nukkit.network.protocol.SetDifficultyPacket;
 import cn.nukkit.network.protocol.SetEntityDataPacket;
 import cn.nukkit.network.protocol.SetEntityLinkPacket;
@@ -89,6 +90,7 @@ import cn.nukkit.network.protocol.SetSpawnPositionPacket;
 import cn.nukkit.network.protocol.SetTimePacket;
 import cn.nukkit.network.protocol.SetTitlePacket;
 import cn.nukkit.network.protocol.ShowCreditsPacket;
+import cn.nukkit.network.protocol.ShowProfilePacket;
 import cn.nukkit.network.protocol.SpawnExperienceOrbPacket;
 import cn.nukkit.network.protocol.StartGamePacket;
 import cn.nukkit.network.protocol.StopSoundPacket;
@@ -365,6 +367,7 @@ public class Network {
         this.registerPacket(ProtocolInfo.SERVER_SETTINGS_RESPONSE_PACKET, ServerSettingsResponsePacket.class);//new
         this.registerPacket(ProtocolInfo.SERVER_TO_CLIENT_HANDSHAKE_PACKET, ServerToClientHandshakePacket.class);//new
         this.registerPacket(ProtocolInfo.SET_COMMANDS_ENABLED_PACKET, SetCommandsEnabledPacket.class);
+        this.registerPacket(ProtocolInfo.SET_DEFAULT_GAME_TYPE_PACKET, SetDefaultGameTypePacket.class);
         this.registerPacket(ProtocolInfo.SET_DIFFICULTY_PACKET, SetDifficultyPacket.class);
         this.registerPacket(ProtocolInfo.SET_ENTITY_DATA_PACKET, SetEntityDataPacket.class);
         this.registerPacket(ProtocolInfo.SET_ENTITY_LINK_PACKET, SetEntityLinkPacket.class);
@@ -375,6 +378,7 @@ public class Network {
         this.registerPacket(ProtocolInfo.SET_TITLE_PACKET, SetTitlePacket.class);
         this.registerPacket(ProtocolInfo.SET_TIME_PACKET, SetTimePacket.class);
         this.registerPacket(ProtocolInfo.SHOW_CREDITS_PACKET, ShowCreditsPacket.class);
+        this.registerPacket(ProtocolInfo.SHOW_PROFILE_PACKET, ShowProfilePacket.class);
         this.registerPacket(ProtocolInfo.SPAWN_EXPERIENCE_ORB_PACKET, SpawnExperienceOrbPacket.class);
         this.registerPacket(ProtocolInfo.START_GAME_PACKET, StartGamePacket.class);
         this.registerPacket(ProtocolInfo.STOP_SOUND_PACKET, StopSoundPacket.class);//new

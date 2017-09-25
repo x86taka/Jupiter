@@ -1,7 +1,5 @@
 package cn.nukkit.block;
 
-import java.util.Random;
-
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
 import cn.nukkit.item.ItemTool;
@@ -62,7 +60,7 @@ public class BlockOreLapis extends BlockSolid {
                 };
             } else {
                 return new Item[]{
-                        new ItemDye(4, new Random().nextInt(4) + 4)
+                        new ItemDye(4, new NukkitRandom().nextRange(4, 8))
                 };
             }
         } else {

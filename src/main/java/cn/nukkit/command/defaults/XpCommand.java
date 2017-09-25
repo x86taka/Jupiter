@@ -28,8 +28,8 @@ public class XpCommand extends Command {
             return true;
         }
 
-        //  "/xp <amount> [player]"  for adding exp
-        //  "/xp <amount>L [player]" for adding exp level
+        //TODO:  "/xp <amount> [player]"  for adding exp
+        //TODO:  "/xp <amount>L [player]" for adding exp level
         String amountString;
         String playerName;
         Player player;

@@ -1,6 +1,8 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemSlimeball;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -33,6 +35,7 @@ public class EntitySlime extends EntityMonster {
 
     @Override
     public float getHeight() {
+        //TODO: ageable
         return 5f;
     }
 
@@ -40,7 +43,6 @@ public class EntitySlime extends EntityMonster {
     public String getName() {
         return "Slime";
     }
-
 
     @Override
     public void spawnTo(Player player) {
@@ -58,5 +60,10 @@ public class EntitySlime extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemSlimeball(0, random.nextRange(0, 2))};
     }
 }

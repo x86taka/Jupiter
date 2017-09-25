@@ -35,12 +35,10 @@ public class HelpCommand extends VanillaCommand {
         int pageHeight = 5;
         if (args.length != 0) {
             try {
-            	
-            	if(args[0] == null){
-            		pageNumber = 1;
-            	}else{
-	                pageNumber = Integer.valueOf(args[0]);
-            	}
+                pageNumber = Integer.valueOf(args[args.length - 1]);
+                if (pageNumber <= 0) {
+                    pageNumber = 1;
+                }
 
                 String[] newargs = new String[args.length - 1];
                 System.arraycopy(args, 0, newargs, 0, newargs.length);

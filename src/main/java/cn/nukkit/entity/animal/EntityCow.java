@@ -1,6 +1,9 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBeefRaw;
+import cn.nukkit.item.ItemLeather;
+import cn.nukkit.item.ItemSteak;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -48,9 +51,9 @@ public class EntityCow extends EntityAnimal {
     @Override
     public Item[] getDrops() {
         if (this.isOnFire()) {
-            return new Item[]{Item.get(Item.LEATHER), Item.get(Item.COOKED_BEEF)};
+            return new Item[]{new ItemLeather(0, random.nextRange(0, 2)), new ItemSteak(0, random.nextRange(1, 3))};
         } else {
-            return new Item[]{Item.get(Item.LEATHER), Item.get(Item.RAW_BEEF)};
+            return new Item[]{new ItemLeather(0, random.nextRange(0, 2)), new ItemBeefRaw(0, random.nextRange(1, 3))};
         }
     }
 

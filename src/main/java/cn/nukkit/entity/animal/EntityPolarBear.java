@@ -1,6 +1,8 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemFish;
+import cn.nukkit.item.ItemSalmon;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -41,6 +43,10 @@ public class EntityPolarBear extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{};
+        if (random.nextRange(0, 3) != 0) {
+            return new Item[]{new ItemFish(0, random.nextRange(0, 2))};
+        } else {
+            return new Item[]{new ItemSalmon(0, random.nextRange(0, 2))};
+        }
     }
 }

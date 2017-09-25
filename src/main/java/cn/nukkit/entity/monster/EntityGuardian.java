@@ -1,6 +1,9 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemPrismarineCrystals;
+import cn.nukkit.item.ItemPrismarineShard;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -44,5 +47,14 @@ public class EntityGuardian extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        Item drops[] = new Item[3];
+        drops[0] = new ItemPrismarineCrystals(0, random.nextRange(0, 1));
+        drops[1] = new ItemPrismarineShard(0, random.nextRange(0, 2));
+        //TODO: 60%の確率で生魚、25%の確率で生鮭、2%の確率でクマノミ、13%の確率でフグ、また焼死時には焼き魚、焼き鮭をドロップ
+        return drops;
     }
 }

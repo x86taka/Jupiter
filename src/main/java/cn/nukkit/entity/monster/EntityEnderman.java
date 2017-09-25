@@ -1,6 +1,8 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemEnderPearl;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -18,6 +20,7 @@ public class EntityEnderman extends EntityMonster {
     }
     @Override
     protected void initEntity() {
+        this.setMaxHealth(40);
         super.initEntity();
     }
     
@@ -41,7 +44,6 @@ public class EntityEnderman extends EntityMonster {
         return "Enderman";
     }
 
-
     @Override
     public void spawnTo(Player player) {
         AddEntityPacket pk = new AddEntityPacket();
@@ -58,5 +60,10 @@ public class EntityEnderman extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemEnderPearl(0, random.nextRange(0, 1))};
     }
 }

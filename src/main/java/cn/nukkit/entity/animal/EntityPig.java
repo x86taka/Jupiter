@@ -1,6 +1,8 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemPorkchopCooked;
+import cn.nukkit.item.ItemPorkchopRaw;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -48,9 +50,9 @@ public class EntityPig extends EntityAnimal {
     @Override
     public Item[] getDrops() {
         if (this.isOnFire()) {
-            return new Item[]{Item.get(Item.COOKED_PORKCHOP)};
+            return new Item[]{new ItemPorkchopCooked(0, random.nextRange(1, 3))};
         } else {
-            return new Item[]{Item.get(Item.RAW_PORKCHOP)};
+            return new Item[]{new ItemPorkchopRaw(0, random.nextRange(1, 3))};
         }
     }
 

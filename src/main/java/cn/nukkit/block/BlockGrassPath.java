@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.utils.BlockColor;
@@ -21,6 +23,16 @@ public class BlockGrassPath extends BlockGrass {
     @Override
     public int getId() {
         return GRASS_PATH;
+    }
+
+    @Override
+    public double getResistance() {
+        return 3;
+    }
+
+    @Override
+    public double getHardness() {
+        return 0.6;
     }
 
     @Override
@@ -46,8 +58,10 @@ public class BlockGrassPath extends BlockGrass {
     }
 
     @Override
-    public double getResistance() {
-        return 3.25;
+    public Item[] getDrops(Item item) {
+        return new Item[]{
+                item.isSilkTouch() ? this.toItem() : new ItemBlock(new BlockDirt())
+        };
     }
 
     @Override

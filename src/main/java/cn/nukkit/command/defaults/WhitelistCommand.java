@@ -24,10 +24,10 @@ public class WhitelistCommand extends VanillaCommand {
         );
         this.commandParameters.clear();
         this.commandParameters.put("1arg", new CommandParameter[]{
-                new CommandParameter("on|off|list|reload", CommandParameter.ARG_TYPE_STRING, false)
+                new CommandParameter("type", false, new String[]{"on", "off", "list", "reload"})
         });
         this.commandParameters.put("2args", new CommandParameter[]{
-                new CommandParameter("add|remove", CommandParameter.ARG_TYPE_STRING, false),
+                new CommandParameter("type", false, new String[]{"add", "remove"}),
                 new CommandParameter("player", CommandParameter.ARG_TYPE_TARGET, false)
         });
     }

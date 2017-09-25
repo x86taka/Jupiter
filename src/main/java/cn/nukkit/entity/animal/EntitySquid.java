@@ -1,8 +1,10 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemDye;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.utils.DyeColor;
 
 public class EntitySquid extends EntityAnimal {
 
@@ -35,6 +37,6 @@ public class EntitySquid extends EntityAnimal {
 
     @Override
     public Item[] getDrops() {
-        return new Item[]{};
+        return new Item[]{new ItemDye(DyeColor.BLACK.getDyeData(), random.nextRange(1, 3))};
     }
 }

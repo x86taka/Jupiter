@@ -29,6 +29,8 @@ public class EntityEventPacket extends DataPacket {
 
     public static final int FEED = 57;
 
+    public static final byte EAT_FOOD = 57;
+
     @Override
     public byte pid() {
         return NETWORK_ID;

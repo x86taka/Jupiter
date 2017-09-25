@@ -1,6 +1,9 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBone;
+import cn.nukkit.item.ItemCoal;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -24,17 +27,17 @@ public class EntityWitherSkeleton extends EntityMonster {
     
     @Override
     public float getWidth() {
-        return 0.3f;
+        return 0.7f;
     }
 
     @Override
     public float getLength() {
-        return 0.9f;
+        return 0.7f;
     }
 
     @Override
     public float getHeight() {
-        return 0f;
+        return 2.4f;
     }
 
     @Override
@@ -58,5 +61,10 @@ public class EntityWitherSkeleton extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemCoal(0, random.nextRange(0, 1)), new ItemBone(0, random.nextRange(0, 2))};
     }
 }

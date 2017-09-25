@@ -16,7 +16,7 @@ import cn.nukkit.utils.TextFormat;
 public class KillCommand extends VanillaCommand {
 
     public KillCommand(String name) {
-        super(name, "%nukkit.command.kill.description", "%nukkit.command.kill.usage", new String[]{"suicide"});
+        super(name, "%nukkit.command.kill.description", "%nukkit.command.kill.usage");
         this.setPermission("nukkit.command.kill.self;"
                 + "nukkit.command.kill.other");
         this.commandParameters.clear();

@@ -48,6 +48,7 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.MathHelper;
 import cn.nukkit.math.NukkitMath;
+import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector2;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
@@ -310,6 +311,8 @@ public abstract class Entity extends Location implements Metadatable {
     protected Timing timing;
 
     protected boolean isPlayer = false;
+
+    protected NukkitRandom random = new NukkitRandom();
 
     public float getHeight() {
         return 0;
@@ -1827,6 +1830,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public Entity getMinDistanceEntity(double maxDistance){
+<<<<<<< HEAD
         Entity result = null;
         double distance = Double.MAX_VALUE;
         if (maxDistance <= 0)
@@ -1841,6 +1845,22 @@ public abstract class Entity extends Location implements Metadatable {
         }
 
         return result;
+=======
+    	Entity result = null;
+    	double distance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Entity entity : this.getLevel().getEntities()){
+    		if (maxDistance != 0){
+    			if (!(entity.equals(this)) && this.distance(entity) < distance && this.distance(entity) < maxDistance){
+    				result = entity;
+    				distance = this.distance(entity);
+    			}
+    		}
+    	}
+
+    	return result;
+>>>>>>> master
     }
 
     public Player getMinDistancePlayer(){
@@ -1848,6 +1868,7 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public Player getMinDistancePlayer(double maxDistance){
+<<<<<<< HEAD
         Player result = null;
         double distance = Double.MAX_VALUE;
         if (maxDistance <= 0)
@@ -1862,6 +1883,22 @@ public abstract class Entity extends Location implements Metadatable {
         }
 
         return result;
+=======
+    	Player result = null;
+    	double distance = Double.MAX_VALUE;
+    	if (maxDistance <= 0)
+    		maxDistance = Double.MAX_VALUE;
+    	for (Player player : this.getLevel().getPlayers().values()){
+    		if (maxDistance != 0){
+    			if (!(player.equals(this)) && this.distance(player) < distance && this.distance(player) < maxDistance){
+    				result = player;
+    				distance = this.distance(player);
+    			}
+    		}
+    	}
+
+    	return result;
+>>>>>>> master
     }
 
     public Vector3 getMotion() {

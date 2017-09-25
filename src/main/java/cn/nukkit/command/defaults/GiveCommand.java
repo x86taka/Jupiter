@@ -1,8 +1,13 @@
 package cn.nukkit.command.defaults;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import cn.nukkit.lang.TranslationContainer;
@@ -50,7 +55,33 @@ public class GiveCommand extends VanillaCommand {
             return true;
         }
 
-        Player player = sender.getServer().getPlayer(args[0]);
+        Player[] players = new Player[]{};
+
+        if (args[0].equals("@e") || args[0].equals("@a")) {
+            players = sender.getServer().getOnlinePlayers().values().toArray(new Player[0]);
+        } else if (args[0].equals("@p")) {
+            if (sender instanceof ConsoleCommandSender) {
+                sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
+                return true;
+            } else {//TODO: CommandBlockCommandSender
+                players = new Player[]{(Player) sender};
+            }
+        } else if (args[0].equals("@r")) {
+            List<Player> list = Arrays.asList(sender.getServer().getOnlinePlayers().values().toArray(new Player[0]));
+            if (list.size() <= 0) {
+                sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
+                return true;
+            }
+            Collections.shuffle(list);
+            players = new Player[]{list.get(0)};
+        } else {
+            if (sender.getServer().getPlayer(args[0]) == null) {
+                sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
+                return true;
+            }
+            players = new Player[]{sender.getServer().getPlayer(args[0])};
+        }
+
         Item item;
 
         try {
@@ -66,25 +97,40 @@ public class GiveCommand extends VanillaCommand {
             item.setCount(item.getMaxStackSize());
         }
 
-        if (player != null) {
-            if (item.getId() == 0) {
-                sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.give.item.notFound", args[1]));
-                return true;
-            }
-            player.getInventory().addItem(item.clone());
-        } else {
-            sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
-
+        if (item.getId() == 0) {
+            sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.give.item.notFound", args[1]));
             return true;
         }
+
+        if (players.length == 0){
+            sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
+            return true;
+        }
+
+        StringBuffer playersBuffer = new StringBuffer();
+
+        for (Player player : players) {
+            if (player != null) {
+                player.getInventory().addItem(item.clone());
+                playersBuffer.append(player.getDisplayName() + ", ");
+            }
+        }
+
+        String playerList = "";
+
+        if (playersBuffer.length() > 0) {
+            playerList = playersBuffer.substring(0, playersBuffer.length() - 2);
+        }
+
         Command.broadcastCommandMessage(sender, new TranslationContainer(
                 "%commands.give.success",
                 new String[]{
                         item.getName() + " (" + item.getId() + ":" + item.getDamage() + ")",
                         String.valueOf(item.getCount()),
-                        player.getName()
+                        playerList
                 }
         ));
+
         return true;
     }
 }

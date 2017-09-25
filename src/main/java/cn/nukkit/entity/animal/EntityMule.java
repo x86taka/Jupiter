@@ -1,20 +1,16 @@
 package cn.nukkit.entity.animal;
 
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemLeather;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-public class EntityMule extends EntityAnimal {
+public class EntityMule extends EntityHorse {
 
     public static final int NETWORK_ID = 25;
 
     public EntityMule(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
-    }
-
-    @Override
-    public Item[] getDrops() {
-        return new Item[]{};
     }
 
     @Override
@@ -31,7 +27,7 @@ public class EntityMule extends EntityAnimal {
     @Override
     public float getWidth() {
         if (isBaby()) {
-            return 0.6982f; // No have information
+            return 0.6982f;
         }
         return 1.3965f;
     }
@@ -39,8 +35,13 @@ public class EntityMule extends EntityAnimal {
     @Override
     public float getHeight() {
         if (isBaby()) {
-            return 0.8f; // No have information
+            return 0.8f;
         }
         return 1.6f;
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{new ItemLeather(0, random.nextRange(0, 2))};
     }
 }

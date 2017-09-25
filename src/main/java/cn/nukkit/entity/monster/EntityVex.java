@@ -1,6 +1,7 @@
 package cn.nukkit.entity.monster;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
@@ -59,5 +60,10 @@ public class EntityVex extends EntityMonster {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public Item[] getDrops() {
+        return new Item[]{};
     }
 }

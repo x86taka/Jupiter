@@ -1129,9 +1129,6 @@ public abstract class Entity extends Location implements Metadatable {
         if (this.inPortalTicks > 80) {
             EntityPortalEnterEvent ev = new EntityPortalEnterEvent(this, EntityPortalEnterEvent.TYPE_NETHER);
             getServer().getPluginManager().callEvent(ev);
-
-            //TODO: teleport
-            this.inPortalTicks = 0;
         }
 
         this.age += tickDiff;
@@ -1739,6 +1736,8 @@ public abstract class Entity extends Location implements Metadatable {
 
         if (portal) {
             inPortalTicks++;
+        } else {
+            this.inPortalTicks = 0;
         }
 
         if (vector.lengthSquared() > 0) {

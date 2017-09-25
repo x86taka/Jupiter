@@ -2214,7 +2214,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.entityRuntimeId = this.id;
         //startGamePacket.playerGamemode = this.getGamemode();
         startGamePacket.x = (float) this.x;
-        startGamePacket.y = (float) (this.y + this.getBaseOffset());
+        startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
         startGamePacket.yaw = (float) this.yaw;
         startGamePacket.pitch = (float) this.pitch;

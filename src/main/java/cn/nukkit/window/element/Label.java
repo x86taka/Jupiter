@@ -12,5 +12,10 @@ public class Label implements Element{
 	public String getText(){
 		return this.text;
 	}
+	
+	@Override
+	public String getName() {
+		return "Label";
+	}
 
 }

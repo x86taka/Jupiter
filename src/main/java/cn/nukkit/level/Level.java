@@ -2813,7 +2813,7 @@ public class Level implements ChunkManager, Metadatable {
                 int y = (int) Math.min(254, v.y);
                 boolean wasAir = chunk.getBlockId(x, y - 1, z) == 0;
                 for (; y > 0; --y) {
-                    int b = chunk.getFullBlock(x, y, z);
+                    int b = chunk.getFullBlock(x, y + 1, z);
                     Block block = Block.get(b >> 4, b & 0x0f);
                     if (this.isFullBlock(block)) {
                         if (wasAir) {

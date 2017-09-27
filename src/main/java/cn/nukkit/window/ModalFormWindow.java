@@ -10,6 +10,9 @@ public class ModalFormWindow extends WindowBase{
     private String content = "ModalFormWindow text";
     private String upButtonText = "はい";
     private String downButtonText = "いいえ";
+    
+	private String data;
+	private Object[] datas;
 
     public ModalFormWindow(int id, String title, String content, String upButtonText, String downButtonText){
         this.id = id;
@@ -32,5 +35,17 @@ public class ModalFormWindow extends WindowBase{
         data.put("button2", downButtonText);
         return this.toJson(title, WindowType.TYPE_MODAL, data);
     }
+    
+	@Override
+	public void setResponse(String data) {
+		this.data = data;
+		this.datas = this.toObject(data);
+	}
+
+	//未調査
+	@Override
+	public Map<String, Object> getResponses() {
+		return null;
+	}
 
 }

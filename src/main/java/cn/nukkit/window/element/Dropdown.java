@@ -52,4 +52,9 @@ public class Dropdown implements Element{
 		this.options = options;
 	}
 
+	@Override
+	public String getName() {
+		return "Dropdown";
+	}
+
 }

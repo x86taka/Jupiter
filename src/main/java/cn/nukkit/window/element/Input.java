@@ -25,4 +25,9 @@ public class Input implements Element{
 		return this.defaultText;
 	}
 
+	@Override
+	public String getName() {
+		return "Input";
+	}
+
 }

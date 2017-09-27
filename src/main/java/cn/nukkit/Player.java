@@ -397,7 +397,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private BlockEntity blockEntity;
 
     private Map<Integer, WindowBase> activeWindows = new LinkedHashMap<Integer, WindowBase>();
-    
+
+    private Map<Integer, WindowBase> addedWindows = new LinkedHashMap<Integer, WindowBase>();
+
     private boolean printPackets;
 
     public void linkHookToPlayer(EntityFishingHook entity){
@@ -802,7 +804,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.allowSplashPotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
         this.allowBow = this.server.getJupiterConfigBoolean("allow-bow");
         this.allowFishingRod = this.server.getJupiterConfigBoolean("allow-fishing-rod");
-        
+
         this.printPackets = this.getServer().printPackets();
     }
 
@@ -1066,7 +1068,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.server.getPluginManager().callEvent(respawnEvent);
 
-        pos = respawnEvent.getRespawnPosition();
+        //pos = respawnEvent.getRespawnPosition();
 
         RespawnPacket respawnPacket = new RespawnPacket();
         respawnPacket.x = (float) pos.x;
@@ -1209,7 +1211,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         if(this.printPackets)
-        	this.getServer().getLogger().info(TextFormat.YELLOW + "[SEND] " + TextFormat.WHITE + packet.getName());
+            this.getServer().getLogger().info(TextFormat.YELLOW + "[SEND] " + TextFormat.WHITE + packet.getName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -1243,9 +1245,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (!this.connected) {
             return -1;
         }
-        
+
         if(this.printPackets)
-        	this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[SEND-DIRECT] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+            this.getServer().getLogger().info(TextFormat.LIGHT_PURPLE + "[SEND-DIRECT] " + TextFormat.WHITE + packet.getClass().getSimpleName());
 
         try (Timing timing = Timings.getSendDataPacketTiming(packet)) {
             DataPacketSendEvent ev = new DataPacketSendEvent(this, packet);
@@ -2227,7 +2229,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
             */
             if(this.printPackets)
-            	this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+                this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
             if (ev.isCancelled()) {
                 timing.stopTiming();
                 return;
@@ -3836,6 +3838,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, mfrp.data, this.activeWindows.get(mfrp.formId)));
                         this.activeWindows.remove(mfrp.formId);
                     }
+
+                    this.addedWindows.get(mfrp.formId).setResponse(mfrp.data);
 
                     break;
 
@@ -5571,8 +5575,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.formId = window.getId();
 
         this.activeWindows.put(window.getId(), window);
+        this.addedWindows.put(window.getId(), window);
 
         this.dataPacket(pk);
     }
 
+    public WindowBase getAddedWindow(int id){
+        return this.addedWindows.get(id);
+    }
+
+    public WindowBase getActiveWindow(int id){
+        return this.activeWindows.get(id);
+    }
 }

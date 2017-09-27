@@ -58,5 +58,10 @@ public class Slider implements Element{
 	public float getDefaultValue(){
 		return this.defaultValue;
 	}
+	
+	@Override
+	public String getName() {
+		return "Slider";
+	}
 
 }

@@ -45,5 +45,10 @@ public class StepSlider implements Element{
 	public int getDefaultIndex(){
 		return this.defaultIndex;
 	}
+	
+	@Override
+	public String getName() {
+		return "StepSlider";
+	}
 
 }

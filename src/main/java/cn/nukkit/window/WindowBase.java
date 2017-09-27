@@ -69,9 +69,17 @@ public abstract class WindowBase {
                 return null;
         }
     }
+    
+    public Object[] toObject(String data){
+    	return new Gson().fromJson(data, Object[].class);
+    }
 
     public abstract int getId();
 
     public abstract String toJson();
+    
+    public abstract Map<String, Object> getResponses();
+    
+    public abstract void setResponse(String data);
 
 }

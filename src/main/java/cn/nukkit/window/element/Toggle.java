@@ -30,5 +30,10 @@ public class Toggle implements Element{
 	public boolean getDefaultValue(){
 		return defaultValue;
 	}
+	
+	@Override
+	public String getName() {
+		return "Toggle";
+	}
 
 }

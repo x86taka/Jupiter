@@ -31,4 +31,9 @@ public class Button implements Element{
 		return this.text;
 	}
 
+	@Override
+	public String getName() {
+		return "Button";
+	}
+
 }

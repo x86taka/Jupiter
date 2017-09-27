@@ -1068,7 +1068,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.server.getPluginManager().callEvent(respawnEvent);
 
-        pos = respawnEvent.getRespawnPosition();
+        //pos = respawnEvent.getRespawnPosition();
 
         RespawnPacket respawnPacket = new RespawnPacket();
         respawnPacket.x = (float) pos.x;
@@ -5587,5 +5587,4 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public WindowBase getActiveWindow(int id){
         return this.activeWindows.get(id);
     }
-
 }

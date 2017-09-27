@@ -33,13 +33,6 @@ public class UpdateAttributesPacket extends DataPacket {
         
         if (this.entries == null) {
             this.putUnsignedVarInt(0);
-        }else{
-        	this.putAttributeList(entries);
-        }
-        
-        /*
-        if (this.entries == null) {
-            this.putUnsignedVarInt(0);
         } else {
             this.putUnsignedVarInt(this.entries.length);
             for (Attribute entry : this.entries) {
@@ -50,6 +43,5 @@ public class UpdateAttributesPacket extends DataPacket {
                 this.putString(entry.getName());
             }
         }
-        */
     }
 }

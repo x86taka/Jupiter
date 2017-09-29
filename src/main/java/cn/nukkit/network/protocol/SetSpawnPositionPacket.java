@@ -18,7 +18,11 @@ public class SetSpawnPositionPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.spawnType = this.getVarInt();
+    	this.x = this.getBlockVector3().x;
+    	this.y = this.getBlockVector3().y;
+    	this.z = this.getBlockVector3().z;
+    	this.spawnForced = this.getBoolean();
     }
 
     @Override

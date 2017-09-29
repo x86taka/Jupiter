@@ -4891,7 +4891,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.windowIndex.get(id);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean teleport(Location location, TeleportCause cause) {
         if (!this.isOnline()) {

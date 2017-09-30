@@ -9,15 +9,15 @@ import cn.nukkit.math.Vector3f;
 public class MoveEntityPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.MOVE_ENTITY_PACKET;
 
-    public long entityRuntimeId;
+    public long eid;
     public double x;
     public double y;
     public double z;
     public double yaw;
     public double headYaw;
     public double pitch;
-    public boolean onGround = true;
-    public boolean teleport = false;
+    public boolean onGround;
+    public boolean teleport;
 
     @Override
     public byte pid() {
@@ -26,7 +26,7 @@ public class MoveEntityPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.entityRuntimeId = this.getVarLong();
+        this.eid = this.getEntityRuntimeId();
         Vector3f v = this.getVector3f();
         this.x = v.x;
         this.y = v.y;
@@ -41,7 +41,7 @@ public class MoveEntityPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.entityRuntimeId);
+        this.putEntityRuntimeId(this.eid);
         this.putVector3f((float) this.x, (float) this.y, (float) this.z);
         this.putByte((byte) (this.pitch / (360d / 256d)));
         this.putByte((byte) (this.headYaw / (360d / 256d)));

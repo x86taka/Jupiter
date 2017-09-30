@@ -18,9 +18,6 @@ public class ModalFormResponsePacket extends DataPacket {
 
     @Override
     public void encode() {
-    	this.reset();
-    	
-    	this.putUnsignedVarInt(this.formId);
-    	this.putString(this.data);
+
     }
 }

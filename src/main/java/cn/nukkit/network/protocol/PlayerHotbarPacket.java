@@ -1,6 +1,5 @@
 package cn.nukkit.network.protocol;
 
-
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.ContainerIds;
 

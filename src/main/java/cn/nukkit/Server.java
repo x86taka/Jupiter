@@ -1372,8 +1372,7 @@ public class Server implements ActionListener{
     public void removePlayerListData(UUID uuid, Player[] players) {
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_REMOVE;
-        //pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
-        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid).createRemovalEntry(uuid)};
+        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
         Server.broadcastPacket(players, pk);
 
     }
@@ -1386,7 +1385,6 @@ public class Server implements ActionListener{
         final UUID uuid = player.getUniqueId();
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
-        /*
         pk.entries = this.playerList.values()
                 .stream()
                 .filter(p -> !p.getUniqueId().equals(uuid))
@@ -1396,13 +1394,14 @@ public class Server implements ActionListener{
                         p.getDisplayName(),
                         p.getSkin()))
                 .toArray(PlayerListPacket.Entry[]::new);
-                */
+        /*
         int i = 0;
         pk.entries = new PlayerListPacket.Entry[this.playerList.values().size() + 1];
         for(Player p : this.playerList.values()){
-            pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId()).createAdditionEntry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
+            pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
             i++;
         }
+        */
 
         player.dataPacket(pk);
     }

@@ -12,12 +12,12 @@ public class ServerSettingsResponsePacket extends DataPacket {
 
     @Override
     public void decode() {
-    	this.formId = (int) this.getUnsignedVarInt();
-    	this.data = this.getString();
+
     }
 
     @Override
     public void encode() {
+        this.reset();
         this.putVarInt(this.formId);
         this.putString(this.data);
     }

@@ -7,14 +7,14 @@ public class AnimatePacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.ANIMATE_PACKET;
 
-    public long entityRuntimeId;
+    public long eid;
     public int action;
     public float unknown;
 
     @Override
     public void decode() {
         this.action = this.getVarInt();
-        this.entityRuntimeId = getVarLong();
+        this.eid = getEntityRuntimeId();
         if ((this.action & 0x80) != 0) {
             this.unknown = this.getLFloat();
         }
@@ -24,7 +24,7 @@ public class AnimatePacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putVarInt(this.action);
-        this.putVarLong(this.entityRuntimeId);
+        this.putEntityRuntimeId(this.eid);
         if ((this.action & 0x80) != 0) {
             this.putLFloat(this.unknown);
         }
@@ -34,4 +34,5 @@ public class AnimatePacket extends DataPacket {
     public byte pid() {
         return NETWORK_ID;
     }
+
 }

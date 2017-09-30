@@ -30,6 +30,7 @@ public class PlayStatusPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putInt(status);
+        this.putInt(this.status);
     }
+
 }

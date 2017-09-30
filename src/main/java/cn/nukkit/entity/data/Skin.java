@@ -1,8 +1,6 @@
 package cn.nukkit.entity.data;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 
 /**
  * author: MagicDroidX
@@ -25,6 +26,7 @@ public class Skin {
 
     private byte[] data = new byte[SINGLE_SKIN_SIZE];
     private String model;
+    private Cape cape = new Cape(new byte[0]);  //default no cape
 
     public Skin(byte[] data) {
         this(data, MODEL_STEVE);
@@ -150,7 +152,96 @@ public class Skin {
         this.model = model;
     }
 
+    public Cape getCape() {
+        return cape;
+    }
+
+    public void setCape(Cape cape) {
+        this.cape = cape;
+    }
+
     public boolean isValid() {
         return this.data.length == SINGLE_SKIN_SIZE || this.data.length == DOUBLE_SKIN_SIZE;
+    }
+
+    public class Cape {
+
+        public byte[] data;
+
+        public Cape(byte[] data) {
+            this.setData(data);
+        }
+
+        public Cape(InputStream inputStream) {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            this.parseBufferedImage(image);
+        }
+
+        public Cape(ImageInputStream inputStream) {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.parseBufferedImage(image);
+        }
+
+        public Cape(File file, String model) {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.parseBufferedImage(image);
+        }
+
+        public Cape(URL url) {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(url);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.parseBufferedImage(image);
+        }
+
+        public Cape(BufferedImage image) {
+            this.parseBufferedImage(image);
+        }
+
+        public Cape(String base64) {
+            this(Base64.getDecoder().decode(base64));
+        }
+
+        public void setData(byte[] data) {
+            this.data = data;
+        }
+
+        public byte[] getData() {
+            return data;
+        }
+
+        public void parseBufferedImage(BufferedImage image) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    Color color = new Color(image.getRGB(x, y), true);
+                    outputStream.write(color.getRed());
+                    outputStream.write(color.getGreen());
+                    outputStream.write(color.getBlue());
+                    outputStream.write(color.getAlpha());
+                }
+            }
+            image.flush();
+            this.setData(outputStream.toByteArray());
+        }
     }
 }

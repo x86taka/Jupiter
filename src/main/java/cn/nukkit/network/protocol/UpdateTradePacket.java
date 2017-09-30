@@ -1,13 +1,11 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.inventory.InventoryNetworkId;
-
 public class UpdateTradePacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.UPDATE_TRADE_PACKET;
 
     public byte windowId;
-    public byte windowType = InventoryNetworkId.WINDOW_TRADING;
+    public byte windowType = 15; //trading id
     public int unknownVarInt1;
     public int unknownVarInt2;
     public boolean isWilling;
@@ -28,14 +26,15 @@ public class UpdateTradePacket extends DataPacket {
 
     @Override
     public void encode() {
-        this.putByte(this.windowId);
-        this.putByte(this.windowType);
-        this.putVarInt(this.unknownVarInt1);
-        this.putVarInt(this.unknownVarInt2);
-        this.putBoolean(this.isWilling);
-        this.putVarLong(this.player);
-        this.putVarLong(this.trader);
-        this.putString(this.displayName);
+        this.putByte(windowId);
+        this.putByte(windowType);
+        this.putVarInt(unknownVarInt1);
+        this.putVarInt(unknownVarInt2);
+        this.putBoolean(isWilling);
+        this.putEntityUniqueId(player);
+        this.putEntityUniqueId(trader);
+        this.putString(displayName);
         this.put(this.offers);
     }
+
 }

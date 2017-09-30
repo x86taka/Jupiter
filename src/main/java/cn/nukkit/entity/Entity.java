@@ -826,7 +826,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void sendPotionEffects(Player player) {
         for (Effect effect : this.effects.values()) {
             MobEffectPacket pk = new MobEffectPacket();
-            pk.entityRuntimeId = this.getId();
+            pk.eid = this.getId();
             pk.effectId = effect.getId();
             pk.amplifier = effect.getAmplifier();
             pk.particles = effect.isVisible();
@@ -872,7 +872,7 @@ public abstract class Entity extends Location implements Metadatable {
     public void despawnFrom(Player player) {
         if (this.hasSpawned.containsKey(player.getLoaderId())) {
             RemoveEntityPacket pk = new RemoveEntityPacket();
-            pk.entityRuntimeId = this.getId();
+            pk.eid = this.getId();
             player.dataPacket(pk);
             this.hasSpawned.remove(player.getLoaderId());
         }
@@ -1202,7 +1202,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected void broadcastMovement() {
         MoveEntityPacket pk = new MoveEntityPacket();
-        pk.entityRuntimeId = this.id;
+        pk.eid = this.id;
         pk.x = this.getOffsetPosition(this).x;
         pk.y = this.getOffsetPosition(this).y;
         pk.z = this.getOffsetPosition(this).z;

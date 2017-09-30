@@ -14,8 +14,7 @@ public class StopSoundPacket extends DataPacket {
 
     @Override
     public void decode() {
-    	this.name = this.getString();
-    	this.stopAll = this.getBoolean();
+
     }
 
     @Override

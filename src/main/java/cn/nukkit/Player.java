@@ -1374,7 +1374,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.level.sleepTicks = 0;
 
             AnimatePacket pk = new AnimatePacket();
-            pk.entityRuntimeId = this.id;
+            pk.eid = this.id;
             pk.action = 3; //Wake up
             this.dataPacket(pk);
         }
@@ -1446,15 +1446,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public boolean setGamemode(int gamemode, boolean clientSide, AdventureSettings newSettings) {
-        if (gamemode < 0 || gamemode > 3 || this.gamemode == gamemode) {
+    	if (gamemode < 0 || gamemode > 3){// || this.gamemode == gamemode) {
             return false;
         }
 
         if (newSettings == null) {
             newSettings = this.getAdventureSettings().clone(this);
-            newSettings.set(Type.WORLD_IMMUTABLE, gamemode != 3);
-            newSettings.set(Type.BUILD_AND_MINE, gamemode != 3);
-            newSettings.set(Type.ALLOW_FLIGHT, (gamemode & 0x01) > 0);
+            newSettings.set(Type.BUILD_AND_MINE, (gamemode & 0x02) == 0);
+            if(gamemode == 0)newSettings.set(Type.FLYING, false);
+            else if(gamemode == 1)newSettings.set(Type.FLYING, true);
+            else if(gamemode == 2)newSettings.set(Type.FLYING, false);
+            else if(gamemode == 3)newSettings.set(Type.FLYING, true);
+            //newSettings.setCanFly((gamemode & 0x01) > 0);
             newSettings.set(Type.NO_CLIP, gamemode == 0x03);
             newSettings.set(Type.FLYING, gamemode == 0x03);
         }
@@ -1480,7 +1483,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         if (!clientSide) {
             SetPlayerGameTypePacket pk = new SetPlayerGameTypePacket();
-            pk.gamemode = getClientFriendlyGamemode(gamemode);
+            pk.gamemode = this.gamemode & 0x01;
             this.dataPacket(pk);
         }
 
@@ -1509,7 +1512,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.inventory.sendContents(this.getViewers().values());
         this.inventory.sendHeldItem(this.hasSpawned.values());
 
-        this.inventory.sendCreativeContents();
         return true;
     }
 
@@ -1831,7 +1833,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void sendAttributes() {
         UpdateAttributesPacket pk = new UpdateAttributesPacket();
-        pk.entityRuntimeId = this.getId();
+        pk.entityId = this.getId();
         pk.entries = new Attribute[]{
                 Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(this.getMaxHealth()).setValue(health > 0 ? (health < getMaxHealth() ? health : getMaxHealth()) : 0),
                 Attribute.getAttribute(Attribute.MAX_HUNGER).setValue(this.getFoodData().getLevel()),
@@ -2518,11 +2520,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.PLAYER_ACTION_PACKET:
                     PlayerActionPacket playerActionPacket = (PlayerActionPacket) packet;
-                    if (!this.spawned || (!this.isAlive() && playerActionPacket.action != PlayerActionPacket.ACTION_RESPAWN && playerActionPacket.action != PlayerActionPacket.ACTION_DIMENSION_CHANGE)) {
+                    if (!this.spawned || (!this.isAlive() && playerActionPacket.action != PlayerActionPacket.ACTION_RESPAWN && playerActionPacket.action != PlayerActionPacket.ACTION_DIMENSION_CHANGE_REQUEST)) {
                         break;
                     }
 
-                    playerActionPacket.entityRuntimeId = this.id;
+                    playerActionPacket.entityId = this.id;
                     Vector3 pos = new Vector3(playerActionPacket.x, playerActionPacket.y, playerActionPacket.z);
                     BlockFace face = BlockFace.fromIndex(playerActionPacket.face);
 
@@ -2651,7 +2653,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                             PlayerActionPacket pkpk = (PlayerActionPacket) packet;
                             pkpk.action = PlayerActionPacket.ACTION_JUMP;
-                            pkpk.entityRuntimeId = this.getId();
+                            pkpk.entityId = this.getId();
                             pkpk.x = (int) this.x;
                             pkpk.y = (int) this.y;
                             pkpk.z = (int) this.z;
@@ -2720,8 +2722,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 this.setGliding(false);
                             }
                             break packetswitch;
+                            /*
                         case PlayerActionPacket.ACTION_WORLD_IMMUTABLE:
                             break; //TODO
+                            */
                         case PlayerActionPacket.ACTION_CONTINUE_BREAK:
                             if (this.isBreakingBlock()) {
                                 block = this.level.getBlock(pos);
@@ -2803,7 +2807,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     AnimatePacket animatePacket = new AnimatePacket();
-                    animatePacket.entityRuntimeId = this.getId();
+                    animatePacket.eid = this.getId();
                     animatePacket.action = animationEvent.getAnimationType();
                     Server.broadcastPacket(this.getViewers().values(), animatePacket);
                     break;
@@ -2910,12 +2914,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.CONTAINER_CLOSE_PACKET:
                     ContainerClosePacket containerClosePacket = (ContainerClosePacket) packet;
-                    if (!this.spawned || containerClosePacket.windowid == 0) {
+                    if (!this.spawned || containerClosePacket.windowId == 0) {
                         break;
                     }
                     this.craftingType = CRAFTING_SMALL;
                     this.resetCraftingGridType();
-                    if (this.windowIndex.containsKey(containerClosePacket.windowid)) {
+                    if (this.windowIndex.containsKey(containerClosePacket.windowId)) {
                         /*
                          * TODO PreSignChangeEvent
                          * 看板を変更する画面を閉じたときにだけ呼ぶイベント。
@@ -2937,10 +2941,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.server.getPluginManager().callEvent(presignchangeevent);
                         }
                         */
-                        this.server.getPluginManager().callEvent(new InventoryCloseEvent(this.windowIndex.get(containerClosePacket.windowid), this));
-                        this.removeWindow(this.windowIndex.get(containerClosePacket.windowid));
+                        this.server.getPluginManager().callEvent(new InventoryCloseEvent(this.windowIndex.get(containerClosePacket.windowId), this));
+                        this.removeWindow(this.windowIndex.get(containerClosePacket.windowId));
                     } else {
-                        this.windowIndex.remove(containerClosePacket.windowid);
+                        this.windowIndex.remove(containerClosePacket.windowId);
                     }
                     break;
 
@@ -2988,7 +2992,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     } else if (!this.windowIndex.containsKey(craftingEventPacket.windowId)) {
                         this.inventory.sendContents(this);
                         containerClosePacket = new ContainerClosePacket();
-                        containerClosePacket.windowid = craftingEventPacket.windowId;
+                        containerClosePacket.windowId = craftingEventPacket.windowId;
                         this.dataPacket(containerClosePacket);
                         break;
                     }
@@ -4667,7 +4671,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (this.spawned) {
             UpdateAttributesPacket pk = new UpdateAttributesPacket();
             pk.entries = new Attribute[]{attr};
-            pk.entityRuntimeId = this.id;
+            pk.entityId = this.id;
             this.dataPacket(pk);
         }
     }
@@ -4766,7 +4770,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void setAttribute(Attribute attribute) {
         UpdateAttributesPacket pk = new UpdateAttributesPacket();
         pk.entries = new Attribute[]{attribute};
-        pk.entityRuntimeId = this.id;
+        pk.entityId = this.id;
         this.dataPacket(pk);
     }
 
@@ -5131,7 +5135,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public void removeBossBar(long bossBarId) {
         RemoveEntityPacket pkRemove = new RemoveEntityPacket();
-        pkRemove.entityRuntimeId = bossBarId;
+        pkRemove.eid = bossBarId;
         this.dataPacket(pkRemove);
     }
 
@@ -5378,12 +5382,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
 
                 TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.getId();
+                pk.entityId = this.getId();
                 pk.target = entity.getId();
                 Server.broadcastPacket(entity.getViewers().values(), pk);
 
                 pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.id;
+                pk.entityId = this.id;
                 pk.target = entity.getId();
                 this.dataPacket(pk);
 
@@ -5425,12 +5429,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }*/
 
                         TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.getId();
+                        pk.entityId = this.getId();
                         pk.target = entity.getId();
                         Server.broadcastPacket(entity.getViewers().values(), pk);
 
                         pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.id;
+                        pk.entityId = this.id;
                         pk.target = entity.getId();
                         this.dataPacket(pk);
 

@@ -53,8 +53,8 @@ public abstract class DataPacket extends BinaryStream implements Cloneable {
             return null;
         }
     }
-
+    
     public String getName(){
-        return this.getClass().getSimpleName();
+    	return this.getClass().getSimpleName();
     }
 }

@@ -13,25 +13,24 @@ public class SetEntityLinkPacket extends DataPacket {
 
     public long rider;
     public long riding;
-    public int type;
+    public byte type;
 
     @Override
     public void decode() {
-    	this.rider = this.getVarLong();
-        this.riding = this.getVarLong();
-        this.type = this.getVarInt();
+
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putVarLong(this.rider);
-        this.putVarLong(this.riding);
-        this.putVarInt(this.type);
+        this.putEntityRuntimeId(this.rider);
+        this.putEntityRuntimeId(this.riding);
+        this.putByte(this.type);
     }
 
     @Override
     public byte pid() {
         return NETWORK_ID;
     }
+
 }

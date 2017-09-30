@@ -1,17 +1,17 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.entity.data.Skin;
+
 import java.util.UUID;
 
 public class PlayerSkinPacket extends DataPacket {
-	
-	public UUID uuid;
-	public String skinId;
-	public String skinName;
-	public String serializeName;
-	public String skinData;
-	public String capeData;
-	public String geometryModel;
-	public String geometryData;
+
+    public UUID uuid;
+    public Skin skin;
+    public String skinName;
+    public String serializeName;
+    public String geometryModel;
+    public String geometryData;
 
     @Override
     public byte pid() {
@@ -20,26 +20,30 @@ public class PlayerSkinPacket extends DataPacket {
 
     @Override
     public void decode() {
-		this.uuid = this.getUUID();
-		this.skinId = this.getString();
-		this.skinName = this.getString();
-		this.serializeName = this.getString();
-		this.skinData = this.getString();
-		this.capeData = this.getString();
-		this.geometryModel = this.getString();
-		this.geometryData = this.getString();
+        this.uuid = this.getUUID();
+        String skinId = this.getString();
+        this.skinName = this.getString();
+        this.serializeName = this.getString();
+        byte[] data = this.getByteArray();
+        byte[] cape = this.getByteArray();
+
+        this.skin = new Skin(data, skinId);
+        this.skin.setCape(this.skin.new Cape(cape));
+
+        this.geometryModel = this.getString();
+        this.geometryData = this.getString();
     }
 
     @Override
     public void encode() {
         this.reset();
-		this.putUUID(this.uuid);
-		this.putString(this.skinId);
-		this.putString(this.skinName);
-		this.putString(this.serializeName);
-		this.putString(this.skinData);
-		this.putString(this.capeData);
-		this.putString(this.geometryModel);
-		this.putString(this.geometryData);
+        this.putUUID(this.uuid);
+        this.putString(this.skin.getModel());
+        this.putString(this.skinName);
+        this.putString(this.serializeName);
+        this.putByteArray(this.skin.getData());
+        this.putByteArray(this.skin.getCape().getData());
+        this.putString(this.geometryModel);
+        this.putString(this.geometryData);
     }
 }

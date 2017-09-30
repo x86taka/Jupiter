@@ -474,4 +474,15 @@ public class BinaryStream {
     public void putEntityRuntimeId(long eid) {
         this.putUnsignedVarLong(eid);
     }
+    
+    public BlockVector3 getSignedBlockPosition() {
+        return new BlockVector3(getVarInt(), getVarInt(), getVarInt());
+    }
+
+    public void putSignedBlockPosition(BlockVector3 v) {
+        putVarInt(v.x);
+        putVarInt(v.y);
+        putVarInt(v.z);
+    }
+
 }

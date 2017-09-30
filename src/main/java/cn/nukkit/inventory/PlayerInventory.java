@@ -163,7 +163,7 @@ public class PlayerInventory extends BaseInventory {
         Item item = this.getItemInHand();
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.entityRuntimeId = this.getHolder().getId();
+        pk.eid = this.getHolder().getId();
         pk.item = item;
         pk.inventorySlot = (byte) this.getHeldItemSlot();
         pk.hotbarSlot = (byte) this.getHeldItemIndex();
@@ -183,9 +183,9 @@ public class PlayerInventory extends BaseInventory {
         pk.hotbarSlot = (byte) this.getHeldItemIndex();
 
         for (Player player : players) {
-            pk.entityRuntimeId = this.getHolder().getId();
+            pk.eid = this.getHolder().getId();
             if (player.equals(this.getHolder())) {
-                pk.entityRuntimeId = player.getId();
+                pk.eid = player.getId();
                 this.sendSlot(this.getHeldItemSlot(), player);
             }
 
@@ -366,7 +366,7 @@ public class PlayerInventory extends BaseInventory {
         Item[] armor = this.getArmorContents();
 
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
-        pk.entityRuntimeId = this.getHolder().getId();
+        pk.eid = this.getHolder().getId();
         pk.slots = armor;
         pk.encode();
         pk.isEncoded = true;
@@ -415,7 +415,7 @@ public class PlayerInventory extends BaseInventory {
         Item[] armor = this.getArmorContents();
 
         MobArmorEquipmentPacket pk = new MobArmorEquipmentPacket();
-        pk.entityRuntimeId = this.getHolder().getId();
+        pk.eid = this.getHolder().getId();
         pk.slots = armor;
         pk.encode();
         pk.isEncoded = true;

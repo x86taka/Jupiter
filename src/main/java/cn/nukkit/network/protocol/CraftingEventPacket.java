@@ -1,9 +1,9 @@
 package cn.nukkit.network.protocol;
 
 
-import java.util.UUID;
-
 import cn.nukkit.item.Item;
+
+import java.util.UUID;
 
 /**
  * @author Nukkit Project Team

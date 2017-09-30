@@ -1,8 +1,8 @@
 package cn.nukkit.network.protocol;
 
 public class SimpleEventPacket extends DataPacket {
-	
-	public short unknown;
+
+    public short unknown;
 
     @Override
     public byte pid() {
@@ -16,6 +16,6 @@ public class SimpleEventPacket extends DataPacket {
 
     @Override
     public void encode() {
-    	this.putShort(this.unknown);
+        this.putShort(this.unknown);
     }
 }

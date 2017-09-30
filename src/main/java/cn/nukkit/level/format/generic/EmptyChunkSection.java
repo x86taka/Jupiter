@@ -1,9 +1,9 @@
 package cn.nukkit.level.format.generic;
 
-import java.util.Arrays;
-
 import cn.nukkit.level.format.ChunkSection;
 import cn.nukkit.utils.ChunkException;
+
+import java.util.Arrays;
 
 /**
  * author: MagicDroidX
@@ -130,7 +130,7 @@ public class EmptyChunkSection implements ChunkSection {
 
     @Override
     public byte[] getBytes() {
-    	return new byte[6144];
+        return new byte[6144];
     }
 
     @Override

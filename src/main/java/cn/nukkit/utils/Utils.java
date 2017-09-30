@@ -17,6 +17,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -178,5 +179,27 @@ public class Utils {
         result |= ((int) b & 0xff) << 16;
         result |= ((int) a & 0xff) << 24;
         return result & 0xFFFFFFFFL;
+    }
+
+    public static Object[][] splitArray(Object[] arrayToSplit, int chunkSize) {
+        if (chunkSize <= 0) {
+            return null;
+        }
+
+        int rest = arrayToSplit.length % chunkSize;
+        int chunks = arrayToSplit.length / chunkSize + (rest > 0 ? 1 : 0);
+
+        Object[][] arrays = new Object[chunks][];
+        for (int i = 0; i < (rest > 0 ? chunks - 1 : chunks); i++) {
+            arrays[i] = Arrays.copyOfRange(arrayToSplit, i * chunkSize, i * chunkSize + chunkSize);
+        }
+        if (rest > 0) {
+            arrays[chunks - 1] = Arrays.copyOfRange(arrayToSplit, (chunks - 1) * chunkSize, (chunks - 1) * chunkSize + rest);
+        }
+        return arrays;
+    }
+
+    public static int toInt(Object number) {
+        return (int) Math.round((double) number);
     }
 }

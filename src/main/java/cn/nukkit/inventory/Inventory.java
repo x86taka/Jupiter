@@ -28,9 +28,9 @@ public interface Inventory {
     Item getItem(int index);
 
     default boolean setItem(int index, Item item) {
-    	return setItem(index, item, true);
+        return setItem(index, item, true);
     }
-    
+
     boolean setItem(int index, Item item, boolean send);
 
     Item[] addItem(Item... slots);
@@ -60,9 +60,9 @@ public interface Inventory {
     Map<Integer, Item> all(Item item);
 
     default int first(Item item) {
-    	return first(item, false);
+        return first(item, false);
     }
-    
+
     int first(Item item, boolean exact);
 
     int firstEmpty(Item item);
@@ -70,9 +70,9 @@ public interface Inventory {
     void remove(Item item);
 
     default boolean clear(int index) {
-    	return clear(index, true);
+        return clear(index, true);
     }
-    
+
     boolean clear(int index, boolean send);
 
     void clearAll();

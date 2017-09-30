@@ -1,10 +1,6 @@
 package cn.nukkit.level.generator.object.tree;
 
-import cn.nukkit.block.Block;
-import cn.nukkit.block.BlockLeaves;
-import cn.nukkit.block.BlockUnknown;
-import cn.nukkit.block.BlockVine;
-import cn.nukkit.block.BlockWood;
+import cn.nukkit.block.*;
 import cn.nukkit.level.ChunkManager;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
@@ -78,6 +74,8 @@ public class NewJungleTree extends TreeGenerator {
 
                 if ((block == Block.GRASS || block == Block.DIRT || block == Block.FARMLAND) && position.getY() < 256 - i - 1) {
                     this.setDirtAt(worldIn, down);
+                    int k2 = 3;
+                    int l2 = 0;
 
                     for (int i3 = position.getY() - 3 + i; i3 <= position.getY() + i; ++i3) {
                         int i4 = i3 - (position.getY() + i);

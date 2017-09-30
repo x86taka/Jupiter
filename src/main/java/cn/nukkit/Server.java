@@ -313,9 +313,9 @@ public class Server implements ActionListener{
 
     private Thread currentThread;
     private Map<String, Object> jupiterconfig;
-	private List<Player> loggedInPlayers = new ArrayList<Player>();
-	
-	private boolean printPackets = false;
+    private List<Player> loggedInPlayers = new ArrayList<Player>();
+
+    private boolean printPackets = false;
 
     @SuppressWarnings("unchecked")
     Server(MainLogger logger, final String filePath, String dataPath, String pluginPath) {
@@ -323,12 +323,12 @@ public class Server implements ActionListener{
         currentThread = Thread.currentThread(); // Saves the current thread instance as a reference, used in Server#isPrimaryThread()
         instance = this;
         this.logger = logger;
-        
+
         this.logger.info("");
         this.logger.info(FastAppender.get(TextFormat.BLUE, "Jupiter", TextFormat.WHITE, " by JupiterDevelopmentTeam"));
         this.logger.info("");
         this.logger.info("");
-        
+
         this.filePath = filePath;
         if (!new File(dataPath + "worlds/").exists()) {
             new File(dataPath + "worlds/").mkdirs();
@@ -459,11 +459,13 @@ public class Server implements ActionListener{
 
         this.loadJupiterConfig();
 
+        /*
         if(this.getJupiterConfigBoolean("destroy-block-particle")){
             Level.sendDestroyParticle = true;
         }else{
             Level.sendDestroyParticle = false;
         }
+        */
 
         this.forceLanguage = (Boolean) this.getConfig("settings.force-language", false);
         this.baseLang = new BaseLang((String) this.getConfig("settings.language", BaseLang.FALLBACK_LANGUAGE));
@@ -545,6 +547,7 @@ public class Server implements ActionListener{
         Attribute.init();
 
         this.craftingManager = new CraftingManager();
+
         this.resourcePackManager = new ResourcePackManager(new File(Nukkit.DATA_PATH, "resource_packs"));
 
         this.pluginManager = new PluginManager(this, this.commandMap);
@@ -553,9 +556,9 @@ public class Server implements ActionListener{
         this.pluginManager.registerInterface(JavaPluginLoader.class);
 
         this.queryRegenerateEvent = new QueryRegenerateEvent(this, 5);
-        
+
         this.network.registerInterface(new RakNetInterface(this));
-        
+
         this.printPackets = this.getJupiterConfigBoolean("print-packets");
 
         if(this.checkingUsingGUI()){
@@ -604,7 +607,7 @@ public class Server implements ActionListener{
         this.pluginManager.loadPlugins(this.pluginPath);
 
         this.enablePlugins(PluginLoadOrder.STARTUP);
-        
+
         this.logger.info("");
 
         LevelProviderManager.addProvider(this, Anvil.class);
@@ -685,7 +688,7 @@ public class Server implements ActionListener{
         if ((int) this.getConfig("ticks-per.autosave", 6000) > 0) {
             this.autoSaveTicks = (int) this.getConfig("ticks-per.autosave", 6000);
         }
-        
+
         this.logger.info("");
         this.enablePlugins(PluginLoadOrder.POSTWORLD);
         this.logger.info("");
@@ -1046,7 +1049,7 @@ public class Server implements ActionListener{
         } else {
             try {
                 this.broadcastPacketsCallback(Zlib.deflate(data, this.networkCompressionLevel), targets);
-            	//this.broadcastPacketsCallback(data, targets);  非圧縮
+                //this.broadcastPacketsCallback(data, targets);  非圧縮
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -1304,17 +1307,19 @@ public class Server implements ActionListener{
     public void onPlayerLogin(Player player) {
         if (this.sendUsageTicker > 0) {
             this.uniquePlayers.add(player.getUniqueId());
-      		this.loggedInPlayers.add(player);
+              this.loggedInPlayers.add(player);
         }
     }
-    
+
+    /*
     public void onPlayerCompleteLoginSequence(Player player){
-  		this.sendFullPlayerListData(player);
-  		player.dataPacket(this.craftingManager.getCraftingDataPacket());
-  	}
-    
+          this.sendFullPlayerListData(player);
+          player.dataPacket(this.craftingManager.getCraftingDataPacket());
+      }
+      */
+
     public void onPlayerLogout(Player player){
-    	this.loggedInPlayers.remove(player.getUniqueId());
+        this.loggedInPlayers.remove(player.getUniqueId());
     }
 
     public void addPlayer(String identifier, Player player) {
@@ -1337,7 +1342,7 @@ public class Server implements ActionListener{
             pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(player.getUniqueId())};
             Server.broadcastPacket(this.playerList.values(), pk);
             */
-            
+
             this.removePlayerListData(player.getUniqueId());
         }
     }
@@ -1370,7 +1375,7 @@ public class Server implements ActionListener{
         //pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
         pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid).createRemovalEntry(uuid)};
         Server.broadcastPacket(players, pk);
-    	
+
     }
 
     public void removePlayerListData(UUID uuid, Collection<Player> players) {
@@ -1395,8 +1400,8 @@ public class Server implements ActionListener{
         int i = 0;
         pk.entries = new PlayerListPacket.Entry[this.playerList.values().size() + 1];
         for(Player p : this.playerList.values()){
-        	pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId()).createAdditionEntry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
-        	i++;
+            pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId()).createAdditionEntry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
+            i++;
         }
 
         player.dataPacket(pk);
@@ -2538,7 +2543,7 @@ public class Server implements ActionListener{
         return new Config(this.getDataPath() + "jupiter.yml");
     }
 
-    
+
     /**
      * jupiter.ymlが読み込まれているかを取得します。
      * <br>!(getJupiterConfig().isEmpty())の戻り値と同等です。
@@ -2871,7 +2876,7 @@ public class Server implements ActionListener{
     public boolean checkingUsingGUI(){
         return this.getJupiterConfigBoolean("using-gui", true);
     }
-    
+
     /**
      * 送受信しているパケットを表示するかどうかを取得します。
      * @return boolean する場合はtrue、しない場合はfalse

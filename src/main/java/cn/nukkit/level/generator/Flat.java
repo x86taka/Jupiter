@@ -1,20 +1,7 @@
 package cn.nukkit.level.generator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import cn.nukkit.Server;
-import cn.nukkit.block.BlockDirt;
-import cn.nukkit.block.BlockGravel;
-import cn.nukkit.block.BlockOreCoal;
-import cn.nukkit.block.BlockOreDiamond;
-import cn.nukkit.block.BlockOreGold;
-import cn.nukkit.block.BlockOreIron;
-import cn.nukkit.block.BlockOreLapis;
-import cn.nukkit.block.BlockOreRedstone;
+import cn.nukkit.block.*;
 import cn.nukkit.level.ChunkManager;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.generator.biome.Biome;
@@ -23,6 +10,12 @@ import cn.nukkit.level.generator.populator.Populator;
 import cn.nukkit.level.generator.populator.PopulatorOre;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * author: MagicDroidX
@@ -185,6 +178,8 @@ public class Flat extends Generator {
                 chunk.setBiomeId(X, Z, biome);
                 chunk.setBiomeColor(X, Z, R, G, B);
                 for (int y = 0; y < 256; ++y) {
+                    int k = this.structure[y][0];
+                    int l = this.structure[y][1];
                     chunk.setBlock(X, y, Z, this.structure[y][0], this.structure[y][1]);
                 }
             }

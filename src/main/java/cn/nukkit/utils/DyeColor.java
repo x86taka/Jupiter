@@ -23,13 +23,14 @@ public enum DyeColor {
     private int dyedColorMeta;
     private String colorName;
     private BlockColor blockColor;
+	private int woolColorMeta;
 
     private final static DyeColor[] BY_DYED_DATA;
     private final static DyeColor[] BY_DYE_DATA;
 
-    DyeColor(int dyeColorMeta, int dyedColorMeta, String colorName, BlockColor blockColor) {
+    DyeColor(int dyeColorMeta, int woolColorMeta, String colorName, BlockColor blockColor) {
         this.dyeColorMeta = dyeColorMeta;
-        this.dyedColorMeta = dyedColorMeta;
+        this.woolColorMeta = woolColorMeta;
         this.colorName = colorName;
         this.blockColor = blockColor;
     }
@@ -67,5 +68,10 @@ public enum DyeColor {
     public static DyeColor getByDyedData(int dyedColorMeta) {
         return BY_DYED_DATA[dyedColorMeta & 0x0f];
     }
+    
+    public int getWoolData() {
+        return this.woolColorMeta;
+    }
+
 
 }

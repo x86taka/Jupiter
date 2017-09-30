@@ -24,6 +24,10 @@ public class PopulatorGroundFire extends Populator {
     public void populate(ChunkManager level, int chunkX, int chunkZ, NukkitRandom random) {
         this.level = level;
         BaseFullChunk chunk = level.getChunk(chunkX, chunkZ);
+        int bx = chunkX << 4;
+        int bz = chunkZ << 4;
+        int tx = bx + 15;
+        int tz = bz + 15;
         int amount = random.nextRange(0, this.randomAmount + 1) + this.baseAmount;
         for (int i = 0; i < amount; ++i) {
             int x = random.nextRange(0, 15);

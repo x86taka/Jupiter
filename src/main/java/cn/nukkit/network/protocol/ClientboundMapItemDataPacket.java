@@ -84,7 +84,7 @@ public class ClientboundMapItemDataPacket extends DataPacket {
             this.putVarInt(height);
             this.putVarInt(offsetX);
             this.putVarInt(offsetZ);
-            this.putVarInt(width * height);
+            this.putUnsignedVarInt(width * height);
 
             if (image != null) {
                 for (int y = 0; y < width; y++) {

@@ -1,10 +1,5 @@
 package cn.nukkit.level;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
 import cn.nukkit.block.BlockTNT;
@@ -19,13 +14,13 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.level.particle.HugeExplodeSeedParticle;
 import cn.nukkit.level.sound.ExplodeSound;
-import cn.nukkit.math.AxisAlignedBB;
-import cn.nukkit.math.BlockFace;
-import cn.nukkit.math.BlockVector3;
-import cn.nukkit.math.NukkitMath;
-import cn.nukkit.math.NukkitRandom;
-import cn.nukkit.math.Vector3;
+import cn.nukkit.math.*;
 import cn.nukkit.network.protocol.ExplodePacket;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * author: Angelic47
@@ -43,7 +38,7 @@ public class Explosion {
 
     private final Object what;
 
-    public Explosion(Position center, double size, Object what) {
+    public Explosion(Position center, double size, Entity what) {
         this.level = center.getLevel();
         this.source = center;
         this.size = Math.max(size, 0);

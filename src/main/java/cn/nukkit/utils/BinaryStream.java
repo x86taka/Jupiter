@@ -449,4 +449,29 @@ public class BinaryStream {
                 Integer.MAX_VALUE :
                 MAX_ARRAY_SIZE;
     }
+    
+    public long getEntityUniqueId() {
+        return this.getVarLong();
+    }
+
+    /**
+     * Writes an EntityUniqueID
+     */
+    public void putEntityUniqueId(long eid) {
+        this.putVarLong(eid);
+    }
+
+    /**
+     * Reads and returns an EntityRuntimeID
+     */
+    public long getEntityRuntimeId() {
+        return this.getUnsignedVarLong();
+    }
+
+    /**
+     * Writes an EntityUniqueID
+     */
+    public void putEntityRuntimeId(long eid) {
+        this.putUnsignedVarLong(eid);
+    }
 }

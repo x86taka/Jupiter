@@ -1,5 +1,7 @@
 package cn.nukkit.level.generator.populator;
 
+import java.util.Random;
+
 import cn.nukkit.block.Block;
 import cn.nukkit.level.ChunkManager;
 import cn.nukkit.level.format.FullChunk;
@@ -7,8 +9,6 @@ import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.level.generator.biome.CaveBiome;
 import cn.nukkit.math.MathHelper;
 import cn.nukkit.math.NukkitRandom;
-
-import java.util.Random;
 
 /**
  * author: Angelic47
@@ -246,7 +246,7 @@ public class PopulatorCaves extends Populator {
         }
 
         // Few hardcoded cases
-        if (block == Block.HARDENED_CLAY) {
+        if (218 <= block && block >= 235) {
             return true;
         }
 

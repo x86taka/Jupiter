@@ -1,11 +1,11 @@
 package cn.nukkit.inventory;
 
-import cn.nukkit.Server;
-import cn.nukkit.item.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import cn.nukkit.Server;
+import cn.nukkit.item.Item;
 
 /**
  * author: MagicDroidX
@@ -93,5 +93,10 @@ public class ShapelessRecipe implements Recipe {
     @Override
     public void registerToCraftingManager() {
         Server.getInstance().getCraftingManager().registerShapelessRecipe(this);
+    }
+
+    @Override
+    public boolean requiresCraftingTable() {
+        return this.ingredients.size() > 4;
     }
 }

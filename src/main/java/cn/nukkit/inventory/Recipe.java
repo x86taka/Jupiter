@@ -1,8 +1,8 @@
 package cn.nukkit.inventory;
 
-import cn.nukkit.item.Item;
-
 import java.util.UUID;
+
+import cn.nukkit.item.Item;
 
 /**
  * author: MagicDroidX
@@ -17,4 +17,8 @@ public interface Recipe {
     UUID getId();
 
     void setId(UUID id);
+
+    default boolean requiresCraftingTable() {
+        return false;
+    }
 }

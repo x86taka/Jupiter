@@ -14,6 +14,8 @@ import cn.nukkit.utils.BlockColor;
  */
 public class BlockNoteblock extends BlockSolid {
 
+	protected boolean isPowered = false;
+
     public BlockNoteblock() {
         this(0);
     }
@@ -109,10 +111,23 @@ public class BlockNoteblock extends BlockSolid {
         this.getLevel().addSound(new NoteBoxSound(this, this.getInstrument(), this.getStrength()));
     }
 
+    @Override
+    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        this.level.setBlock(block, this, true, true);
+        if (this.level.isBlockPowered(this)) {
+        	this.isPowered = true;
+        } else {
+        	this.isPowered = false;
+        }
+    	return true;
+    }
+
+    @Override
     public boolean onActivate(Item item) {
         return this.onActivate(item, null);
     }
 
+    @Override
     public boolean onActivate(Item item, Player player) {
         Block up = this.up();
         if (up.getId() == Block.AIR) {
@@ -127,9 +142,19 @@ public class BlockNoteblock extends BlockSolid {
     @Override
     public int onUpdate(int type) {
         if (type == Level.BLOCK_UPDATE_NORMAL || type == Level.BLOCK_UPDATE_REDSTONE) {
-            //TODO: redstone
+            if (this.level.isBlockPowered(this)) {
+            	if (!this.isPowered) {
+            		this.isPowered = true;
+                    if (this.up().getId() == Block.AIR) {
+                        this.emitSound();
+                    }
+            	}
+            } else {
+            	if (this.isPowered) {
+            		this.isPowered = false;
+            	}
+            }
         }
-
         return 0;
     }
 }

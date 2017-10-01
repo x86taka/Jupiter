@@ -43,13 +43,27 @@ public class GameruleCommand extends VanillaCommand {
             return true;
         } else if (args.length == 1) {
             if (Arrays.asList(CommandParameter.GAMERULE_LIST).contains(args[0])) {
-                //TODO: convert to camelCase
+                if (sender instanceof Player) {
+                    sender.sendMessage(args[0] + " = " + ((Player) sender).getLevel().getGameRules().getBoolean(args[0]));
+                } else {
+                    sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
+                }
             } else {
                 sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
-                return true;
             }
+            return true;
         } else if (args.length == 2) {
-            //TODO: convert to camelCase & setRule
+            if (sender instanceof Player) {
+                if (args[0].equals("true") || args[0].equals("false")) {
+                    ((Player) sender).getLevel().getGameRules().setGameRule(args[0], args[1]);
+                    sender.sendMessage("ゲーム ルール " + args[0] + " が " + args[1] + " に更新されました");
+                } else {
+                    sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+                }
+            } else {
+                sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
+            }
+            return true;
         }
 
         sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));

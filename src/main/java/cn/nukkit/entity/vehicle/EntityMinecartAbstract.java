@@ -239,7 +239,7 @@ public abstract class EntityMinecartAbstract extends EntityVehicle {
                 if (instantKill && (!hasCustomName())) {
                     kill();
                 } else {
-                    if (level.getGameRules().getBoolean("doEntityDrops")) {
+                    if (level.getGameRules().getBoolean("doentitydrops")) {
                         dropItem();
                     }
                     close();

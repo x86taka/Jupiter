@@ -22,24 +22,24 @@ public class CommandParameter {
     public static final String ENUM_TYPE_DIFFICULTY_LIST = "difficultyType";
 
     public static final String[] GAMERULE_LIST = new String[]{
-            "drowingdamage",
-            "commandblockoutput",
-            "dotiledrops",
-            "domobloot",
-            "keepinventory",
-            "dodaylightcycle",
-            "domobspawning",
-            "doentitydrops",
-            "dofiretick",
-            "doweathercycle",
-            "pvp",
-            "falldamage",
-            "firedamage",
-            "mobgriefing",
-            "showcoordinates",
-            "naturalregeneration",
+            "sendcommandfeedback",
             "tntexplodes",
-            "sendcommandfeedback"
+            "naturalregeneration",
+            "showcoordinates",
+            "pvp",
+            "mobgriefing",
+            "doweathercycle",
+            "firedamage",
+            "domobspawning",
+            "drowingdamage",
+            "falldamage",
+            "domobloot",
+            "dotiledrops",
+            "dofiretick",
+            "doentitydrops",
+            "dodaylightcycle",
+            "keepinventory",
+            "commandblockoutput"
     };
 
     public static final String[] WEATHER_LIST = new String[]{

@@ -7,7 +7,7 @@ package cn.nukkit.network.protocol;
 public class SetEntityMotionPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.SET_ENTITY_MOTION_PACKET;
 
-    public long eid;
+    public long entityRuntimeId;
     public float motionX;
     public float motionY;
     public float motionZ;
@@ -25,7 +25,7 @@ public class SetEntityMotionPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putEntityRuntimeId(this.eid);
+        this.putEntityRuntimeId(this.entityRuntimeId);
         this.putVector3f(this.motionX, this.motionY, this.motionZ);
     }
 }

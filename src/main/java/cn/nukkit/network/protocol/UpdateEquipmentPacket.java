@@ -5,7 +5,7 @@ public class UpdateEquipmentPacket extends DataPacket {
     public int windowId;
     public int windowType;
     public int unknown; //TODO: find out what this is (vanilla always sends 0)
-    public long eid;
+    public long entityRuntimeId;
     public byte[] namedtag;
 
 
@@ -23,7 +23,7 @@ public class UpdateEquipmentPacket extends DataPacket {
     public void encode() {
         this.putByte((byte) this.windowId);
         this.putByte((byte) this.windowType);
-        this.putEntityUniqueId(this.eid);
+        this.putEntityUniqueId(this.entityRuntimeId);
         this.put(this.namedtag);
     }
 }

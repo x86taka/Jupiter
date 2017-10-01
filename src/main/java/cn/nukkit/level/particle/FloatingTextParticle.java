@@ -21,7 +21,7 @@ public class FloatingTextParticle extends Particle {
 
     protected String text;
     protected String title;
-    protected long entityId = -1;
+    protected long entityRuntimeId = -1;
     protected boolean invisible = false;
     protected EntityMetadata metadata = new EntityMetadata();
 
@@ -67,11 +67,11 @@ public class FloatingTextParticle extends Particle {
     public DataPacket[] encode() {
         ArrayList<DataPacket> packets = new ArrayList<>();
 
-        if (this.entityId == -1) {
-            this.entityId = 1095216660480L + ThreadLocalRandom.current().nextLong(0, 0x7fffffffL);
+        if (this.entityRuntimeId == -1) {
+            this.entityRuntimeId = 1095216660480L + ThreadLocalRandom.current().nextLong(0, 0x7fffffffL);
         } else {
             RemoveEntityPacket pk = new RemoveEntityPacket();
-            pk.eid = this.entityId;
+            pk.entityRuntimeId = this.entityRuntimeId;
 
             packets.add(pk);
         }
@@ -80,8 +80,8 @@ public class FloatingTextParticle extends Particle {
             AddPlayerPacket pk = new AddPlayerPacket();
             pk.uuid = UUID.randomUUID();
             pk.username = "";
-            pk.entityUniqueId = this.entityId;
-            pk.entityRuntimeId = this.entityId;
+            pk.entityUniqueId = this.entityRuntimeId;
+            pk.entityRuntimeId = this.entityRuntimeId;
             pk.x = (float) this.x;
             pk.y = (float) (this.y - 0.75);
             pk.z = (float) this.z;

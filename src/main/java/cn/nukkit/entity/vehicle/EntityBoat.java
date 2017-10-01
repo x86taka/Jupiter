@@ -110,7 +110,7 @@ public class EntityBoat extends EntityVehicle {
                 if (instantKill && (!hasCustomName())) {
                     kill();
                 } else {
-                    if (level.getGameRules().getBoolean("doEntityDrops")) {
+                    if (level.getGameRules().getBoolean("doentitydrops")) {
                         this.level.dropItem(this, new ItemBoat());
                     }
                     close();

@@ -15,7 +15,7 @@ public class SetEntityDataPacket extends DataPacket {
         return NETWORK_ID;
     }
 
-    public long eid;
+    public long entityRuntimeId;
     public EntityMetadata metadata;
 
     @Override
@@ -26,7 +26,7 @@ public class SetEntityDataPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putEntityRuntimeId(this.eid);
+        this.putEntityRuntimeId(this.entityRuntimeId);
         this.put(Binary.writeMetadata(this.metadata));
     }
 }

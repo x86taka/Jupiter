@@ -28,7 +28,7 @@ import cn.nukkit.utils.BlockIterator;
 import co.aikar.timings.Timings;
 
 /**
- * author: MagicDroidX 
+ * author: MagicDroidX
  * Nukkit Project
  */
 public abstract class EntityLiving extends Entity implements EntityDamageable {
@@ -75,7 +75,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         super.setHealth(health);
         if (this.isAlive() && !wasAlive) {
             EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = this.getId();
+            pk.entityRuntimeId = this.getId();
             pk.event = EntityEventPacket.RESPAWN;
             Server.broadcastPacket(this.level.getPlayers().values(), pk);
         }
@@ -132,7 +132,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
             }
 
             EntityEventPacket pk = new EntityEventPacket();
-            pk.eid = this.getId();
+            pk.entityRuntimeId = this.getId();
             pk.event = this.getHealth() <= 0 ? EntityEventPacket.DEATH_ANIMATION : EntityEventPacket.HURT_ANIMATION;
             Server.broadcastPacket(this.level.getPlayers().values(), pk);
 
@@ -181,7 +181,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         EntityDeathEvent ev = new EntityDeathEvent(this, this.getDrops());
         this.server.getPluginManager().callEvent(ev);
 
-        if (this.level.getGameRules().getBoolean("doEntityDrops")) {
+        if (this.level.getGameRules().getBoolean("doentitydrops")) {
             for (cn.nukkit.item.Item item : ev.getDrops()) {
                 this.getLevel().dropItem(this, item);
             }

@@ -7,7 +7,7 @@ package cn.nukkit.network.protocol;
 public class RemoveEntityPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.REMOVE_ENTITY_PACKET;
 
-    public long eid;
+    public long entityRuntimeId;
 
     @Override
     public byte pid() {
@@ -22,6 +22,6 @@ public class RemoveEntityPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putEntityUniqueId(this.eid);
+        this.putEntityUniqueId(this.entityRuntimeId);
     }
 }

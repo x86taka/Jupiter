@@ -7,7 +7,7 @@ public class TakeItemEntityPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.TAKE_ITEM_ENTITY_PACKET;
 
-    public long entityId;
+    public long entityRuntimeId;
     public long target;
 
     @Override
@@ -18,7 +18,7 @@ public class TakeItemEntityPacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putVarLong(this.target);
-        this.putVarLong(this.entityId);
+        this.putVarLong(this.entityRuntimeId);
     }
 
     @Override

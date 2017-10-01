@@ -87,6 +87,7 @@ import cn.nukkit.event.player.PlayerJumpEvent;
 import cn.nukkit.event.player.PlayerKickEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMapInfoRequestEvent;
+import cn.nukkit.event.player.PlayerModalFormReceiveEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
@@ -100,7 +101,6 @@ import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
-import cn.nukkit.event.server.ModalFormReceiveEvent;
 import cn.nukkit.inventory.AnvilInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.BigShapedRecipe;
@@ -3886,7 +3886,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     if(this.activeWindows.containsKey(mfrp.formId)){
                     	this.activeWindows.get(mfrp.formId).setResponse(mfrp.data);
-                        this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, this.activeWindows.get(mfrp.formId)));
+                        this.getServer().getPluginManager().callEvent(new PlayerModalFormReceiveEvent(this, mfrp.formId, this.activeWindows.get(mfrp.formId)));
                         this.activeWindows.remove(mfrp.formId);
                     }
 

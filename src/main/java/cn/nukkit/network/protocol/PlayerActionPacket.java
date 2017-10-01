@@ -29,7 +29,7 @@ public class PlayerActionPacket extends DataPacket {
     public static final int ACTION_BUILD_DENIED = 17;
     public static final int ACTION_CONTINUE_BREAK = 18;
 
-    public long entityId;
+    public long entityRuntimeId;
     public int action;
     public int x;
     public int y;
@@ -39,7 +39,7 @@ public class PlayerActionPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.entityId = this.getEntityRuntimeId();
+        this.entityRuntimeId = this.getEntityRuntimeId();
         this.action = this.getVarInt();
         BlockVector3 v = this.getBlockVector3();
         this.x = v.x;
@@ -51,7 +51,7 @@ public class PlayerActionPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putEntityRuntimeId(this.entityId);
+        this.putEntityRuntimeId(this.entityRuntimeId);
         this.putVarInt(this.action);
         this.putBlockVector3(this.x, this.y, this.z);
         this.putVarInt(this.face);

@@ -1,37 +1,33 @@
 package cn.nukkit.level;
 
-import cn.nukkit.nbt.tag.CompoundTag;
-
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Created by CreeperFace on 25.6.2017.
- */
+import cn.nukkit.nbt.tag.CompoundTag;
+
 public class GameRules {
     private final TreeMap<String, Value> theGameRules = new TreeMap<>();
 
     public GameRules() {
-        this.addGameRule("doFireTick", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("mobGriefing", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("keepInventory", "false", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("doMobSpawning", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("doMobLoot", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("doTileDrops", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("doEntityDrops", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("commandBlockOutput", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("naturalRegeneration", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("doDaylightCycle", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("logAdminCommands", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("showDeathMessages", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("randomTickSpeed", "3", ValueType.NUMERICAL_VALUE);
-        this.addGameRule("sendCommandFeedback", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("reducedDebugInfo", "false", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("spectatorsGenerateChunks", "true", ValueType.BOOLEAN_VALUE);
-        this.addGameRule("spawnRadius", "10", ValueType.NUMERICAL_VALUE);
-        this.addGameRule("disableElytraMovementCheck", "false", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("sendcommandfeedback", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("tntexplodes", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("naturalregeneration", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("showcoordinates", "false", ValueType.BOOLEAN_VALUE);
         this.addGameRule("pvp", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("mobgriefing", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("doweathercycle", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("firedamage", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("domobspawning", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("drowingdamage", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("falldamage", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("domobloot", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("dotiledrops", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("dofiretick", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("doentitydrops", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("dodaylightcycle", "true", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("keepinventory", "false", ValueType.BOOLEAN_VALUE);
+        this.addGameRule("commandblockoutput", "true", ValueType.BOOLEAN_VALUE);
     }
 
     public void addGameRule(String key, String value, ValueType type) {

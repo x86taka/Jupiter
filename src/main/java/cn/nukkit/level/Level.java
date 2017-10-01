@@ -870,7 +870,7 @@ public class Level implements ChunkManager, Metadatable {
         if (!this.updateEntities.isEmpty()) {
             for (long id : new ArrayList<>(this.updateEntities.keySet())) {
                 Entity entity = this.updateEntities.get(id);
-                if (entity.closed || !entity.onUpdate(currentTick)) {
+                if (entity == null || entity.closed || !entity.onUpdate(currentTick)) {
                     this.updateEntities.remove(id);
                 }
             }
@@ -1164,7 +1164,7 @@ public class Level implements ChunkManager, Metadatable {
             for (Entity entity : chunk.getEntities().values()) {
                 entity.scheduleUpdate();
             }
-            int tickSpeed = this.gameRules.getInt("randomTickSpeed");
+            int tickSpeed = 3;
 
             if (tickSpeed > 0) {
                 int blockId;
@@ -1837,6 +1837,8 @@ public class Level implements ChunkManager, Metadatable {
             item = new ItemBlock(new BlockAir(), 0, 0);
         }
 
+        BlockBreakEvent ev = null;
+
         if (player != null) {
             double breakTime = target.getBreakTime(item, player);
             // this in
@@ -1863,8 +1865,8 @@ public class Level implements ChunkManager, Metadatable {
 
             breakTime -= 0.15;
 
-            BlockBreakEvent ev = new BlockBreakEvent(player, target, item, player.isCreative(),
-                    (player.lastBreak + breakTime * 1000) > System.currentTimeMillis());
+            ev = new BlockBreakEvent(player, target, item, player.isCreative(),
+                    (player.lastBreak + breakTime * 1000) > System.currentTimeMillis(), target.getDropExp());
 
             double distance;
             if (player.isSurvival() && !target.isBreakable(item)) {
@@ -1954,9 +1956,9 @@ public class Level implements ChunkManager, Metadatable {
             item = new ItemBlock(new BlockAir(), 0, 0);
         }
 
-        if (this.gameRules.getBoolean("doTileDrops")) {
-            int dropExp = target.getDropExp();
+        if (this.gameRules.getBoolean("dotiledrops")) {
             if (player != null) {
+                int dropExp = ev.getDropExp();
                 player.addExperience(dropExp);
                 if (player.isSurvival()) {
                     for (int ii = 1; ii <= dropExp; ii++) {
@@ -2506,7 +2508,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void requestChunk(int x, int z, Player player) {
         Long index = Level.chunkHash(x, z);
-        if (player.getGamemode() == Player.SPECTATOR && !this.gameRules.getBoolean("spectatorsGenerateChunks") && isChunkGenerated(x, z)) {
+        if (player.getGamemode() == Player.SPECTATOR && isChunkGenerated(x, z)) {
             return;
         }
 
@@ -3036,7 +3038,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void addEntityMotion(int chunkX, int chunkZ, long entityId, double x, double y, double z) {
         SetEntityMotionPacket pk = new SetEntityMotionPacket();
-        pk.eid = entityId;
+        pk.entityRuntimeId = entityId;
         pk.motionX = (float) x;
         pk.motionY = (float) y;
         pk.motionZ = (float) z;
@@ -3046,7 +3048,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void addEntityMovement(int chunkX, int chunkZ, long entityId, double x, double y, double z, double yaw, double pitch, double headYaw) {
         MoveEntityPacket pk = new MoveEntityPacket();
-        pk.eid = entityId;
+        pk.entityRuntimeId = entityId;
         pk.x = (float) x;
         pk.y = (float) y;
         pk.z = (float) z;
@@ -3277,6 +3279,6 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public int getSpawnRadius() {
-        return getGameRules().getInt("spawnRadius");
+        return 10;
     }
 }

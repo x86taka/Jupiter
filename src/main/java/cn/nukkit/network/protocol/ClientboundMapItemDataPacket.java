@@ -1,16 +1,16 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.utils.Utils;
-
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+
+import cn.nukkit.utils.Utils;
 
 /**
  * Created by CreeperFace on 5.3.2017.
  */
 public class ClientboundMapItemDataPacket extends DataPacket { //TODO: update to 1.2
 
-    public int[] eids = new int[0];
+    public int[] entityRuntimeIds = new int[0];
 
     public long mapId;
     public int update;
@@ -47,7 +47,7 @@ public class ClientboundMapItemDataPacket extends DataPacket { //TODO: update to
         this.putEntityUniqueId(mapId);
 
         int update = 0;
-        if (eids.length > 0) {
+        if (entityRuntimeIds.length > 0) {
             update |= 0x08;
         }
         if (decorators.length > 0) {
@@ -62,9 +62,9 @@ public class ClientboundMapItemDataPacket extends DataPacket { //TODO: update to
         this.putByte(this.dimensionId);
 
         if ((update & 0x08) != 0) { //TODO: find out what these are for
-            this.putUnsignedVarInt(eids.length);
-            for (int eid : eids) {
-                this.putEntityUniqueId(eid);
+            this.putUnsignedVarInt(entityRuntimeIds.length);
+            for (int entityRuntimeId : entityRuntimeIds) {
+                this.putEntityUniqueId(entityRuntimeId);
             }
         }
         if ((update & (TEXTURE_UPDATE | DECORATIONS_UPDATE)) != 0) {

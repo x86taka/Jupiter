@@ -163,7 +163,7 @@ public class PlayerInventory extends BaseInventory {
         Item item = this.getItemInHand();
 
         MobEquipmentPacket pk = new MobEquipmentPacket();
-        pk.eid = this.getHolder().getId();
+        pk.entityRuntimeId = this.getHolder().getId();
         pk.item = item;
         pk.inventorySlot = (byte) this.getHeldItemSlot();
         pk.hotbarSlot = (byte) this.getHeldItemIndex();
@@ -183,9 +183,9 @@ public class PlayerInventory extends BaseInventory {
         pk.hotbarSlot = (byte) this.getHeldItemIndex();
 
         for (Player player : players) {
-            pk.eid = this.getHolder().getId();
+            pk.entityRuntimeId = this.getHolder().getId();
             if (player.equals(this.getHolder())) {
-                pk.eid = player.getId();
+                pk.entityRuntimeId = player.getId();
                 this.sendSlot(this.getHeldItemSlot(), player);
             }
 

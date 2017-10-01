@@ -19,7 +19,7 @@ public class ContainerOpenPacket extends DataPacket {
     public int x;
     public int y;
     public int z;
-    public long entityId = -1;
+    public long entityRuntimeId = -1;
 
     @Override
     public void decode() {
@@ -29,7 +29,7 @@ public class ContainerOpenPacket extends DataPacket {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
-        this.entityId = this.getEntityUniqueId();
+        this.entityRuntimeId = this.getEntityUniqueId();
     }
 
     @Override
@@ -38,6 +38,6 @@ public class ContainerOpenPacket extends DataPacket {
         this.putByte((byte) this.windowId);
         this.putByte((byte) this.type);
         this.putBlockVector3(this.x, this.y, this.z);
-        this.putEntityUniqueId(this.entityId);
+        this.putEntityUniqueId(this.entityRuntimeId);
     }
 }

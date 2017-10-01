@@ -6,11 +6,11 @@ import java.util.List;
 public class StepSlider implements Element{
 	
 	private final String type = "step_slider";
-	private List<Integer> steps = new ArrayList<Integer>();
+	private List<String> steps = new ArrayList<String>();
 	private int defaultIndex;
 	private String text;
 	
-	public StepSlider(String text, List<Integer> steps, int defaultIndex){
+	public StepSlider(String text, List<String> steps, int defaultIndex){
 		this.text = text;
 		this.steps = steps;
 		this.defaultIndex = defaultIndex;
@@ -25,7 +25,7 @@ public class StepSlider implements Element{
 	}
 	
 	
-	public void addStep(int step){
+	public void addStep(String step){
 		if(!(this.steps.contains(steps))){
 			this.steps.add(step);
 		}
@@ -41,11 +41,11 @@ public class StepSlider implements Element{
 		this.steps.clear();
 	}
 	
-	public List<Integer> getSteps(){
+	public List<String> getSteps(){
 		return this.steps;
 	}
 	
-	public void setSteps(List<Integer> steps){
+	public void setSteps(List<String> steps){
 		this.steps = steps;
 	}
 	

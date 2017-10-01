@@ -1453,28 +1453,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         if (newSettings == null) {
             newSettings = this.getAdventureSettings().clone(this);
             newSettings.set(Type.BUILD_AND_MINE, gamemode != 3);
+            newSettings.set(Type.WORLD_BUILDER, gamemode != 3);
             newSettings.set(Type.NO_CLIP, gamemode == 3);
             newSettings.set(Type.WORLD_IMMUTABLE, gamemode == 3);
             newSettings.set(Type.NO_PVP, gamemode == 3);
-
-            switch (gamemode) {
-                case 0:
-                    newSettings.set(Type.FLYING, false);
-                    newSettings.set(Type.ALLOW_FLIGHT, false);
-                    break;
-                case 1:
-                    newSettings.set(Type.FLYING, true);
-                    newSettings.set(Type.ALLOW_FLIGHT, true);
-                    break;
-                case 2:
-                    newSettings.set(Type.FLYING, false);
-                    newSettings.set(Type.ALLOW_FLIGHT, false);
-                    break;
-                case 3:
-                    newSettings.set(Type.FLYING, true);
-                    newSettings.set(Type.ALLOW_FLIGHT, true);
-                    break;
-            }
+            newSettings.set(Type.FLYING, gamemode == 1 || gamemode == 3);
+            newSettings.set(Type.ALLOW_FLIGHT, gamemode == 1 || gamemode == 3);
         }
 
         PlayerGameModeChangeEvent ev;
@@ -1503,18 +1487,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         this.setAdventureSettings(ev.getNewAdventureSettings());
+        this.getAdventureSettings().update();
 
         if (this.isSpectator()) {
-            this.getAdventureSettings().set(Type.FLYING, true);
             this.teleport(this.temporalVector.setComponents(this.x, this.y + 0.1, this.z));
 
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
             this.dataPacket(inventoryContentPacket);
         } else {
-            if (this.isSurvival()) {
-                this.getAdventureSettings().set(Type.FLYING, false);
-            }
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
             inventoryContentPacket.slots = Item.getCreativeItems().stream().toArray(Item[]::new);

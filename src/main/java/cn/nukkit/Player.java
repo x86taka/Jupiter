@@ -1452,23 +1452,29 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         if (newSettings == null) {
             newSettings = this.getAdventureSettings().clone(this);
-            //newSettings.set(Type.BUILD_AND_MINE, (gamemode & 0x02) == 0);
-            if(gamemode == 0){
-                newSettings.set(Type.FLYING, false);
-                newSettings.set(Type.BUILD_AND_MINE, true);
+            newSettings.set(Type.BUILD_AND_MINE, gamemode != 3);
+            newSettings.set(Type.NO_CLIP, gamemode == 3);
+            newSettings.set(Type.WORLD_IMMUTABLE, gamemode == 3);
+            newSettings.set(Type.NO_PVP, gamemode == 3);
+
+            switch (gamemode) {
+                case 0:
+                    newSettings.set(Type.FLYING, false);
+                    newSettings.set(Type.ALLOW_FLIGHT, false);
+                    break;
+                case 1:
+                    newSettings.set(Type.FLYING, true);
+                    newSettings.set(Type.ALLOW_FLIGHT, true);
+                    break;
+                case 2:
+                    newSettings.set(Type.FLYING, false);
+                    newSettings.set(Type.ALLOW_FLIGHT, false);
+                    break;
+                case 3:
+                    newSettings.set(Type.FLYING, true);
+                    newSettings.set(Type.ALLOW_FLIGHT, true);
+                    break;
             }
-            else if(gamemode == 1){
-                newSettings.set(Type.FLYING, true);
-                newSettings.set(Type.BUILD_AND_MINE, true);
-            }
-            else if(gamemode == 2){
-                newSettings.set(Type.FLYING, false);
-                newSettings.set(Type.BUILD_AND_MINE, true);
-            }
-            else if(gamemode == 3)newSettings.set(Type.FLYING, true);
-            //newSettings.setCanFly((gamemode & 0x01) > 0);
-            newSettings.set(Type.NO_CLIP, gamemode == 0x03);
-            newSettings.set(Type.FLYING, gamemode == 0x03);
         }
 
         PlayerGameModeChangeEvent ev;
@@ -1900,7 +1906,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.inAirTicks = 0;
                     this.highestPosition = this.y;
                 } else {
-                     if (!this.isGliding() && !server.getAllowFlight() && !this.getAdventureSettings().get(Type.ALLOW_FLIGHT) && this.inAirTicks > 10 && !this.isSleeping() && !this.isImmobile()) {
+                     if (!this.isCreative() && !this.isGliding() && !server.getAllowFlight() && !this.getAdventureSettings().get(Type.ALLOW_FLIGHT) && this.inAirTicks > 10 && !this.isSleeping() && !this.isImmobile()) {
                         double expectedVelocity = (-this.getGravity()) / ((double) this.getDrag()) - ((-this.getGravity()) / ((double) this.getDrag())) * Math.exp(-((double) this.getDrag()) * ((double) (this.inAirTicks - this.startAirTicks)));
                         double diff = (this.speed.y - expectedVelocity) * (this.speed.y - expectedVelocity);
 

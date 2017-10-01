@@ -64,6 +64,7 @@ public class AdventureSettings implements Cloneable {
 
     public enum Type {
         WORLD_IMMUTABLE(AdventureSettingsPacket.WORLD_IMMUTABLE, false),
+        NO_PVP(AdventureSettingsPacket.NO_PVP, false),
         AUTO_JUMP(AdventureSettingsPacket.AUTO_JUMP, true),
         ALLOW_FLIGHT(AdventureSettingsPacket.ALLOW_FLIGHT, false),
         NO_CLIP(AdventureSettingsPacket.NO_CLIP, false),

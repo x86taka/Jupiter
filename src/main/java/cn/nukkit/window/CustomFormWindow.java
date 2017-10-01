@@ -106,7 +106,11 @@ public class CustomFormWindow extends WindowBase{
 
                 case "Dropdown":
 <<<<<<< HEAD
+<<<<<<< HEAD
                     map.put(i, ((Dropdown) elements[i]).getOptions().get((int) (double) o));
+=======
+                    map.put(i, ((Dropdown) elements[i]).getOptions().get((int) o));
+>>>>>>> c87b860f6fcab561dec09d61f51af7801ee94f52
 =======
                     map.put(i, ((Dropdown) elements[i]).getOptions().get((int) o));
 >>>>>>> c87b860f6fcab561dec09d61f51af7801ee94f52

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.nukkit.window.element.Dropdown;
 import cn.nukkit.window.element.Element;
 
 public class CustomFormWindow extends WindowBase{
@@ -80,7 +81,7 @@ public class CustomFormWindow extends WindowBase{
      * <br>
      * <p>各エレメントの戻り値の型</p>
      * <li>Button <b>null</b></li>
-     * <li>Dropdown <b>double</b></li>
+     * <li>Dropdown <b>String</b></li>
      * <li>Input <b>String</b></li>
      * <li>Label <b>null</b></li>
      * <li>Slider <b>double</b></li>
@@ -102,7 +103,7 @@ public class CustomFormWindow extends WindowBase{
                     break;
 
                 case "Dropdown":
-                    map.put(i, (double) o);
+                    map.put(i, ((Dropdown) elements[i]).getOptions().get((int) o));
                     break;
 
                 case "Input":

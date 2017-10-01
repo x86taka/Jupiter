@@ -6,12 +6,29 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import cn.nukkit.window.element.Button;
 import cn.nukkit.window.element.Element;
 
 public abstract class WindowBase {
 
+	/**
+	 * @author itsu
+	 * 
+	 * <h3>WindowBase - Jupiter ModalForm API</h3>
+	 * <p>このクラスはCustomFormWindow、ModalFormWindow、SimpleFormWindowのもとになっているクラス
+	 * です。そのため、型比較(instanceof)で比較した後では安全にそれらのウィンドウにキャストするこ
+	 * とができます。toJson()などのウィンドウをjsonに変換する処理などを提供していますが、プラグイ
+	 * ン側からこのようなメソッドを実行するのは推奨していません。</p>
+	 * 
+	 * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+	 * 
+	 * @see CustomFormWindow
+	 * @see ModalFormWindow
+	 * @see SimpleFormWindow
+	 * 
+	 */
     public WindowBase(){
 
     }
@@ -70,15 +87,43 @@ public abstract class WindowBase {
         }
     }
     
-    public Object[] toObject(String data){
-    	return new Gson().fromJson(data, Object[].class);
+    public List<Object> toObject(String data){
+    	return new Gson().fromJson(data, new TypeToken<List<Object>>(){}.getType());
     }
 
+    /**
+	 * @return Map<Integer, Object> レスポンス
+	 * @author itsu
+	 * 
+	 * <h3>[abstract] getId() - Jupiter ModalForm API</h3>
+	 * <p>このメソッドではウィンドウidを取得します。各ウィンドウで定義されています。</p>
+	 * 
+	 * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+	 * 
+	 * @see CustomFormWindow#getId()
+	 * @see ModalFormWindow#getId()
+	 * @see SimpleFormWindow#getId()
+	 * 
+	 */
     public abstract int getId();
 
     public abstract String toJson();
     
-    public abstract Map<String, Object> getResponses();
+    /**
+	 * @return Map<Integer, Object> レスポンス
+	 * @author itsu
+	 * 
+	 * <h3>[abstract] getResponses() - Jupiter ModalForm API</h3>
+	 * <p>このメソッドではレスポンスを取得します。各ウィンドウで定義されています。</p>
+	 * 
+	 * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+	 * 
+	 * @see CustomFormWindow#getResponses()
+	 * @see ModalFormWindow#getResponses()
+	 * @see SimpleFormWindow#getResponses()
+	 * 
+	 */
+    public abstract Map<Integer, Object> getResponses();
     
     public abstract void setResponse(String data);
 

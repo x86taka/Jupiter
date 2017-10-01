@@ -5,14 +5,25 @@ import java.util.List;
 
 public class StepSlider implements Element{
 	
-	private final String type = "strpslider";
+	private final String type = "step_slider";
 	private List<Integer> steps = new ArrayList<Integer>();
 	private int defaultIndex;
+	private String text;
 	
-	public StepSlider(List<Integer> steps, int defaultIndex){
+	public StepSlider(String text, List<Integer> steps, int defaultIndex){
+		this.text = text;
 		this.steps = steps;
 		this.defaultIndex = defaultIndex;
 	}
+	
+	public void setText(String text){
+		this.text = text;
+	}
+	
+	public String getText(){
+		return this.text;
+	}
+	
 	
 	public void addStep(int step){
 		if(!(this.steps.contains(steps))){

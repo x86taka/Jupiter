@@ -1446,16 +1446,25 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public boolean setGamemode(int gamemode, boolean clientSide, AdventureSettings newSettings) {
-    	if (gamemode < 0 || gamemode > 3){// || this.gamemode == gamemode) {
+        if (gamemode < 0 || gamemode > 3) {
             return false;
         }
 
         if (newSettings == null) {
             newSettings = this.getAdventureSettings().clone(this);
-            newSettings.set(Type.BUILD_AND_MINE, (gamemode & 0x02) == 0);
-            if(gamemode == 0)newSettings.set(Type.FLYING, false);
-            else if(gamemode == 1)newSettings.set(Type.FLYING, true);
-            else if(gamemode == 2)newSettings.set(Type.FLYING, false);
+            //newSettings.set(Type.BUILD_AND_MINE, (gamemode & 0x02) == 0);
+            if(gamemode == 0){
+                newSettings.set(Type.FLYING, false);
+                newSettings.set(Type.BUILD_AND_MINE, true);
+            }
+            else if(gamemode == 1){
+                newSettings.set(Type.FLYING, true);
+                newSettings.set(Type.BUILD_AND_MINE, true);
+            }
+            else if(gamemode == 2){
+                newSettings.set(Type.FLYING, false);
+                newSettings.set(Type.BUILD_AND_MINE, true);
+            }
             else if(gamemode == 3)newSettings.set(Type.FLYING, true);
             //newSettings.setCanFly((gamemode & 0x01) > 0);
             newSettings.set(Type.NO_CLIP, gamemode == 0x03);
@@ -3885,13 +3894,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket mfrp = (ModalFormResponsePacket) packet;
+                    
+                    this.addedWindows.get(mfrp.formId).setResponse(mfrp.data);
 
                     if(this.activeWindows.containsKey(mfrp.formId)){
-                        this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, mfrp.data, this.activeWindows.get(mfrp.formId)));
+                    	this.activeWindows.get(mfrp.formId).setResponse(mfrp.data);
+                        this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, this.activeWindows.get(mfrp.formId)));
                         this.activeWindows.remove(mfrp.formId);
                     }
-
-                    this.addedWindows.get(mfrp.formId).setResponse(mfrp.data);
 
                     break;
 

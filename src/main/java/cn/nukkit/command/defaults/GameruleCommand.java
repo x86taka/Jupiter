@@ -54,9 +54,14 @@ public class GameruleCommand extends VanillaCommand {
             return true;
         } else if (args.length == 2) {
             if (sender instanceof Player) {
-                if (args[0].equals("true") || args[0].equals("false")) {
-                    ((Player) sender).getLevel().getGameRules().setGameRule(args[0], args[1]);
-                    sender.sendMessage("ゲーム ルール " + args[0] + " が " + args[1] + " に更新されました");
+                if (Arrays.asList(CommandParameter.GAMERULE_LIST).contains(args[0])) {
+                    if (args[1].equals("true") || args[1].equals("false")) {
+                        ((Player) sender).getLevel().getGameRules().setGameRule(args[0], args[1]);
+                        sender.sendMessage("ゲーム ルール " + args[0] + " が " + args[1] + " に更新されました");
+                        return true;
+                    } else {
+                        sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+                    }
                 } else {
                     sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
                 }

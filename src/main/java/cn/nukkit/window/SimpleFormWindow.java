@@ -1,9 +1,10 @@
 package cn.nukkit.window;
 
-import java.awt.Button;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.nukkit.window.element.Button;
 
 public class SimpleFormWindow extends WindowBase{
 
@@ -11,7 +12,7 @@ public class SimpleFormWindow extends WindowBase{
     private String title;
     private String content;
     private Button[] buttons;
-    private String data;
+    private int data;
     private List<Object> datas;
 
 
@@ -37,16 +38,18 @@ public class SimpleFormWindow extends WindowBase{
         return this.toJson(title, WindowType.TYPE_SIMPLE_FORM, data);
     }
 
-    //未調査
     @Override
     public Map<Integer, Object> getResponses() {
-        return null;
+        Map<Integer, Object> out = new LinkedHashMap<Integer, Object>();
+        for (int i = 0; i <= buttons.length; ++i) {
+            out.put(i, i == data);
+        }
+        return out;
     }
 
     @Override
     public void setResponse(String data) {
-        this.data = data;
-        this.datas = this.toObject(data);
+        this.data = Integer.valueOf(data);
     }
 
 }

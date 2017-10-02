@@ -88,6 +88,7 @@ import cn.nukkit.event.player.PlayerJumpEvent;
 import cn.nukkit.event.player.PlayerKickEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMapInfoRequestEvent;
+import cn.nukkit.event.player.PlayerModalFormReceiveEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
@@ -1090,20 +1091,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         setTimePacket.time = this.level.getTime();
         this.dataPacket(setTimePacket);
 
-        Position pos = this.level.getSafeSpawn(this);
-
-        PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(this, pos);
-
-        this.server.getPluginManager().callEvent(respawnEvent);
-
-        //pos = respawnEvent.getRespawnPosition();
-
-        RespawnPacket respawnPacket = new RespawnPacket();
-        respawnPacket.x = (float) pos.x;
-        respawnPacket.y = (float) pos.y;
-        respawnPacket.z = (float) pos.z;
-        this.dataPacket(respawnPacket);
-
         PlayStatusPacket playStatusPacket = new PlayStatusPacket();
         playStatusPacket.status = PlayStatusPacket.PLAYER_SPAWN;
         this.dataPacket(playStatusPacket);
@@ -1137,8 +1124,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.sendExperience(this.getExperience());
         this.sendExperienceLevel(this.getExperienceLevel());
 
-        this.teleport(pos, null); // Prevent PlayerTeleportEvent during player spawn
-
         if (!this.isSpectator()) {
             this.spawnToAll();
         }
@@ -1146,8 +1131,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         //todo Updater
 
         if (this.getHealth() <= 0) {
-            respawnPacket = new RespawnPacket();
-            pos = this.getSpawn();
+            RespawnPacket respawnPacket = new RespawnPacket();
+            Position pos = this.getSpawn();
             respawnPacket.x = (float) pos.x;
             respawnPacket.y = (float) pos.y;
             respawnPacket.z = (float) pos.z;
@@ -3881,12 +3866,12 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket mfrp = (ModalFormResponsePacket) packet;
-                    
+
                     this.addedWindows.get(mfrp.formId).setResponse(mfrp.data);
 
                     if(this.activeWindows.containsKey(mfrp.formId)){
                     	this.activeWindows.get(mfrp.formId).setResponse(mfrp.data);
-                        this.getServer().getPluginManager().callEvent(new ModalFormReceiveEvent(mfrp.formId, this.activeWindows.get(mfrp.formId)));
+                        this.getServer().getPluginManager().callEvent(new PlayerModalFormReceiveEvent(this, mfrp.formId, this.activeWindows.get(mfrp.formId)));
                         this.activeWindows.remove(mfrp.formId);
                     }
 

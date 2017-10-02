@@ -1,9 +1,10 @@
 package cn.nukkit.window;
 
-import java.awt.Button;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.nukkit.window.element.Button;
 
 public class SimpleFormWindow extends WindowBase{
 

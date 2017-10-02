@@ -87,7 +87,7 @@ public class CustomFormWindow extends WindowBase{
      * <li>Input <b>String</b></li>
      * <li>Label <b>null</b></li>
      * <li>Slider <b>double</b></li>
-     * <li>StepSlider <b>double</b></li>
+     * <li>StepSlider <b>String</b></li>
      * <li>Toggle <b>boolean</b></li>
      *
      * <p>Jupiter Project by JupiterDevelopmentTeam</p>
@@ -100,10 +100,6 @@ public class CustomFormWindow extends WindowBase{
 
         for(Object o : datas){
             switch(this.elements[i].getName()){
-                case "Button":
-                    map.put(i, o);
-                    break;
-
                 case "Dropdown":
                     map.put(i, ((Dropdown) elements[i]).getOptions().get((int) (double) o));
                     break;

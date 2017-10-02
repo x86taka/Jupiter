@@ -1,9 +1,9 @@
-package cn.nukkit.event.server;
+package cn.nukkit.event.player;
 
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.window.WindowBase;
 
-public class ModalFormReceiveEvent extends ServerEvent {
+public class ModalFormReceiveEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
 

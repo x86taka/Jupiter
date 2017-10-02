@@ -75,7 +75,7 @@ public class ModalFormWindow extends WindowBase{
     
     @Override
     public void setResponse(String data) {
-        this.data = Boolean.valueOf(data);
+        this.data = Boolean.valueOf(data.trim());
     }
 
     /**

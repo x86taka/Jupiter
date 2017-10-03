@@ -2026,7 +2026,7 @@ public class Level implements ChunkManager, Metadatable {
         if (target.getId() == Item.AIR) {
             return null;
         }
-
+        
         if (player != null) {
             PlayerInteractEvent ev = new PlayerInteractEvent(player, item, target, face,
                     target.getId() == 0 ? Action.RIGHT_CLICK_AIR : Action.RIGHT_CLICK_BLOCK);
@@ -2034,7 +2034,7 @@ public class Level implements ChunkManager, Metadatable {
             if (player.getGamemode() > 2) {
                 ev.setCancelled();
             }
-
+            
             int distance = this.server.getSpawnRadius();
             if (!player.isOp() && distance > -1) {
                 Vector2 t = new Vector2(target.x, target.z);
@@ -2045,6 +2045,7 @@ public class Level implements ChunkManager, Metadatable {
             }
 
             this.server.getPluginManager().callEvent(ev);
+            
             if (!ev.isCancelled()) {
                 target.onUpdate(BLOCK_UPDATE_TOUCH);
                 if (!player.isSneaking() && target.canBeActivated() && target.onActivate(item, player)) {
@@ -2070,10 +2071,6 @@ public class Level implements ChunkManager, Metadatable {
             hand = item.getBlock();
             hand.position(block);
         } else {
-            return null;
-        }
-
-        if (!(block.canBeReplaced() || (hand.getId() == Item.SLAB && block.getId() == Item.SLAB))) {
             return null;
         }
 
@@ -2106,7 +2103,7 @@ public class Level implements ChunkManager, Metadatable {
                 return null; // Entity in block
             }
         }
-
+        
         Tag tag = item.getNamedTagEntry("CanPlaceOn");
         if (tag instanceof ListTag) {
             boolean canPlace = false;
@@ -2124,7 +2121,7 @@ public class Level implements ChunkManager, Metadatable {
                 return null;
             }
         }
-
+        
         if (player != null) {
             BlockPlaceEvent event = new BlockPlaceEvent(player, hand, block, target, item);
             int distance = this.server.getSpawnRadius();
@@ -2141,7 +2138,7 @@ public class Level implements ChunkManager, Metadatable {
                 return null;
             }
         }
-
+        
         if (!hand.place(item, block, target, face, fx, fy, fz, player)) {
             return null;
         }

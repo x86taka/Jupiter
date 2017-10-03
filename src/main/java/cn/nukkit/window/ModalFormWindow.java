@@ -4,6 +4,32 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author Itsu
+ * 
+ * @param id ウィンドウid
+ * @param title タイトル
+ * @param content 内容となる文章
+ * @param upButtonText 上となるボタンのテキスト
+ * @param downButtonText 下となるボタンのテキスト
+ * 
+ * <h3>モダルフォームウィンドウ - Jupiter ModalForm API</h3>
+ * <p>このクラスはシンプルなフォーム型ウィンドウを提供します。</p>
+ * <p>ウィンドウの作成には他のウィンドウと被らないid、タイトル、内容として表示される文章、上ボタンの
+ * テキスト、下ボタンのテキストをそれぞれ渡す必要があります。二つのボタンはそれぞれはい/いいえを書くことが
+ * 想定されています。また、このウィンドウを作成すると上からタイトル、文章、ボタン、ボタンの順に表示されます。</p>
+ * <p>レスポンスの取得にはgetResponses()を使用します。戻り値はMap<Integer, Object>ですが、このクラスの場合は
+ * いかなる場合であっても戻り値のサイズ(getResponses().size())の値は1となります。これは二つのボタンしか
+ * ないためです。そのため、結果を取得するにはgetResponses().get(0)を使用することになります。これを使用して
+ * 取得した場合にはObjectが返ってきますが、実際にはbooleanのため、キャストが可能です。なお、どのボタンを押しても
+ * 戻ってくるのはfalseとなります。</p>
+ * 
+ * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+ * 
+ * @see ModalFormWindow#getResponses()
+ */
+
 public class ModalFormWindow extends WindowBase{
 
     private int id;
@@ -15,32 +41,6 @@ public class ModalFormWindow extends WindowBase{
     private boolean data;
     private List<Object> datas;
 
-    /**
-     * 
-     * @author Itsu
-     * 
-     * @param id ウィンドウid
-     * @param title タイトル
-     * @param content 内容となる文章
-     * @param upButtonText 上となるボタンのテキスト
-     * @param downButtonText 下となるボタンのテキスト
-     * 
-     * <h3>モダルフォームウィンドウ - Jupiter ModalForm API</h3>
-     * <p>このクラスはシンプルなフォーム型ウィンドウを提供します。</p>
-     * <p>ウィンドウの作成には他のウィンドウと被らないid、タイトル、内容として表示される文章、上ボタンの
-     * テキスト、下ボタンのテキストをそれぞれ渡す必要があります。二つのボタンはそれぞれはい/いいえを書くことが
-     * 想定されています。また、このウィンドウを作成すると上からタイトル、文章、ボタン、ボタンの順に表示されます。</p>
-     * <p>レスポンスの取得にはgetResponses()を使用します。戻り値はMap<Integer, Object>ですが、このクラスの場合は
-     * いかなる場合であっても戻り値のサイズ(getResponses().size())の値は1となります。これは二つのボタンしか
-     * ないためです。そのため、結果を取得するにはgetResponses().get(0)を使用することになります。これを使用して
-     * 取得した場合にはObjectが返ってきますが、実際にはbooleanのため、キャストが可能です。なお、どのボタンを押しても
-     * 戻ってくるのはfalseとなります。</p>
-     * 
-     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
-     * 
-     * @see ModalFormWindow#getResponses()
-     */
-
     public ModalFormWindow (int id, String title, String content, String upButtonText, String downButtonText) {
         this.id = id;
         this.title = title;
@@ -50,8 +50,9 @@ public class ModalFormWindow extends WindowBase{
     }
 
     /**
-     * @return Map<Integer, Object> レスポンス
+     * 
      * @author itsu
+     * @return id(int)
      * 
      * <h3>getId() - Jupiter ModalForm API</h3>
      * <p>このメソッドではウィンドウidを取得します。</p>
@@ -59,11 +60,24 @@ public class ModalFormWindow extends WindowBase{
      * <p>Jupiter Project by JupiterDevelopmentTeam</p>
      * 
      */
+    
     @Override
     public int getId() {
         return this.id;
     }
 
+    /**
+     * 
+     * @author itsu
+     * @return jsonデータ(String)
+     * 
+     * <h3>toJson() - Jupiter ModalForm API</h3>
+     * <p>ウィンドウをJSONデータ化します。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     */
+    
     @Override
     public String toJson() {
         Map<String, Object> data = new LinkedHashMap<String, Object>();

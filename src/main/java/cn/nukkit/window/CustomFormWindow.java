@@ -10,14 +10,6 @@ import cn.nukkit.window.element.Dropdown;
 import cn.nukkit.window.element.Element;
 import cn.nukkit.window.element.StepSlider;
 
-public class CustomFormWindow extends WindowBase{
-
-    private int id;
-    private String title;
-    private Element[] elements;
-
-    private String data;
-    private List<Object> datas = new ArrayList<Object>();
 
 
 /**
@@ -44,6 +36,15 @@ public class CustomFormWindow extends WindowBase{
  *
  */
 
+public class CustomFormWindow extends WindowBase{
+
+    private int id;
+    private String title;
+    private Element[] elements;
+
+    private String data;
+    private List<Object> datas = new ArrayList<Object>();
+
     public CustomFormWindow(int id, String title, Element[] elements){
         this.id = id;
         this.title = title;
@@ -51,20 +52,34 @@ public class CustomFormWindow extends WindowBase{
     }
 
     /**
-     * @return Map<Integer, Object> レスポンス
+     * 
      * @author itsu
-     *
+     * @return id(int)
+     * 
      * <h3>getId() - Jupiter ModalForm API</h3>
      * <p>このメソッドではウィンドウidを取得します。</p>
-     *
+     * 
      * <p>Jupiter Project by JupiterDevelopmentTeam</p>
-     *
+     * 
      */
+    
     @Override
     public int getId() {
         return this.id;
     }
 
+    /**
+     * 
+     * @author itsu
+     * @return jsonデータ(String)
+     * 
+     * <h3>toJson() - Jupiter ModalForm API</h3>
+     * <p>ウィンドウをJSONデータ化します。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     */
+    
     @Override
     public String toJson() {
         Map<String, Object> data = new LinkedHashMap<String, Object>();

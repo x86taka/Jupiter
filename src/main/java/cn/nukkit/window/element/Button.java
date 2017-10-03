@@ -1,6 +1,6 @@
 package cn.nukkit.window.element;
 
-public class Button implements Element{
+public class Button {
 
     private final String type = "button";
     private String text;
@@ -44,7 +44,6 @@ public class Button implements Element{
         return this.text;
     }
 
-    @Override
     public String getName() {
         return "Button";
     }

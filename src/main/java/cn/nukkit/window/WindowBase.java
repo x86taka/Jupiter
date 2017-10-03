@@ -11,27 +11,52 @@ import com.google.gson.reflect.TypeToken;
 import cn.nukkit.window.element.Button;
 import cn.nukkit.window.element.Element;
 
+/**
+ * @author itsu
+ * 
+ * <h3>WindowBase - Jupiter ModalForm API</h3>
+ * <p>このクラスはCustomFormWindow、ModalFormWindow、SimpleFormWindowのもとになっているクラス
+ * です。そのため、型比較(instanceof)で比較した後では安全にそれらのウィンドウにキャストするこ
+ * とができます。toJson()などのウィンドウをjsonに変換する処理などを提供していますが、プラグイ
+ * ン側からこのようなメソッドを実行するのは推奨していません。</p>
+ * 
+ * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+ * 
+ * @see CustomFormWindow
+ * @see ModalFormWindow
+ * @see SimpleFormWindow
+ * 
+ */
+
 public abstract class WindowBase {
 
-    /**
-     * @author itsu
-     * 
-     * <h3>WindowBase - Jupiter ModalForm API</h3>
-     * <p>このクラスはCustomFormWindow、ModalFormWindow、SimpleFormWindowのもとになっているクラス
-     * です。そのため、型比較(instanceof)で比較した後では安全にそれらのウィンドウにキャストするこ
-     * とができます。toJson()などのウィンドウをjsonに変換する処理などを提供していますが、プラグイ
-     * ン側からこのようなメソッドを実行するのは推奨していません。</p>
-     * 
-     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
-     * 
-     * @see CustomFormWindow
-     * @see ModalFormWindow
-     * @see SimpleFormWindow
-     * 
-     */
     public WindowBase(){
 
     }
+    
+    /**
+     * 
+     * @author itsu
+     * @return jsonデータ(String)
+     * 
+     * @param title タイトル
+     * @param type ウィンドウタイプ(WindowTypeのいずれか)
+     * @param content json変換するマップ
+     * 
+     * <h3>toJson() - Jupiter ModalForm API</h3>
+     * <p>ウィンドウをJSONデータ化します。変換にはGoogleのGsonライブラリを使用しています。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     * @see CustomFormWindow#toJson()
+     * @see ModalFormWindow#toJson()
+     * @see SimpleFormWindow#toJson()
+     * 
+     * @see WindowType#TYPE_MODAL
+     * @see WindowType#TYPE_CUSTOM_FORM
+     * @see WindowType#TYPE_SIMPLE_FORM
+     * 
+     */
 
     public String toJson(String title, String type, Map<String, Object> content){
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -86,6 +111,17 @@ public abstract class WindowBase {
                 return null;
         }
     }
+    
+    /**
+     * 
+     * @author itsu
+     * 
+     * <h3>toObject() - Jupiter ModalForm API</h3>
+     * <p>レスポンスとして返ってきたjsonデータをJavaのMap<String, Object>に変換します。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     */
 
     public List<Object> toObject(String data){
         return new Gson().fromJson(data, new TypeToken<List<Object>>(){}.getType());
@@ -105,8 +141,25 @@ public abstract class WindowBase {
      * @see SimpleFormWindow#getId()
      * 
      */
+    
     public abstract int getId();
 
+    /**
+     * 
+     * @author itsu
+     * @return jsonデータ(String)
+     * 
+     * <h3>[abstract] toJson() - Jupiter ModalForm API</h3>
+     * <p>ウィンドウをJSONデータ化します。各ウィンドウで定義されています。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     * @see CustomFormWindow#toJson()
+     * @see ModalFormWindow#toJson()
+     * @see SimpleFormWindow#toJson()
+     * 
+     */
+    
     public abstract String toJson();
     
     /**
@@ -123,8 +176,20 @@ public abstract class WindowBase {
      * @see SimpleFormWindow#getResponses()
      * 
      */
+    
     public abstract Map<Integer, Object> getResponses();
 
+    /**
+     * 
+     * @author itsu
+     * 
+     * <h3>[abstract] setResponse() - Jupiter ModalForm API</h3>
+     * <p>レスポンスとして返ってきたjsonデータをウィンドウに格納します。プラグイン側からの使用は非推奨です。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     */
+    
     public abstract void setResponse(String data);
 
 }

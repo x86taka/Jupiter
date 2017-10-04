@@ -1,42 +1,23 @@
 package cn.nukkit.network.protocol;
 
-/**
- * author: PikyCZ
- * CoreX Project
- */
-
 public class BookEditPacket extends DataPacket {
 
     //本を編集するためのパケットです
 
-    public static final int TYPE_REPLACE_PAGE = 0;
-    public static final int TYPE_ADD_PAGE = 1;
-    public static final int TYPE_DELETE_PAGE = 2;
-    public static final int TYPE_SWAP_PAGES = 3;
-    public static final int TYPE_SIGN_BOOK = 4;
+	public static final byte TYPE_REPLACE_PAGE = 0;
+	public static final byte TYPE_ADD_PAGE = 1;
+	public static final byte TYPE_DELETE_PAGE = 2;
+	public static final byte TYPE_SWAP_PAGES = 3;
+	public static final byte TYPE_SIGN_BOOK = 4;
 
-    //typeには 0~5までの数値が入ります
-    public int type;
-
-    /** @var int */
+    public byte type;
     public int inventorySlot;
-    /** @var int */
     public int pageNumber;
-    /** @var int */
     public int secondaryPageNumber;
-
-	/** @var string */
-    public String content1;
-	/** @var string */
-    public String content2;
-
-	/** @var string */
-    public String title;
-    
-	/** @var string */
-    public String author;
-
-
+    public String content1 = "";
+    public String content2 = "";
+    public String title = "";
+    public String author = "";
 
     @Override
     public byte pid() {
@@ -45,10 +26,10 @@ public class BookEditPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.type = this.getByte();
+        this.type = (byte) getByte();
         this.inventorySlot = this.getByte();
 
-        switch (this.type) {
+        switch (type) {
             case TYPE_REPLACE_PAGE:
             case TYPE_ADD_PAGE:
                 this.pageNumber = this.getByte();
@@ -72,7 +53,7 @@ public class BookEditPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putByte((byte) this.type);
+        this.putByte(this.type);
         this.putByte((byte) this.inventorySlot);
 
         switch (this.type) {

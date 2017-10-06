@@ -28,10 +28,12 @@ import com.google.gson.JsonObject;
 import cn.nukkit.AdventureSettings.Type;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
+import cn.nukkit.block.BlockCommand;
 import cn.nukkit.block.BlockDoor;
 import cn.nukkit.block.BlockEnderChest;
 import cn.nukkit.block.BlockNoteblock;
 import cn.nukkit.blockentity.BlockEntity;
+import cn.nukkit.blockentity.BlockEntityCommandBlock;
 import cn.nukkit.blockentity.BlockEntityItemFrame;
 import cn.nukkit.blockentity.BlockEntitySign;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
@@ -164,6 +166,7 @@ import cn.nukkit.network.protocol.BlockPickRequestPacket;
 import cn.nukkit.network.protocol.ChangeDimensionPacket;
 import cn.nukkit.network.protocol.ChunkRadiusUpdatedPacket;
 import cn.nukkit.network.protocol.ClientboundMapItemDataPacket;
+import cn.nukkit.network.protocol.CommandBlockUpdatePacket;
 import cn.nukkit.network.protocol.CommandRequestPacket;
 import cn.nukkit.network.protocol.ContainerClosePacket;
 import cn.nukkit.network.protocol.CraftingEventPacket;
@@ -3889,6 +3892,59 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     break;
+
+            	case ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET:
+            		if (!(this.isOp() && this.isCreative())) {
+            			break;
+            		}
+            		CommandBlockUpdatePacket update = (CommandBlockUpdatePacket) packet;
+            		if (update.isBlock) {
+	            		Vector3 commandPos = new Vector3(update.x, update.y, update.z);
+	            		Block block = this.level.getBlock(commandPos);
+	            		if (block instanceof BlockCommand) {
+	            			BlockEntityCommandBlock blockEntity = ((BlockCommand)block).getBlockEntity();
+	            			if (blockEntity == null) {
+	            				break;
+	            			}
+	            			Block place = Block.get(Block.COMMAND_BLOCK);
+	            			switch (update.commandBlockMode) {
+	            				case 0:
+	            					place = Block.get(Block.COMMAND_BLOCK);
+	            					place.setDamage(block.getDamage());
+	            					break;
+	            				case 1:
+	            					place = Block.get(Block.REPEATING_COMMAND_BLOCK);
+	            					place.setDamage(block.getDamage());
+	            					break;
+	            				case 2:
+	            					place = Block.get(Block.CHAIN_COMMAND_BLOCK);
+	            					place.setDamage(block.getDamage());
+	            					break;
+	            			}
+//	            			if (update.isConditional) {
+//	            				if (place.getDamage() < 8) {
+//	            					place.setDamage(place.getDamage() + 8);
+//	            				}
+//	            			} else {
+//	            				if (place.getDamage() > 8) {
+//	            					place.setDamage(place.getDamage() - 8);
+//	            				}
+//	            			}
+        					this.level.setBlock(block, place, false, false);
+        					this.level.sendBlocks(new Player[]{this}, new Block[]{block});
+        					blockEntity = (BlockEntityCommandBlock) blockEntity.clone();
+	            			blockEntity.setName(update.name);
+	            			blockEntity.setMode(update.commandBlockMode);
+	            			blockEntity.setCommand(update.command);
+	            			blockEntity.setLastOutPut(update.lastOutput);
+	            			blockEntity.setAuto(!update.isRedstoneMode);
+	            			blockEntity.setConditions(update.isConditional);
+	            			blockEntity.spawnToAll();
+	            		}
+            		} else {
+            			//MinercartCommandBlock
+            		}
+            		break;
 
                 default:
                     break;

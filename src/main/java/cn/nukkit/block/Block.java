@@ -301,6 +301,11 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
 
+    public static final int MAGMA_BLOCK = 213;
+    public static final int NETHER_WART_BLOCK1 = 214;
+    public static final int RED_NETHER_BRICKS = 215;
+    public static final int BONE_BLOCK = 216;
+
     public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
     public static final int WHITE_GLAZED_TERRACOTTA = 220;
@@ -595,7 +600,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[BEETROOT_BLOCK] = BlockBeetroot.class; //244
             list[GLOWING_OBSIDIAN] = BlockObsidianGlowing.class; //246
             list[NETHER_REACTOR] = BlockNetherReactor.class; //247 Should not be removed
-            
+
             //TODO 1.2
             list[ARMOR_STAND] = BlockArmorStand.class; //247 Should not be removed
 

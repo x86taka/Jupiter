@@ -68,7 +68,6 @@ import cn.nukkit.event.inventory.CraftItemEvent;
 import cn.nukkit.event.inventory.InventoryCloseEvent;
 import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
 import cn.nukkit.event.inventory.InventoryPickupItemEvent;
-import cn.nukkit.event.player.ModalFormReceiveEvent;
 import cn.nukkit.event.player.PlayerAchievementAwardedEvent;
 import cn.nukkit.event.player.PlayerAnimationEvent;
 import cn.nukkit.event.player.PlayerBedEnterEvent;
@@ -227,7 +226,7 @@ import cn.nukkit.utils.NetworkInventoryAction;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
-import cn.nukkit.window.WindowBase;
+import cn.nukkit.window.FormWindow;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 
@@ -402,9 +401,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private BlockEntity blockEntity;
 
-    private Map<Integer, WindowBase> activeWindows = new LinkedHashMap<Integer, WindowBase>();
+    private Map<Integer, FormWindow> activeWindows = new LinkedHashMap<Integer, FormWindow>();
 
-    private Map<Integer, WindowBase> addedWindows = new LinkedHashMap<Integer, WindowBase>();
+    private Map<Integer, FormWindow> addedWindows = new LinkedHashMap<Integer, FormWindow>();
 
     private boolean printPackets;
 
@@ -5602,7 +5601,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_ACTION, value);
     }
 
-    public void sendWindow(WindowBase window){
+    public void sendWindow(FormWindow window){
         ModalFormRequestPacket pk = new ModalFormRequestPacket();
         pk.data = window.toJson();
         pk.formId = window.getId();
@@ -5613,11 +5612,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
-    public WindowBase getAddedWindow(int id){
+    public FormWindow getAddedWindow(int id){
         return this.addedWindows.get(id);
     }
 
-    public WindowBase getActiveWindow(int id){
+    public FormWindow getActiveWindow(int id){
         return this.activeWindows.get(id);
     }
 

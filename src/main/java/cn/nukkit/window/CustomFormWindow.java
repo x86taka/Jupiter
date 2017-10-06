@@ -6,6 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import cn.nukkit.window.element.Dropdown;
 import cn.nukkit.window.element.Element;
 import cn.nukkit.window.element.StepSlider;
@@ -36,7 +39,7 @@ import cn.nukkit.window.element.StepSlider;
  *
  */
 
-public class CustomFormWindow extends WindowBase{
+public class CustomFormWindow extends FormWindow {
 
     private int id;
     private String title;
@@ -83,8 +86,17 @@ public class CustomFormWindow extends WindowBase{
     @Override
     public String toJson() {
         Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put("content", elements);
-        return this.toJson(title, WindowType.TYPE_CUSTOM_FORM, data);
+        data.put("type", WindowType.TYPE_CUSTOM_FORM);
+        data.put("title", title);
+
+        List<Element> datas = new ArrayList<Element>();
+
+        for (Element e : elements) {
+           datas.add(e);
+        }
+        data.put("content", datas);
+
+        return gson.toJson(data);
     }
 
     /**
@@ -139,10 +151,15 @@ public class CustomFormWindow extends WindowBase{
                     map.put(i, (boolean) o);
                     break;
             }
-            i++;
+            ++i;
         }
 
         return map;
+    }
+
+    @Override
+    public String getResponse() {
+        return data;
     }
 
     @Override
@@ -154,4 +171,17 @@ public class CustomFormWindow extends WindowBase{
         }
     }
 
+    /**
+     * 
+     * @author itsu
+     * 
+     * <h3>toObject() - Jupiter ModalForm API</h3>
+     * <p>レスポンスとして返ってきたjsonデータをJavaのMap<String, Object>に変換します。</p>
+     * 
+     * <p>Jupiter Project by JupiterDevelopmentTeam</p>
+     * 
+     */
+    public List<Object> toObject(String data){
+        return new Gson().fromJson(data, new TypeToken<List<Object>>(){}.getType());
+    }
 }

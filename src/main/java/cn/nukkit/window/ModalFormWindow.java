@@ -30,7 +30,7 @@ import java.util.Map;
  * @see ModalFormWindow#getResponses()
  */
 
-public class ModalFormWindow extends WindowBase{
+public class ModalFormWindow extends FormWindow {
 
     private int id;
     private String title = "ModalFormWindow Title";
@@ -77,19 +77,17 @@ public class ModalFormWindow extends WindowBase{
      * <p>Jupiter Project by JupiterDevelopmentTeam</p>
      * 
      */
-    
+
     @Override
     public String toJson() {
         Map<String, Object> data = new LinkedHashMap<String, Object>();
+        data.put("type", WindowType.TYPE_MODAL);
+        data.put("title", title);
         data.put("content", content);
         data.put("button1", upButtonText);
         data.put("button2", downButtonText);
-        return this.toJson(title, WindowType.TYPE_MODAL, data);
-    }
-    
-    @Override
-    public void setResponse(String data) {
-        this.data = Boolean.valueOf(data.trim());
+
+        return gson.toJson(data);
     }
 
     /**
@@ -111,4 +109,13 @@ public class ModalFormWindow extends WindowBase{
         return out;
     }
 
+    @Override
+    public Boolean getResponse() {
+        return this.data;
+    }
+
+    @Override
+    public void setResponse(String data) {
+        this.data = Boolean.valueOf(data.trim());
+    }
 }

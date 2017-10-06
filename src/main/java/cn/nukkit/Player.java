@@ -87,7 +87,8 @@ import cn.nukkit.event.player.PlayerJumpEvent;
 import cn.nukkit.event.player.PlayerKickEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerMapInfoRequestEvent;
-import cn.nukkit.event.player.PlayerModalFormReceiveEvent;
+import cn.nukkit.event.player.PlayerModalFormCloseEvent;
+import cn.nukkit.event.player.PlayerModalFormResponseEvent;
 import cn.nukkit.event.player.PlayerMouseOverEntityEvent;
 import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
@@ -402,8 +403,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private BlockEntity blockEntity;
 
     private Map<Integer, FormWindow> activeWindows = new LinkedHashMap<Integer, FormWindow>();
-
-    private Map<Integer, FormWindow> addedWindows = new LinkedHashMap<Integer, FormWindow>();
 
     private boolean printPackets;
 
@@ -3864,14 +3863,29 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.inventory.equipItem(playerHotbarPacket.selectedHotbarSlot);
                     break;
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
-                    ModalFormResponsePacket mfrp = (ModalFormResponsePacket) packet;
+                    ModalFormResponsePacket modalFormResponsePacket = (ModalFormResponsePacket) packet;
 
-                    this.addedWindows.get(mfrp.formId).setResponse(mfrp.data);
-
-                    if(this.activeWindows.containsKey(mfrp.formId)){
-                    	this.activeWindows.get(mfrp.formId).setResponse(mfrp.data);
-                        this.getServer().getPluginManager().callEvent(new PlayerModalFormReceiveEvent(this, mfrp.formId, this.activeWindows.get(mfrp.formId)));
-                        this.activeWindows.remove(mfrp.formId);
+                    if(this.activeWindows.containsKey(modalFormResponsePacket.formId)){
+                        if (modalFormResponsePacket.data.equals("")) {
+                            PlayerModalFormCloseEvent mfce = new PlayerModalFormCloseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
+                            this.getServer().getPluginManager().callEvent(mfce);
+                            if (mfce.isCancelled()) {
+                                this.sendWindow(mfce.getWindow());
+                            } else {
+                                this.activeWindows.remove(modalFormResponsePacket.formId);
+                            }
+                        } else {
+                            PlayerModalFormResponseEvent mfre = new PlayerModalFormResponseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
+                            this.getServer().getPluginManager().callEvent(mfre);
+                            if (mfre.isCancelled()) {
+                                this.sendWindow(mfre.getWindow());
+                            } else {
+                                this.activeWindows.get(modalFormResponsePacket.formId).setResponse(modalFormResponsePacket.data);
+                                this.activeWindows.remove(modalFormResponsePacket.formId);
+                            }
+                        }
+                    } else {
+                        //sendWindow() 以外で表示したorm
                     }
 
                     break;
@@ -5607,13 +5621,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.formId = window.getId();
 
         this.activeWindows.put(window.getId(), window);
-        this.addedWindows.put(window.getId(), window);
 
         this.dataPacket(pk);
-    }
-
-    public FormWindow getAddedWindow(int id){
-        return this.addedWindows.get(id);
     }
 
     public FormWindow getActiveWindow(int id){

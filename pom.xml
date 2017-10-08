@@ -42,13 +42,13 @@
             <version>2.14.2</version>
         </dependency>
         <dependency>
-				<!--
-				    このライブラリの依存関係はパブリックリポジトリでは利用できないようです。
+                <!--
+                    このライブラリの依存関係はパブリックリポジトリでは利用できないようです。
             ライブラリはこのプロジェクトのlibディレクトリの中に入っています。
             そのため、このライブラリを使用するにはローカルのMavenリポジトリに手動でインストールする必要があります。
             下記のコマンドは、Mavenが正しく設定されていてあなたがlibディレクトリにいる状態で実行すると動作します。
             mvn install:install-file -Dfile=leveldb.jar -DgroupId=com.tinfoiled.mcpe.leveldb -DartifactId=leveldb -Dversion=0.8 -Dpackaging=jar
-			     -->
+                 -->
             <groupId>com.tinfoiled.mcpe.leveldb</groupId>
             <artifactId>leveldb</artifactId>
             <version>0.8</version>
@@ -59,15 +59,20 @@
             <version>5.0.0.Alpha2</version>
         </dependency>
         <dependency>
-    		    <groupId>commons-collections</groupId>
-    		    <artifactId>commons-collections</artifactId>
-    		    <version>3.2.1</version>
-		    </dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>8.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-		    <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-install-plugin</artifactId>
                 <version>2.5.2</version>

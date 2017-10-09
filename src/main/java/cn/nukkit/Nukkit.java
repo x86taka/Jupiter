@@ -52,70 +52,70 @@ public class Nukkit {
     private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
-                //Shorter title for windows 8/2012
-                String osName = System.getProperty("os.name").toLowerCase();
-                if (osName.contains("windows")) {
-                    if (osName.contains("windows 8") || osName.contains("2012")) {
-                        shortTitle = true;
+        //Shorter title for windows 8/2012
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("windows")) {
+            if (osName.contains("windows 8") || osName.contains("2012")) {
+                shortTitle = true;
+            }
+        }
+
+        //启动参数
+        for (String arg : args) {
+            switch (arg) {
+                case "disable-ansi":
+                    ANSI = false;
+                    break;
+            }
+        }
+
+        MainLogger logger = new MainLogger(DATA_PATH + "server.log");
+
+        System.out.println("Minecraft用 Jupiterサーバーを開始しています。");
+        
+        jobs.add(new Callable<Server>(){
+            @Override
+            public Server call() throws Exception {
+                return new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
+            }
+
+        });
+
+        try {
+            threadpool.invokeAll(jobs);
+            threadpool.shutdown();
+            if(threadpool.awaitTermination(1L,TimeUnit.MINUTES)){// 1 minutes
+                System.out.println("サーバーを停止しています...");
+                logger.info("スレッドが停止しました。");
+
+                for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
+                    if (!(thread instanceof InterruptibleThread)) {
+                        continue;
+                    }
+                    logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
+                    if (thread.isAlive()) {
+                        thread.interrupt();
                     }
                 }
 
-                //启动参数
-                for (String arg : args) {
-                    switch (arg) {
-                        case "disable-ansi":
-                            ANSI = false;
-                            break;
-                    }
-                }
+                ServerKiller killer = new ServerKiller(8);
+                killer.start();
 
-                MainLogger logger = new MainLogger(DATA_PATH + "server.log");
+                logger.shutdown();
+                logger.interrupt();
 
-                System.out.println("Minecraft用 Jupiterサーバーを開始しています。");
-                
-                jobs.add(new Callable<Server>(){
-                    @Override
-                    public Server call() throws Exception {
-                        return new Server(logger, PATH, DATA_PATH, PLUGIN_PATH);
-                    }
+                CommandReader.getInstance().removePromptLine();
 
-                });
+                System.out.println("サーバーが停止しました。");
 
-                try {
-                    threadpool.invokeAll(jobs);
-                    threadpool.shutdown();
-                    if(threadpool.awaitTermination(1L,TimeUnit.MINUTES)){// 1 minutes
-                        System.out.println("サーバーを停止しています...");
-                        logger.info("スレッドが停止しました。");
-
-                        for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
-                            if (!(thread instanceof InterruptibleThread)) {
-                                continue;
-                            }
-                            logger.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
-                            if (thread.isAlive()) {
-                                thread.interrupt();
-                            }
-                        }
-
-                        ServerKiller killer = new ServerKiller(8);
-                        killer.start();
-
-                        logger.shutdown();
-                        logger.interrupt();
-
-                        CommandReader.getInstance().removePromptLine();
-
-                        System.out.println("サーバーが停止しました。");
-
-                        System.exit(0);
-                    }else{
-                        System.out.println("サーバーの停止に失敗しました。");
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    threadpool.shutdown();
-                }
+                System.exit(0);
+            }else{
+                System.out.println("サーバーの停止に失敗しました。");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            threadpool.shutdown();
+        }
     }
 
 }

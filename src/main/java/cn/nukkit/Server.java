@@ -6,8 +6,6 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -195,6 +193,11 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 /**
  * @author MagicDroidX
@@ -300,21 +303,21 @@ public class Server implements ActionListener{
     private Config properties;
     private Config config;
 
-    private final Map<String, Player> players = new HashMap<>();
+    private final Object2ObjectOpenHashMap<String, Player> players = new Object2ObjectOpenHashMap<String, Player>();
 
-    private final Map<UUID, Player> playerList = new HashMap<>();
+    private final Object2ObjectOpenHashMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<UUID, Player>();
 
-    private final Map<Integer, String> identifier = new HashMap<>();
+    private final Int2ObjectOpenHashMap<String> identifier = new Int2ObjectOpenHashMap<String>();
 
-    private final Map<Integer, Level> levels = new HashMap<>();
+    private final Int2ObjectOpenHashMap<Level> levels = new Int2ObjectOpenHashMap<Level>();
 
     private final ServiceManager serviceManager = new NKServiceManager();
 
     private Level defaultLevel = null;
 
     private Thread currentThread;
-    private Map<String, Object> jupiterconfig;
-    private List<Player> loggedInPlayers = new ArrayList<Player>();
+    private Object2ObjectOpenHashMap<String, Object> jupiterconfig;
+    private ObjectArrayList<Player> loggedInPlayers = new ObjectArrayList<Player>();
 
     private boolean printPackets = false;
 
@@ -375,7 +378,7 @@ public class Server implements ActionListener{
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
             this.getLogger().info(FastAppender.get(TextFormat.GREEN, "ようこそ。言語を選択してください。"));
             try {
-                String[] lines = Utils.readFile(this.getClass().getClassLoader().getResourceAsStream("lang/language.list")).split("\n");
+                String[] lines = Utils.readFile(new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/language.list"))).split("\n");
                 for (String line : lines) {
                     this.logger.info(line);
                 }
@@ -387,15 +390,15 @@ public class Server implements ActionListener{
             String language = null;
             while (language == null) {
                 String lang = this.console.readLine();
-                BufferedInputStream conf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini")));
+                FastBufferedInputStream conf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini")));
                 if (conf != null) {
                     language = lang;
                 }
             }
 
-            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml")));
+            FastBufferedInputStream advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml")));
             if (advacedConf == null) {
-                advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml")));
+                advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml")));
             }
 
             try {
@@ -446,7 +449,7 @@ public class Server implements ActionListener{
         this.logger.info(FastAppender.get(TextFormat.GREEN, "jupiter.yml", TextFormat.WHITE, "を読み込んでいます..."));
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
+            FastBufferedInputStream advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
             if (advacedConf == null){
                 this.logger.error(FastAppender.get(TextFormat.AQUA, "Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい"));
             }
@@ -701,7 +704,7 @@ public class Server implements ActionListener{
         if(!this.checkingUsingGUI()) return null;
         TrayIcon icon = null;
         try {
-            icon = new TrayIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png")));
+            icon = new TrayIcon(ImageIO.read(new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"))));
         } catch (IOException e) {
             this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
         } catch (UnsupportedOperationException e) {
@@ -749,7 +752,7 @@ public class Server implements ActionListener{
         if(event.isCancelled()){
             return;
         }
-        trayMessage(FastAppender.get("参加人数:", getOnlinePlayers().size(), "/", getPropertyInt("max-players")));
+        trayMessage(FastAppender.get("参加人数:", getFastOnlinePlayers().size(), "/", getPropertyInt("max-players")));
     }
 
     /**
@@ -2031,6 +2034,10 @@ public class Server implements ActionListener{
         return new HashMap<>(playerList);
     }
 
+    public Object2ObjectOpenHashMap<UUID, Player> getFastOnlinePlayers() {
+        return playerList;
+    }
+
     public void addRecipe(Recipe recipe) {
         this.craftingManager.registerRecipe(recipe);
     }
@@ -2100,7 +2107,7 @@ public class Server implements ActionListener{
                 if (async) {
                     this.getScheduler().scheduleAsyncTask(new FileWriteTask(FastAppender.get(this.getDataPath() + "players/", name.toLowerCase(), ".dat"), NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 } else {
-                    Utils.writeFile(FastAppender.get(this.getDataPath(), "players/", name.toLowerCase(), ".dat"), new ByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
+                    Utils.writeFile(FastAppender.get(this.getDataPath(), "players/", name.toLowerCase(), ".dat"), new FastByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 }
             } catch (Exception e) {
                 this.logger.critical(this.getLanguage().translateString("nukkit.data.saveError", new String[]{name, e.getMessage()}));
@@ -2120,7 +2127,7 @@ public class Server implements ActionListener{
         Player found = null;
         name = name.toLowerCase();
         int delta = Integer.MAX_VALUE;
-        for (Player player : this.getOnlinePlayers().values()) {
+        for (Player player : this.getFastOnlinePlayers().values()) {
             if (player.getName().toLowerCase().startsWith(name)) {
                 int curDelta = player.getName().length() - name.length();
                 if (curDelta < delta) {
@@ -2138,7 +2145,7 @@ public class Server implements ActionListener{
 
     public Player getPlayerExact(String name) {
         name = name.toLowerCase();
-        for (Player player : this.getOnlinePlayers().values()) {
+        for (Player player : this.getFastOnlinePlayers().values()) {
             if (player.getName().toLowerCase().equals(name)) {
                 return player;
             }
@@ -2150,7 +2157,7 @@ public class Server implements ActionListener{
     public Player[] matchPlayer(String partialName) {
         partialName = partialName.toLowerCase();
         List<Player> matchedPlayer = new ArrayList<>();
-        for (Player player : this.getOnlinePlayers().values()) {
+        for (Player player : this.getFastOnlinePlayers().values()) {
             if (player.getName().toLowerCase().equals(partialName)) {
                 return new Player[]{player};
             } else if (player.getName().toLowerCase().contains(partialName)) {
@@ -2558,7 +2565,7 @@ public class Server implements ActionListener{
      * @return void
      */
     public void loadJupiterConfig(){
-        this.jupiterconfig = this.getJupiterConfig().getAll();
+        this.jupiterconfig = new Object2ObjectOpenHashMap<String, Object>(this.getJupiterConfig().getAll());
     }
 
     /**

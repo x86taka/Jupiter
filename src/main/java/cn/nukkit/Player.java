@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -233,6 +232,12 @@ import cn.nukkit.utils.Zlib;
 import cn.nukkit.window.FormWindow;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX & Box
@@ -273,9 +278,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected int windowCnt = 2;
 
-    protected Map<Inventory, Integer> windows;
+    protected Object2IntOpenHashMap<Inventory> windows;
 
-    protected Map<Integer, Inventory> windowIndex = new HashMap<>();
+    protected Int2ObjectOpenHashMap<Inventory> windowIndex = new Int2ObjectOpenHashMap<Inventory>();
 
     protected Set<Integer> permanentWindows = new HashSet<>();
 
@@ -316,13 +321,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected float stepHeight = 0.6f;
 
-    public Map<Long, Boolean> usedChunks = new HashMap<>();
+    public Long2BooleanOpenHashMap usedChunks = new Long2BooleanOpenHashMap();
 
     protected int chunkLoadCount = 0;
     protected Map<Long, Integer> loadQueue = new HashMap<>();
     protected int nextChunkOrderRun = 5;
 
-    protected Map<UUID, Player> hiddenPlayers = new HashMap<>();
+    protected Object2ObjectOpenHashMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<UUID, Player>();
 
     protected Vector3 newPosition = null;
 
@@ -340,7 +345,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected boolean checkMovement = true;
 
-    private final Map<Integer, Boolean> needACK = new HashMap<>();
+    private final Int2BooleanOpenHashMap needACK = new Int2BooleanOpenHashMap();
 
     private Map<Integer, List<DataPacket>> batchedPackets = new TreeMap<>();
 
@@ -405,7 +410,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private BlockEntity blockEntity;
 
-    private Map<Integer, FormWindow> activeWindows = new LinkedHashMap<Integer, FormWindow>();
+    private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<FormWindow>();
 
     private boolean printPackets;
 
@@ -804,7 +809,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public Player(SourceInterface interfaz, Long clientID, String ip, int port) {
         super(null, new CompoundTag());
         this.interfaz = interfaz;
-        this.windows = new HashMap<>();
+        this.windows = new Object2IntOpenHashMap<Inventory>();
         this.perm = new PermissibleBase(this);
         this.server = Server.getInstance();
         this.lastBreak = Long.MAX_VALUE;
@@ -945,7 +950,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 this.unloadChunk(chunkX, chunkZ, oldLevel);
             }
 
-            this.usedChunks = new HashMap<>();
+            this.usedChunks = new Long2BooleanOpenHashMap();
             SetTimePacket pk = new SetTimePacket();
             pk.time = this.level.getTime();
             this.dataPacket(pk);
@@ -1043,6 +1048,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         for (Map.Entry<Long, Integer> entry : entryList) {
             long index = entry.getKey();
+
             if (count >= this.chunksPerTick) {
                 break;
             }
@@ -1238,7 +1244,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             Integer identifier = this.interfaz.putPacket(this, packet, needACK, false);
 
             if (needACK && identifier != null) {
-                this.needACK.put(identifier, false);
+                this.needACK.put(identifier.intValue(), false);
                 timing.stopTiming();
                 return identifier;
             }
@@ -1274,7 +1280,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             Integer identifier = this.interfaz.putPacket(this, packet, needACK, true);
 
             if (needACK && identifier != null) {
-                this.needACK.put(identifier, false);
+                this.needACK.put(identifier.intValue(), false);
                 timing.stopTiming();
                 return identifier;
             }
@@ -3868,24 +3874,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket modalFormResponsePacket = (ModalFormResponsePacket) packet;
 
-                    if(this.activeWindows.containsKey(modalFormResponsePacket.formId)){
-                        if (modalFormResponsePacket.data.equals("")) {
+                    if(this.activeWindows.containsKey(modalFormResponsePacket.formId)) {
+                        if (modalFormResponsePacket.data.trim().equals("null")) {
+                            this.activeWindows.remove(modalFormResponsePacket.formId);
                             PlayerModalFormCloseEvent mfce = new PlayerModalFormCloseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
                             this.getServer().getPluginManager().callEvent(mfce);
-                            if (mfce.isCancelled()) {
-                                this.sendWindow(mfce.getWindow());
-                            } else {
-                                this.activeWindows.remove(modalFormResponsePacket.formId);
-                            }
                         } else {
+                            this.activeWindows.get(modalFormResponsePacket.formId).setResponse(modalFormResponsePacket.data);
+                            this.activeWindows.remove(modalFormResponsePacket.formId);
                             PlayerModalFormResponseEvent mfre = new PlayerModalFormResponseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
                             this.getServer().getPluginManager().callEvent(mfre);
-                            if (mfre.isCancelled()) {
-                                this.sendWindow(mfre.getWindow());
-                            } else {
-                                this.activeWindows.get(modalFormResponsePacket.formId).setResponse(modalFormResponsePacket.data);
-                                this.activeWindows.remove(modalFormResponsePacket.formId);
-                            }
                         }
                     } else {
                         //sendWindow() 以外で表示したorm
@@ -4415,7 +4413,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
             }
 
-            this.hiddenPlayers = new HashMap<>();
+            this.hiddenPlayers = new Object2ObjectOpenHashMap<UUID, Player>();
 
             this.removeAllWindows(true);
 
@@ -4447,11 +4445,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.ip,
                     String.valueOf(this.port),
                     this.getServer().getLanguage().translateString(reason)));
-            this.windows = new HashMap<>();
-            this.windowIndex = new HashMap<>();
-            this.usedChunks = new HashMap<>();
+            this.windows = new Object2IntOpenHashMap<Inventory>();
+            this.windowIndex = new Int2ObjectOpenHashMap<Inventory>();
+            this.usedChunks = new Long2BooleanOpenHashMap();
             this.loadQueue = new HashMap<>();
-            this.hasSpawned = new HashMap<>();
+            this.hasSpawned = new Int2ObjectOpenHashMap<Player>();
             this.spawnPosition = null;
 
             if (this.riding instanceof EntityVehicle) {
@@ -5192,7 +5190,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public int getWindowId(Inventory inventory) {
         if (this.windows.containsKey(inventory)) {
-            return this.windows.get(inventory);
+            return this.windows.getInt(inventory);
         }
 
         return -1;
@@ -5208,7 +5206,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public int addWindow(Inventory inventory, Integer forceId, boolean isPermanent) {
         if (this.windows.containsKey(inventory)) {
-            return this.windows.get(inventory);
+            return this.windows.getInt(inventory);
         }
         int cnt;
         if (forceId == null) {
@@ -5233,8 +5231,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void removeWindow(Inventory inventory) {
         inventory.close(this);
         if (this.windows.containsKey(inventory)) {
-            int id = this.windows.get(inventory);
-            this.windows.remove(this.windowIndex.get(id));
+            int id = this.windows.getInt(inventory);
+            this.windows.removeInt(this.windowIndex.get(id));
             this.windowIndex.remove(id);
         }
     }
@@ -5653,7 +5651,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void removeAllWindows(boolean permanent) {
-        for (Entry<Integer, Inventory> entry : new ArrayList<>(this.windowIndex.entrySet())) {
+        for (Entry<Integer, Inventory> entry : new ArrayList<>(this.windowIndex.int2ObjectEntrySet())) {
             if (!permanent && this.permanentWindows.contains(entry.getKey())) {
                 continue;
             }

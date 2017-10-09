@@ -8,6 +8,7 @@ import java.util.Map;
 import cn.nukkit.Server;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.Utils;
+import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 
 /**
  * author: MagicDroidX
@@ -94,7 +95,7 @@ public class BaseLang {
 
     protected Map<String, String> loadLang(InputStream stream) {
         try {
-            String content = Utils.readFile(stream);
+            String content = Utils.readFile(new FastBufferedInputStream(stream));
             Map<String, String> d = new HashMap<>();
             for (String line : content.split("\n")) {
                 line = line.trim();

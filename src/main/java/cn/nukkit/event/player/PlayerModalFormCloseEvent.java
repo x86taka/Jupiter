@@ -1,11 +1,10 @@
 package cn.nukkit.event.player;
 
 import cn.nukkit.Player;
-import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.window.FormWindow;
 
-public class PlayerModalFormCloseEvent extends PlayerEvent implements Cancellable {
+public class PlayerModalFormCloseEvent extends PlayerEvent {
 
     private static final HandlerList handlers = new HandlerList();
 

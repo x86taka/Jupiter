@@ -2,12 +2,10 @@ package cn.nukkit.entity;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -70,6 +68,8 @@ import cn.nukkit.utils.MainLogger;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * @author MagicDroidX
@@ -218,12 +218,12 @@ public abstract class Entity extends Location implements Metadatable {
 
     public static long entityCount = 1;
 
-    private static final Map<String, Class<? extends Entity>> knownEntities = new HashMap<>();
-    private static final Map<String, String> shortNames = new HashMap<>();
+    private static final Object2ObjectOpenHashMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<String, Class<? extends Entity>>();
+    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<String, String>();
 
-    protected Map<Integer, Player> hasSpawned = new HashMap<>();
+    protected Int2ObjectOpenHashMap<Player> hasSpawned = new Int2ObjectOpenHashMap<Player>();
 
-    protected final Map<Integer, Effect> effects = new ConcurrentHashMap<>();
+    protected final Int2ObjectOpenHashMap<Effect> effects = new Int2ObjectOpenHashMap<Effect>();
 
     protected long id;
 
@@ -1960,7 +1960,7 @@ public abstract class Entity extends Location implements Metadatable {
         for (Player player : this.hasSpawned.values()) {
             this.spawnTo(player);
         }
-        this.hasSpawned = new HashMap<>();
+        this.hasSpawned = new Int2ObjectOpenHashMap<Player>();
     }
 
     public void spawnToAll() {

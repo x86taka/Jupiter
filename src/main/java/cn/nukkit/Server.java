@@ -328,6 +328,10 @@ public class Server implements ActionListener{
         instance = this;
         this.logger = logger;
 
+        this.console = new CommandReader();
+
+        this.console.start();
+
         this.logger.info("");
         this.logger.info(FastAppender.get(TextFormat.BLUE, "Jupiter", TextFormat.WHITE, " by JupiterDevelopmentTeam"));
         this.logger.info("");
@@ -373,8 +377,6 @@ public class Server implements ActionListener{
 
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
 
-        this.console = new CommandReader();
-
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
             this.getLogger().info(FastAppender.get(TextFormat.GREEN, "ようこそ。言語を選択してください。"));
             try {
@@ -409,7 +411,6 @@ public class Server implements ActionListener{
 
         }
 
-        this.console.start();
 
         this.logger.info(FastAppender.get(TextFormat.GREEN, "nukkit.yml", TextFormat.WHITE, "を読み込んでいます..."));
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);

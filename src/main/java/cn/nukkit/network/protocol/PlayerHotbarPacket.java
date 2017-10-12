@@ -1,7 +1,7 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.network.protocol.types.ContainerIds;
 import cn.nukkit.utils.Binary;
-import cn.nukkit.utils.ContainerIds;
 
 public class PlayerHotbarPacket extends DataPacket {
 

@@ -1,9 +1,5 @@
-package cn.nukkit.utils;
+package cn.nukkit.network.protocol.types;
 
-/*
- *  Nukkit has this class in cn.nukkit.network.protocol.types package.
- *  Jupiter is in it.
- */
 public interface ContainerIds {
 
     int NONE = -1;

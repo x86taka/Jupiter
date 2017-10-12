@@ -27,7 +27,7 @@ public class EntityEventPacket extends DataPacket {
 
     public static final int ENCHANT = 34;
 
-    public static final byte EATING_ITEM = 57;
+    public static final byte CONSUME_ITEM = 57;
 
     public static final byte UNKNOWN1 = 66;
 
@@ -38,13 +38,13 @@ public class EntityEventPacket extends DataPacket {
 
     public long entityRuntimeId;
     public int event;
-    public int data;
+    public long itemId;
 
     @Override
     public void decode() {
         this.entityRuntimeId = this.getEntityRuntimeId();
         this.event = this.getByte();
-        this.data = this.getVarInt();
+        this.itemId = this.getVarInt();
     }
 
     @Override
@@ -52,6 +52,6 @@ public class EntityEventPacket extends DataPacket {
         this.reset();
         this.putEntityRuntimeId(this.entityRuntimeId);
         this.putByte((byte) this.event);
-        this.putVarInt((byte) this.data);
+        this.putVarInt((byte) this.itemId);
     }
 }

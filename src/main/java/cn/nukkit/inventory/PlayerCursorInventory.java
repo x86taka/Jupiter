@@ -2,7 +2,7 @@ package cn.nukkit.inventory;
 
 import cn.nukkit.Player;
 import cn.nukkit.network.protocol.InventorySlotPacket;
-import cn.nukkit.utils.ContainerIds;
+import cn.nukkit.network.protocol.types.ContainerIds;
 
 /**
  * @author CreeperFace

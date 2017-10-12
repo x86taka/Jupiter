@@ -103,7 +103,6 @@ import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
-import cn.nukkit.inventory.AnvilInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.BigShapedRecipe;
 import cn.nukkit.inventory.BigShapelessRecipe;
@@ -178,6 +177,7 @@ import cn.nukkit.network.protocol.InventoryContentPacket;
 import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import cn.nukkit.network.protocol.ItemFrameDropItemPacket;
 import cn.nukkit.network.protocol.LevelEventPacket;
+import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.LoginPacket;
 import cn.nukkit.network.protocol.MapInfoRequestPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
@@ -198,18 +198,22 @@ import cn.nukkit.network.protocol.ResourcePackDataInfoPacket;
 import cn.nukkit.network.protocol.ResourcePackStackPacket;
 import cn.nukkit.network.protocol.ResourcePacksInfoPacket;
 import cn.nukkit.network.protocol.RespawnPacket;
+import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
 import cn.nukkit.network.protocol.SetCommandsEnabledPacket;
 import cn.nukkit.network.protocol.SetEntityMotionPacket;
 import cn.nukkit.network.protocol.SetPlayerGameTypePacket;
 import cn.nukkit.network.protocol.SetSpawnPositionPacket;
 import cn.nukkit.network.protocol.SetTimePacket;
 import cn.nukkit.network.protocol.SetTitlePacket;
+import cn.nukkit.network.protocol.ShowProfilePacket;
 import cn.nukkit.network.protocol.StartGamePacket;
 import cn.nukkit.network.protocol.TakeItemEntityPacket;
 import cn.nukkit.network.protocol.TextPacket;
 import cn.nukkit.network.protocol.TransferPacket;
 import cn.nukkit.network.protocol.UpdateAttributesPacket;
 import cn.nukkit.network.protocol.UpdateBlockPacket;
+import cn.nukkit.network.protocol.types.ContainerIds;
+import cn.nukkit.network.protocol.types.NetworkInventoryAction;
 import cn.nukkit.permission.PermissibleBase;
 import cn.nukkit.permission.Permission;
 import cn.nukkit.permission.PermissionAttachment;
@@ -222,10 +226,8 @@ import cn.nukkit.resourcepacks.ResourcePackManager;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BlockIterator;
 import cn.nukkit.utils.ClientChainData;
-import cn.nukkit.utils.ContainerIds;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.MainLogger;
-import cn.nukkit.utils.NetworkInventoryAction;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
@@ -411,6 +413,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private BlockEntity blockEntity;
 
     private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<FormWindow>();
+    private Int2ObjectLinkedOpenHashMap<FormWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<FormWindow>();
 
     private boolean printPackets;
 
@@ -1091,7 +1094,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.sendPotionEffects(this);
         this.sendData(this);
         this.inventory.sendContents(this);
-        this.inventory.sendHotbarContents();
         this.inventory.sendArmorContents(this);
 
         SetTimePacket setTimePacket = new SetTimePacket();
@@ -1136,15 +1138,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         //todo Updater
+        RespawnPacket respawnPacket = new RespawnPacket();
+        Position pos = this.getSpawn();
+        respawnPacket.x = (float) pos.x;
+        respawnPacket.y = (float) pos.y;
+        respawnPacket.z = (float) pos.z;
+        this.dataPacket(respawnPacket);
 
-        if (this.getHealth() <= 0) {
-            RespawnPacket respawnPacket = new RespawnPacket();
-            Position pos = this.getSpawn();
-            respawnPacket.x = (float) pos.x;
-            respawnPacket.y = (float) pos.y;
-            respawnPacket.z = (float) pos.z;
-            this.dataPacket(respawnPacket);
-        }
+        this.sendPlayStatus(PlayStatusPacket.PLAYER_SPAWN);
 
         //Weather
         this.getLevel().sendWeather(this);
@@ -1912,14 +1913,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.checkTeleportPosition();
         this.checkInteractNearby();
 
-        // TODO: remove this workaround (broken client MCPE 1.0.0)
-        if (!messageQueue.isEmpty()) {
-            TextPacket pk = new TextPacket();
-            pk.type = TextPacket.TYPE_RAW;
-            pk.message = String.join("\n", messageQueue);
-            this.dataPacket(pk);
-            messageQueue.clear();
-        }
         return true;
     }
 
@@ -1984,7 +1977,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return null;
     }
 
-    private ArrayList<String> messageQueue = new ArrayList<String>();
     private Block breakingBlock;
 
     public void checkNetwork() {
@@ -2229,6 +2221,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.dataPacket(pk);
     }
 
+
     @Override
     protected void initEntity() {
         super.initEntity();
@@ -2267,6 +2260,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 return;
             }
 
+            Item item;
             packetswitch:
             switch (packet.pid()) {
                 case ProtocolInfo.LOGIN_PACKET:
@@ -2281,15 +2275,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (loginPacket.getProtocol() < ProtocolInfo.CURRENT_PROTOCOL) {
                             message = "disconnectionScreen.outdatedClient";
 
-                            PlayStatusPacket pk = new PlayStatusPacket();
-                            pk.status = PlayStatusPacket.LOGIN_FAILED_CLIENT;
-                            this.directDataPacket(pk);
+                            this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_CLIENT);
                         } else {
                             message = "disconnectionScreen.outdatedServer";
 
-                            PlayStatusPacket pk = new PlayStatusPacket();
-                            pk.status = PlayStatusPacket.LOGIN_FAILED_SERVER;
-                            this.directDataPacket(pk);
+                            this.sendPlayStatus(PlayStatusPacket.LOGIN_FAILED_SERVER);
                         }
                         this.close("", message, false);
                         break;
@@ -2483,29 +2473,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     MobEquipmentPacket mobEquipmentPacket = (MobEquipmentPacket) packet;
 
-                    if (mobEquipmentPacket.inventorySlot == 255) {
-                        mobEquipmentPacket.inventorySlot = -1; //Cleared inventorySlot
-                    } else {
-                        if (mobEquipmentPacket.inventorySlot < 9) {
-                            this.getServer().getLogger().debug("Tried to equip a inventorySlot that does not exist (index " + mobEquipmentPacket.inventorySlot + ")");
-                            this.inventory.sendContents(this);
-                            return;
-                        }
-                        mobEquipmentPacket.inventorySlot -= 9; //Get real inventory inventorySlot
+                    item = this.inventory.getItem(mobEquipmentPacket.hotbarSlot);
 
-                        Item item = this.inventory.getItem(mobEquipmentPacket.inventorySlot);
-
-                        if (!item.equals(mobEquipmentPacket.item)) {
-                            this.server.getLogger().debug("Tried to equip " + mobEquipmentPacket.item + " but have " + item + " in target inventorySlot");
-                            this.inventory.sendContents(this);
-                            return;
-                        }
+                    if (!item.equals(mobEquipmentPacket.item)) {
+                        this.server.getLogger().debug("Tried to equip " + mobEquipmentPacket.item + " but have " + item + " in target slot");
+                        this.inventory.sendContents(this);
+                        return;
                     }
 
-                    this.inventory.equipItem(mobEquipmentPacket.hotbarSlot, mobEquipmentPacket.inventorySlot);
+                    this.inventory.equipItem(mobEquipmentPacket.hotbarSlot);
 
                     this.setDataFlag(Player.DATA_FLAGS, Player.DATA_FLAG_ACTION, false);
                     break;
+
                 case ProtocolInfo.PLAYER_ACTION_PACKET:
                     PlayerActionPacket playerActionPacket = (PlayerActionPacket) packet;
                     if (!this.spawned || (!this.isAlive() && playerActionPacket.action != PlayerActionPacket.ACTION_RESPAWN && playerActionPacket.action != PlayerActionPacket.ACTION_DIMENSION_CHANGE_REQUEST)) {
@@ -2719,8 +2699,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 block = this.level.getBlock(pos);
                                 this.level.addParticle(new PunchBlockParticle(pos, block, face));
                             }
-                            block = this.level.getBlock(pos);
-                            this.level.addParticle(new PunchBlockParticle(pos, block, face));
                             break;
                     }
 
@@ -2753,7 +2731,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    Item item = this.inventory.getItemInHand();
+                    item = this.inventory.getItemInHand();
 
                     switch (interactPacket.action) {
                         case InteractPacket.ACTION_MOUSEOVER:
@@ -2775,10 +2753,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (be != null) {
                             CompoundTag nbt = be.getCleanedNBT();
                             if(nbt != null){
-                                Item item1 = this.getInventory().getItemInHand();
-                                item1.setCustomBlockData(nbt);
-                                item1.setLore("+(DATA)");
-                                this.getInventory().setItemInHand(item1);
+                                item = this.getInventory().getItemInHand();
+                                item.setCustomBlockData(nbt);
+                                item.setLore("+(DATA)");
+                                this.getInventory().setItemInHand(item);
                             }
                         }
                     }
@@ -2858,6 +2836,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.inventory.sendHeldItem(this);
 
                             break;
+
+                        /*case EntityEventPacket.CONSUME_ITEM:
+                            EntityEventPacket pk = new EntityEventPacket();
+                            pk.entityRuntimeId = this.getId();
+                            pk.event = EntityEventPacket.CONSUME_ITEM;
+                            pk.itemId = this.inventory.getItemInHand().getId();
+
+                            Server.broadcastPacket(this.getViewers().values(), pk);
+                            this.dataPacket(pk);
+                            break;*/
                     }
                     break;
 
@@ -2944,40 +2932,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     Recipe recipe = this.server.getCraftingManager().getRecipe(craftingEventPacket.id);
+                    Recipe[] recipes = this.server.getCraftingManager().getRecipesByResult(craftingEventPacket.output[0]);
 
-                    if (this.craftingType == CRAFTING_ANVIL) {
-                        Inventory inv = this.windowIndex.get(craftingEventPacket.windowId);
-                        AnvilInventory anvilInventory = inv instanceof AnvilInventory ? (AnvilInventory) inv : null;
-
-                        if (anvilInventory == null) {
-                            anvilInventory = null;
-
-                            for (Inventory window : this.windowIndex.values()) {
-                                if (window instanceof AnvilInventory) {
-                                    anvilInventory = (AnvilInventory) window;
-                                    break;
-                                }
-                            }
-
-                            if (anvilInventory == null) { //If it'sf _still_ null, then the player doesn't have a valid anvil window, cannot proceed.
-                                this.getServer().getLogger().debug("Couldn't find an anvil window for " + this.getName() + ", exiting");
-                                this.inventory.sendContents(this);
-                                break;
-                            }
+                    boolean isValid = false;
+                    for (Recipe rec : recipes){
+                        if (rec.getId().equals(recipe.getId())) {
+                            isValid = true;
+                            break;
                         }
+                    }
+                    if (isValid) recipes = new Recipe[]{recipe};
 
-                        if (recipe == null) {
-                            //Item renamed
-
-                            if (!anvilInventory.onRename(this, craftingEventPacket.output[0])) {
-                                this.getServer().getLogger().debug(this.getName() + " failed to rename an item in an anvil");
-                                this.inventory.sendContents(this);
-                            }
-                        } else {
-                            //TODO: Anvil crafting recipes
-                        }
-                        break;
-                    } else if (!this.windowIndex.containsKey(craftingEventPacket.windowId)) {
+                    if (!this.windowIndex.containsKey(craftingEventPacket.windowId)) {
                         this.inventory.sendContents(this);
                         containerClosePacket = new ContainerClosePacket();
                         containerClosePacket.windowId = craftingEventPacket.windowId;
@@ -2985,7 +2951,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    if ((recipe == null) || (((recipe instanceof BigShapelessRecipe) || (recipe instanceof BigShapedRecipe)) && this.craftingType == CRAFTING_SMALL)) {
+                    if (isValid && (recipe == null || (((recipe instanceof BigShapelessRecipe) || (recipe instanceof BigShapedRecipe)) && this.craftingType == CRAFTING_SMALL))) {
                         this.inventory.sendContents(this);
                         break;
                     }
@@ -3002,90 +2968,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     boolean canCraft = true;
+                    Map<String, Item> realSerialized = new HashMap<>();
 
-                    if (craftingEventPacket.input.length == 0) {
-                        Recipe[] recipes = getServer().getCraftingManager().getRecipesByResult(craftingEventPacket.output[0]);
-
-                        if (recipes == null || recipes.length == 0) {
-                             this.getServer().getLogger().debug("Unknown recipe for output (" + craftingEventPacket.output[0] + ")");
-                             return;
-                        }
-
-                        recipe = null;
-
+                    for (Recipe rec : recipes) {
                         ArrayList<Item> ingredientz = new ArrayList<>();
 
-                        recipeloop:
-                        for (Recipe rec : recipes) {
-                            ingredientz.clear();
-
-                            if (rec instanceof ShapedRecipe) {
-                                Map<Integer, Map<Integer, Item>> ingredients = ((ShapedRecipe) rec).getIngredientMap();
-                                for (Map<Integer, Item> map : ingredients.values()) {
-                                    for (Item ingredient : map.values()) {
-                                        if (ingredient != null && ingredient.getId() != Item.AIR) {
-                                            ingredientz.add(ingredient);
-                                        }
-                                    }
-                                }
-                            } else if (rec instanceof ShapelessRecipe) {
-                                ShapelessRecipe recipe0 = (ShapelessRecipe) rec;
-
-                                for (Item ingredient : recipe0.getIngredientList()) {
-                                    if (ingredient != null && ingredient.getId() != Item.AIR) {
-                                        ingredientz.add(ingredient);
-                                    }
-                                }
-                            }
-
-                            Map<String, Item> serialized = new HashMap<>();
-
-                            for (Item ingredient : ingredientz) {
-                                String hash = ingredient.getId() + ":" + ingredient.getDamage();
-                                Item r = serialized.get(hash);
-
-                                if (r != null) {
-                                    r.count += ingredient.getCount();
-                                    continue;
-                                }
-
-                                serialized.put(hash, ingredient);
-                            }
-
-                            for (Item ingredient : serialized.values()) {
-                                if (!this.inventory.contains(ingredient)) {
-                                    continue recipeloop;
-                                }
-                            }
-
-                            recipe = rec;
-
-                            CraftItemEvent craftItemEvent = new CraftItemEvent(this, serialized.values().stream().toArray(Item[]::new), recipe);
-                            getServer().getPluginManager().callEvent(craftItemEvent);
-
-                            if (craftItemEvent.isCancelled()) {
-                                this.inventory.sendContents(this);
-                                break packetswitch;
-                            }
-
-                            for (Item ingredient : serialized.values()) {
-                                this.inventory.removeItem(ingredient);
-                            }
-
-                            this.inventory.addItem(recipe.getResult());
-                            break;
+                        if (rec == null || (((rec instanceof BigShapelessRecipe) || (rec instanceof BigShapedRecipe)) && this.craftingType == CRAFTING_SMALL)) {
+                            continue;
                         }
 
-                        if (recipe == null) {
-                            this.server.getLogger().debug("(1) Unmatched desktop recipe " + craftingEventPacket.id + " from player " + this.getName());
-                            this.inventory.sendContents(this);
-                        }
-                    } else {
-                        ArrayList<Item> ingredientz = new ArrayList<>();
+                        if (rec instanceof ShapedRecipe) {
+                            Map<Integer, Map<Integer, Item>> ingredients = ((ShapedRecipe) rec).getIngredientMap();
 
-                        if (recipe instanceof ShapedRecipe) {
-
-                            Map<Integer, Map<Integer, Item>> ingredients = ((ShapedRecipe) recipe).getIngredientMap();
                             for (Map<Integer, Item> map : ingredients.values()) {
                                 for (Item ingredient : map.values()) {
                                     if (ingredient != null && ingredient.getId() != Item.AIR) {
@@ -3117,271 +3011,83 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             serialized.put(hash, ingredient);
                         }
 
+                        boolean isPossible = true;
                         for (Item ingredient : serialized.values()) {
-                            if (!this.inventory.contains(ingredient)) {
-                                canCraft = false;
-                                break;
-                            }
-                        }
-
-                        if (!canCraft) {
-                            this.server.getLogger().debug("(1) Unmatched recipe " + craftingEventPacket.id + " from player " + this.getName() + "  not anough ingredients");
-                            return;
-                        }
-
-                        CraftItemEvent craftItemEvent = new CraftItemEvent(this, serialized.values().stream().toArray(Item[]::new), recipe);
-                        getServer().getPluginManager().callEvent(craftItemEvent);
-
-                        if (craftItemEvent.isCancelled()) {
-                            this.inventory.sendContents(this);
-                            break;
-                        }
-
-                        for (Item ingredient : serialized.values()) {
-                            this.inventory.removeItem(ingredient);
-                        }
-
-                        this.inventory.addItem(recipe.getResult());
-
-                        /*if (recipe instanceof ShapedRecipe) {
-                            int offsetX = 0;
-                            int offsetY = 0;
-
-                            if (this.craftingType == CRAFTING_BIG) {
-                                int minX = -1, minY = -1, maxX = 0, maxY = 0;
-                                for (int x = 0; x < 3 && canCraft; ++x) {
-                                    for (int y = 0; y < 3; ++y) {
-                                        Item readItem = craftingEventPacket.input[y * 3 + x];
-                                        if (readItem.getId() != Item.AIR) {
-                                            if (minY == -1 || minY > y) {
-                                                minY = y;
-                                            }
-                                            if (maxY < y) {
-                                                maxY = y;
-                                            }
-                                            if (minX == -1) {
-                                                minX = x;
-                                            }
-                                            if (maxX < x) {
-                                                maxX = x;
-                                            }
-                                        }
-                                    }
+                            if (!this.craftingGrid.contains(ingredient)) {
+                                if (isValid) {
+                                    canCraft = false;
+                                    break;
                                 }
-                                if (maxX == minX) {
-                                    offsetX = minX;
-                                }
-                                if (maxY == minY) {
-                                    offsetY = minY;
-                                }
-                            }
-
-                            //To fix some items can't craft
-                            for (int x = 0; x < 3 - offsetX && canCraft; ++x) {
-                                for (int y = 0; y < 3 - offsetY; ++y) {
-                                    item = craftingEventPacket.input[(y + offsetY) * 3 + (x + offsetX)];
-                                    Item ingredient = ((ShapedRecipe) recipe).getIngredient(x, y);
-                                    //todo: check this https://github.com/PocketMine/PocketMine-MP/commit/58709293cf4eee2e836a94226bbba4aca0f53908
-                                    if (item.getCount() > 0) {
-                                        if (ingredient == null || !ingredient.deepEquals(item, ingredient.hasMeta(), ingredient.getCompoundTag() != null)) {
-                                            canCraft = false;
-                                            break;
-                                        }
-
-                                    }
-                                }
-                            }
-
-                            //If can't craft by auto resize, will try to craft this item in another way
-                            if (!canCraft) {
-                                canCraft = true;
-                                for (int x = 0; x < 3 && canCraft; ++x) {
-                                    for (int y = 0; y < 3; ++y) {
-                                        item = craftingEventPacket.input[y * 3 + x];
-                                        Item ingredient = ((ShapedRecipe) recipe).getIngredient(x, y);
-                                        if (item.getCount() > 0) {
-                                            if (ingredient == null || !ingredient.deepEquals(item, ingredient.hasMeta(), ingredient.getCompoundTag() != null)) {
-                                                canCraft = false;
-                                                break;
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-
-                        } else if (recipe instanceof ShapelessRecipe) {
-                            List<Item> needed = ((ShapelessRecipe) recipe).getIngredientList();
-
-                            for (int x = 0; x < 3 && canCraft; ++x) {
-                                for (int y = 0; y < 3; ++y) {
-                                    item = craftingEventPacket.input[y * 3 + x].clone();
-
-                                    for (Item n : new ArrayList<>(needed)) {
-                                        if (n.deepEquals(item, n.hasMeta(), n.getCompoundTag() != null)) {
-                                            int remove = Math.min(n.getCount(), item.getCount());
-                                            n.setCount(n.getCount() - remove);
-                                            item.setCount(item.getCount() - remove);
-
-                                            if (n.getCount() == 0) {
-                                                needed.remove(n);
-                                            }
-                                        }
-                                    }
-
-                                    if (item.getCount() > 0) {
-                                        canCraft = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!needed.isEmpty()) {
-                                canCraft = false;
-                            }
-                        } else {
-                            canCraft = false;
-                        }
-
-                        List<Item> ingredientsList = new ArrayList<>();
-                        if (recipe instanceof ShapedRecipe) {
-                            for (int x = 0; x < 3; x++) {
-                                for (int y = 0; y < 3; y++) {
-                                    Item need = ((ShapedRecipe) recipe).getIngredient(x, y);
-                                    if (need.getId() == 0) {
-                                        continue;
-                                    }
-                                    for (int count = need.getCount(); count > 0; count--) {
-                                        Item needAdd = need.clone();
-                                        //todo: check if there need to set item's count to 1, I'm too tired to check that today =w=
-                                        needAdd.setCount(1);
-                                        ingredientsList.add(needAdd);
-                                    }
-                                }
-                            }
-                        }
-                        if (recipe instanceof ShapelessRecipe) {
-                            List<Item> recipeItem = ((ShapelessRecipe) recipe).getIngredientList();
-                            for (Item need : recipeItem) {
-                                if (need.getId() == 0) {
-                                    continue;
-                                }
-                                Item needAdd = need.clone();
-                                //todo: check if there need to set item's count to 1, I'm too tired to check that today =w=
-                                needAdd.setCount(1);
-                                ingredientsList.add(needAdd);
-                            }
-                        }
-
-                        Item[] ingredients = ingredientsList.stream().toArray(Item[]::new);
-
-                        Item result = craftingEventPacket.output[0];
-
-                        if (!canCraft || !recipe.getResult().deepEquals(result)) {
-                            this.server.getLogger().debug("(2) Unmatched recipe " + recipe.getId() + " from player " + this.getName() + ": expected " + recipe.getResult() + ", got " + result + ", using: " + Arrays.asList(ingredients).toString());
-                            this.inventory.sendContents(this);
-                            break;
-                        }
-
-                        int[] used = new int[this.inventory.getSize()];
-
-                        for (Item ingredient : ingredients) {
-                            slot = -1;
-                            for (int index : this.inventory.getContents().keySet()) {
-                                Item i = this.inventory.getContents().get(index);
-                                if (ingredient.getId() != 0 && ingredient.deepEquals(i, ingredient.hasMeta()) && (i.getCount() - used[index]) >= 1) {
-                                    slot = index;
-                                    used[index]++;
+                                else {
+                                    isPossible = false;
                                     break;
                                 }
                             }
-
-                            if (ingredient.getId() != 0 && slot == -1) {
-                                canCraft = false;
-                                break;
-                            }
                         }
-
-                        if (!canCraft) {
-                            this.server.getLogger().debug("(3) Unmatched recipe " + recipe.getId() + " from player " + this.getName() + ": client does not have enough items, using: " + Arrays.asList(ingredients).toString());
-                            this.inventory.sendContents(this);
-                            break;
-                        }
-                        CraftItemEvent craftItemEvent;
-                        this.server.getPluginManager().callEvent(craftItemEvent = new CraftItemEvent(this, ingredients, recipe));
-
-                        if (craftItemEvent.isCancelled()) {
-                            this.inventory.sendContents(this);
-                            break;
-                        }
-
-                        for (int i = 0; i < used.length; i++) {
-                            int count = used[i];
-                            if (count == 0) {
-                                continue;
-                            }
-
-                            item = this.inventory.getItem(i);
-
-                            Item newItem;
-                            if (item.getCount() > count) {
-                                newItem = item.clone();
-                                newItem.setCount(item.getCount() - count);
-                            } else {
-                                newItem = new ItemBlock(new BlockAir(), 0, 0);
-                            }
-
-                            this.inventory.setItem(i, newItem);
-                        }
-
-                        Item[] extraItem = this.inventory.addItem(recipe.getResult());
-                        if (extraItem.length > 0) {
-                            for (Item i : extraItem) {
-                                this.level.dropItem(this, i);
-                            }
-                        }*/
+                        if (!isPossible) continue;
+                        recipe = rec;
+                        realSerialized = serialized;
+                        break;
                     }
 
-                    if (recipe != null) {
-                        switch (recipe.getResult().getId()) {
-                            case Item.WORKBENCH:
-                                this.awardAchievement("buildWorkBench");
-                                break;
-                            case Item.WOODEN_PICKAXE:
-                                this.awardAchievement("buildPickaxe");
-                                break;
-                            case Item.FURNACE:
-                                this.awardAchievement("buildFurnace");
-                                break;
-                            case Item.WOODEN_HOE:
-                                this.awardAchievement("buildHoe");
-                                break;
-                            case Item.BREAD:
-                                this.awardAchievement("makeBread");
-                                break;
-                            case Item.CAKE:
-                                //TODO: detect complex recipes like cake that leave remains
-                                this.awardAchievement("bakeCake");
-                                this.inventory.addItem(new ItemBucket(0, 3));
-                                break;
-                            case Item.STONE_PICKAXE:
-                            case Item.GOLD_PICKAXE:
-                            case Item.IRON_PICKAXE:
-                            case Item.DIAMOND_PICKAXE:
-                                this.awardAchievement("buildBetterPickaxe");
-                                break;
-                            case Item.WOODEN_SWORD:
-                                this.awardAchievement("buildSword");
-                                break;
-                            case Item.DIAMOND:
-                                this.awardAchievement("diamond");
-                                break;
-                            default:
-                                break;
-                        }
+                    if (!canCraft) {
+                        this.server.getLogger().debug("(1) Unmatched recipe " + craftingEventPacket.id + " from player " + this.getName() + "  not anough ingredients");
+                        return;
+                    }
+
+                    CraftItemEvent craftItemEvent = new CraftItemEvent(this, realSerialized.values().stream().toArray(Item[]::new), recipe);
+                    getServer().getPluginManager().callEvent(craftItemEvent);
+
+                    if (craftItemEvent.isCancelled()) {
+                        this.inventory.sendContents(this);
+                        break;
+                    }
+
+                    for (Item ingredient : realSerialized.values()) {
+                        this.craftingGrid.removeFromAll(ingredient);
+                    }
+
+                    this.inventory.addItem(recipe.getResult());
+
+                    switch (recipe.getResult().getId()) {
+                        case Item.WORKBENCH:
+                            this.awardAchievement("buildWorkBench");
+                            break;
+                        case Item.WOODEN_PICKAXE:
+                            this.awardAchievement("buildPickaxe");
+                            break;
+                        case Item.FURNACE:
+                            this.awardAchievement("buildFurnace");
+                            break;
+                        case Item.WOODEN_HOE:
+                            this.awardAchievement("buildHoe");
+                            break;
+                        case Item.BREAD:
+                            this.awardAchievement("makeBread");
+                            break;
+                        case Item.CAKE:
+                            //TODO: detect complex recipes like cake that leave remains
+                            this.awardAchievement("bakeCake");
+                            this.inventory.addItem(new ItemBucket(0, 3));
+                            break;
+                        case Item.STONE_PICKAXE:
+                        case Item.GOLD_PICKAXE:
+                        case Item.IRON_PICKAXE:
+                        case Item.DIAMOND_PICKAXE:
+                            this.awardAchievement("buildBetterPickaxe");
+                            break;
+                        case Item.WOODEN_SWORD:
+                            this.awardAchievement("buildSword");
+                            break;
+                        case Item.DIAMOND:
+                            this.awardAchievement("diamond");
+                            break;
+                        default:
+                            break;
                     }
 
                     break;
+
                 case ProtocolInfo.BLOCK_ENTITY_DATA_PACKET:
                     if (!this.spawned || !this.isAlive()) {
                         break;
@@ -3519,6 +3225,22 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
                     break;
 
+                case ProtocolInfo.LEVEL_SOUND_EVENT_PACKET:
+                    LevelSoundEventPacket levelSoundEventPacket = (LevelSoundEventPacket) packet;
+
+                    if (this.isBreakingBlock()) {
+                        LevelSoundEventPacket pk1 = new LevelSoundEventPacket();
+                        pk1.sound = LevelSoundEventPacket.SOUND_HIT;
+                        pk1.extraData = this.breakingBlock.getId();
+                        pk1.pitch = 1;
+                        pk1.x = (float) this.breakingBlock.x;
+                        pk1.y = (float) this.breakingBlock.y;
+                        pk1.z = (float) this.breakingBlock.z;
+
+                        this.level.addChunkPacket(this.getFloorX() >> 4, this.getFloorZ() >> 4, pk1);
+                    }
+                    break;
+
                 case ProtocolInfo.INVENTORY_TRANSACTION_PACKET:
                     if (this.isSpectator()) {
                         this.sendAllInventories();
@@ -3632,15 +3354,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                                     this.resetCraftingGridType();
 
-                                    Item i = this.getInventory().getItemInHand();
+                                    item = this.getInventory().getItemInHand();
 
-                                    Item oldItem = i.clone();
+                                    Item oldItem = item.clone();
 
-                                    if (this.canInteract(blockVector.add(0.5, 0.5, 0.5), this.isCreative() ? 13 : 7) && (i = this.level.useBreakOn(blockVector.asVector3(), i, this, true)) != null) {
+                                    if (this.canInteract(blockVector.add(0.5, 0.5, 0.5), this.isCreative() ? 13 : 7) && (item = this.level.useBreakOn(blockVector.asVector3(), item, this, true)) != null) {
                                         if (this.isSurvival()) {
                                             this.getFoodData().updateFoodExpLevel(0.025);
-                                            if (!i.deepEquals(oldItem) || i.getCount() != oldItem.getCount()) {
-                                                inventory.setItemInHand(i);
+                                            if (!item.deepEquals(oldItem) || item.getCount() != oldItem.getCount()) {
+                                                inventory.setItemInHand(item);
                                                 inventory.sendHeldItem(this.getViewers().values());
                                             }
                                         }
@@ -3696,6 +3418,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         case InventoryTransactionPacket.TYPE_USE_ITEM_ON_ENTITY:
                             UseItemOnEntityData useItemOnEntityData = (UseItemOnEntityData) transactionPacket.transactionData;
+
+                            if (useItemOnEntityData.entityRuntimeId % 2 == 0) {
+                                useItemOnEntityData.entityRuntimeId /= 2;
+                            }
 
                             Entity target = this.level.getEntity(useItemOnEntityData.entityRuntimeId);
                             if (target == null) {
@@ -3891,58 +3617,67 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     break;
 
-            	case ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET:
-            		if (!(this.isOp() && this.isCreative())) {
-            			break;
-            		}
-            		CommandBlockUpdatePacket update = (CommandBlockUpdatePacket) packet;
-            		if (update.isBlock) {
-	            		Vector3 commandPos = new Vector3(update.x, update.y, update.z);
-	            		Block block = this.level.getBlock(commandPos);
-	            		if (block instanceof BlockCommand) {
-	            			BlockEntityCommandBlock blockEntity = ((BlockCommand)block).getBlockEntity();
-	            			if (blockEntity == null) {
-	            				break;
-	            			}
-	            			Block place = Block.get(Block.COMMAND_BLOCK);
-	            			switch (update.commandBlockMode) {
-	            				case 0:
-	            					place = Block.get(Block.COMMAND_BLOCK);
-	            					place.setDamage(block.getDamage());
-	            					break;
-	            				case 1:
-	            					place = Block.get(Block.REPEATING_COMMAND_BLOCK);
-	            					place.setDamage(block.getDamage());
-	            					break;
-	            				case 2:
-	            					place = Block.get(Block.CHAIN_COMMAND_BLOCK);
-	            					place.setDamage(block.getDamage());
-	            					break;
-	            			}
-//	            			if (update.isConditional) {
-//	            				if (place.getDamage() < 8) {
-//	            					place.setDamage(place.getDamage() + 8);
-//	            				}
-//	            			} else {
-//	            				if (place.getDamage() > 8) {
-//	            					place.setDamage(place.getDamage() - 8);
-//	            				}
-//	            			}
-        					this.level.setBlock(block, place, false, false);
-        					this.level.sendBlocks(new Player[]{this}, new Block[]{block});
-        					blockEntity = (BlockEntityCommandBlock) blockEntity.clone();
-	            			blockEntity.setName(update.name);
-	            			blockEntity.setMode(update.commandBlockMode);
-	            			blockEntity.setCommand(update.command);
-	            			blockEntity.setLastOutPut(update.lastOutput);
-	            			blockEntity.setAuto(!update.isRedstoneMode);
-	            			blockEntity.setConditions(update.isConditional);
-	            			blockEntity.spawnToAll();
-	            		}
-            		} else {
-            			//MinercartCommandBlock
-            		}
-            		break;
+                case ProtocolInfo.COMMAND_BLOCK_UPDATE_PACKET:
+                    if (!(this.isOp() && this.isCreative())) {
+                        break;
+                    }
+                    CommandBlockUpdatePacket update = (CommandBlockUpdatePacket) packet;
+                    if (update.isBlock) {
+                        Vector3 commandPos = new Vector3(update.x, update.y, update.z);
+                        Block block = this.level.getBlock(commandPos);
+                        if (block instanceof BlockCommand) {
+                            BlockEntityCommandBlock blockEntity = ((BlockCommand)block).getBlockEntity();
+                            if (blockEntity == null) {
+                                break;
+                            }
+                            Block place = Block.get(Block.COMMAND_BLOCK);
+                            switch (update.commandBlockMode) {
+                                case 0:
+                                    place = Block.get(Block.COMMAND_BLOCK);
+                                    place.setDamage(block.getDamage());
+                                    break;
+                                case 1:
+                                    place = Block.get(Block.REPEATING_COMMAND_BLOCK);
+                                    place.setDamage(block.getDamage());
+                                    break;
+                                case 2:
+                                    place = Block.get(Block.CHAIN_COMMAND_BLOCK);
+                                    place.setDamage(block.getDamage());
+                                    break;
+                            }
+//                            if (update.isConditional) {
+//                                if (place.getDamage() < 8) {
+//                                    place.setDamage(place.getDamage() + 8);
+//                                }
+//                            } else {
+//                                if (place.getDamage() > 8) {
+//                                    place.setDamage(place.getDamage() - 8);
+//                                }
+//                            }
+                            this.level.setBlock(block, place, false, false);
+                            this.level.sendBlocks(new Player[]{this}, new Block[]{block});
+                            blockEntity = (BlockEntityCommandBlock) blockEntity.clone();
+                            blockEntity.setName(update.name);
+                            blockEntity.setMode(update.commandBlockMode);
+                            blockEntity.setCommand(update.command);
+                            blockEntity.setLastOutPut(update.lastOutput);
+                            blockEntity.setAuto(!update.isRedstoneMode);
+                            blockEntity.setConditions(update.isConditional);
+                            blockEntity.spawnToAll();
+                        }
+                    } else {
+                        //MinercartCommandBlock
+                    }
+                    break;
+
+                case ProtocolInfo.SERVER_SETTINGS_REQUEST_PACKET:
+                    this.serverSettings.forEach((id, window) -> {
+                        ServerSettingsResponsePacket re = new ServerSettingsResponsePacket();
+                        re.formId = id;
+                        re.data = window.toJson();
+                        this.dataPacket(re);
+                    });
+                    break;
 
                 default:
                     break;
@@ -4124,15 +3859,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     @Override
     public void sendMessage(String message) {
         if(mute)return;
-        // TODO: Remove this workaround (broken client MCPE 1.0.0)
-        messageQueue.add(this.server.getLanguage().translateString(message));
-
-        /*
         TextPacket pk = new TextPacket();
         pk.type = TextPacket.TYPE_RAW;
         pk.message = this.server.getLanguage().translateString(message);
         this.dataPacket(pk);
-        */
     }
 
     @Override
@@ -4217,7 +3947,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @author Itsu
      */
     public void sendImportantMessage(String message) {
-        messageQueue.add(this.server.getLanguage().translateString(message));
+        TextPacket pk = new TextPacket();
+        pk.type = TextPacket.TYPE_RAW;
+        pk.message = this.server.getLanguage().translateString(message);
+        this.dataPacket(pk);
     }
 
     public void clearTitle() {
@@ -4716,7 +4449,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
 
         super.setHealth(health);
-        Attribute attr = Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(this.getMaxHealth()).setValue(health > 0 ? (health < getMaxHealth() ? health : getMaxHealth()) : 0);
+        Attribute attr = Attribute.getAttribute(Attribute.MAX_HEALTH).setMaxValue(this.getAbsorption() % 2 != 0 ? this.getMaxHealth() + 1 : this.getMaxHealth()).setValue(health > 0 ? (health < getMaxHealth() ? health : getMaxHealth()) : 0);
         if (this.spawned) {
             UpdateAttributesPacket pk = new UpdateAttributesPacket();
             pk.entries = new Attribute[]{attr};
@@ -4977,7 +4710,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
             }
 
-            this.sendPosition(this, this.yaw, this.pitch, MovePlayerPacket.MODE_RESET);
             this.spawnToAll();
             this.forceMovement = this.teleportPosition;
             this.teleportPosition = null;
@@ -4990,6 +4722,23 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public Inventory getWindowById(int id) {
         return this.windowIndex.get(id);
+    }
+
+    protected void sendPlayStatus(int status) {
+
+        sendPlayStatus(status, false);
+
+    }
+
+    protected void sendPlayStatus(int status, boolean immediate) {
+        PlayStatusPacket pk = new PlayStatusPacket();
+        pk.status = status;
+
+        if (immediate) {
+            this.directDataPacket(pk);
+        } else {
+            this.dataPacket(pk);
+        }
     }
 
     @Override
@@ -5023,13 +4772,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.removeAllWindows();
 
             this.teleportPosition = new Vector3(this.x, this.y, this.z);
+            this.forceMovement = this.teleportPosition;
+            this.sendPosition(this, this.yaw, this.pitch, MovePlayerPacket.MODE_RESET);
 
-            if (!this.checkTeleportPosition()) {
-                this.forceMovement = oldPos;
-            } else {
-                this.spawnToAll();
-            }
-
+            this.checkTeleportPosition();
             this.resetFallDistance();
             this.nextChunkOrderRun = 0;
             this.newPosition = null;
@@ -5606,7 +5352,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             if (inv instanceof PlayerInventory) {
                 ((PlayerInventory) inv).sendArmorContents(this);
-                ((PlayerInventory) inv).sendHotbarContents();
             }
         }
     }
@@ -5683,7 +5428,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.activeWindows.get(id);
     }
 
+    public int addServerSettings(FormWindow window) {
+        this.serverSettings.put(window.getId(), window);
+        return window.getId();
+    }
+
     public boolean isBreakingBlock() {
         return this.breakingBlock != null;
+    }
+
+    public void showXboxProfile(String xuid) {
+        ShowProfilePacket pk = new ShowProfilePacket();
+        pk.xuid = getLoginChainData().getXUID();
+        this.dataPacket(pk);
     }
 }

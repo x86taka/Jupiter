@@ -3,6 +3,9 @@ package cn.nukkit.inventory.transaction.action;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 
+/**
+ * @author CreeperFace
+ */
 public abstract class InventoryAction {
 
 
@@ -37,6 +40,14 @@ public abstract class InventoryAction {
      */
     public Item getTargetItem() {
         return targetItem.clone();
+    }
+
+    /**
+     * Called by inventory transactions before any actions are processed. If this returns false, the transaction will
+     * be cancelled.
+     */
+    public boolean onPreExecute(Player source) {
+        return true;
     }
 
     /**

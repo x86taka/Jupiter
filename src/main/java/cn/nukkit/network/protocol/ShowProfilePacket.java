@@ -4,7 +4,7 @@ public class ShowProfilePacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.SHOW_PROFILE_PACKET;
 
-    public String unknownStr1;
+    public String xuid;
 
     @Override
     public byte pid() {
@@ -13,11 +13,11 @@ public class ShowProfilePacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.unknownStr1 = this.getString();
+        this.xuid = this.getString();
     }
 
     @Override
     public void encode() {
-        this.putString(this.unknownStr1);
+        this.putString(this.xuid);
     }
 }

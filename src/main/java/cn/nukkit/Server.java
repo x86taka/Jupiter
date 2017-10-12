@@ -1309,6 +1309,10 @@ public class Server implements ActionListener{
         }
     }
 
+    public void onPlayerCompleteLoginSequence(Player player) {
+        this.sendFullPlayerListData(player);
+    }
+
     public void onPlayerLogin(Player player) {
         if (this.sendUsageTicker > 0) {
             this.uniquePlayers.add(player.getUniqueId());

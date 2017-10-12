@@ -53,6 +53,7 @@ public abstract class BlockEntity extends Position {
     public String name;
     public long id;
 
+    public boolean movable = this.namedTag.getBoolean("isMovable");
     public boolean closed = false;
     public CompoundTag namedTag;
     protected long lastUpdate;
@@ -145,6 +146,7 @@ public abstract class BlockEntity extends Position {
         this.namedTag.putInt("x", (int) this.getX());
         this.namedTag.putInt("y", (int) this.getY());
         this.namedTag.putInt("z", (int) this.getZ());
+        this.namedTag.putBoolean("isMovable", this.movable);
     }
 
     public CompoundTag getCleanedNBT(){
@@ -188,6 +190,10 @@ public abstract class BlockEntity extends Position {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isMovable() {
+        return movable; 
     }
 
     public static CompoundTag getDefaultCompound(Vector3 pos, String id) {

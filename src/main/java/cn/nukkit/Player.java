@@ -5459,4 +5459,34 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.xuid = getLoginChainData().getXUID();
         this.dataPacket(pk);
     }
+
+    /**
+     * プレイヤーのスポーン地点からの距離を取得します。
+     * @return double
+     */
+    public double getDistanceFromSpawn(){
+        Position spawn = this.level.getSafeSpawn();
+        Position pos = this.getPosition();
+
+        double x = 0;
+        double z = 0;
+
+        double far = 0;
+
+        if(spawn.x < pos.x){
+            x = pos.x - spawn.x;
+        }else{
+            x = spawn.x - pos.x;
+        }
+
+        if(spawn.z < pos.z){
+            z = pos.z - spawn.z;
+        }else{
+            z = spawn.z - pos.z;
+        }
+
+        far = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
+
+        return far;
+    }
 }

@@ -212,12 +212,11 @@ public class BinaryStream {
 
         for(int i = 0; i < count; ++i){
             String name = this.getString();
-
             Attribute attr = Attribute.getAttributeByName(name);
             if(attr != null){
-            	attr.setMinValue(this.getLFloat());
-            	attr.setValue(this.getLFloat());
-            	attr.setMaxValue(this.getLFloat());
+                attr.setMinValue(this.getLFloat());
+                attr.setValue(this.getLFloat());
+                attr.setMaxValue(this.getLFloat());
                 list.add(attr);
             }else{
                 throw new Exception("Unknown attribute type \"" + name + "\"");
@@ -232,12 +231,20 @@ public class BinaryStream {
      */
     public void putAttributeList(Attribute[] attributes){
         this.putUnsignedVarInt(attributes.length);
-        for (Attribute attribute: attributes){
-        	this.putString(attribute.getName());
+        for (Attribute attribute: attributes) {
+            this.putString(attribute.getName());
             this.putLFloat(attribute.getMinValue());
             this.putLFloat(attribute.getValue());
             this.putLFloat(attribute.getMaxValue());
         }
+    }
+
+    public BlockFace getBlockFace() {
+        return BlockFace.fromIndex(this.getVarInt());
+    }
+
+    public void putBlockFace(BlockFace face) {
+        this.putVarInt(face.getIndex());
     }
 
     public void putUUID(UUID uuid) {
@@ -406,13 +413,40 @@ public class BinaryStream {
         this.putBoolean(rule.unknown1);
         this.putBoolean(rule.unknown2);
     }
-    
-    public BlockFace getBlockFace() {
-    	return BlockFace.fromIndex(this.getVarInt());
+
+    public long getEntityUniqueId() {
+        return this.getVarLong();
     }
 
-    public void putBlockFace(BlockFace face) {
-    	this.putVarInt(face.getIndex());
+    /**
+     * Writes an EntityUniqueID
+     */
+    public void putEntityUniqueId(long eid) {
+        this.putVarLong(eid);
+    }
+
+    /**
+     * Reads and returns an EntityRuntimeID
+     */
+    public long getEntityRuntimeId() {
+        return this.getUnsignedVarLong();
+    }
+
+    /**
+     * Writes an EntityUniqueID
+     */
+    public void putEntityRuntimeId(long eid) {
+        this.putUnsignedVarLong(eid);
+    }
+    
+    public BlockVector3 getSignedBlockPosition() {
+        return new BlockVector3(getVarInt(), getVarInt(), getVarInt());
+    }
+
+    public void putSignedBlockPosition(BlockVector3 v) {
+        putVarInt(v.x);
+        putVarInt(v.y);
+        putVarInt(v.z);
     }
 
     public boolean feof() {
@@ -449,40 +483,4 @@ public class BinaryStream {
                 Integer.MAX_VALUE :
                 MAX_ARRAY_SIZE;
     }
-    
-    public long getEntityUniqueId() {
-        return this.getVarLong();
-    }
-
-    /**
-     * Writes an EntityUniqueID
-     */
-    public void putEntityUniqueId(long eid) {
-        this.putVarLong(eid);
-    }
-
-    /**
-     * Reads and returns an EntityRuntimeID
-     */
-    public long getEntityRuntimeId() {
-        return this.getUnsignedVarLong();
-    }
-
-    /**
-     * Writes an EntityUniqueID
-     */
-    public void putEntityRuntimeId(long eid) {
-        this.putUnsignedVarLong(eid);
-    }
-    
-    public BlockVector3 getSignedBlockPosition() {
-        return new BlockVector3(getVarInt(), getVarInt(), getVarInt());
-    }
-
-    public void putSignedBlockPosition(BlockVector3 v) {
-        putVarInt(v.x);
-        putVarInt(v.y);
-        putVarInt(v.z);
-    }
-
 }

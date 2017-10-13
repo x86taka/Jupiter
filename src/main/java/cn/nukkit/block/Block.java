@@ -127,7 +127,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int STONE_PRESSURE_PLATE = 70;
     public static final int IRON_DOOR_BLOCK = 71;
     public static final int WOODEN_PRESSURE_PLATE = 72;
-
     public static final int REDSTONE_ORE = 73;
     public static final int GLOWING_REDSTONE_ORE = 74;
     public static final int LIT_REDSTONE_ORE = 74;
@@ -142,7 +141,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int CLAY_BLOCK = 82;
     public static final int REEDS = 83;
     public static final int SUGARCANE_BLOCK = 83;
-
+    public static final int JUKEBOX = 84;
     public static final int FENCE = 85;
     public static final int PUMPKIN = 86;
     public static final int NETHERRACK = 87;
@@ -267,7 +266,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int DOUBLE_PLANT = 175;
     public static final int STANDING_BANNER = 176;
     public static final int WALL_BANNER = 177;
-
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
     public static final int RED_SANDSTONE_STAIRS = 180;
@@ -300,6 +298,11 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
+
+    public static final int MAGMA_BLOCK = 213;
+    public static final int NETHER_WART_BLOCK2 = 214;
+    public static final int RED_NETHER_BRICKS = 215;
+    public static final int BONE_BLOCK = 216;
 
     public static final int SHULKER_BOX = 218;
     public static final int PURPLE_GLAZED_TERRACOTTA = 219;
@@ -334,7 +337,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int OBSERVER = 251;
     public static final int STRUCTURE_BLOCK  = 252;
     //TODO 1.2 防具立て
-	public static final int ARMOR_STAND = 0;
+//	public static final int ARMOR_STAND = 0;
 
     public static Class[] list = null;
     public static Block[] fullList = null;
@@ -595,9 +598,9 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[BEETROOT_BLOCK] = BlockBeetroot.class; //244
             list[GLOWING_OBSIDIAN] = BlockObsidianGlowing.class; //246
             list[NETHER_REACTOR] = BlockNetherReactor.class; //247 Should not be removed
-            
+
             //TODO 1.2
-            list[ARMOR_STAND] = BlockArmorStand.class; //247 Should not be removed
+//            list[ARMOR_STAND] = BlockArmorStand.class; //247 Should not be removed
 
             //TODO: list[PISTON_EXTENSION] = BlockPistonExtension.class; //250
 

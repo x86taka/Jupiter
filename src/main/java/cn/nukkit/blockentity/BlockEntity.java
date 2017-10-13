@@ -42,6 +42,7 @@ public abstract class BlockEntity extends Position {
     public static final String BED = "Bed";
     public static final String SHULKER_BOX = "ShulkerBox";
     public static final String ARMOR_STAND = "ArmorStand";
+    public static final String COMMAND_BLOCK = "CommandBlock";
 
     public static long count = 1;
 
@@ -52,6 +53,7 @@ public abstract class BlockEntity extends Position {
     public String name;
     public long id;
 
+    public boolean movable = this.namedTag.getBoolean("isMovable");
     public boolean closed = false;
     public CompoundTag namedTag;
     protected long lastUpdate;
@@ -144,6 +146,7 @@ public abstract class BlockEntity extends Position {
         this.namedTag.putInt("x", (int) this.getX());
         this.namedTag.putInt("y", (int) this.getY());
         this.namedTag.putInt("z", (int) this.getZ());
+        this.namedTag.putBoolean("isMovable", this.movable);
     }
 
     public CompoundTag getCleanedNBT(){
@@ -187,6 +190,10 @@ public abstract class BlockEntity extends Position {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isMovable() {
+        return movable; 
     }
 
     public static CompoundTag getDefaultCompound(Vector3 pos, String id) {

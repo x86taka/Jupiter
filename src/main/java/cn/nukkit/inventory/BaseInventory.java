@@ -19,6 +19,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.network.protocol.InventoryContentPacket;
 import cn.nukkit.network.protocol.InventorySlotPacket;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -36,7 +37,7 @@ public abstract class BaseInventory implements Inventory {
 
     protected final String title;
 
-    public final Map<Integer, Item> slots = new HashMap<>();
+    public final Int2ObjectOpenHashMap<Item> slots = new Int2ObjectOpenHashMap<Item>();
 
     protected final Set<Player> viewers = new HashSet<>();
 
@@ -176,7 +177,7 @@ public abstract class BaseInventory implements Inventory {
     @Override
     public boolean contains(Item item) {
         int count = Math.max(1, item.getCount());
-        boolean checkDamage = item.hasMeta();
+        boolean checkDamage = item.hasMeta() && item.getDamage() >= 0;
         boolean checkTag = item.getCompoundTag() != null;
         for (Item i : this.getContents().values()) {
             if (item.equals(i, checkDamage, checkTag)) {
@@ -193,7 +194,7 @@ public abstract class BaseInventory implements Inventory {
     @Override
     public Map<Integer, Item> all(Item item) {
         Map<Integer, Item> slots = new HashMap<>();
-        boolean checkDamage = item.hasMeta();
+        boolean checkDamage = item.hasMeta() && item.getDamage() >= 0;
         boolean checkTag = item.getCompoundTag() != null;
         for (Map.Entry<Integer, Item> entry : this.getContents().entrySet()) {
             if (item.equals(entry.getValue(), checkDamage, checkTag)) {
@@ -221,7 +222,7 @@ public abstract class BaseInventory implements Inventory {
         boolean checkDamage = item.hasMeta();
         boolean checkTag = item.getCompoundTag() != null;
         for (Map.Entry<Integer, Item> entry : this.getContents().entrySet()) {
-        	if (item.equals(entry.getValue(), checkDamage, checkTag) && (entry.getValue().getCount() == count || (!exact && entry.getValue().getCount() > count))) {
+            if (item.equals(entry.getValue(), checkDamage, checkTag) && (entry.getValue().getCount() == count || (!exact && entry.getValue().getCount() > count))) {
                 return entry.getKey();
             }
         }
@@ -435,9 +436,9 @@ public abstract class BaseInventory implements Inventory {
 
     @Override
     public void onSlotChange(int index, Item before, boolean send) {
-    	if (send) {
-	        this.sendSlot(index, this.getViewers());
-    	}
+        if (send) {
+            this.sendSlot(index, this.getViewers());
+        }
     }
 
     @Override
@@ -447,7 +448,7 @@ public abstract class BaseInventory implements Inventory {
 
     @Override
     public void sendContents(Player... players) {
-    	InventoryContentPacket pk = new InventoryContentPacket();
+        InventoryContentPacket pk = new InventoryContentPacket();
         pk.slots = new Item[this.getSize()];
         for (int i = 0; i < this.getSize(); ++i) {
             pk.slots[i] = this.getItem(i);
@@ -524,7 +525,7 @@ public abstract class BaseInventory implements Inventory {
 
     @Override
     public void sendSlot(int index, Player... players) {
-    	InventorySlotPacket pk = new InventorySlotPacket();
+        InventorySlotPacket pk = new InventorySlotPacket();
         pk.slot = index;
         pk.item = this.getItem(index).clone();
 
@@ -539,7 +540,6 @@ public abstract class BaseInventory implements Inventory {
         }
     }
 
-    @Override
     public void sendSlot(int index, Collection<Player> players) {
         this.sendSlot(index, players.stream().toArray(Player[]::new));
     }

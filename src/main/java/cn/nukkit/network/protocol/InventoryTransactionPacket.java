@@ -4,7 +4,7 @@ import cn.nukkit.inventory.transaction.data.ReleaseItemData;
 import cn.nukkit.inventory.transaction.data.TransactionData;
 import cn.nukkit.inventory.transaction.data.UseItemData;
 import cn.nukkit.inventory.transaction.data.UseItemOnEntityData;
-import cn.nukkit.utils.NetworkInventoryAction;
+import cn.nukkit.network.protocol.types.NetworkInventoryAction;
 
 public class InventoryTransactionPacket extends DataPacket {
 

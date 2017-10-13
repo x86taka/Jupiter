@@ -2,12 +2,10 @@ package cn.nukkit.entity;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -70,6 +68,8 @@ import cn.nukkit.utils.MainLogger;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * @author MagicDroidX
@@ -100,7 +100,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_AIR = 7; //short
     public static final int DATA_POTION_COLOR = 8; //int (ARGB!)
     public static final int DATA_POTION_AMBIENT = 9; //byte
-    /* 10 (byte) */
+    public static final int DATA_JUMP_DURATION = 10; //long 
     public static final int DATA_HURT_TIME = 11; //int (minecart/boat)
     public static final int DATA_HURT_DIRECTION = 12; //int (minecart/boat)
     public static final int DATA_PADDLE_TIME_LEFT = 13; //float
@@ -113,8 +113,8 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_ENDERMAN_HELD_ITEM_ID = 23; //short
     public static final int DATA_ENDERMAN_HELD_ITEM_DAMAGE = 24; //short
     public static final int DATA_ENTITY_AGE = 25; //short
-    /* 27 (byte) player-specific flags
-     * 28 (int) player "index"?*/
+    public static final int DATA_PLAYER_FLAGS = 29; //byte
+    /* 28 (int) player "index"? */ 
     public static final int DATA_PLAYER_BED_POSITION = 29;
     public static final int DATA_FIREBALL_POWER_X = 30; //float
     public static final int DATA_FIREBALL_POWER_Y = 31;
@@ -218,12 +218,12 @@ public abstract class Entity extends Location implements Metadatable {
 
     public static long entityCount = 1;
 
-    private static final Map<String, Class<? extends Entity>> knownEntities = new HashMap<>();
-    private static final Map<String, String> shortNames = new HashMap<>();
+    private static final Object2ObjectOpenHashMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<String, Class<? extends Entity>>();
+    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<String, String>();
 
-    protected Map<Integer, Player> hasSpawned = new HashMap<>();
+    protected Int2ObjectOpenHashMap<Player> hasSpawned = new Int2ObjectOpenHashMap<Player>();
 
-    protected final Map<Integer, Effect> effects = new ConcurrentHashMap<>();
+    protected final Int2ObjectOpenHashMap<Effect> effects = new Int2ObjectOpenHashMap<Effect>();
 
     protected long id;
 
@@ -278,6 +278,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected float health = 20;
     private int maxHealth = 20;
+    protected float absorption = 0; 
 
     protected float ySize = 0;
     public boolean keepMovement = false;
@@ -870,11 +871,11 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void despawnFrom(Player player) {
-        if (this.hasSpawned.containsKey(player.getLoaderId())) {
+        if (this.hasSpawned.containsKey((int) player.getLoaderId())) {
             RemoveEntityPacket pk = new RemoveEntityPacket();
             pk.entityRuntimeId = this.getId();
             player.dataPacket(pk);
-            this.hasSpawned.remove(player.getLoaderId());
+            this.hasSpawned.remove((int) player.getLoaderId());
         }
     }
 
@@ -890,6 +891,11 @@ public abstract class Entity extends Location implements Metadatable {
         if (source.isCancelled()) {
             return false;
         }
+        if (this.absorption > 0) {  //Damage Absorption 
+            float absorptionHealth = this.absorption - source.getFinalDamage() > 0 ? source.getFinalDamage() : this.absorption; 
+            this.setAbsorption(this.absorption - absorptionHealth); 
+            source.setDamage(-absorptionHealth, EntityDamageEvent.DamageModifier.ABSORPTION);
+        } 
         setLastDamageCause(source);
         setHealth(getHealth() - source.getFinalDamage());
         return true;
@@ -1314,6 +1320,19 @@ public abstract class Entity extends Location implements Metadatable {
             this.fireTicks = ticks;
         }
     }
+
+    public float getAbsorption() { 
+        return absorption; 
+    } 
+
+    public void setAbsorption(float absorption) { 
+        if (absorption != this.absorption) { 
+            this.absorption = absorption; 
+            if (this instanceof Player) {
+                ((Player) this).setAttribute(Attribute.getAttribute(Attribute.ABSORPTION).setValue(absorption));
+            }
+        } 
+    } 
 
     public BlockFace getDirection() {
         double rotation = (this.yaw - 90) % 360;
@@ -1960,7 +1979,7 @@ public abstract class Entity extends Location implements Metadatable {
         for (Player player : this.hasSpawned.values()) {
             this.spawnTo(player);
         }
-        this.hasSpawned = new HashMap<>();
+        this.hasSpawned = new Int2ObjectOpenHashMap<Player>();
     }
 
     public void spawnToAll() {

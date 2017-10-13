@@ -1,6 +1,5 @@
 package cn.nukkit.blockentity;
 
-import cn.nukkit.block.Block;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -20,9 +19,10 @@ public class BlockEntityArmorStand extends BlockEntitySpawnable {
     @Override
     public boolean isBlockEntityValid() {
         int blockID = getBlock().getId();
-        return blockID == Block.ARMOR_STAND;
+//        return blockID == Block.ARMOR_STAND;
+        return false;
     }
-    
+
     @Override
     public CompoundTag getSpawnCompound() {
         return new CompoundTag()
@@ -31,5 +31,5 @@ public class BlockEntityArmorStand extends BlockEntitySpawnable {
                 .putInt("y", (int) this.y)
                 .putInt("z", (int) this.z);
     }
-    
+
 }

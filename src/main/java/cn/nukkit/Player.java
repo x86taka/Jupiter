@@ -264,8 +264,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public static final int CRAFTING_ENCHANT = 3;
     public static final int CRAFTING_STONECUTTER = 4;//使用されていない(PMMPから引用)
 
-    public static final float DEFAULT_SPEED = 0.1f;//オリジナル: 0.1 (wikiのわずかに速度が上昇という記述による)
-    public static final float MAXIMUM_SPEED = 0.5f;//オリジナル:0.5 (wikiのわずかに速度が上昇という記述による)
+    public static final float DEFAULT_SPEED = 0.1f;
+    public static final float MAXIMUM_SPEED = 0.5f;
 
     public static final int PERMISSION_CUSTOM = 3;
     public static final int PERMISSION_OPERATOR = 2;
@@ -5464,29 +5464,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * プレイヤーのスポーン地点からの距離を取得します。
      * @return double
      */
-    public double getDistanceFromSpawn(){
+    public double getPlainDistanceFromSpawn(){
         Position spawn = this.level.getSafeSpawn();
         Position pos = this.getPosition();
 
-        double x = 0;
-        double z = 0;
+        double x = pos.x - spawn.x;
+        double z  = spawn.z - pos.z;
 
-        double far = 0;
-
-        if(spawn.x < pos.x){
-            x = pos.x - spawn.x;
-        }else{
-            x = spawn.x - pos.x;
-        }
-
-        if(spawn.z < pos.z){
-            z = pos.z - spawn.z;
-        }else{
-            z = spawn.z - pos.z;
-        }
-
-        far = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
-
-        return far;
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
     }
 }

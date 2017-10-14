@@ -3115,12 +3115,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (!BlockEntity.SIGN.equals(nbt.getString("id"))) {
                             ((BlockEntitySign) t).spawnTo(this);
                         } else {
-                           blockEntity = t;
+                            String[] texts = nbt.getString("Text").split("\n");
+                            blockEntity = t;
 
-                            signText1 = this.removeFormat ? TextFormat.clean(nbt.getString("Text1")) : nbt.getString("Text1");
-                            signText2 = this.removeFormat ? TextFormat.clean(nbt.getString("Text2")) : nbt.getString("Text2");
-                            signText3 = this.removeFormat ? TextFormat.clean(nbt.getString("Text3")) : nbt.getString("Text3");
-                            signText4 = this.removeFormat ? TextFormat.clean(nbt.getString("Text4")) : nbt.getString("Text4");
+                            signText1 = texts.length > 0 ? texts[0] : "";
+                            signText2 = texts.length > 1 ? texts[1] : "";
+                            signText3 = texts.length > 2 ? texts[2] : "";
+                            signText4 = texts.length > 3 ? texts[3] : "";
+
+                            signText1 = this.removeFormat ? TextFormat.clean(signText1) : signText1;
+                            signText2 = this.removeFormat ? TextFormat.clean(signText2) : signText2;
+                            signText3 = this.removeFormat ? TextFormat.clean(signText3) : signText3;
+                            signText4 = this.removeFormat ? TextFormat.clean(signText4) : signText4;
 
                             SignChangeEvent signChangeEvent = new SignChangeEvent(blockEntity.getBlock(), this, new String[]{
                                     signText1,

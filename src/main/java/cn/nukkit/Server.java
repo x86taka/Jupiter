@@ -30,6 +30,7 @@ import com.google.common.base.Preconditions;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
+import cn.nukkit.blockentity.BlockEntityBanner;
 import cn.nukkit.blockentity.BlockEntityBeacon;
 import cn.nukkit.blockentity.BlockEntityBrewingStand;
 import cn.nukkit.blockentity.BlockEntityCauldron;
@@ -2872,6 +2873,7 @@ public class Server implements ActionListener{
         BlockEntity.registerBlockEntity(BlockEntity.DISPENSER, BlockEntityDispenser.class);
         BlockEntity.registerBlockEntity(BlockEntity.DROPPER, BlockEntityDropper.class);
         BlockEntity.registerBlockEntity(BlockEntity.COMMAND_BLOCK, BlockEntityCommandBlock.class);
+        BlockEntity.registerBlockEntity(BlockEntity.BANNER, BlockEntityBanner.class);
     }
 
     /**

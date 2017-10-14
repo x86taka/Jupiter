@@ -43,6 +43,7 @@ public abstract class BlockEntity extends Position {
     public static final String SHULKER_BOX = "ShulkerBox";
     public static final String ARMOR_STAND = "ArmorStand";
     public static final String COMMAND_BLOCK = "CommandBlock";
+    public static final String BANNER = "Banner";
 
     public static long count = 1;
 
@@ -53,7 +54,8 @@ public abstract class BlockEntity extends Position {
     public String name;
     public long id;
 
-    public boolean movable = this.namedTag.getBoolean("isMovable");
+//    public boolean movable = this.namedTag.getBoolean("isMovable");
+    public boolean movable = false;
     public boolean closed = false;
     public CompoundTag namedTag;
     protected long lastUpdate;
@@ -193,7 +195,7 @@ public abstract class BlockEntity extends Position {
     }
 
     public boolean isMovable() {
-        return movable; 
+        return movable;
     }
 
     public static CompoundTag getDefaultCompound(Vector3 pos, String id) {

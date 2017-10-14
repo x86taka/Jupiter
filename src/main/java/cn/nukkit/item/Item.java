@@ -830,6 +830,7 @@ public class Item implements Cloneable {
             list[ELYTRA] = ItemElytra.class; //444
 
             list[SHULKER_SHELL] = ItemShulkerShell.class; //445
+            list[BANNER] = ItemBanner.class; //446
 
             list[BEETROOT] = ItemBeetroot.class; //457
             list[BEETROOT_SEEDS] = ItemSeedsBeetroot.class; //458
@@ -1343,9 +1344,9 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.FURNACE, 0));
         addCreativeItem(Item.get(Item.BREWING_STAND, 0));
         addCreativeItem(Item.get(Item.CAULDRON, 0));
-        addCreativeItem(Item.get(Item.ANVIL, 0));
-//        addCreativeItem(Item.get(Item.ANVIL, 4));
-//        addCreativeItem(Item.get(Item.ANVIL, 8));
+        addCreativeItem(Item.get(Item.ANVIL, 1));
+        addCreativeItem(Item.get(Item.ANVIL, 2));
+        addCreativeItem(Item.get(Item.ANVIL, 3));
         addCreativeItem(Item.get(Item.STONECUTTER, 0));
         addCreativeItem(Item.get(Item.CHEST, 0));
         addCreativeItem(Item.get(Item.TRAPPED_CHEST, 0));
@@ -1470,6 +1471,21 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.CLOCK, 0));
         addCreativeItem(Item.get(Item.COMPASS, 0));
         addCreativeItem(Item.get(Item.BANNER, 0));
+        addCreativeItem(Item.get(Item.BANNER, 8));
+        addCreativeItem(Item.get(Item.BANNER, 7));
+        addCreativeItem(Item.get(Item.BANNER, 15));
+        addCreativeItem(Item.get(Item.BANNER, 12));
+        addCreativeItem(Item.get(Item.BANNER, 14));
+        addCreativeItem(Item.get(Item.BANNER, 1));
+        addCreativeItem(Item.get(Item.BANNER, 4));
+        addCreativeItem(Item.get(Item.BANNER, 5));
+        addCreativeItem(Item.get(Item.BANNER, 13));
+        addCreativeItem(Item.get(Item.BANNER, 9));
+        addCreativeItem(Item.get(Item.BANNER, 3));
+        addCreativeItem(Item.get(Item.BANNER, 11));
+        addCreativeItem(Item.get(Item.BANNER, 10));
+        addCreativeItem(Item.get(Item.BANNER, 2));
+        addCreativeItem(Item.get(Item.BANNER, 6));
         addCreativeItem(Item.get(Item.FIREWORKS, 0));
         addCreativeItem(Item.get(Item.FIREWORKS_CHARGE, 0));
 

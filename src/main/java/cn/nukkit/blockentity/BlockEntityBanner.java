@@ -5,6 +5,9 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 
+/**
+ * @author tedo0627
+ */
 public class BlockEntityBanner extends BlockEntitySpawnable{
 
 	public BlockEntityBanner(FullChunk chunk, CompoundTag nbt) {

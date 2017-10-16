@@ -242,6 +242,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * author: MagicDroidX & Box
@@ -284,7 +285,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected Object2IntOpenHashMap<Inventory> windows;
 
-    protected Int2ObjectOpenHashMap<Inventory> windowIndex = new Int2ObjectOpenHashMap<Inventory>();
+    protected Int2ObjectOpenHashMap<Inventory> windowIndex = new Int2ObjectOpenHashMap<>();
 
     protected Set<Integer> permanentWindows = new HashSet<>();
 
@@ -331,7 +332,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected Map<Long, Integer> loadQueue = new HashMap<>();
     protected int nextChunkOrderRun = 5;
 
-    protected Object2ObjectOpenHashMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<UUID, Player>();
+    protected Object2ObjectOpenHashMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<>();
 
     protected Vector3 newPosition = null;
 
@@ -414,8 +415,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private BlockEntity blockEntity;
 
-    private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<FormWindow>();
-    private Int2ObjectLinkedOpenHashMap<FormWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<FormWindow>();
+    private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<>();
+    private Int2ObjectLinkedOpenHashMap<FormWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<>();
 
     private boolean printPackets;
 
@@ -1713,8 +1714,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.lastPitch = to.pitch;
 
             if (!isFirst) {
-                List<Block> blocksAround = this.blocksAround;
-                List<Block> collidingBlocks = this.collisionBlocks;
+                ObjectList<Block> blocksAround = this.blocksAround;
+                ObjectList<Block> collidingBlocks = this.collisionBlocks;
 
                 PlayerMoveEvent ev = new PlayerMoveEvent(this, from, to);
 

@@ -70,6 +70,8 @@ import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * @author MagicDroidX
@@ -218,12 +220,12 @@ public abstract class Entity extends Location implements Metadatable {
 
     public static long entityCount = 1;
 
-    private static final Object2ObjectOpenHashMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<String, Class<? extends Entity>>();
-    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<String, String>();
+    private static final Object2ObjectOpenHashMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
 
-    protected Int2ObjectOpenHashMap<Player> hasSpawned = new Int2ObjectOpenHashMap<Player>();
+    protected Int2ObjectOpenHashMap<Player> hasSpawned = new Int2ObjectOpenHashMap<>();
 
-    protected final Int2ObjectOpenHashMap<Effect> effects = new Int2ObjectOpenHashMap<Effect>();
+    protected final Int2ObjectOpenHashMap<Effect> effects = new Int2ObjectOpenHashMap<>();
 
     protected long id;
 
@@ -243,8 +245,8 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected EntityDamageEvent lastDamageCause = null;
 
-    protected List<Block> blocksAround = new ArrayList<>();
-    protected List<Block> collisionBlocks = new ArrayList<>();
+    protected ObjectList<Block> blocksAround = new ObjectArrayList<>();
+    protected ObjectList<Block> collisionBlocks = new ObjectArrayList<>();
 
     public double lastX;
     public double lastY;
@@ -815,8 +817,8 @@ public abstract class Entity extends Location implements Metadatable {
     }
 
     public void spawnTo(Player player) {
-        if (!this.hasSpawned.containsKey(player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
-            this.hasSpawned.put(player.getLoaderId(), player);
+        if (!this.hasSpawned.containsKey((int) player.getLoaderId()) && player.usedChunks.containsKey(Level.chunkHash(this.chunk.getX(), this.chunk.getZ()))) {
+            this.hasSpawned.put((int) player.getLoaderId(), player);
         }
     }
 
@@ -1710,7 +1712,7 @@ public abstract class Entity extends Location implements Metadatable {
             int maxY = NukkitMath.ceilDouble(this.boundingBox.maxY);
             int maxZ = NukkitMath.ceilDouble(this.boundingBox.maxZ);
 
-            this.blocksAround = new ArrayList<>();
+            this.blocksAround = new ObjectArrayList<>();
 
             for (int z = minZ; z <= maxZ; ++z) {
                 for (int x = minX; x <= maxX; ++x) {
@@ -1727,7 +1729,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     public List<Block> getCollisionBlocks() {
         if (this.collisionBlocks == null) {
-            this.collisionBlocks = new ArrayList<>();
+            this.collisionBlocks = new ObjectArrayList<>();
 
             for (Block b : getBlocksAround()) {
                 if (b.collidesWithBB(this.getBoundingBox(), true)) {

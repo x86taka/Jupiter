@@ -169,15 +169,15 @@ public class Level implements ChunkManager, Metadatable {
     // Lower values use less memory
     public static final int MAX_BLOCK_CACHE = 512;
 
-    private final Long2ObjectOpenHashMap<BlockEntity> blockEntities = new Long2ObjectOpenHashMap<BlockEntity>();
+    private final Long2ObjectOpenHashMap<BlockEntity> blockEntities = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Player> players = new Long2ObjectOpenHashMap<Player>();
+    private final Long2ObjectOpenHashMap<Player> players = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Entity> entities = new Long2ObjectOpenHashMap<Entity>();
+    private final Long2ObjectOpenHashMap<Entity> entities = new Long2ObjectOpenHashMap<>();
 
-    public final Long2ObjectOpenHashMap<Entity> updateEntities = new Long2ObjectOpenHashMap<Entity>();
+    public final Long2ObjectOpenHashMap<Entity> updateEntities = new Long2ObjectOpenHashMap<>();
 
-    public final Long2ObjectOpenHashMap<BlockEntity> updateBlockEntities = new Long2ObjectOpenHashMap<BlockEntity>();
+    public final Long2ObjectOpenHashMap<BlockEntity> updateBlockEntities = new Long2ObjectOpenHashMap<>();
 
     // Use a weak map to avoid OOM
     private final ConcurrentMap<Object, Object> blockCache = CacheBuilder.newBuilder()
@@ -199,15 +199,15 @@ public class Level implements ChunkManager, Metadatable {
 
     private LevelProvider provider;
 
-    private final Int2ObjectOpenHashMap<ChunkLoader> loaders = new Int2ObjectOpenHashMap<ChunkLoader>();
+    private final Int2ObjectOpenHashMap<ChunkLoader> loaders = new Int2ObjectOpenHashMap<>();
 
     private final Int2IntOpenHashMap loaderCounter = new Int2IntOpenHashMap();
 
-    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<ChunkLoader>> chunkLoaders = new Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<ChunkLoader>>();
+    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<ChunkLoader>> chunkLoaders = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<Player>> playerLoaders = new Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<Player>>();
+    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<Player>> playerLoaders = new Long2ObjectOpenHashMap<>();
 
-    private Long2ObjectOpenHashMap<List<DataPacket>> chunkPackets = new Long2ObjectOpenHashMap<List<DataPacket>>();
+    private Long2ObjectOpenHashMap<List<DataPacket>> chunkPackets = new Long2ObjectOpenHashMap<>();
 
     private final Long2LongOpenHashMap unloadQueue = new Long2LongOpenHashMap();
 
@@ -223,7 +223,7 @@ public class Level implements ChunkManager, Metadatable {
     private Vector3 mutableBlock;
 
     // Avoid OOM, gc'd references result in whole chunk being sent (possibly higher cpu)
-    private Long2ObjectOpenHashMap<SoftReference<Short2ObjectOpenHashMap<Object>>> changedBlocks = new Long2ObjectOpenHashMap<SoftReference<Short2ObjectOpenHashMap<Object>>>();
+    private Long2ObjectOpenHashMap<SoftReference<Short2ObjectOpenHashMap<Object>>> changedBlocks = new Long2ObjectOpenHashMap<>();
     // Storing the vector is redundant
     private final Object changeBlocksPresent = new Object();
     // Storing extra blocks past 512 is redundant
@@ -237,7 +237,7 @@ public class Level implements ChunkManager, Metadatable {
     private final TreeSet<BlockUpdateEntry> updateQueue = new TreeSet<>();
     //private final Map<BlockVector3, Integer> updateQueueIndex = new HashMap<>();
 
-    private final Long2ObjectOpenHashMap<Map<Integer, Player>> chunkSendQueue = new Long2ObjectOpenHashMap<Map<Integer, Player>>();
+    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<Player>> chunkSendQueue = new Long2ObjectOpenHashMap<>();
     private final Long2BooleanOpenHashMap chunkSendTasks = new Long2BooleanOpenHashMap();
 
     private final Long2BooleanOpenHashMap chunkPopulationQueue = new Long2BooleanOpenHashMap();
@@ -263,7 +263,7 @@ public class Level implements ChunkManager, Metadatable {
     private Map<Long, Integer> chunkTickList = new HashMap<>();
     private int chunksPerTicks;
     private boolean clearChunksOnTick;
-    private final HashMap<Integer, Class<? extends Block>> randomTickBlocks = new HashMap<Integer, Class<? extends Block>>() {
+    private final Int2ObjectOpenHashMap<Class<? extends Block>> randomTickBlocks = new Int2ObjectOpenHashMap<Class<? extends Block>>() {
         {
             put(Block.GRASS, BlockGrass.class);
             put(Block.FARMLAND, BlockFarmland.class);
@@ -1913,7 +1913,7 @@ public class Level implements ChunkManager, Metadatable {
         Tag tag = item.getNamedTagEntry("CanDestroy");
         if (tag instanceof ListTag) {
             boolean canBreak = false;
-            for (Tag v : ((ListTag<Tag>) tag).getAll()) {
+            for (Tag v : ((ListTag<Tag>) tag).getAllFast()) {
                 if (v instanceof StringTag) {
                     Item entry = Item.fromString(((StringTag) v).data);
                     if (entry.getId() > 0 && entry.getBlock() != null && entry.getBlock().getId() == target.getId()) {
@@ -2113,7 +2113,7 @@ public class Level implements ChunkManager, Metadatable {
         Tag tag = item.getNamedTagEntry("CanPlaceOn");
         if (tag instanceof ListTag) {
             boolean canPlace = false;
-            for (Tag v : ((ListTag<Tag>) tag).getAll()) {
+            for (Tag v : ((ListTag<Tag>) tag).getAllFast()) {
                 if (v instanceof StringTag) {
                     Item entry = Item.fromString(((StringTag) v).data);
                     if (entry.getId() > 0 && entry.getBlock() != null && entry.getBlock().getId() == target.getId()) {
@@ -2516,10 +2516,10 @@ public class Level implements ChunkManager, Metadatable {
         }
 
         if (!this.chunkSendQueue.containsKey(index)) {
-            this.chunkSendQueue.put(index, new HashMap<>());
+            this.chunkSendQueue.put(index, new Int2ObjectOpenHashMap<>());
         }
 
-        this.chunkSendQueue.get(index).put(player.getLoaderId(), player);
+        this.chunkSendQueue.get(index).put((int) player.getLoaderId(), player);
     }
 
     private void sendChunkFromCache(int x, int z) {

@@ -303,13 +303,13 @@ public class Server implements ActionListener{
     private Config properties;
     private Config config;
 
-    private final Object2ObjectOpenHashMap<String, Player> players = new Object2ObjectOpenHashMap<String, Player>();
+    private final Object2ObjectOpenHashMap<String, Player> players = new Object2ObjectOpenHashMap<>();
 
-    private final Object2ObjectOpenHashMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<UUID, Player>();
+    private final Object2ObjectOpenHashMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<>();
 
-    private final Int2ObjectOpenHashMap<String> identifier = new Int2ObjectOpenHashMap<String>();
+    private final Int2ObjectOpenHashMap<String> identifier = new Int2ObjectOpenHashMap<>();
 
-    private final Int2ObjectOpenHashMap<Level> levels = new Int2ObjectOpenHashMap<Level>();
+    private final Int2ObjectOpenHashMap<Level> levels = new Int2ObjectOpenHashMap<>();
 
     private final ServiceManager serviceManager = new NKServiceManager();
 
@@ -317,7 +317,7 @@ public class Server implements ActionListener{
 
     private Thread currentThread;
     private Object2ObjectOpenHashMap<String, Object> jupiterconfig;
-    private ObjectArrayList<Player> loggedInPlayers = new ObjectArrayList<Player>();
+    private ObjectArrayList<Player> loggedInPlayers = new ObjectArrayList<>();
 
     private boolean printPackets = false;
 

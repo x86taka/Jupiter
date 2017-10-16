@@ -9,6 +9,7 @@ import cn.nukkit.Server;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.Utils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -19,8 +20,8 @@ public class BaseLang {
 
     protected final String langName;
 
-    protected Map<String, String> lang = new HashMap<>();
-    protected Map<String, String> fallbackLang = new HashMap<>();
+    protected Object2ObjectOpenHashMap<String, String> lang = new Object2ObjectOpenHashMap<>();
+    protected Object2ObjectOpenHashMap<String, String> fallbackLang = new Object2ObjectOpenHashMap<>();
 
 
     public BaseLang(String lang) {
@@ -36,11 +37,11 @@ public class BaseLang {
 
         if (path == null) {
             path = "lang/";
-            this.lang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, this.langName, "/lang.ini")));
-            this.fallbackLang = this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, fallback, "/lang.ini")));
+            this.lang = new Object2ObjectOpenHashMap(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, this.langName, "/lang.ini"))));
+            this.fallbackLang = new Object2ObjectOpenHashMap(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, fallback, "/lang.ini"))));
         } else {
-            this.lang = this.loadLang(FastAppender.get(path, this.langName, "/lang.ini"));
-            this.fallbackLang = this.loadLang(FastAppender.get(path, fallback, "/lang.ini"));
+            this.lang = new Object2ObjectOpenHashMap(this.loadLang(FastAppender.get(path, this.langName, "/lang.ini")));
+            this.fallbackLang = new Object2ObjectOpenHashMap(this.loadLang(FastAppender.get(path, fallback, "/lang.ini")));
         }
 
 

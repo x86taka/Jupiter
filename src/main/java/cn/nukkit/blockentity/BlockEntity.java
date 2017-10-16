@@ -1,8 +1,6 @@
 package cn.nukkit.blockentity;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -13,6 +11,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.ChunkException;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * @author MagicDroidX
@@ -46,8 +45,8 @@ public abstract class BlockEntity extends Position {
 
     public static long count = 1;
 
-    private static final Map<String, Class<? extends BlockEntity>> knownBlockEntities = new HashMap<>();
-    private static final Map<String, String> shortNames = new HashMap<>();
+    private static final Object2ObjectOpenHashMap<String, Class<? extends BlockEntity>> knownBlockEntities = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
 
     public FullChunk chunk;
     public String name;

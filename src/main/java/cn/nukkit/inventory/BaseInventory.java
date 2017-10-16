@@ -37,7 +37,7 @@ public abstract class BaseInventory implements Inventory {
 
     protected final String title;
 
-    public final Int2ObjectOpenHashMap<Item> slots = new Int2ObjectOpenHashMap<Item>();
+    public final Int2ObjectOpenHashMap<Item> slots = new Int2ObjectOpenHashMap<>();
 
     protected final Set<Player> viewers = new HashSet<>();
 

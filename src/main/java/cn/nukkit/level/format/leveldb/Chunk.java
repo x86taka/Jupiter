@@ -1,5 +1,15 @@
 package cn.nukkit.level.format.leveldb;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
@@ -15,12 +25,8 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.*;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 /**
  * author: MagicDroidX
@@ -103,9 +109,9 @@ public class Chunk extends BaseFullChunk {
             this.heightMap = ints;
         }
 
-        this.NBTentities = entityData == null ? new ArrayList<>() : entityData;
-        this.NBTtiles = tileData == null ? new ArrayList<>() : tileData;
-        this.extraData = extraData == null ? new HashMap<>() : extraData;
+        this.NBTentities = entityData == null ? new ObjectArrayList<>() : new ObjectArrayList<>(entityData);
+        this.NBTtiles = tileData == null ? new ObjectArrayList<>() : new ObjectArrayList<>(tileData);
+        this.extraData = extraData == null ? new Int2IntOpenHashMap() : new Int2IntOpenHashMap(extraData);
     }
 
     @Override

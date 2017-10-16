@@ -265,8 +265,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public static final int CRAFTING_ENCHANT = 3;
     public static final int CRAFTING_STONECUTTER = 4;//使用されていない(PMMPから引用)
 
-    public static final float DEFAULT_SPEED = 0.2f;//オリジナル: 0.1 (wikiのわずかに速度が上昇という記述による)
-    public static final float MAXIMUM_SPEED = 0.6f;//オリジナル:0.5 (wikiのわずかに速度が上昇という記述による)
+    public static final float DEFAULT_SPEED = 0.1f;
+    public static final float MAXIMUM_SPEED = 0.5f;
 
     public static final int PERMISSION_CUSTOM = 3;
     public static final int PERMISSION_OPERATOR = 2;
@@ -3116,12 +3116,18 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (!BlockEntity.SIGN.equals(nbt.getString("id"))) {
                             ((BlockEntitySign) t).spawnTo(this);
                         } else {
-                           blockEntity = t;
+                            String[] texts = nbt.getString("Text").split("\n");
+                            blockEntity = t;
 
-                            signText1 = this.removeFormat ? TextFormat.clean(nbt.getString("Text1")) : nbt.getString("Text1");
-                            signText2 = this.removeFormat ? TextFormat.clean(nbt.getString("Text2")) : nbt.getString("Text2");
-                            signText3 = this.removeFormat ? TextFormat.clean(nbt.getString("Text3")) : nbt.getString("Text3");
-                            signText4 = this.removeFormat ? TextFormat.clean(nbt.getString("Text4")) : nbt.getString("Text4");
+                            signText1 = texts.length > 0 ? texts[0] : "";
+                            signText2 = texts.length > 1 ? texts[1] : "";
+                            signText3 = texts.length > 2 ? texts[2] : "";
+                            signText4 = texts.length > 3 ? texts[3] : "";
+
+                            signText1 = this.removeFormat ? TextFormat.clean(signText1) : signText1;
+                            signText2 = this.removeFormat ? TextFormat.clean(signText2) : signText2;
+                            signText3 = this.removeFormat ? TextFormat.clean(signText3) : signText3;
+                            signText4 = this.removeFormat ? TextFormat.clean(signText4) : signText4;
 
                             SignChangeEvent signChangeEvent = new SignChangeEvent(blockEntity.getBlock(), this, new String[]{
                                     signText1,
@@ -5459,5 +5465,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         ShowProfilePacket pk = new ShowProfilePacket();
         pk.xuid = getLoginChainData().getXUID();
         this.dataPacket(pk);
+    }
+
+    /**
+     * プレイヤーのスポーン地点からの距離を取得します。
+     * @return double
+     */
+    public double getPlainDistanceFromSpawn(){
+        Position spawn = this.level.getSafeSpawn();
+        Position pos = this.getPosition();
+
+        double x = pos.x - spawn.x;
+        double z  = spawn.z - pos.z;
+
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
     }
 }

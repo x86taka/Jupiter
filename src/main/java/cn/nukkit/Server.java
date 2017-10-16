@@ -30,6 +30,7 @@ import com.google.common.base.Preconditions;
 
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
+import cn.nukkit.blockentity.BlockEntityBanner;
 import cn.nukkit.blockentity.BlockEntityBeacon;
 import cn.nukkit.blockentity.BlockEntityBrewingStand;
 import cn.nukkit.blockentity.BlockEntityCauldron;
@@ -77,6 +78,7 @@ import cn.nukkit.entity.boss.EntityElderGuardian;
 import cn.nukkit.entity.boss.EntityEnderDragon;
 import cn.nukkit.entity.boss.EntityWither;
 import cn.nukkit.entity.data.Skin;
+import cn.nukkit.entity.item.EntityArmorStand;
 import cn.nukkit.entity.item.EntityEnderCrystal;
 import cn.nukkit.entity.item.EntityExpBottle;
 import cn.nukkit.entity.item.EntityFallingBlock;
@@ -2853,6 +2855,8 @@ public class Server implements ActionListener{
         Entity.registerEntity("Boat", EntityBoat.class);
 
         Entity.registerEntity("Lightning", EntityLightning.class);
+
+        Entity.registerEntity("ArmorStand", EntityArmorStand.class);
     }
 
     private void registerBlockEntities() {
@@ -2872,6 +2876,7 @@ public class Server implements ActionListener{
         BlockEntity.registerBlockEntity(BlockEntity.DISPENSER, BlockEntityDispenser.class);
         BlockEntity.registerBlockEntity(BlockEntity.DROPPER, BlockEntityDropper.class);
         BlockEntity.registerBlockEntity(BlockEntity.COMMAND_BLOCK, BlockEntityCommandBlock.class);
+        BlockEntity.registerBlockEntity(BlockEntity.BANNER, BlockEntityBanner.class);
     }
 
     /**

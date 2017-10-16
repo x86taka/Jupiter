@@ -336,8 +336,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
     public static final int OBSERVER = 251;
     public static final int STRUCTURE_BLOCK  = 252;
-    //TODO 1.2 防具立て
-//	public static final int ARMOR_STAND = 0;
+
 
     public static Class[] list = null;
     public static Block[] fullList = null;
@@ -541,7 +540,8 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[COAL_BLOCK] = BlockCoal.class; //173
             list[PACKED_ICE] = BlockIcePacked.class; //174
             list[DOUBLE_PLANT] = BlockDoublePlant.class; //175
-
+            list[STANDING_BANNER] = BlockBannerStanding.class; //176
+            list[WALL_BANNER] = BlockBannerWall.class; //177
             list[DAYLIGHT_DETECTOR_INVERTED] = BlockDaylightDetectorInverted.class; //178
             list[RED_SANDSTONE] = BlockRedSandstone.class; //179
             list[RED_SANDSTONE_STAIRS] = BlockStairsRedSandstone.class; //180
@@ -598,9 +598,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[BEETROOT_BLOCK] = BlockBeetroot.class; //244
             list[GLOWING_OBSIDIAN] = BlockObsidianGlowing.class; //246
             list[NETHER_REACTOR] = BlockNetherReactor.class; //247 Should not be removed
-
-            //TODO 1.2
-//            list[ARMOR_STAND] = BlockArmorStand.class; //247 Should not be removed
 
             //TODO: list[PISTON_EXTENSION] = BlockPistonExtension.class; //250
 

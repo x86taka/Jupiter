@@ -74,6 +74,7 @@ import cn.nukkit.event.player.PlayerAchievementAwardedEvent;
 import cn.nukkit.event.player.PlayerAnimationEvent;
 import cn.nukkit.event.player.PlayerBedEnterEvent;
 import cn.nukkit.event.player.PlayerBedLeaveEvent;
+import cn.nukkit.event.player.PlayerBlockPickEvent;
 import cn.nukkit.event.player.PlayerChatEvent;
 import cn.nukkit.event.player.PlayerChunkRequestEvent;
 import cn.nukkit.event.player.PlayerCommandPreprocessEvent;
@@ -950,7 +951,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected boolean switchLevel(Level targetLevel) {
         Level oldLevel = this.level;
         if (super.switchLevel(targetLevel)) {
-            for (long index : new ArrayList<>(this.usedChunks.keySet())) {
+            for (long index : this.usedChunks.keySet()) {
                 int chunkX = Level.getHashX(index);
                 int chunkZ = Level.getHashZ(index);
                 this.unloadChunk(chunkX, chunkZ, oldLevel);
@@ -2264,6 +2265,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
 
             Item item;
+            Block block;
             packetswitch:
             switch (packet.pid()) {
                 case ProtocolInfo.LOGIN_PACKET:
@@ -2515,7 +2517,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 ((BlockNoteblock)target).emitSound();
                                 break;
                             }
-                            Block block = target.getSide(face);
+                            block = target.getSide(face);
                             if (block.getId() == Block.FIRE) {
                                 this.level.setBlock(block, new BlockAir(), true);
                                 break;
@@ -2751,19 +2753,34 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.BLOCK_PICK_REQUEST_PACKET:
                     BlockPickRequestPacket pickRequestPacket = (BlockPickRequestPacket) packet;
-                    if (this.isCreative()) {
-                        BlockEntity be = this.getLevel().getBlockEntity(new Vector3(pickRequestPacket.x, pickRequestPacket.y, pickRequestPacket.z));
-                        if (be != null) {
-                            CompoundTag nbt = be.getCleanedNBT();
-                            if(nbt != null){
-                                item = this.getInventory().getItemInHand();
-                                item.setCustomBlockData(nbt);
-                                item.setLore("+(DATA)");
-                                this.getInventory().setItemInHand(item);
+                    block = this.level.getBlock(this.temporalVector.setComponents(pickRequestPacket.x, pickRequestPacket.y, pickRequestPacket.z));
+                    item = block.toItem();
+
+                    if (pickRequestPacket.addUserData) {
+                        BlockEntity blockEntity = this.getLevel().getBlockEntity(new Vector3(pickRequestPacket.x, pickRequestPacket.y, pickRequestPacket.z));
+                        if (blockEntity != null) {
+                            CompoundTag nbt = blockEntity.getCleanedNBT();
+                            if (nbt != null) {
+                                Item item1 = this.getInventory().getItemInHand();
+                                item1.setCustomBlockData(nbt);
+                                item1.setLore("+(DATA)");
+                                this.getInventory().setItemInHand(item1);
                             }
                         }
                     }
+
+                    PlayerBlockPickEvent pickEvent = new PlayerBlockPickEvent(this, block, item);
+                    if (!this.isCreative()) {
+                        pickEvent.setCancelled();
+                    }
+
+                    this.server.getPluginManager().callEvent(pickEvent);
+
+                    if (!pickEvent.isCancelled()) {
+                        this.inventory.setItemInHand(pickEvent.getItem());
+                    }
                     break;
+
                 case ProtocolInfo.ANIMATE_PACKET:
                     if (!this.spawned || !this.isAlive()) {
                         break;
@@ -3178,7 +3195,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     BlockEntity blockEntityItemFrame = this.level.getBlockEntity(vector3);
                     BlockEntityItemFrame itemFrame = (BlockEntityItemFrame) blockEntityItemFrame;
                     if (itemFrame != null) {
-                        Block block = itemFrame.getBlock();
+                        block = itemFrame.getBlock();
                         Item itemDrop = itemFrame.getItem();
                         ItemFrameDropItemEvent itemFrameDropItemEvent = new ItemFrameDropItemEvent(this, block, itemFrame, itemDrop);
                         this.server.getPluginManager().callEvent(itemFrameDropItemEvent);
@@ -3343,7 +3360,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                     }
 
                                     Block target = this.level.getBlock(blockVector.asVector3());
-                                    Block block = target.getSide(face);
+                                    block = target.getSide(face);
 
                                     this.level.sendBlocks(new Player[]{this}, new Block[]{target, block}, UpdateBlockPacket.FLAG_ALL_PRIORITY);
 
@@ -3648,7 +3665,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     CommandBlockUpdatePacket update = (CommandBlockUpdatePacket) packet;
                     if (update.isBlock) {
                         Vector3 commandPos = new Vector3(update.x, update.y, update.z);
-                        Block block = this.level.getBlock(commandPos);
+                        block = this.level.getBlock(commandPos);
                         if (block instanceof BlockCommand) {
                             BlockEntityCommandBlock blockEntity = ((BlockCommand)block).getBlockEntity();
                             if (blockEntity == null) {
@@ -3711,8 +3728,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
 
     public BufferedImage createMap(ItemMap mapItem) {
-        List<Integer> ids = new ArrayList<Integer>();
-        List<BaseFullChunk> chunks = new ArrayList<BaseFullChunk>();
+        List<Integer> ids = new ArrayList<>();
+        List<BaseFullChunk> chunks = new ArrayList<>();
         Color[][] blockColors = new Color[16][16];
         BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D)img.getGraphics();
@@ -5472,12 +5489,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return double
      */
     public double getPlainDistanceFromSpawn(){
-        Position spawn = this.level.getSafeSpawn();
-        Position pos = this.getPosition();
-
-        double x = pos.x - spawn.x;
-        double z  = spawn.z - pos.z;
-
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
+        return this.distance(this.level.getSafeSpawn());
     }
 }

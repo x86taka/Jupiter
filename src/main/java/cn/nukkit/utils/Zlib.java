@@ -29,6 +29,7 @@ public abstract class Zlib {
             }
         } finally {
             deflater.end();
+            bos.close();
         }
         return bos.array;
     }

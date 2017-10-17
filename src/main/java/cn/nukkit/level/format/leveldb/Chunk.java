@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +24,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
@@ -336,7 +336,7 @@ public class Chunk extends BaseFullChunk {
             List<CompoundTag> entities = new ArrayList<>();
             List<CompoundTag> tiles = new ArrayList<>();
 
-            Map<Integer, Integer> extraDataMap = new HashMap<>();
+            Int2IntMap extraDataMap = new Int2IntOpenHashMap();
 
             if (provider instanceof LevelDB) {
                 byte[] entityData = ((LevelDB) provider).getDatabase().get(EntitiesKey.create(chunkX, chunkZ).toArray());
@@ -469,9 +469,9 @@ public class Chunk extends BaseFullChunk {
                 ExtraDataKey extraDataKey = ExtraDataKey.create(this.getX(), this.getZ());
                 if (!this.getBlockExtraDataArray().isEmpty()) {
                     BinaryStream extraData = new BinaryStream();
-                    Map<Integer, Integer> extraDataArray = this.getBlockExtraDataArray();
+                    Int2IntMap extraDataArray = new Int2IntOpenHashMap(this.getBlockExtraDataArray());
                     extraData.putInt(extraDataArray.size());
-                    for (Integer key : extraDataArray.keySet()) {
+                    for (int key : extraDataArray.keySet()) {
                         extraData.putInt(key);
                         extraData.putShort(extraDataArray.get(key));
                     }

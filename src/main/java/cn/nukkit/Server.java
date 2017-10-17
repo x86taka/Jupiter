@@ -16,7 +16,6 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -195,11 +194,16 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 /**
  * @author MagicDroidX
@@ -296,7 +300,7 @@ public class Server implements ActionListener{
     private final String pluginPath;
     private String defaultplugin = null;
 
-    private final Set<UUID> uniquePlayers = new HashSet<>();
+    private final ObjectSet<UUID> uniquePlayers = new ObjectOpenHashSet<>();
 
     private QueryHandler queryHandler;
 
@@ -305,21 +309,21 @@ public class Server implements ActionListener{
     private Config properties;
     private Config config;
 
-    private final Object2ObjectOpenHashMap<String, Player> players = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<String, Player> players = new Object2ObjectOpenHashMap<>();
 
-    private final Object2ObjectOpenHashMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<>();
+    private final Object2ObjectMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<>();
 
-    private final Int2ObjectOpenHashMap<String> identifier = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<String> identifier = new Int2ObjectOpenHashMap<>();
 
-    private final Int2ObjectOpenHashMap<Level> levels = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<Level> levels = new Int2ObjectOpenHashMap<>();
 
     private final ServiceManager serviceManager = new NKServiceManager();
 
     private Level defaultLevel = null;
 
     private Thread currentThread;
-    private Object2ObjectOpenHashMap<String, Object> jupiterconfig;
-    private ObjectArrayList<Player> loggedInPlayers = new ObjectArrayList<>();
+    private Object2ObjectMap<String, Object> jupiterconfig;
+    private ObjectList<Player> loggedInPlayers = new ObjectArrayList<>();
 
     private boolean printPackets = false;
 
@@ -636,7 +640,7 @@ public class Server implements ActionListener{
                     seed = System.currentTimeMillis();
                 }
 
-                Map<String, Object> options = new HashMap<>();
+                Object2ObjectMap<String, Object> options = new Object2ObjectOpenHashMap<>();
                 String[] opts = ((String) this.getConfig(FastAppender.get("worlds.", name, ".generator"), Generator.getGenerator("default").getSimpleName())).split(":");
                 Class<? extends Generator> generator = Generator.getGenerator(opts[0]);
                 int len = opts.length;
@@ -867,7 +871,7 @@ public class Server implements ActionListener{
 
 
     public int broadcast(String message, String permissions) {
-        Set<CommandSender> recipients = new HashSet<>();
+        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -885,7 +889,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcast(TextContainer message, String permissions) {
-        Set<CommandSender> recipients = new HashSet<>();
+        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -903,7 +907,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastPopup(String message, String permissions) {
-        Set<Player> recipients = new HashSet<>();
+        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -921,7 +925,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastTip(String message, String permissions) {
-        Set<Player> recipients = new HashSet<>();
+        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -939,7 +943,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastTitle(String message, String permissions) {
-        Set<Player> recipients = new HashSet<>();
+        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -957,7 +961,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastSubtitle(String message, String permissions) {
-        Set<Player> recipients = new HashSet<>();
+        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -975,7 +979,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastImportantMessage(String message, String permissions) {
-        Set<CommandSender> recipients = new HashSet<>();
+        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -1044,7 +1048,7 @@ public class Server implements ActionListener{
         byte[] data;
         data = Binary.appendBytes(payload);
 
-        List<String> targets = new ArrayList<>();
+        ObjectList<String> targets = new ObjectArrayList<>();
         for (Player p : players) {
             if (p.isConnected()) {
                 targets.add(this.identifier.get(p.rawHashCode()));
@@ -1214,7 +1218,7 @@ public class Server implements ActionListener{
             this.getLogger().debug("Disabling all plugins");
             this.pluginManager.disablePlugins();
 
-            for (Player player : new ArrayList<>(this.players.values())) {
+            for (Player player : this.players.values()) {
                 player.close(player.getLeaveMessage(), (String) this.getConfig("settings.shutdown-message", "Server closed"));
             }
 
@@ -2041,7 +2045,7 @@ public class Server implements ActionListener{
         return new HashMap<>(playerList);
     }
 
-    public Object2ObjectOpenHashMap<UUID, Player> getFastOnlinePlayers() {
+    public Object2ObjectMap<UUID, Player> getFastOnlinePlayers() {
         return playerList;
     }
 
@@ -2194,6 +2198,10 @@ public class Server implements ActionListener{
     }
 
     public Map<Integer, Level> getLevels() {
+        return levels;
+    }
+
+    public Int2ObjectMap<Level> getFastLevels() {
         return levels;
     }
 

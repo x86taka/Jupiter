@@ -132,11 +132,16 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 
 /**
@@ -169,15 +174,15 @@ public class Level implements ChunkManager, Metadatable {
     // Lower values use less memory
     public static final int MAX_BLOCK_CACHE = 512;
 
-    private final Long2ObjectOpenHashMap<BlockEntity> blockEntities = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<BlockEntity> blockEntities = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Player> players = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<Player> players = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Entity> entities = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<Entity> entities = new Long2ObjectOpenHashMap<>();
 
-    public final Long2ObjectOpenHashMap<Entity> updateEntities = new Long2ObjectOpenHashMap<>();
+    public final Long2ObjectMap<Entity> updateEntities = new Long2ObjectOpenHashMap<>();
 
-    public final Long2ObjectOpenHashMap<BlockEntity> updateBlockEntities = new Long2ObjectOpenHashMap<>();
+    public final Long2ObjectMap<BlockEntity> updateBlockEntities = new Long2ObjectOpenHashMap<>();
 
     // Use a weak map to avoid OOM
     private final ConcurrentMap<Object, Object> blockCache = CacheBuilder.newBuilder()
@@ -199,15 +204,15 @@ public class Level implements ChunkManager, Metadatable {
 
     private LevelProvider provider;
 
-    private final Int2ObjectOpenHashMap<ChunkLoader> loaders = new Int2ObjectOpenHashMap<>();
+    private final Int2ObjectMap<ChunkLoader> loaders = new Int2ObjectOpenHashMap<>();
 
-    private final Int2IntOpenHashMap loaderCounter = new Int2IntOpenHashMap();
+    private final Int2IntMap loaderCounter = new Int2IntOpenHashMap();
 
-    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<ChunkLoader>> chunkLoaders = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<Int2ObjectOpenHashMap<ChunkLoader>> chunkLoaders = new Long2ObjectOpenHashMap<>();
 
-    private final Long2ObjectOpenHashMap<Int2ObjectOpenHashMap<Player>> playerLoaders = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<Int2ObjectOpenHashMap<Player>> playerLoaders = new Long2ObjectOpenHashMap<>();
 
-    private Long2ObjectOpenHashMap<List<DataPacket>> chunkPackets = new Long2ObjectOpenHashMap<>();
+    private Long2ObjectMap<ObjectList<DataPacket>> chunkPackets = new Long2ObjectOpenHashMap<>();
 
     private final Long2LongOpenHashMap unloadQueue = new Long2LongOpenHashMap();
 
@@ -663,7 +668,7 @@ public class Level implements ChunkManager, Metadatable {
     public Map<Integer, Player> getChunkPlayers(int chunkX, int chunkZ) {
         long index = Level.chunkHash(chunkX, chunkZ);
         if (this.playerLoaders.containsKey(index)) {
-            return new HashMap<>(this.playerLoaders.get(index));
+            return this.playerLoaders.get(index);
         } else {
             return new HashMap<>();
         }
@@ -681,7 +686,7 @@ public class Level implements ChunkManager, Metadatable {
     public void addChunkPacket(int chunkX, int chunkZ, DataPacket packet) {
         long index = Level.chunkHash(chunkX, chunkZ);
         if (!this.chunkPackets.containsKey(index)) {
-            this.chunkPackets.put(index, new ArrayList<>());
+            this.chunkPackets.put(index, new ObjectArrayList<>());
         }
         this.chunkPackets.get(index).add(packet);
     }

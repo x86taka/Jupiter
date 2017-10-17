@@ -1,13 +1,13 @@
 package cn.nukkit.level.format.generic;
 
-import cn.nukkit.level.format.FullChunk;
-import cn.nukkit.level.format.LevelProvider;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.HashMap;
-import java.util.Map;
+
+import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.format.LevelProvider;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -27,7 +27,7 @@ abstract public class BaseRegionLoader {
     protected RandomAccessFile randomAccessFile;
     protected int lastSector;
     protected LevelProvider levelProvider;
-    protected final Map<Integer, Integer[]> locationTable = new HashMap<>();
+    protected final Int2ObjectMap<Integer[]> locationTable = new Int2ObjectOpenHashMap<>();
 
     public long lastUsed;
 

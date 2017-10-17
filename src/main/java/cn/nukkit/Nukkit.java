@@ -1,7 +1,5 @@
 package cn.nukkit;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +9,8 @@ import cn.nukkit.command.CommandReader;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.ServerKiller;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectCollection;
 
 /**
  * `_   _       _    _    _ _
@@ -48,7 +48,7 @@ public class Nukkit {
     public static boolean shortTitle = false;
     public static int DEBUG = 1;
 
-    private static Collection<Callable<Server>> jobs = new ArrayList<Callable<Server>>();
+    private static ObjectCollection<Callable<Server>> jobs = new ObjectArrayList<Callable<Server>>();
     private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {

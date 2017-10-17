@@ -68,7 +68,9 @@ import cn.nukkit.utils.MainLogger;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsHistory;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
@@ -220,12 +222,12 @@ public abstract class Entity extends Location implements Metadatable {
 
     public static long entityCount = 1;
 
-    private static final Object2ObjectOpenHashMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<>();
-    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<String, Class<? extends Entity>> knownEntities = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
 
-    protected Int2ObjectOpenHashMap<Player> hasSpawned = new Int2ObjectOpenHashMap<>();
+    protected Int2ObjectMap<Player> hasSpawned = new Int2ObjectOpenHashMap<>();
 
-    protected final Int2ObjectOpenHashMap<Effect> effects = new Int2ObjectOpenHashMap<>();
+    protected final Int2ObjectMap<Effect> effects = new Int2ObjectOpenHashMap<>();
 
     protected long id;
 
@@ -1801,7 +1803,7 @@ public abstract class Entity extends Location implements Metadatable {
 
             if (!this.justCreated) {
                 Map<Integer, Player> newChunk = this.level.getChunkPlayers((int) this.x >> 4, (int) this.z >> 4);
-                for (Player player : new ArrayList<>(this.hasSpawned.values())) {
+                for (Player player : this.hasSpawned.values()) {
                     if (!newChunk.containsKey(player.getLoaderId())) {
                         this.despawnFrom(player);
                     } else {
@@ -1981,7 +1983,7 @@ public abstract class Entity extends Location implements Metadatable {
         for (Player player : this.hasSpawned.values()) {
             this.spawnTo(player);
         }
-        this.hasSpawned = new Int2ObjectOpenHashMap<Player>();
+        this.hasSpawned = new Int2ObjectOpenHashMap<>();
     }
 
     public void spawnToAll() {

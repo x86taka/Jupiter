@@ -33,6 +33,7 @@ import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.BlockUpdateEntry;
 import cn.nukkit.utils.ChunkException;
 import cn.nukkit.utils.Zlib;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
@@ -126,7 +127,7 @@ public class Chunk extends BaseChunk {
             }
         }
 
-        Int2IntOpenHashMap extraData = new Int2IntOpenHashMap();
+        Int2IntMap extraData = new Int2IntOpenHashMap();
 
         if (!this.nbt.contains("ExtraData") || !(this.nbt.get("ExtraData") instanceof ByteArrayTag)) {
             this.nbt.putByteArray("ExtraData", Binary.writeInt(0));

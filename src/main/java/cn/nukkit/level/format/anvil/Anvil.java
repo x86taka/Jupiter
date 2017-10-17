@@ -22,6 +22,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.ChunkException;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 /**
@@ -30,9 +31,9 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
  */
 public class Anvil extends BaseLevelProvider {
 
-    protected final Long2ObjectOpenHashMap<RegionLoader> regions = new Long2ObjectOpenHashMap<RegionLoader>();
+    protected final Long2ObjectMap<RegionLoader> regions = new Long2ObjectOpenHashMap<>();
 
-    protected Long2ObjectOpenHashMap<Chunk> chunks = new Long2ObjectOpenHashMap<Chunk>();
+    protected Long2ObjectMap<Chunk> chunks = new Long2ObjectOpenHashMap<>();
 
     public Anvil(Level level, String path) throws IOException {
         super(level, path);

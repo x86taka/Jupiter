@@ -3,7 +3,6 @@ package cn.nukkit.raknet.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,6 +27,12 @@ import cn.nukkit.raknet.protocol.packet.PONG_DataPacket;
 import cn.nukkit.raknet.protocol.packet.SERVER_HANDSHAKE_DataPacket;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * author: MagicDroidX
@@ -64,16 +69,16 @@ public class Session {
 
     private boolean isTemporal = true;
 
-    private final List<DataPacket> packetToSend = new ArrayList<>();
+    private final ObjectList<DataPacket> packetToSend = new ObjectArrayList<>();
 
     private boolean isActive;
 
-    private Map<Integer, Integer> ACKQueue = new HashMap<>();
-    private Map<Integer, Integer> NACKQueue = new HashMap<>();
+    private Int2IntMap ACKQueue = new Int2IntOpenHashMap();
+    private Int2IntMap NACKQueue = new Int2IntOpenHashMap();
 
     private final Map<Integer, DataPacket> recoveryQueue = new TreeMap<>();
 
-    private final Map<Integer, Map<Integer, EncapsulatedPacket>> splitPackets = new HashMap<>();
+    private final Int2ObjectMap<Int2ObjectMap<EncapsulatedPacket>> splitPackets = new Int2ObjectOpenHashMap<>();
 
     private final Map<Integer, Map<Integer, Integer>> needACK = new TreeMap<>();
 
@@ -131,14 +136,14 @@ public class Session {
             ACK pk = new ACK();
             pk.packets = new TreeMap<>(this.ACKQueue);
             this.sendPacket(pk);
-            this.ACKQueue = new HashMap<>();
+            this.ACKQueue = new Int2IntOpenHashMap();
         }
 
         if (!this.NACKQueue.isEmpty()) {
             NACK pk = new NACK();
             pk.packets = new TreeMap<>(this.NACKQueue);
             this.sendPacket(pk);
-            this.NACKQueue = new HashMap<>();
+            this.NACKQueue = new Int2IntOpenHashMap();
         }
 
         if (!this.packetToSend.isEmpty()) {
@@ -312,26 +317,26 @@ public class Session {
             return;
         }
 
-        if (!this.splitPackets.containsKey(packet.splitID)) {
+        if (!this.splitPackets.containsKey((int) packet.splitID)) {
             if (this.splitPackets.size() >= MAX_SPLIT_COUNT) {
                 return;
             }
-            this.splitPackets.put(packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {{
-                put(packet.splitIndex, packet);
+            this.splitPackets.put((int) packet.splitID, new Int2ObjectOpenHashMap<EncapsulatedPacket>() {{
+                put((int) packet.splitIndex, packet);
             }});
         } else {
-            this.splitPackets.get(packet.splitID).put(packet.splitIndex, packet);
+            this.splitPackets.get((int) packet.splitID).put((int) packet.splitIndex, packet);
         }
 
-        if (this.splitPackets.get(packet.splitID).size() == packet.splitCount) {
+        if (this.splitPackets.get((int) packet.splitID).size() == packet.splitCount) {
             EncapsulatedPacket pk = new EncapsulatedPacket();
             BinaryStream stream = new BinaryStream();
             for (int i = 0; i < packet.splitCount; i++) {
-                stream.put(this.splitPackets.get(packet.splitID).get(i).buffer);
+                stream.put(this.splitPackets.get((int) packet.splitID).get(i).buffer);
             }
             pk.buffer = stream.getBuffer();
             pk.length = pk.buffer.length;
-            this.splitPackets.remove(packet.splitID);
+            this.splitPackets.remove((int) packet.splitID);
 
             this.handleEncapsulatedPacketRoute(pk);
         }
@@ -485,8 +490,8 @@ public class Session {
 
                 int diff = dp.seqNumber - this.lastSeqNumber;
 
-                this.NACKQueue.remove(dp.seqNumber);
-                this.ACKQueue.put(dp.seqNumber, dp.seqNumber);
+                this.NACKQueue.remove((int) dp.seqNumber);
+                this.ACKQueue.put((int) dp.seqNumber, (int) dp.seqNumber);
                 this.receivedWindow.put(dp.seqNumber, dp.seqNumber);
 
                 if (diff != 1) {

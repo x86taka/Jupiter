@@ -10,14 +10,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -237,13 +234,24 @@ import cn.nukkit.utils.Zlib;
 import cn.nukkit.window.FormWindow;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2IntMap;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 /**
  * author: MagicDroidX & Box
@@ -284,11 +292,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected int windowCnt = 2;
 
-    protected Object2IntOpenHashMap<Inventory> windows;
+    protected Object2IntMap<Inventory> windows;
 
-    protected Int2ObjectOpenHashMap<Inventory> windowIndex = new Int2ObjectOpenHashMap<>();
+    protected Int2ObjectMap<Inventory> windowIndex = new Int2ObjectOpenHashMap<>();
 
-    protected Set<Integer> permanentWindows = new HashSet<>();
+    protected IntSet permanentWindows = new IntOpenHashSet();
 
     protected int messageCounter = 2;
 
@@ -296,7 +304,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public Vector3 speed = null;
 
-    public final HashSet<String> achievements = new HashSet<>();
+    public final ObjectOpenHashSet<String> achievements = new ObjectOpenHashSet<>();
 
     public int craftingType = CRAFTING_SMALL;
 
@@ -327,13 +335,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected float stepHeight = 0.6f;
 
-    public Long2BooleanOpenHashMap usedChunks = new Long2BooleanOpenHashMap();
+    public Long2BooleanMap usedChunks = new Long2BooleanOpenHashMap();
 
     protected int chunkLoadCount = 0;
-    protected Map<Long, Integer> loadQueue = new HashMap<>();
+    protected Long2IntMap loadQueue = new Long2IntOpenHashMap();
     protected int nextChunkOrderRun = 5;
 
-    protected Object2ObjectOpenHashMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<>();
+    protected Object2ObjectMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<>();
 
     protected Vector3 newPosition = null;
 
@@ -351,7 +359,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     protected boolean checkMovement = true;
 
-    private final Int2BooleanOpenHashMap needACK = new Int2BooleanOpenHashMap();
+    private final Int2BooleanMap needACK = new Int2BooleanOpenHashMap();
 
     private Map<Integer, List<DataPacket>> batchedPackets = new TreeMap<>();
 
@@ -777,7 +785,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public void sendCommandData() {
         AvailableCommandsPacket pk = new AvailableCommandsPacket();
-        Map<String, CommandDataVersions> data = new HashMap<>();
+        Object2ObjectMap<String, CommandDataVersions> data = new Object2ObjectOpenHashMap<>();
         int count = 0;
         for (Command command : this.server.getCommandMap().getCommands().values()) {
             if (!command.testPermissionSilent(this)) {
@@ -816,7 +824,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public Player(SourceInterface interfaz, Long clientID, String ip, int port) {
         super(null, new CompoundTag());
         this.interfaz = interfaz;
-        this.windows = new Object2IntOpenHashMap<Inventory>();
+        this.windows = new Object2IntOpenHashMap<>();
         this.perm = new PermissibleBase(this);
         this.server = Server.getInstance();
         this.lastBreak = Long.MAX_VALUE;
@@ -1050,7 +1058,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         int count = 0;
 
-        List<Map.Entry<Long, Integer>> entryList = new ArrayList<>(this.loadQueue.entrySet());
+        ObjectList<Map.Entry<Long, Integer>> entryList = new ObjectArrayList<>(this.loadQueue.long2IntEntrySet());
         entryList.sort(Comparator.comparingInt(Map.Entry::getValue));
 
         for (Map.Entry<Long, Integer> entry : entryList) {
@@ -1167,8 +1175,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.nextChunkOrderRun = 200;
 
-        Map<Long, Integer> newOrder = new HashMap<>();
-        Map<Long, Boolean> lastChunk = new HashMap<>(this.usedChunks);
+        Long2IntMap newOrder = new Long2IntOpenHashMap();
+        Long2BooleanMap lastChunk = this.usedChunks;
 
         int centerX = (int) this.x >> 4;
         int centerZ = (int) this.z >> 4;
@@ -1190,7 +1198,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        for (long index : new ArrayList<>(lastChunk.keySet())) {
+        for (long index : lastChunk.keySet()) {
             this.unloadChunk(Level.getHashX(index), Level.getHashZ(index));
         }
 
@@ -2040,7 +2048,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.server.getPluginManager().subscribeToPermission(Server.BROADCAST_CHANNEL_ADMINISTRATIVE, this);
         }
 
-        for (Player p : new ArrayList<>(this.server.getOnlinePlayers().values())) {
+        for (Player p : this.server.getFastOnlinePlayers().values()) {
             if (p != this && p.getName() != null && p.getName().equalsIgnoreCase(this.getName())) {
                 if (!p.kick(PlayerKickEvent.Reason.NEW_CONNECTION, "logged in from another location")) {
                     this.close(this.getLeaveMessage(), "Already connected");
@@ -2988,10 +2996,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     boolean canCraft = true;
-                    Map<String, Item> realSerialized = new HashMap<>();
+                    Object2ObjectMap<String, Item> realSerialized = new Object2ObjectOpenHashMap<>();
 
                     for (Recipe rec : recipes) {
-                        ArrayList<Item> ingredientz = new ArrayList<>();
+                        ObjectArrayList<Item> ingredientz = new ObjectArrayList<>();
 
                         if (rec == null || (((rec instanceof BigShapelessRecipe) || (rec instanceof BigShapedRecipe)) && this.craftingType == CRAFTING_SMALL)) {
                             continue;
@@ -3017,7 +3025,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
                         }
 
-                        Map<String, Item> serialized = new HashMap<>();
+                        Object2ObjectMap<String, Item> serialized = new Object2ObjectOpenHashMap<>();
 
                         for (Item ingredient : ingredientz) {
                             String hash = ingredient.getId() + ":" + ingredient.getDamage();
@@ -3276,7 +3284,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) packet;
 
                     boolean isCrafting = false;
-                    List<InventoryAction> actions = new ArrayList<>();
+                    ObjectList<InventoryAction> actions = new ObjectArrayList<>();
                     for (NetworkInventoryAction networkInventoryAction : transactionPacket.actions) {
                         try {
                             InventoryAction a = networkInventoryAction.createInventoryAction(this);
@@ -3728,8 +3736,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
 
     public BufferedImage createMap(ItemMap mapItem) {
-        List<Integer> ids = new ArrayList<>();
-        List<BaseFullChunk> chunks = new ArrayList<>();
+        ObjectList<Integer> ids = new ObjectArrayList<>();
+        ObjectList<BaseFullChunk> chunks = new ObjectArrayList<>();
         Color[][] blockColors = new Color[16][16];
         BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D)img.getGraphics();
@@ -4181,17 +4189,17 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 }
             }
 
-            for (Player player : new ArrayList<>(this.server.getOnlinePlayers().values())) {
+            for (Player player : this.server.getFastOnlinePlayers().values()) {
                 if (!player.canSee(this)) {
                     player.showPlayer(this);
                 }
             }
 
-            this.hiddenPlayers = new Object2ObjectOpenHashMap<UUID, Player>();
+            this.hiddenPlayers = new Object2ObjectOpenHashMap<>();
 
             this.removeAllWindows(true);
 
-            for (long index : new ArrayList<>(this.usedChunks.keySet())) {
+            for (long index : this.usedChunks.keySet()) {
                 int chunkX = Level.getHashX(index);
                 int chunkZ = Level.getHashZ(index);
                 this.level.unregisterChunkLoader(this, chunkX, chunkZ);
@@ -4219,11 +4227,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     this.ip,
                     String.valueOf(this.port),
                     this.getServer().getLanguage().translateString(reason)));
-            this.windows = new Object2IntOpenHashMap<Inventory>();
-            this.windowIndex = new Int2ObjectOpenHashMap<Inventory>();
+            this.windows = new Object2IntOpenHashMap<>();
+            this.windowIndex = new Int2ObjectOpenHashMap<>();
             this.usedChunks = new Long2BooleanOpenHashMap();
-            this.loadQueue = new HashMap<>();
-            this.hasSpawned = new Int2ObjectOpenHashMap<Player>();
+            this.loadQueue = new Long2IntOpenHashMap();
+            this.hasSpawned = new Int2ObjectOpenHashMap<>();
             this.spawnPosition = null;
 
             if (this.riding instanceof EntityVehicle) {
@@ -4313,7 +4321,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         String message = "death.attack.generic";
 
-        List<String> params = new ArrayList<>();
+        ObjectList<String> params = new ObjectArrayList<>();
         params.add(this.getDisplayName());
 
         EntityDamageEvent cause = this.getLastDamageCause();
@@ -4711,15 +4719,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.chunk = this.level.getChunk((int) this.x >> 4, (int) this.z >> 4, true);
 
             if (!this.justCreated) {
-                Map<Integer, Player> newChunk = this.level.getChunkPlayers((int) this.x >> 4, (int) this.z >> 4);
-                newChunk.remove(this.getLoaderId());
+                Int2ObjectMap<Player> newChunk = new Int2ObjectOpenHashMap<>(this.level.getChunkPlayers((int) this.x >> 4, (int) this.z >> 4));
+                newChunk.remove((int) this.getLoaderId());
 
                 //List<Player> reload = new ArrayList<>();
                 for (Player player : new ArrayList<>(this.hasSpawned.values())) {
-                    if (!newChunk.containsKey(player.getLoaderId())) {
+                    if (!newChunk.containsKey((int) player.getLoaderId())) {
                         this.despawnFrom(player);
                     } else {
-                        newChunk.remove(player.getLoaderId());
+                        newChunk.remove((int) player.getLoaderId());
                         //reload.add(player);
                     }
                 }
@@ -4840,7 +4848,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         Location from = this.getLocation();
         if (super.teleport(location, cause)) {
 
-            for (Inventory window : new ArrayList<>(this.windowIndex.values())) {
+            for (Inventory window : this.windowIndex.values()) {
                 if (window == this.inventory) {
                     continue;
                 }
@@ -5335,7 +5343,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         main.addProperty("Y: ", this.getY());
         main.addProperty("Z: ", this.getZ());
 
-        List<Item> item = new ArrayList<>();
+        ObjectList<Item> item = new ObjectArrayList<>();
         for(int i=0;i < this.getInventory().getContents().size();i++){
             item.add(this.getInventory().getContents().get(i));
         }
@@ -5437,8 +5445,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void removeAllWindows(boolean permanent) {
-        for (Entry<Integer, Inventory> entry : new ArrayList<>(this.windowIndex.int2ObjectEntrySet())) {
-            if (!permanent && this.permanentWindows.contains(entry.getKey())) {
+        for (Entry<Integer, Inventory> entry : this.windowIndex.int2ObjectEntrySet()) {
+            if (!permanent && this.permanentWindows.contains((int) entry.getKey())) {
                 continue;
             }
 

@@ -9,6 +9,7 @@ import cn.nukkit.Server;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.Utils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
@@ -20,8 +21,8 @@ public class BaseLang {
 
     protected final String langName;
 
-    protected Object2ObjectOpenHashMap<String, String> lang = new Object2ObjectOpenHashMap<>();
-    protected Object2ObjectOpenHashMap<String, String> fallbackLang = new Object2ObjectOpenHashMap<>();
+    protected Object2ObjectMap<String, String> lang = new Object2ObjectOpenHashMap<>();
+    protected Object2ObjectMap<String, String> fallbackLang = new Object2ObjectOpenHashMap<>();
 
 
     public BaseLang(String lang) {

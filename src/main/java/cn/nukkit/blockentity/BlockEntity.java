@@ -11,6 +11,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.ChunkException;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
@@ -45,8 +46,8 @@ public abstract class BlockEntity extends Position {
 
     public static long count = 1;
 
-    private static final Object2ObjectOpenHashMap<String, Class<? extends BlockEntity>> knownBlockEntities = new Object2ObjectOpenHashMap<>();
-    private static final Object2ObjectOpenHashMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<String, Class<? extends BlockEntity>> knownBlockEntities = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<String, String> shortNames = new Object2ObjectOpenHashMap<>();
 
     public FullChunk chunk;
     public String name;

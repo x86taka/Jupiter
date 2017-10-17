@@ -1,5 +1,21 @@
 package cn.nukkit.level.format.leveldb;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.Options;
+import org.iq80.leveldb.impl.Iq80DBFactory;
+
 import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
@@ -17,14 +33,13 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.scheduler.AsyncTask;
-import cn.nukkit.utils.*;
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.Options;
-import org.iq80.leveldb.impl.Iq80DBFactory;
-
-import java.io.*;
-import java.nio.ByteOrder;
-import java.util.*;
+import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.BinaryStream;
+import cn.nukkit.utils.ChunkException;
+import cn.nukkit.utils.LevelException;
+import cn.nukkit.utils.Utils;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -179,12 +194,12 @@ public class LevelDB implements LevelProvider {
             }
         }
 
-        Map<Integer, Integer> extra = chunk.getBlockExtraDataArray();
+        Int2IntMap extra = new Int2IntOpenHashMap(chunk.getBlockExtraDataArray());
         BinaryStream extraData;
         if (!extra.isEmpty()) {
             extraData = new BinaryStream();
             extraData.putLInt(extra.size());
-            for (Integer key : extra.values()) {
+            for (int key : extra.values()) {
                 extraData.putLInt(key);
                 extraData.putLShort(extra.get(key));
             }

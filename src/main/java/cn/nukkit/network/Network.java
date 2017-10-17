@@ -1,7 +1,6 @@
 package cn.nukkit.network;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -107,6 +106,8 @@ import cn.nukkit.network.protocol.UpdateTradePacket;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.Zlib;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 /**
  * author: MagicDroidX
@@ -128,9 +129,9 @@ public class Network {
 
     private final Server server;
 
-    private final Set<SourceInterface> interfaces = new HashSet<>();
+    private final ObjectSet<SourceInterface> interfaces = new ObjectOpenHashSet<>();
 
-    private final Set<AdvancedSourceInterface> advancedInterfaces = new HashSet<>();
+    private final ObjectSet<AdvancedSourceInterface> advancedInterfaces = new ObjectOpenHashSet<>();
 
     private double upload = 0;
     private double download = 0;

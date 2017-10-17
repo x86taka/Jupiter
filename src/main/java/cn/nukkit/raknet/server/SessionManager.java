@@ -5,9 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import cn.nukkit.raknet.RakNet;
@@ -44,6 +42,12 @@ import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.ThreadedLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.socket.DatagramPacket;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -59,7 +63,7 @@ public class SessionManager {
     protected int receiveBytes = 0;
     protected int sendBytes = 0;
 
-    protected final Map<String, Session> sessions = new HashMap<>();
+    protected final Object2ObjectMap<String, Session> sessions = new Object2ObjectOpenHashMap<>();
 
     protected String name = "";
 
@@ -70,8 +74,8 @@ public class SessionManager {
     protected long ticks = 0;
     protected long lastMeasure;
 
-    protected final Map<String, Long> block = new HashMap<>();
-    protected final Map<String, Integer> ipSec = new HashMap<>();
+    protected final Object2LongMap<String> block = new Object2LongOpenHashMap<>();
+    protected final Object2IntMap<String> ipSec = new Object2IntOpenHashMap<>();
 
     public boolean portChecking = true;
 
@@ -140,7 +144,7 @@ public class SessionManager {
         }
 
         for (String address : this.ipSec.keySet()) {
-            int count = this.ipSec.get(address);
+            int count = this.ipSec.getInt(address);
             if (count >= this.packetLimit) {
                 this.blockAddress(address);
             }
@@ -157,9 +161,9 @@ public class SessionManager {
             if (!this.block.isEmpty()) {
                 long now = System.currentTimeMillis();
                 for (String address : new ArrayList<>(this.block.keySet())) {
-                    long timeout = this.block.get(address);
+                    long timeout = this.block.getLong(address);
                     if (timeout <= now) {
-                        this.block.remove(address);
+                        this.block.removeLong(address);
                         this.getLogger().notice("Unblocked " + address);
                     } else {
                         break;
@@ -183,7 +187,7 @@ public class SessionManager {
                 }
 
                 if (this.ipSec.containsKey(source)) {
-                    this.ipSec.put(source, this.ipSec.get(source) + 1);
+                    this.ipSec.put(source, this.ipSec.getInt(source) + 1);
                 } else {
                     this.ipSec.put(source, 1);
                 }

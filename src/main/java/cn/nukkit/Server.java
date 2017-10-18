@@ -193,7 +193,9 @@ import cn.nukkit.utils.ServerKiller;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
+import cn.nukkit.window.ServerSettingsWindow;
 import co.aikar.timings.Timings;
+import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
@@ -324,6 +326,8 @@ public class Server implements ActionListener{
     private Thread currentThread;
     private Object2ObjectMap<String, Object> jupiterconfig;
     private ObjectList<Player> loggedInPlayers = new ObjectArrayList<>();
+
+    private Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> defaultServerSettings = new Int2ObjectLinkedOpenHashMap<>();
 
     private boolean printPackets = false;
 
@@ -2780,6 +2784,14 @@ public class Server implements ActionListener{
 
     public boolean shouldSavePlayerData() {
         return (Boolean) this.getConfig("player.save-player-data", true);
+    }
+
+    public Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> getDefaultServerSettings() {
+        return this.defaultServerSettings;
+    }
+
+    public void addDefaultServerSettings(ServerSettingsWindow window) {
+        this.defaultServerSettings.put(window.getId(), window);
     }
 
     /**

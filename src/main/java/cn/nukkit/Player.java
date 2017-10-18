@@ -231,6 +231,7 @@ import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
 import cn.nukkit.window.FormWindow;
+import cn.nukkit.window.ServerSettingsWindow;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
 import it.unimi.dsi.fastutil.ints.Int2BooleanMap;
@@ -424,7 +425,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     private BlockEntity blockEntity;
 
     private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<>();
-    private Int2ObjectLinkedOpenHashMap<FormWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<>();
+    private Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<>();
 
     private boolean printPackets;
 
@@ -3103,6 +3104,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     this.loginChainData = new ClientChainData(loginPacket);
+                    this.serverSettings = this.server.getDefaultServerSettings();
 
                     this.username = TextFormat.clean(this.loginChainData.getUsername());
                     this.displayName = this.username;
@@ -3159,9 +3161,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         break;
                     }
 
-                    PlayStatusPacket statusPacket = new PlayStatusPacket();
-                    statusPacket.status = PlayStatusPacket.LOGIN_SUCCESS;
-                    this.dataPacket(statusPacket);
+                    this.sendPlayStatus(PlayStatusPacket.LOGIN_SUCCESS);
 
                     ResourcePacksInfoPacket infoPacket = new ResourcePacksInfoPacket();
                     infoPacket.resourcePackEntries = this.server.getResourcePackManager().getResourceStack();
@@ -5448,7 +5448,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.activeWindows.get(id);
     }
 
-    public int addServerSettings(FormWindow window) {
+    public int addServerSettings(ServerSettingsWindow window) {
         this.serverSettings.put(window.getId(), window);
         return window.getId();
     }

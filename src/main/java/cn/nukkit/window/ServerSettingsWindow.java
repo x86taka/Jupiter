@@ -1,12 +1,12 @@
 
 package cn.nukkit.window;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.window.element.Element;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 
 
 public class ServerSettingsWindow extends CustomFormWindow {
@@ -42,14 +42,20 @@ public class ServerSettingsWindow extends CustomFormWindow {
         data.put("type", WindowType.TYPE_CUSTOM_FORM);
         data.put("title", title);
 
-        List<Element> datas = new ArrayList<Element>();
-
-        for (Element e : elements) {
-           datas.add(e);
+        if (imageType != null && imagePath != null) {
+            data.put("icon", new LinkedHashMap<String, String>(){
+                {
+                    put("type", imageType);
+                    put("data", imagePath);
+                }
+            });
         }
-        data.put("content", datas);
 
-        //TODO images
+        ObjectList<Element> elements = new ObjectArrayList<Element>();
+        for (Element e : this.elements) {
+            elements.add(e);
+        }
+        data.put("content", elements);
 
         return gson.toJson(data);
     }

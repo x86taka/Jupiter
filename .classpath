@@ -27,6 +27,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/itsu0/Desktop/Itsuru/Eclipse4.6/pleiades/leveldb.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

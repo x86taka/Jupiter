@@ -20,21 +20,25 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 public class ServerSettingsWindow extends CustomFormWindow {
 
     private String imageType;
-    private String imagePath;
-    private byte[] imageData;
+    private Object imageData;
 
     public ServerSettingsWindow(int id, String title, Element[] elements) {
         super(id, title, elements);
     }
 
-    public ServerSettingsWindow(int id, String title, Element[] elements, String imageType, String imagePath) {
+    public ServerSettingsWindow(int id, String title, Element[] elements, String imageType, String imageData) {
         super(id, title, elements);
+        if (imageType.equals("path")) {
+            this.imageData = this.getImageByteArray(new File(imageData));
+        } else {
+            this.imageData = imageData;
+        }
+
         this.imageType = imageType;
-        this.imagePath = imagePath;
     }
 
-    public void setImage(String type, String data) throws IOException {
-        if(!type.equals("path") || !(type.equals("url"))){
+    public void setImage(String imageType, String imageData) throws IOException {
+        if(!(imageType.equals("path")) || !(imageType.equals("url"))) {
             try {
                 throw new Exception("許可されていないタイプの画像です！pathもしくはurlのみが許可されています！");
             } catch (Exception e) {
@@ -42,11 +46,13 @@ public class ServerSettingsWindow extends CustomFormWindow {
             }
         }
 
-        if (type.equals("path")) {
-            this.imageData = this.getImageByteArray(new File(data));
+        if (imageType.equals("path")) {
+            this.imageData = this.getImageByteArray(new File(imageData));
+        } else {
+            this.imageData = imageData;
         }
-        this.imageType = type;
-        this.imagePath = data;
+
+        this.imageType = imageType;
     }
 
     public byte[] getImageByteArray(File file) {
@@ -67,6 +73,7 @@ public class ServerSettingsWindow extends CustomFormWindow {
         } catch (IOException e) {
             MainLogger.getLogger().logException(e);
         }
+
         return null;
     }
 
@@ -76,17 +83,10 @@ public class ServerSettingsWindow extends CustomFormWindow {
         data.put("type", WindowType.TYPE_CUSTOM_FORM);
         data.put("title", title);
 
-        if (imageType.equals("url")) {
-            data.put("icon", new LinkedHashMap<String, String>() {
-                {
-                    put("type", "url");
-                    put("data", imagePath);
-                }
-            });
-        } else if (imageType.equals("path")) {
+        if (imageType != null && imageData != null) {
             data.put("icon", new LinkedHashMap<String, Object>() {
                 {
-                    put("type", "path");
+                    put("type", imageType);
                     put("data", imageData);
                 }
             });

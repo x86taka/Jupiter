@@ -1,21 +1,21 @@
 package cn.nukkit.window.element;
 
 public class Label implements Element{
-	
-	private final String type = "label";
-	private String text;
-	
-	public Label(String text){
-		this.text = text;
-	}
-	
-	public String getText(){
-		return this.text;
-	}
-	
-	@Override
-	public String getName() {
-		return "Label";
-	}
+
+    private final String type = "label";
+    private String text;
+
+    public Label(String text){
+        this.text = text;
+    }
+
+    public String getText(){
+        return this.text;
+    }
+
+    @Override
+    public String getName() {
+        return "Label";
+    }
 
 }

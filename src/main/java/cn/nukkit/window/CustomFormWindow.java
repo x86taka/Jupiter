@@ -42,7 +42,6 @@ import cn.nukkit.window.element.StepSlider;
 public class CustomFormWindow extends FormWindow {
 
     private int id;
-    protected String title;
     protected Element[] elements;
 
     private String data;

@@ -29,7 +29,6 @@ import cn.nukkit.window.element.Button;
 public class SimpleFormWindow extends FormWindow {
 
     private int id;
-    private String title;
     private String content;
     private Button[] buttons;
     private int data;

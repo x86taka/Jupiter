@@ -27,6 +27,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/mega/Documents/GitHub/JupiterDevelopmentTeam/lib/leveldb.jar"/>
+	<classpathentry kind="lib" path="C:/Users/itsu0/OneDrive/ドキュメント/GitHub/JupiterDevelopmentTeam/lib/leveldb.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

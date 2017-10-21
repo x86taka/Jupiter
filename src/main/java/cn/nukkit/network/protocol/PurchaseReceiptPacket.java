@@ -3,13 +3,13 @@ package cn.nukkit.network.protocol;
 /**
  * @author Megapix96
  */
-public class SetLastHurtByPacket extends DataPacket {
+public class PurchaseReceiptPacket extends DataPacket {
 
-    public int unknownVarInt;
+    public String[] unknownStringArray;
 
     @Override
     public byte pid() {
-        return ProtocolInfo.SET_LAST_HURT_BY_PACKET;
+        return ProtocolInfo.PURCHASE_RECEIPT_PACKET;
     }
 
     @Override
@@ -19,7 +19,6 @@ public class SetLastHurtByPacket extends DataPacket {
 
     @Override
     public void encode() {
-        this.reset();
-        this.putVarInt(unknownVarInt);
+        
     }
 }

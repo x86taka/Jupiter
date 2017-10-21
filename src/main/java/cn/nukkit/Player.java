@@ -1058,11 +1058,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         int count = 0;
 
-        ObjectList<Map.Entry<Long, Integer>> entryList = new ObjectArrayList<>(this.loadQueue.long2IntEntrySet());
-        entryList.sort(Comparator.comparingInt(Map.Entry::getValue));
+        ObjectList<Long2IntMap.Entry> entryList = new ObjectArrayList<>(this.loadQueue.long2IntEntrySet());
+        entryList.sort(Comparator.comparingInt(Long2IntMap.Entry::getIntValue));
 
-        for (Map.Entry<Long, Integer> entry : entryList) {
-            long index = entry.getKey();
+        for (Long2IntMap.Entry entry : entryList) {
+            long index = entry.getLongKey();
 
             if (count >= this.chunksPerTick) {
                 break;

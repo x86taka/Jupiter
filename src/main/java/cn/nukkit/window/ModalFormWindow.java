@@ -33,7 +33,6 @@ import java.util.Map;
 public class ModalFormWindow extends FormWindow {
 
     private int id;
-    private String title = "ModalFormWindow Title";
     private String content = "ModalFormWindow text";
     private String upButtonText = "はい";
     private String downButtonText = "いいえ";

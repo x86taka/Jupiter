@@ -24,6 +24,11 @@ import com.google.gson.Gson;
 public abstract class FormWindow {
 
     public final Gson gson = new Gson();
+    protected String title;
+
+    public String getTitle() {
+        return this.title;
+    }
 
     /**
      * @return Map<Integer, Object> レスポンス

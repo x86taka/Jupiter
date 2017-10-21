@@ -1,6 +1,11 @@
 package cn.nukkit.network.protocol;
 
+/**
+ * @author Megapix96
+ */
 public class InitiateWebSocketConnectionPacket extends DataPacket {
+
+    public String unknownString;
 
     @Override
     public byte pid() {
@@ -14,6 +19,7 @@ public class InitiateWebSocketConnectionPacket extends DataPacket {
 
     @Override
     public void encode() {
-        //TODO
+        this.reset();
+        this.putString(unknownString);
     }
 }

@@ -2315,6 +2315,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             riding.setPositionAndRotation(this.temporalVector.setComponents(movePlayerPacket.x, movePlayerPacket.y - 1, movePlayerPacket.z), (movePlayerPacket.headYaw + 90) % 360, 0);
                         }
                     }
+                    break;
 
                 case ProtocolInfo.INTERACT_PACKET://TODO INTERACT_PACKET
                     if (!this.spawned || !this.isAlive()) {

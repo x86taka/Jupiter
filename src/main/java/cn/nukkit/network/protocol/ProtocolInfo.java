@@ -10,8 +10,8 @@ public interface ProtocolInfo {
      * Actual Minecraft: PE protocol version
      */
     int CURRENT_PROTOCOL = 137;
-    String MINECRAFT_VERSION = "v1.2.1";
-    String MINECRAFT_VERSION_NETWORK = "1.2.1";
+    String MINECRAFT_VERSION = "v1.2.3";
+    String MINECRAFT_VERSION_NETWORK = "1.2.3";
 
     byte LOGIN_PACKET = 0x01;
     byte PLAY_STATUS_PACKET = 0x02;
@@ -31,7 +31,7 @@ public interface ProtocolInfo {
     byte ADD_HANGING_ENTITY_PACKET = 0x10;
     byte TAKE_ITEM_ENTITY_PACKET = 0x11;
     byte MOVE_ENTITY_PACKET = 0x12;
-    byte MOVE_PLAYER_PACKET = 0x13;
+    byte MOVE_PLAYER_PACKET = 0x21;//13
     byte RIDER_JUMP_PACKET = 0x14;
     byte UPDATE_BLOCK_PACKET = 0x15;
     byte ADD_PAINTING_PACKET = 0x16;
@@ -45,7 +45,7 @@ public interface ProtocolInfo {
     byte INVENTORY_TRANSACTION_PACKET = 0x1e;
     byte MOB_EQUIPMENT_PACKET = 0x1f;
     byte MOB_ARMOR_EQUIPMENT_PACKET = 0x20;
-    byte INTERACT_PACKET = 0x21;
+    byte INTERACT_PACKET = 0x13;//21
     byte BLOCK_PICK_REQUEST_PACKET = 0x22;
     byte ENTITY_PICK_REQUEST_PACKET = 0x23;
     byte PLAYER_ACTION_PACKET = 0x24;

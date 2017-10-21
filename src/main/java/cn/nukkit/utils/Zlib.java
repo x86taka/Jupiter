@@ -1,12 +1,11 @@
 package cn.nukkit.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.Deflater;
 import java.util.zip.InflaterInputStream;
-
-import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
-import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
 
 
 public abstract class Zlib {
@@ -20,7 +19,7 @@ public abstract class Zlib {
         deflater.reset();
         deflater.setInput(data);
         deflater.finish();
-        FastByteArrayOutputStream bos = new FastByteArrayOutputStream(data.length);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length);
         byte[] buf = new byte[1024];
         try {
             while (!deflater.finished()) {
@@ -31,12 +30,12 @@ public abstract class Zlib {
             deflater.end();
             bos.close();
         }
-        return bos.array;
+        return bos.toByteArray();
     }
 
     public static byte[] inflate(InputStream stream) throws IOException {
         InflaterInputStream inputStream = new InflaterInputStream(stream);
-        FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int length;
 
@@ -45,7 +44,7 @@ public abstract class Zlib {
                 outputStream.write(buffer, 0, length);
             }
         } finally {
-            buffer = outputStream.array;
+            buffer = outputStream.toByteArray();
             outputStream.flush();
             outputStream.close();
             inputStream.close();
@@ -55,11 +54,11 @@ public abstract class Zlib {
     }
 
     public static byte[] inflate(byte[] data) throws IOException {
-        return inflate(new FastByteArrayInputStream(data));
+        return inflate(new ByteArrayInputStream(data));
     }
 
     public static byte[] inflate(byte[] data, int maxSize) throws IOException {
-        return inflate(new FastByteArrayInputStream(data, 0, maxSize));
+        return inflate(new ByteArrayInputStream(data, 0, maxSize));
     }
 
 }

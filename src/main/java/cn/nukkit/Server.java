@@ -373,6 +373,11 @@ public class Server implements ActionListener{
             new File(dataPath + "compileOrder/").mkdirs();
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "compileOrder/  を作成しました。"));
         }
+        
+        if (!new File(dataPath + "makeOrder/").exists()) {
+            new File(dataPath + "makeOrder/").mkdirs();
+            this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "makeOrder/  を作成しました。"));
+        }
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
 

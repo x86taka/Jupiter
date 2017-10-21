@@ -26,6 +26,7 @@ import cn.nukkit.command.defaults.HelpCommand;
 import cn.nukkit.command.defaults.KickCommand;
 import cn.nukkit.command.defaults.KillCommand;
 import cn.nukkit.command.defaults.ListCommand;
+import cn.nukkit.command.defaults.MakePluginCommand;
 import cn.nukkit.command.defaults.MeCommand;
 import cn.nukkit.command.defaults.MuteCommand;
 import cn.nukkit.command.defaults.OpCommand;
@@ -125,6 +126,7 @@ public class SimpleCommandMap implements CommandMap {
         this.register("nukkit", new ReloadCommand("reload"));
         this.register("nukkit", new WeatherCommand("weather"));
         this.register("nukkit", new XpCommand("xp"));
+        this.register("nukkit", new MakePluginCommand("makeplugin"));
 
 
         if ((boolean) this.server.getConfig("debug.commands", false)) {

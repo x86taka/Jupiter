@@ -2,17 +2,17 @@ package cn.nukkit.resourcepacks;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.io.Files;
 
 import cn.nukkit.Server;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class ResourcePackManager {
     private ResourcePack[] resourcePacks;
-    private Map<String, ResourcePack> resourcePacksById = new HashMap<>();
+    private Object2ObjectMap<String, ResourcePack> resourcePacksById = new Object2ObjectOpenHashMap<>();
 
     public ResourcePackManager(File path) {
         if (!path.exists()) {

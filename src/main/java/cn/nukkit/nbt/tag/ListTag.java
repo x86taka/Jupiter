@@ -1,13 +1,14 @@
 package cn.nukkit.nbt.tag;
 
-import cn.nukkit.nbt.stream.NBTInputStream;
-import cn.nukkit.nbt.stream.NBTOutputStream;
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import cn.nukkit.nbt.stream.NBTInputStream;
+import cn.nukkit.nbt.stream.NBTOutputStream;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class ListTag<T extends Tag> extends Tag {
 
@@ -90,6 +91,10 @@ public class ListTag<T extends Tag> extends Tag {
 
     public List<T> getAll() {
         return new ArrayList<>(list);
+    }
+
+    public ObjectArrayList<T> getAllFast() {
+        return new ObjectArrayList<>(list);
     }
 
     public void setAll(List<T> tags) {

@@ -42,8 +42,8 @@ import cn.nukkit.window.element.StepSlider;
 public class CustomFormWindow extends FormWindow {
 
     private int id;
-    private String title;
-    private Element[] elements;
+    protected String title;
+    protected Element[] elements;
 
     private String data;
     private List<Object> datas = new ArrayList<Object>();
@@ -89,12 +89,12 @@ public class CustomFormWindow extends FormWindow {
         data.put("type", WindowType.TYPE_CUSTOM_FORM);
         data.put("title", title);
 
-        List<Element> datas = new ArrayList<Element>();
+        List<Element> elements = new ArrayList<Element>();
 
-        for (Element e : elements) {
-           datas.add(e);
+        for (Element e : this.elements) {
+            elements.add(e);
         }
-        data.put("content", datas);
+        data.put("content", elements);
 
         return gson.toJson(data);
     }

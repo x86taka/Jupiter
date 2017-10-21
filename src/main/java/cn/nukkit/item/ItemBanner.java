@@ -4,6 +4,9 @@ import cn.nukkit.block.Block;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 
+/**
+ * @author tedo0627
+ */
 public class ItemBanner extends Item {
 
 	public static final String ButtomStripe = "bs";

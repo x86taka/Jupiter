@@ -11,6 +11,9 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
 
+/**
+ * @author tedo0627
+ */
 public class BlockBannerStanding extends BlockTransparent {
 
 	public BlockBannerStanding() {

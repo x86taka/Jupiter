@@ -4,6 +4,9 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 
+/**
+ * @author tedo0627
+ */
 public class BlockBannerWall extends BlockBannerStanding{
 
 	public BlockBannerWall() {

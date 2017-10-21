@@ -1,5 +1,16 @@
 package cn.nukkit.level.format.anvil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySpawnable;
 import cn.nukkit.level.Level;
@@ -11,13 +22,8 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.ChunkException;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteOrder;
-import java.util.*;
-import java.util.regex.Pattern;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -25,9 +31,9 @@ import java.util.regex.Pattern;
  */
 public class Anvil extends BaseLevelProvider {
 
-    protected final Map<Long, RegionLoader> regions = new HashMap<>();
+    protected final Long2ObjectMap<RegionLoader> regions = new Long2ObjectOpenHashMap<>();
 
-    protected Map<Long, Chunk> chunks = new HashMap<>();
+    protected Long2ObjectMap<Chunk> chunks = new Long2ObjectOpenHashMap<>();
 
     public Anvil(Level level, String path) throws IOException {
         super(level, path);
@@ -169,7 +175,7 @@ public class Anvil extends BaseLevelProvider {
         for (Chunk chunk : new ArrayList<>(this.chunks.values())) {
             this.unloadChunk(chunk.getX(), chunk.getZ(), false);
         }
-        this.chunks = new HashMap<>();
+        this.chunks = new Long2ObjectOpenHashMap<Chunk>();
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.FileWriteTask;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -43,7 +43,7 @@ public class Config {
 
     //private LinkedHashMap<String, Object> config = new LinkedHashMap<>();
     private ConfigSection config = new ConfigSection();
-    private final Map<String, Object> nestedCache = new HashMap<>();
+    private final Object2ObjectOpenHashMap<String, Object> nestedCache = new Object2ObjectOpenHashMap<>();
     private File file;
     private boolean correct = false;
     private int type = Config.DETECT;

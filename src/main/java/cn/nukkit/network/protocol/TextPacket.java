@@ -16,10 +16,11 @@ public class TextPacket extends DataPacket {
     public static final byte TYPE_CHAT = 1;
     public static final byte TYPE_TRANSLATION = 2;
     public static final byte TYPE_POPUP = 3;
-    public static final byte TYPE_TIP = 4;
-    public static final byte TYPE_SYSTEM = 5;
-    public static final byte TYPE_WHISPER = 6;
-    public static final byte TYPE_ANNOUNCEMENT = 7;
+    public static final byte TYPE_JUKEBOX_POPUP = 4;
+    public static final byte TYPE_TIP = 5;
+    public static final byte TYPE_SYSTEM = 6;
+    public static final byte TYPE_WHISPER = 7;
+    public static final byte TYPE_ANNOUNCEMENT = 8;
 
     public byte type;
     public String source = "";

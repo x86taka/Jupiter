@@ -4276,6 +4276,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return String プレイヤー名
      */
     public String getName() {
+    	if (this.username == null) {
+    		return null;
+    	}
         synchronized(this.username){
             return this.username;
         }

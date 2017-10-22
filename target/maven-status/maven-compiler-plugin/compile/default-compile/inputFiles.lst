@@ -180,6 +180,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\monster\EntityWitch.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\entity\EntitySpawnEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\Player.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\PhotoTransferPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\ProtocolInfo.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\utils\LogLevel.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\level\ThunderChangeEvent.java
@@ -1149,6 +1150,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemLeatherHorseArmor.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\SourceInterface.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\nbt\tag\ByteArrayTag.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\PurchaseReceiptPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\monster\EntityMagmaCube.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemSeedsWheat.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerEvent.java

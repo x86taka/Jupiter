@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -338,7 +339,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public Long2BooleanMap usedChunks = new Long2BooleanOpenHashMap();
 
     protected int chunkLoadCount = 0;
-    protected Long2IntMap loadQueue = new Long2IntOpenHashMap();
+    protected Map<Long, Integer> loadQueue = new HashMap<Long, Integer>();
     protected int nextChunkOrderRun = 5;
 
     protected Object2ObjectMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<>();
@@ -1058,15 +1059,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         int count = 0;
 
-        ObjectList<Long2IntMap.Entry> entryList = new ObjectArrayList<>(this.loadQueue.long2IntEntrySet());
-        entryList.sort(Comparator.comparingInt(Long2IntMap.Entry::getIntValue));
+        List<Map.Entry<Long, Integer>> entryList = new ArrayList<>(this.loadQueue.entrySet());
+        entryList.sort(Comparator.comparingInt(Map.Entry::getValue));
 
-        for (Long2IntMap.Entry entry : entryList) {
-            long index = entry.getLongKey();
+        for (Map.Entry<Long, Integer> entry : entryList) {
+            long index = entry.getKey();
 
             if (count >= this.chunksPerTick) {
                 break;
             }
+            
             int chunkX = Level.getHashX(index);
             int chunkZ = Level.getHashZ(index);
 

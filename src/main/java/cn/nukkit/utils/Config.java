@@ -1,5 +1,6 @@
 package cn.nukkit.utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +23,6 @@ import com.google.gson.reflect.TypeToken;
 
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.FileWriteTask;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
@@ -180,7 +180,7 @@ public class Config {
         if (this.correct) {
             String content;
             try {
-                content = Utils.readFile(new FastBufferedInputStream(inputStream));
+                content = Utils.readFile(new BufferedInputStream(inputStream));
             } catch (IOException e) {
                 Server.getInstance().getLogger().logException(e);
                 return false;

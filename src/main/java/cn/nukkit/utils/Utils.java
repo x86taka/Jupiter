@@ -1,6 +1,7 @@
 package cn.nukkit.utils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,18 +20,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import it.unimi.dsi.fastutil.io.FastBufferedOutputStream;
-import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
-
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class Utils {
 
     public static void writeFile(String fileName, String content) throws IOException {
-        writeFile(fileName, new FastByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        writeFile(fileName, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static void writeFile(String fileName, InputStream content) throws IOException {
@@ -38,7 +31,7 @@ public class Utils {
     }
 
     public static void writeFile(File file, String content) throws IOException {
-        writeFile(file, new FastByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        writeFile(file, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
 
     public static void writeFile(File file, InputStream content) throws IOException {
@@ -48,7 +41,7 @@ public class Utils {
         if (!file.exists()) {
             file.createNewFile();
         }
-        FastBufferedOutputStream stream = new FastBufferedOutputStream(new FileOutputStream(file));
+        FileOutputStream stream = new FileOutputStream(file);
         byte[] buffer = new byte[1024];
         int length;
         while ((length = content.read(buffer)) != -1) {
@@ -62,7 +55,7 @@ public class Utils {
         if (!file.exists() || file.isDirectory()) {
             throw new FileNotFoundException();
         }
-        return readFile(new FastBufferedInputStream(new FileInputStream(file)));
+        return readFile(new FileInputStream(file));
     }
 
     public static String readFile(String filename) throws IOException {
@@ -70,7 +63,7 @@ public class Utils {
         if (!file.exists() || file.isDirectory()) {
             throw new FileNotFoundException();
         }
-        return readFile(new FastBufferedInputStream(new FileInputStream(file)));
+        return readFile(new FileInputStream(file));
     }
 
     public static String readFile(InputStream inputStream) throws IOException {

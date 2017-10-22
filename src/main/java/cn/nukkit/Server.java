@@ -6,9 +6,11 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -395,7 +397,7 @@ public class Server implements ActionListener{
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
             this.getLogger().info(FastAppender.get(TextFormat.GREEN, "ようこそ。言語を選択してください。"));
             try {
-                String[] lines = Utils.readFile(new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/language.list"))).split("\n");
+                String[] lines = Utils.readFile(this.getClass().getClassLoader().getResourceAsStream("lang/language.list")).split("\n");
                 for (String line : lines) {
                     this.logger.info(line);
                 }
@@ -407,15 +409,15 @@ public class Server implements ActionListener{
             String language = null;
             while (language == null) {
                 String lang = this.console.readLine();
-                FastBufferedInputStream conf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", lang, "/lang.ini")));
+                InputStream conf = this.getClass().getClassLoader().getResourceAsStream("lang/" + lang + "/lang.ini");
                 if (conf != null) {
                     language = lang;
                 }
             }
 
-            FastBufferedInputStream advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", language, "/nukkit.yml")));
+            InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/" + language + "/nukkit.yml");
             if (advacedConf == null) {
-                advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get("lang/", fallback, "/nukkit.yml")));
+                advacedConf = this.getClass().getClassLoader().getResourceAsStream("lang/" + fallback + "/nukkit.yml");
             }
 
             try {
@@ -465,11 +467,7 @@ public class Server implements ActionListener{
         this.logger.info(FastAppender.get(TextFormat.GREEN, "jupiter.yml", TextFormat.WHITE, "を読み込んでいます..."));
 
         if (!new File(this.dataPath + "jupiter.yml").exists()) {
-            FastBufferedInputStream advacedConf = new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
-            if (advacedConf == null){
-                this.logger.error(FastAppender.get(TextFormat.AQUA, "Jupiter.ymlのリソースを確認できませんでした。ソースを入れなおして下さい"));
-            }
-
+            BufferedInputStream advacedConf = new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("lang/jpn/jupiter.yml"));
             try {
                 Utils.writeFile(this.dataPath + "jupiter.yml", advacedConf);
             } catch (IOException e) {

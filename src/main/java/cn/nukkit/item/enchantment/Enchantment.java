@@ -1,5 +1,9 @@
 package cn.nukkit.item.enchantment;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
@@ -13,11 +17,11 @@ import cn.nukkit.item.enchantment.damage.EnchantmentDamageSmite;
 import cn.nukkit.item.enchantment.loot.EnchantmentLootDigging;
 import cn.nukkit.item.enchantment.loot.EnchantmentLootFishing;
 import cn.nukkit.item.enchantment.loot.EnchantmentLootWeapon;
-import cn.nukkit.item.enchantment.protection.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.concurrent.ThreadLocalRandom;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionAll;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionExplosion;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionFall;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionFire;
+import cn.nukkit.item.enchantment.protection.EnchantmentProtectionProjectile;
 
 /**
  * author: MagicDroidX
@@ -34,11 +38,6 @@ public abstract class Enchantment implements Cloneable {
     public static final int ID_PROTECTION_PROJECTILE = 4;
     public static final int ID_THORNS = 5;
     public static final int ID_WATER_BREATHING = 6;
-    /**
-     * @deprecated Use {@link #ID_WATER_WORKER}, this value is deprecated due to a typo on it's name;
-     */
-    @Deprecated
-    public static final int UD_WATER_WORKER = 7;
     public static final int ID_WATER_WORKER = 7;
     public static final int ID_WATER_WALKER = 8;
     public static final int ID_DAMAGE_ALL = 9;
@@ -57,6 +56,8 @@ public abstract class Enchantment implements Cloneable {
     public static final int ID_BOW_INFINITY = 22;
     public static final int ID_FORTUNE_FISHING = 23;
     public static final int ID_LURE = 24;
+    public static final int ID_FROST_WALKER = 25;
+    public static final int ID_MENDING = 26;
 
     public static void init() {
         enchantments = new Enchantment[256];
@@ -86,6 +87,8 @@ public abstract class Enchantment implements Cloneable {
         enchantments[ID_BOW_INFINITY] = new EnchantmentBowInfinity();
         enchantments[ID_FORTUNE_FISHING] = new EnchantmentLootFishing();
         enchantments[ID_LURE] = new EnchantmentLure();
+        enchantments[ID_FROST_WALKER] = new EnchantmentFrostWalker();
+        enchantments[ID_MENDING] = new EnchantmentMending();
     }
 
     public static Enchantment get(int id) {
@@ -129,14 +132,14 @@ public abstract class Enchantment implements Cloneable {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.setLevel(level, true);
+    public Enchantment setLevel(int level) {
+        return this.setLevel(level, true);
     }
 
-    public void setLevel(int level, boolean safe) {
+    public Enchantment setLevel(int level, boolean safe) {
         if (!safe) {
             this.level = level;
-            return;
+            return this;
         }
 
         if (level > this.getMaxLevel()) {
@@ -146,6 +149,7 @@ public abstract class Enchantment implements Cloneable {
         } else {
             this.level = level;
         }
+        return this;
     }
 
     public int getId() {

@@ -501,7 +501,6 @@ public class Item implements Cloneable {
     public static final int FIRE_CHARGE = 385;
     public static final int WRITABLE_BOOK = 386;
     public static final int WRITTEN_BOOK = 387;
-
     public static final int EMERALD = 388;
     public static final int ITEM_FRAME = 389;
     public static final int FLOWER_POT = 390;
@@ -561,7 +560,6 @@ public class Item implements Cloneable {
     public static final int LINGERING_POTION = 441;
 
     public static final int ELYTRA = 444;
-
     public static final int SHULKER_SHELL = 445;
     public static final int BANNER = 446;
 
@@ -1341,9 +1339,9 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.FURNACE, 0));
         addCreativeItem(Item.get(Item.BREWING_STAND, 0));
         addCreativeItem(Item.get(Item.CAULDRON, 0));
+        addCreativeItem(Item.get(Item.ANVIL, 0));
         addCreativeItem(Item.get(Item.ANVIL, 1));
         addCreativeItem(Item.get(Item.ANVIL, 2));
-        addCreativeItem(Item.get(Item.ANVIL, 3));
         addCreativeItem(Item.get(Item.STONECUTTER, 0));
         addCreativeItem(Item.get(Item.CHEST, 0));
         addCreativeItem(Item.get(Item.TRAPPED_CHEST, 0));
@@ -1417,9 +1415,93 @@ public class Item implements Cloneable {
         addCreativeItem(Item.get(Item.END_CRYSTAL, 0));
         addCreativeItem(Item.get(Item.PAPER, 0));
         addCreativeItem(Item.get(Item.EMPTY_MAP, 0));
+        addCreativeItem(Item.get(Item.EMPTY_MAP, 2));
         addCreativeItem(Item.get(Item.WRITABLE_BOOK, 0));
         addCreativeItem(Item.get(Item.BOOK, 0));
-        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0));
+
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_ALL).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_ALL).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_ALL).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_ALL).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FIRE).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FIRE).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FIRE).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FIRE).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FALL).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FALL).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FALL).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_FALL).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_EXPLOSION).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_EXPLOSION).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_EXPLOSION).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_EXPLOSION).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_PROJECTILE).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_PROJECTILE).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_PROJECTILE).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_PROTECTION_PROJECTILE).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_THORNS).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_THORNS).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_THORNS).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_BREATHING).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_BREATHING).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_BREATHING).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_WORKER).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_WORKER).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_WORKER).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_WATER_WALKER).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ALL).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ALL).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ALL).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ALL).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ALL).setLevel(5)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_SMITE).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_SMITE).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_SMITE).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_SMITE).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_SMITE).setLevel(5)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ARTHROPODS).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ARTHROPODS).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ARTHROPODS).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ARTHROPODS).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DAMAGE_ARTHROPODS).setLevel(5)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_KNOCKBACK).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_KNOCKBACK).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FIRE_ASPECT).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FIRE_ASPECT).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LOOTING).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LOOTING).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LOOTING).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_EFFICIENCY).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_EFFICIENCY).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_EFFICIENCY).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_EFFICIENCY).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_EFFICIENCY).setLevel(5)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_SILK_TOUCH).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DURABILITY).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DURABILITY).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_DURABILITY).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_DIGGING).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_DIGGING).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_DIGGING).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_POWER).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_POWER).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_POWER).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_POWER).setLevel(4)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_POWER).setLevel(5)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_KNOCKBACK).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_KNOCKBACK).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_FLAME).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_BOW_INFINITY).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_FISHING).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_FISHING).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FORTUNE_FISHING).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LURE).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LURE).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_LURE).setLevel(3)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FROST_WALKER).setLevel(1)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_FROST_WALKER).setLevel(2)));
+        addCreativeItem(Item.get(Item.ENCHANTED_BOOK, 0).addEnchantment(Enchantment.getEnchantment(Enchantment.ID_MENDING).setLevel(1)));
+
         addCreativeItem(Item.get(Item.BOAT, 0)); // Oak
         addCreativeItem(Item.get(Item.BOAT, 1)); // Spruce
         addCreativeItem(Item.get(Item.BOAT, 2)); // Birch
@@ -1919,7 +2001,7 @@ public class Item implements Cloneable {
         return null;
     }
 
-    public void addEnchantment(Enchantment... enchantments) {
+    public Item addEnchantment(Enchantment... enchantments) {
         CompoundTag tag;
         if (!this.hasCompoundTag()) {
             tag = new CompoundTag();
@@ -1959,6 +2041,7 @@ public class Item implements Cloneable {
         }
 
         this.setNamedTag(tag);
+        return this;
     }
 
     public Enchantment[] getEnchantments() {
@@ -2071,7 +2154,7 @@ public class Item implements Cloneable {
         return lines.toArray(new String[0]);
     }
 
-    public void setLore(String... lines) {
+    public Item setLore(String... lines) {
         CompoundTag tag;
         if (!this.hasCompoundTag()) {
             tag = new CompoundTag();
@@ -2091,6 +2174,7 @@ public class Item implements Cloneable {
         }
 
         this.setNamedTag(tag);
+        return this;
     }
 
     public Tag getNamedTagEntry(String name) {
@@ -2130,8 +2214,9 @@ public class Item implements Cloneable {
         return count;
     }
 
-    public void setCount(int count) {
+    public Item setCount(int count) {
         this.count = count;
+        return this;
     }
 
     final public String getName() {
@@ -2158,12 +2243,13 @@ public class Item implements Cloneable {
         return meta;
     }
 
-    public void setDamage(Integer meta) {
+    public Item setDamage(Integer meta) {
         if (meta != null) {
             this.meta = meta & 0xffff;
         } else {
             this.hasMeta = false;
         }
+        return this;
     }
 
     public int getMaxStackSize() {

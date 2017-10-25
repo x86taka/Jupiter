@@ -1068,7 +1068,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             if (count >= this.chunksPerTick) {
                 break;
             }
-            
+
             int chunkX = Level.getHashX(index);
             int chunkZ = Level.getHashZ(index);
 
@@ -3668,17 +3668,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                     place.setDamage(block.getDamage());
                                     break;
                             }
-//                            if (update.isConditional) {
-//                                if (place.getDamage() < 8) {
-//                                    place.setDamage(place.getDamage() + 8);
-//                                }
-//                            } else {
-//                                if (place.getDamage() > 8) {
-//                                    place.setDamage(place.getDamage() - 8);
-//                                }
-//                            }
+                            if (update.isConditional) {
+                                if (place.getDamage() < 8) {
+                                    place.setDamage(place.getDamage() + 8);
+                                }
+                            } else {
+                                if (place.getDamage() > 8) {
+                                    place.setDamage(place.getDamage() - 8);
+                                }
+                            }
                             this.level.setBlock(block, place, false, false);
-                            this.level.sendBlocks(new Player[]{this}, new Block[]{block});
                             blockEntity = (BlockEntityCommandBlock) blockEntity.clone();
                             blockEntity.setName(update.name);
                             blockEntity.setMode(update.commandBlockMode);
@@ -4278,9 +4277,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return String プレイヤー名
      */
     public String getName() {
-    	if (this.username == null) {
-    		return null;
-    	}
+        if (this.username == null) {
+            return null;
+        }
         synchronized(this.username){
             return this.username;
         }

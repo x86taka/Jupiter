@@ -94,6 +94,7 @@ import cn.nukkit.event.player.PlayerMoveEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
+import cn.nukkit.event.player.PlayerServerSettingsChangedEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent;
 import cn.nukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import cn.nukkit.event.player.PlayerToggleFlightEvent;
@@ -3616,7 +3617,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getServer().getPluginManager().callEvent(mfre);
                         }
                     } else {
-                        //sendWindow() 以外で表示したorm
+                        this.serverSettings.get(modalFormResponsePacket.formId).setResponse(modalFormResponsePacket.data);
+                        PlayerServerSettingsChangedEvent ssce = new PlayerServerSettingsChangedEvent(this, modalFormResponsePacket.formId, this.serverSettings.get(modalFormResponsePacket.formId));
+                        this.getServer().getPluginManager().callEvent(ssce);
                     }
 
                     break;

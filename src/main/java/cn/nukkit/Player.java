@@ -3605,7 +3605,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket modalFormResponsePacket = (ModalFormResponsePacket) packet;
 
-                    if(this.activeWindow.getId() == modalFormResponsePacket.formId) {
+                    if(this.activeWindow != null && this.activeWindow.getId() == modalFormResponsePacket.formId) {
                         if (modalFormResponsePacket.data.trim().equals("null")) {
                             PlayerModalFormCloseEvent mfce = new PlayerModalFormCloseEvent(this, modalFormResponsePacket.formId, this.activeWindow);
                             this.activeWindow = null;

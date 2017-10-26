@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -338,7 +339,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public Long2BooleanMap usedChunks = new Long2BooleanOpenHashMap();
 
     protected int chunkLoadCount = 0;
-    protected Long2IntMap loadQueue = new Long2IntOpenHashMap();
+    protected Map<Long, Integer> loadQueue = new HashMap<Long, Integer>();
     protected int nextChunkOrderRun = 5;
 
     protected Object2ObjectMap<UUID, Player> hiddenPlayers = new Object2ObjectOpenHashMap<>();
@@ -388,20 +389,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     public EntityFishingHook fishingHook;
 
-    private boolean allowEgg = true;
-
-    private boolean allowEnderpearl = true;
-
-    private boolean allowXpBottle = true;
-
-    private boolean allowSplashPotion = true;
-
-    private boolean allowBow = true;
-
-    private boolean allowSnowball = true;
-
-    private boolean allowFishingRod = true;
-
     private boolean keepInventory = true;
 
     private boolean keepExperience = true;
@@ -424,7 +411,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
     private BlockEntity blockEntity;
 
-    private Int2ObjectLinkedOpenHashMap<FormWindow> activeWindows = new Int2ObjectLinkedOpenHashMap<>();
+    private FormWindow activeWindow = null;
     private Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> serverSettings = new Int2ObjectLinkedOpenHashMap<>();
 
     private boolean printPackets;
@@ -847,13 +834,13 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.creationTime = System.currentTimeMillis();
         this.enableRevert = this.server.getJupiterConfigBoolean("enable-revert");
-        this.allowSnowball = this.server.getJupiterConfigBoolean("allow-snowball");
-        this.allowEgg = this.server.getJupiterConfigBoolean("allow-egg");
-        this.allowEnderpearl = this.server.getJupiterConfigBoolean("allow-enderpearl");
-        this.allowXpBottle = this.server.getJupiterConfigBoolean("allow-experience-bottle");
-        this.allowSplashPotion = this.server.getJupiterConfigBoolean("allow-splash-potion");
-        this.allowBow = this.server.getJupiterConfigBoolean("allow-bow");
-        this.allowFishingRod = this.server.getJupiterConfigBoolean("allow-fishing-rod");
+        this.server.getJupiterConfigBoolean("allow-snowball");
+        this.server.getJupiterConfigBoolean("allow-egg");
+        this.server.getJupiterConfigBoolean("allow-enderpearl");
+        this.server.getJupiterConfigBoolean("allow-experience-bottle");
+        this.server.getJupiterConfigBoolean("allow-splash-potion");
+        this.server.getJupiterConfigBoolean("allow-bow");
+        this.server.getJupiterConfigBoolean("allow-fishing-rod");
 
         this.printPackets = this.getServer().printPackets();
     }
@@ -1058,15 +1045,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         int count = 0;
 
-        ObjectList<Long2IntMap.Entry> entryList = new ObjectArrayList<>(this.loadQueue.long2IntEntrySet());
-        entryList.sort(Comparator.comparingInt(Long2IntMap.Entry::getIntValue));
+        List<Map.Entry<Long, Integer>> entryList = new ArrayList<>(this.loadQueue.entrySet());
+        entryList.sort(Comparator.comparingInt(Map.Entry::getValue));
 
-        for (Long2IntMap.Entry entry : entryList) {
-            long index = entry.getLongKey();
+        for (Map.Entry<Long, Integer> entry : entryList) {
+            long index = entry.getKey();
 
             if (count >= this.chunksPerTick) {
                 break;
             }
+
             int chunkX = Level.getHashX(index);
             int chunkZ = Level.getHashZ(index);
 
@@ -1180,8 +1168,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         int centerX = (int) this.x >> 4;
         int centerZ = (int) this.z >> 4;
-        int count = 0;
-
         for (int x = -this.chunkRadius; x <= this.chunkRadius; x++) {
             for (int z = -this.chunkRadius; z <= this.chunkRadius; z++) {
                 int chunkX = x + centerX;
@@ -1191,7 +1177,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     long index;
                     if (!(this.usedChunks.containsKey(index = Level.chunkHash(chunkX, chunkZ))) || !this.usedChunks.get(index)) {
                         newOrder.put(index, distance);
-                        count++;
                     }
                     lastChunk.remove(index);
                 }
@@ -3603,8 +3588,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
 
                 case ProtocolInfo.LEVEL_SOUND_EVENT_PACKET:
-                    LevelSoundEventPacket levelSoundEventPacket = (LevelSoundEventPacket) packet;
-
                     if (this.isBreakingBlock()) {
                         LevelSoundEventPacket pk1 = new LevelSoundEventPacket();
                         pk1.sound = LevelSoundEventPacket.SOUND_HIT;
@@ -3621,15 +3604,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 case ProtocolInfo.MODAL_FORM_RESPONSE_PACKET:
                     ModalFormResponsePacket modalFormResponsePacket = (ModalFormResponsePacket) packet;
 
-                    if(this.activeWindows.containsKey(modalFormResponsePacket.formId)) {
+                    if(this.activeWindow.getId() == modalFormResponsePacket.formId) {
                         if (modalFormResponsePacket.data.trim().equals("null")) {
-                            this.activeWindows.remove(modalFormResponsePacket.formId);
-                            PlayerModalFormCloseEvent mfce = new PlayerModalFormCloseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
+                            PlayerModalFormCloseEvent mfce = new PlayerModalFormCloseEvent(this, modalFormResponsePacket.formId, this.activeWindow);
+                            this.activeWindow = null;
                             this.getServer().getPluginManager().callEvent(mfce);
                         } else {
-                            this.activeWindows.get(modalFormResponsePacket.formId).setResponse(modalFormResponsePacket.data);
-                            this.activeWindows.remove(modalFormResponsePacket.formId);
-                            PlayerModalFormResponseEvent mfre = new PlayerModalFormResponseEvent(this, modalFormResponsePacket.formId, this.activeWindows.get(modalFormResponsePacket.formId));
+                            this.activeWindow.setResponse(modalFormResponsePacket.data);
+                            PlayerModalFormResponseEvent mfre = new PlayerModalFormResponseEvent(this, modalFormResponsePacket.formId, this.activeWindow);
+                            this.activeWindow = null;
                             this.getServer().getPluginManager().callEvent(mfre);
                         }
                     } else {
@@ -3666,17 +3649,16 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                     place.setDamage(block.getDamage());
                                     break;
                             }
-//                            if (update.isConditional) {
-//                                if (place.getDamage() < 8) {
-//                                    place.setDamage(place.getDamage() + 8);
-//                                }
-//                            } else {
-//                                if (place.getDamage() > 8) {
-//                                    place.setDamage(place.getDamage() - 8);
-//                                }
-//                            }
+                            if (update.isConditional) {
+                                if (place.getDamage() < 8) {
+                                    place.setDamage(place.getDamage() + 8);
+                                }
+                            } else {
+                                if (place.getDamage() > 8) {
+                                    place.setDamage(place.getDamage() - 8);
+                                }
+                            }
                             this.level.setBlock(block, place, false, false);
-                            this.level.sendBlocks(new Player[]{this}, new Block[]{block});
                             blockEntity = (BlockEntityCommandBlock) blockEntity.clone();
                             blockEntity.setName(update.name);
                             blockEntity.setMode(update.commandBlockMode);
@@ -3708,7 +3690,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
 
     public BufferedImage createMap(ItemMap mapItem) {
-        ObjectList<Integer> ids = new ObjectArrayList<>();
+        new ObjectArrayList<>();
         ObjectList<BaseFullChunk> chunks = new ObjectArrayList<>();
         Color[][] blockColors = new Color[16][16];
         BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -4276,6 +4258,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * @return String プレイヤー名
      */
     public String getName() {
+        if (this.username == null) {
+            return null;
+        }
         synchronized(this.username){
             return this.username;
         }
@@ -4787,7 +4772,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        Position oldPos = this.getPosition();
+        this.getPosition();
         if (super.teleport(to, null)) { // null to prevent fire of duplicate EntityTeleportEvent
 
             this.removeAllWindows();
@@ -5440,13 +5425,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.data = window.toJson();
         pk.formId = window.getId();
 
-        this.activeWindows.put(window.getId(), window);
+        this.activeWindow = window;
 
         this.dataPacket(pk);
-    }
-
-    public FormWindow getActiveWindow(int id){
-        return this.activeWindows.get(id);
     }
 
     public int addServerSettings(ServerSettingsWindow window) {

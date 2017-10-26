@@ -20,13 +20,14 @@ public class ItemBlock extends Item {
         this.block = block;
     }
 
-    public void setDamage(Integer meta) {
+    public Item setDamage(Integer meta) {
         if (meta != null) {
             this.meta = meta & 0xffff;
         } else {
             this.hasMeta = false;
         }
         this.block.setDamage(meta);
+        return this;
     }
 
     @Override

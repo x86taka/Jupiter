@@ -18,6 +18,7 @@ public class ItemBlock extends Item {
     public ItemBlock(Block block, Integer meta, int count) {
         super(block.getId(), meta, count, block.getName());
         this.block = block;
+        setDamage(meta);
     }
 
     public Item setDamage(Integer meta) {

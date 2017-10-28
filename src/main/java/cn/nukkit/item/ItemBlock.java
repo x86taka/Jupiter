@@ -18,15 +18,17 @@ public class ItemBlock extends Item {
     public ItemBlock(Block block, Integer meta, int count) {
         super(block.getId(), meta, count, block.getName());
         this.block = block;
+        setDamage(meta);
     }
 
-    public void setDamage(Integer meta) {
+    public Item setDamage(Integer meta) {
         if (meta != null) {
             this.meta = meta & 0xffff;
         } else {
             this.hasMeta = false;
         }
         this.block.setDamage(meta);
+        return this;
     }
 
     @Override

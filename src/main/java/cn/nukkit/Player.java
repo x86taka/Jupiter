@@ -1454,11 +1454,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.spawnToAll();
         }
 
-        this.namedTag.putInt("playerGameType", this.gamemode);
+        this.namedTag.putInt("playerGameType", gamemode);
 
         if (!clientSide) {
             SetPlayerGameTypePacket pk = new SetPlayerGameTypePacket();
-            pk.gamemode = this.gamemode & 0x01;
+            pk.gamemode = gamemode & 0x01;
             this.dataPacket(pk);
         }
 
@@ -2033,38 +2033,38 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        CompoundTag nbt = this.server.getOfflinePlayerData(this.username);
-        if (nbt == null) {
+        namedTag = this.server.getOfflinePlayerData(this.username);
+        if (namedTag == null) {
             this.close(this.getLeaveMessage(), "Invalid data");
 
             return;
         }
 
-        this.playedBefore = (nbt.getLong("lastPlayed") - nbt.getLong("firstPlayed")) > 1;
+        this.playedBefore = (namedTag.getLong("lastPlayed") - namedTag.getLong("firstPlayed")) > 1;
 
         boolean alive = true;
 
-        nbt.putString("NameTag", this.username);
+        namedTag.putString("NameTag", this.username);
 
-        if (0 >= nbt.getShort("Health")) {
+        if (0 >= namedTag.getShort("Health")) {
             alive = false;
         }
 
-        int exp = nbt.getInt("EXP");
-        int expLevel = nbt.getInt("expLevel");
+        int exp = namedTag.getInt("EXP");
+        int expLevel = namedTag.getInt("expLevel");
         this.setExperience(exp, expLevel);
 
-        this.setGamemode(nbt.getInt("playerGameType") & 0x03);
+        this.setGamemode(namedTag.getInt("playerGameType") & 0x03);
         if (this.server.getForceGamemode()) {
             this.gamemode = this.server.getDefaultGamemode();
-            nbt.putInt("playerGameType", this.gamemode);
+            namedTag.putInt("playerGameType", this.gamemode);
         }
 
         Level level;
-        if ((level = this.server.getLevelByName(nbt.getString("Level"))) == null || !alive) {
+        if ((level = this.server.getLevelByName(namedTag.getString("Level"))) == null || !alive) {
             this.setLevel(this.server.getDefaultLevel());
-            nbt.putString("Level", this.level.getName());
-            nbt.getList("Pos", DoubleTag.class)
+            namedTag.putString("Level", this.level.getName());
+            namedTag.getList("Pos", DoubleTag.class)
                     .add(new DoubleTag("0", this.level.getSpawnLocation().x))
                     .add(new DoubleTag("1", this.level.getSpawnLocation().y))
                     .add(new DoubleTag("2", this.level.getSpawnLocation().z));
@@ -2072,7 +2072,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.setLevel(level);
         }
 
-        for (Tag achievement : nbt.getCompound("Achievements").getAllTags()) {
+        for (Tag achievement : namedTag.getCompound("Achievements").getAllTags()) {
             if (!(achievement instanceof ByteTag)) {
                 continue;
             }
@@ -2082,15 +2082,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        nbt.putLong("lastPlayed", System.currentTimeMillis() / 1000);
+        namedTag.putLong("lastPlayed", System.currentTimeMillis() / 1000);
 
         if (this.server.getAutoSave()) {
-            this.server.saveOfflinePlayerData(this.username, nbt, true);
+            this.server.saveOfflinePlayerData(this.username, namedTag, true);
         }
 
-        ListTag<DoubleTag> posList = nbt.getList("Pos", DoubleTag.class);
+        ListTag<DoubleTag> posList = namedTag.getList("Pos", DoubleTag.class);
 
-        super.init(this.level.getChunk((int) posList.get(0).data >> 4, (int) posList.get(2).data >> 4, true), nbt);
+        super.init(this.level.getChunk((int) posList.get(0).data >> 4, (int) posList.get(2).data >> 4, true), namedTag);
 
         if (!this.namedTag.contains("foodLevel")) {
             this.namedTag.putInt("foodLevel", 20);
@@ -2323,17 +2323,19 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     break;
                 case ProtocolInfo.ADVENTURE_SETTINGS_PACKET:
                     //TODO: player abilities, check for other changes
-                    AdventureSettingsPacket adventureSettingsPacket = (AdventureSettingsPacket) packet;
-                    if (adventureSettingsPacket.getFlag(AdventureSettingsPacket.ALLOW_FLIGHT) && !this.getAdventureSettings().get(Type.ALLOW_FLIGHT)) {
-                        this.kick(PlayerKickEvent.Reason.FLYING_DISABLED, "Flying is not enabled on this server");
-                        break;
-                    }
-                    PlayerToggleFlightEvent playerToggleFlightEvent = new PlayerToggleFlightEvent(this, adventureSettingsPacket.getFlag(AdventureSettingsPacket.ALLOW_FLIGHT));
-                    this.server.getPluginManager().callEvent(playerToggleFlightEvent);
-                    if (playerToggleFlightEvent.isCancelled()) {
-                        this.getAdventureSettings().update();
-                    } else {
-                        this.getAdventureSettings().set(Type.FLYING, playerToggleFlightEvent.isFlying());
+                    if (this.isOp()) {
+                        AdventureSettingsPacket adventureSettingsPacket = (AdventureSettingsPacket) packet;
+                        if (adventureSettingsPacket.getFlag(AdventureSettingsPacket.ALLOW_FLIGHT) && !this.getAdventureSettings().get(Type.ALLOW_FLIGHT)) {
+                            this.kick(PlayerKickEvent.Reason.FLYING_DISABLED, "Flying is not enabled on this server");
+                            break;
+                        }
+                        PlayerToggleFlightEvent playerToggleFlightEvent = new PlayerToggleFlightEvent(this, adventureSettingsPacket.getFlag(AdventureSettingsPacket.ALLOW_FLIGHT));
+                        this.server.getPluginManager().callEvent(playerToggleFlightEvent);
+                        if (playerToggleFlightEvent.isCancelled()) {
+                            this.getAdventureSettings().update();
+                        } else {
+                            this.getAdventureSettings().set(Type.FLYING, playerToggleFlightEvent.isFlying());
+                        }
                     }
                     break;
                 case ProtocolInfo.MOB_EQUIPMENT_PACKET:

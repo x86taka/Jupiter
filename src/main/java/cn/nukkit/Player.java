@@ -1169,7 +1169,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
         }
 
-        for (long index : lastChunk.keySet()) {
+        for (long index : new ArrayList<>(lastChunk.keySet())) {
             this.unloadChunk(Level.getHashX(index), Level.getHashZ(index));
         }
 
@@ -4125,7 +4125,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.removeAllWindows(true);
 
-            for (long index : this.usedChunks.keySet()) {
+            for (long index : new ArrayList<>(this.usedChunks.keySet())) {
                 int chunkX = Level.getHashX(index);
                 int chunkZ = Level.getHashZ(index);
                 this.level.unregisterChunkLoader(this, chunkX, chunkZ);

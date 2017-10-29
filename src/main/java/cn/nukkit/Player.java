@@ -868,7 +868,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
         if (this.spawned) {
-            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getDisplayName(), this.getSkin(), this.getLoginChainData().getXUID()); 
+            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getDisplayName(), this.getSkin(), this.getLoginChainData().getXUID());
         }
     }
 
@@ -881,7 +881,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     public void setSkin(Skin skin) {
         super.setSkin(skin);
         if (this.spawned) {
-            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getDisplayName(), skin, this.getLoginChainData().getXUID()); 
+            this.server.updatePlayerListData(this.getUniqueId(), this.getId(), this.getDisplayName(), skin, this.getLoginChainData().getXUID());
         }
     }
 
@@ -2054,17 +2054,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         int expLevel = nbt.getInt("expLevel");
         this.setExperience(exp, expLevel);
 
-        this.gamemode = nbt.getInt("playerGameType") & 0x03;
+        this.setGamemode(nbt.getInt("playerGameType") & 0x03);
         if (this.server.getForceGamemode()) {
             this.gamemode = this.server.getDefaultGamemode();
             nbt.putInt("playerGameType", this.gamemode);
         }
-
-        this.adventureSettings = new AdventureSettings(this)
-                .set(Type.WORLD_IMMUTABLE, !isAdventure())
-                .set(Type.AUTO_JUMP, true)
-                .set(Type.ALLOW_FLIGHT, isCreative())
-                .set(Type.NO_CLIP, isSpectator());
 
         Level level;
         if ((level = this.server.getLevelByName(nbt.getString("Level"))) == null || !alive) {
@@ -2144,7 +2138,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         startGamePacket.seed = -1;
         startGamePacket.difficulty = this.server.getDifficulty();
         startGamePacket.spawnX = (int) spawnPosition.x;
-        startGamePacket.spawnY = (int) spawnPosition.y;
+        startGamePacket.spawnY = (int) spawnPosition.y + (int) this.getEyeHeight();
         startGamePacket.spawnZ = (int) spawnPosition.z;
         startGamePacket.hasAchievementsDisabled = true;
         startGamePacket.dayCycleStopTime = -1;
@@ -2179,14 +2173,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         if (this.isOp()) {
             this.setRemoveFormat(false);
-        }
-
-        if (this.gamemode == Player.SPECTATOR) {
-            InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
-            inventoryContentPacket.inventoryId = ContainerIds.CREATIVE;
-            this.dataPacket(inventoryContentPacket);
-        } else {
-            this.inventory.sendCreativeContents();
         }
 
         this.setEnableClientCommand(true);
@@ -2402,18 +2388,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                 break;
                             }
                             if (!this.isCreative()) {
-                                //improved this to take stuff like swimming, ladders, enchanted tools into account, fix wrong tool break time calculations for bad tools (pmmp/PocketMine-MP#211)
-                                //Done by lmlstarqaq
                                 double breakTime = Math.ceil(target.getBreakTime(this.inventory.getItemInHand(), this) * 20);
-                                if (breakTime > 0) {
-                                    LevelEventPacket pk = new LevelEventPacket();
-                                    pk.evid = LevelEventPacket.EVENT_BLOCK_START_BREAK;
-                                    pk.x = (float) pos.x;
-                                    pk.y = (float) pos.y;
-                                    pk.z = (float) pos.z;
-                                    pk.data = (int) (65535 / breakTime);
-                                    this.getLevel().addChunkPacket(pos.getFloorX() >> 4, pos.getFloorZ() >> 4, pk);
-                                }
+                                LevelEventPacket pk = new LevelEventPacket();
+                                pk.evid = LevelEventPacket.EVENT_BLOCK_START_BREAK;
+                                pk.x = (float) pos.x;
+                                pk.y = (float) pos.y;
+                                pk.z = (float) pos.z;
+                                pk.data = (int) (65535 / breakTime);
+                                this.getLevel().addChunkPacket(pos.getFloorX() >> 4, pos.getFloorZ() >> 4, pk);
                             }
 
                             this.breakingBlock = target;
@@ -5390,7 +5372,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void removeAllWindows(boolean permanent) {
-        for (Entry<Integer, Inventory> entry : this.windowIndex.entrySet()) {
+        for (Entry<Integer, Inventory> entry : new ArrayList<>(this.windowIndex.entrySet())) {
             if (!permanent && this.permanentWindows.contains((int) entry.getKey())) {
                 continue;
             }

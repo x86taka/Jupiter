@@ -342,7 +342,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     protected int inAirTicks = 0;
     protected int startAirTicks = 5;
 
-    protected AdventureSettings adventureSettings;
+    protected AdventureSettings adventureSettings = new AdventureSettings(this);
 
     protected boolean checkMovement = true;
 

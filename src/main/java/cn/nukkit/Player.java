@@ -5411,7 +5411,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.breakingBlock != null;
     }
 
-    public void showXboxProfile(String xuid) {
+    public void showXboxProfile() {
         ShowProfilePacket pk = new ShowProfilePacket();
         pk.xuid = getLoginChainData().getXUID();
         this.dataPacket(pk);

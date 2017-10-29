@@ -657,7 +657,7 @@ public class Level implements ChunkManager, Metadatable {
     public Map<Integer, Player> getChunkPlayers(int chunkX, int chunkZ) {
         long index = Level.chunkHash(chunkX, chunkZ);
         if (this.playerLoaders.containsKey(index)) {
-            return this.playerLoaders.get(index);
+            return new HashMap<>(this.playerLoaders.get(index));
         } else {
             return new HashMap<>();
         }

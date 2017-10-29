@@ -108,7 +108,6 @@ public class CustomFormWindow extends FormWindow {
      * その値として返ってきたものがObjectに入っています。</p>
      * <br>
      * <p>各エレメントの戻り値の型</p>
-     * <li>Button <b>null</b></li>
      * <li>Dropdown <b>String</b></li>
      * <li>Input <b>String</b></li>
      * <li>Label <b>null</b></li>

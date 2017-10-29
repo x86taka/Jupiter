@@ -312,26 +312,26 @@ public class Session {
             return;
         }
 
-        if (!this.splitPackets.containsKey((int) packet.splitID)) {
+        if (!this.splitPackets.containsKey(packet.splitID)) {
             if (this.splitPackets.size() >= MAX_SPLIT_COUNT) {
                 return;
             }
-            this.splitPackets.put((int) packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {{
-                put((int) packet.splitIndex, packet);
+            this.splitPackets.put(packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {{
+                put(packet.splitIndex, packet);
             }});
         } else {
-            this.splitPackets.get((int) packet.splitID).put((int) packet.splitIndex, packet);
+            this.splitPackets.get(packet.splitID).put(packet.splitIndex, packet);
         }
 
-        if (this.splitPackets.get((int) packet.splitID).size() == packet.splitCount) {
+        if (this.splitPackets.get(packet.splitID).size() == packet.splitCount) {
             EncapsulatedPacket pk = new EncapsulatedPacket();
             BinaryStream stream = new BinaryStream();
             for (int i = 0; i < packet.splitCount; i++) {
-                stream.put(this.splitPackets.get((int) packet.splitID).get(i).buffer);
+                stream.put(this.splitPackets.get(packet.splitID).get(i).buffer);
             }
             pk.buffer = stream.getBuffer();
             pk.length = pk.buffer.length;
-            this.splitPackets.remove((int) packet.splitID);
+            this.splitPackets.remove(packet.splitID);
 
             this.handleEncapsulatedPacketRoute(pk);
         }
@@ -485,8 +485,8 @@ public class Session {
 
                 int diff = dp.seqNumber - this.lastSeqNumber;
 
-                this.NACKQueue.remove((int) dp.seqNumber);
-                this.ACKQueue.put((int) dp.seqNumber, (int) dp.seqNumber);
+                this.NACKQueue.remove(dp.seqNumber);
+                this.ACKQueue.put(dp.seqNumber, dp.seqNumber);
                 this.receivedWindow.put(dp.seqNumber, dp.seqNumber);
 
                 if (diff != 1) {

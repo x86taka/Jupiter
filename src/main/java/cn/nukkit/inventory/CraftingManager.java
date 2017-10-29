@@ -23,13 +23,13 @@ import cn.nukkit.utils.Utils;
  */
 public class CraftingManager {
 
-    public final Map<UUID, Recipe> recipes = new HashMap<>();
+    public final Map<UUID, Recipe> recipes = new HashMap<UUID, Recipe>();
 
-    protected final Map<String, Map<String, Recipe>> recipeLookup = new HashMap<>();
+    protected final Map<String, Map<String, Recipe>> recipeLookup = new HashMap<String, Map<String, Recipe>>();
 
-    public final Map<String, FurnaceRecipe> furnaceRecipes = new HashMap<>();
+    public final Map<String, FurnaceRecipe> furnaceRecipes = new HashMap<String, FurnaceRecipe>();
 
-    public final Map<String, BrewingRecipe> brewingRecipes = new HashMap<>();
+    public final Map<String, BrewingRecipe> brewingRecipes = new HashMap<String, BrewingRecipe>();
 
     private static int RECIPE_COUNT = 0;
 

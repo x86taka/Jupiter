@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 /**
  * author: MagicDroidX
@@ -109,9 +107,9 @@ public class Chunk extends BaseFullChunk {
             this.heightMap = ints;
         }
 
-        this.NBTentities = entityData == null ? new ObjectArrayList<>() : new ObjectArrayList<>(entityData);
-        this.NBTtiles = tileData == null ? new ObjectArrayList<>() : new ObjectArrayList<>(tileData);
-        this.extraData = extraData == null ? new Int2IntOpenHashMap() : new Int2IntOpenHashMap(extraData);
+        this.NBTentities = entityData == null ? new ArrayList<>() : new ArrayList<>(entityData);
+        this.NBTtiles = tileData == null ? new ArrayList<>() : new ArrayList<>(tileData);
+        this.extraData = extraData == null ? new HashMap<>() : new HashMap<>(extraData);
     }
 
     @Override
@@ -336,7 +334,7 @@ public class Chunk extends BaseFullChunk {
             List<CompoundTag> entities = new ArrayList<>();
             List<CompoundTag> tiles = new ArrayList<>();
 
-            Int2IntMap extraDataMap = new Int2IntOpenHashMap();
+            Map<Integer, Integer> extraDataMap = new HashMap<>();
 
             if (provider instanceof LevelDB) {
                 byte[] entityData = ((LevelDB) provider).getDatabase().get(EntitiesKey.create(chunkX, chunkZ).toArray());
@@ -469,7 +467,7 @@ public class Chunk extends BaseFullChunk {
                 ExtraDataKey extraDataKey = ExtraDataKey.create(this.getX(), this.getZ());
                 if (!this.getBlockExtraDataArray().isEmpty()) {
                     BinaryStream extraData = new BinaryStream();
-                    Int2IntMap extraDataArray = new Int2IntOpenHashMap(this.getBlockExtraDataArray());
+                    Map<Integer, Integer> extraDataArray = new HashMap(this.getBlockExtraDataArray());
                     extraData.putInt(extraDataArray.size());
                     for (int key : extraDataArray.keySet()) {
                         extraData.putInt(key);

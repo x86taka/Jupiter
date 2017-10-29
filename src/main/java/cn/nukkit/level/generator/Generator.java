@@ -1,5 +1,6 @@
 package cn.nukkit.level.generator;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.level.ChunkManager;
@@ -7,8 +8,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.generator.noise.Noise;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -26,9 +25,9 @@ public abstract class Generator {
         return Level.DIMENSION_OVERWORLD;
     }
 
-    private static final Object2ObjectOpenHashMap<String, Class<? extends Generator>> nameList = new Object2ObjectOpenHashMap<String, Class<? extends Generator>>();
+    private static final Map<String, Class<? extends Generator>> nameList = new HashMap<>();
 
-    private static final Int2ObjectOpenHashMap<Class<? extends Generator>> typeList = new Int2ObjectOpenHashMap<Class<? extends Generator>>();
+    private static final Map<Integer, Class<? extends Generator>> typeList = new HashMap<>();
 
     public static boolean addGenerator(Class<? extends Generator> clazz, String name, int type) {
         name = name.toLowerCase();

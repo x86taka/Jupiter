@@ -1,5 +1,7 @@
 package cn.nukkit.command;
 
+import java.io.IOException;
+
 import cn.nukkit.InterruptibleThread;
 import cn.nukkit.Server;
 import cn.nukkit.event.server.ServerCommandEvent;
@@ -8,9 +10,6 @@ import cn.nukkit.utils.completers.PlayersCompleter;
 import co.aikar.timings.Timings;
 import jline.console.ConsoleReader;
 import jline.console.CursorBuffer;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * author: MagicDroidX

@@ -3,6 +3,7 @@ package cn.nukkit.command;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -64,15 +65,13 @@ import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
 public class SimpleCommandMap implements CommandMap {
-    protected final Object2ObjectMap<String, Command> knownCommands = new Object2ObjectOpenHashMap<>();
+    protected final Map<String, Command> knownCommands = new HashMap<>();
 
     private final Server server;
 

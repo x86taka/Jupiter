@@ -1,5 +1,6 @@
 package cn.nukkit.lang;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -8,9 +9,6 @@ import java.util.Map;
 import cn.nukkit.Server;
 import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.Utils;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -21,8 +19,8 @@ public class BaseLang {
 
     protected final String langName;
 
-    protected Object2ObjectMap<String, String> lang = new Object2ObjectOpenHashMap<>();
-    protected Object2ObjectMap<String, String> fallbackLang = new Object2ObjectOpenHashMap<>();
+    protected Map<String, String> lang = new HashMap<>();
+    protected Map<String, String> fallbackLang = new HashMap<>();
 
 
     public BaseLang(String lang) {
@@ -38,11 +36,11 @@ public class BaseLang {
 
         if (path == null) {
             path = "lang/";
-            this.lang = new Object2ObjectOpenHashMap(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, this.langName, "/lang.ini"))));
-            this.fallbackLang = new Object2ObjectOpenHashMap(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, fallback, "/lang.ini"))));
+            this.lang = new HashMap<>(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, this.langName, "/lang.ini"))));
+            this.fallbackLang = new HashMap<>(this.loadLang(this.getClass().getClassLoader().getResourceAsStream(FastAppender.get(path, fallback, "/lang.ini"))));
         } else {
-            this.lang = new Object2ObjectOpenHashMap(this.loadLang(FastAppender.get(path, this.langName, "/lang.ini")));
-            this.fallbackLang = new Object2ObjectOpenHashMap(this.loadLang(FastAppender.get(path, fallback, "/lang.ini")));
+            this.lang = new HashMap<>(this.loadLang(FastAppender.get(path, this.langName, "/lang.ini")));
+            this.fallbackLang = new HashMap<>(this.loadLang(FastAppender.get(path, fallback, "/lang.ini")));
         }
 
 
@@ -97,7 +95,7 @@ public class BaseLang {
 
     protected Map<String, String> loadLang(InputStream stream) {
         try {
-            String content = Utils.readFile(new FastBufferedInputStream(stream));
+            String content = Utils.readFile(new BufferedInputStream(stream));
             Map<String, String> d = new HashMap<>();
             for (String line : content.split("\n")) {
                 line = line.trim();

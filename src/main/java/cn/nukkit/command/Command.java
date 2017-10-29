@@ -1,5 +1,6 @@
 package cn.nukkit.command;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,8 +16,6 @@ import cn.nukkit.permission.Permissible;
 import cn.nukkit.utils.TextFormat;
 import co.aikar.timings.Timing;
 import co.aikar.timings.Timings;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -48,7 +47,7 @@ public abstract class Command {
 
     private String permissionMessage = null;
 
-    protected Object2ObjectMap<String, CommandParameter[]> commandParameters = new Object2ObjectOpenHashMap<>();
+    protected Map<String, CommandParameter[]> commandParameters = new HashMap<>();
 
     public Timing timing;
 
@@ -95,7 +94,7 @@ public abstract class Command {
     }
 
     public void setCommandParameters(Map<String, CommandParameter[]> commandParameters) {
-        this.commandParameters = new Object2ObjectOpenHashMap<>(commandParameters);
+        this.commandParameters = new HashMap<>(commandParameters);
     }
 
     public void addCommandParameters(String key, CommandParameter[] parameters) {

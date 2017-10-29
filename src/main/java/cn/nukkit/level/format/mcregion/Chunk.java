@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.Player;
@@ -19,8 +20,6 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.Zlib;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 /**
  * author: MagicDroidX
@@ -87,7 +86,7 @@ public class Chunk extends BaseFullChunk {
             this.nbt.putByteArray("BlockLight", new byte[16384]);
         }
 
-        Int2IntOpenHashMap extraData = new Int2IntOpenHashMap();
+        Map<Integer, Integer> extraData = new HashMap<>();
 
         if (!this.nbt.contains("ExtraData") || !(this.nbt.get("ExtraData") instanceof ByteArrayTag)) {
             this.nbt.putByteArray("ExtraData", Binary.writeInt(0));
@@ -120,8 +119,8 @@ public class Chunk extends BaseFullChunk {
 
         this.extraData = extraData;
 
-        this.NBTentities = new ObjectArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("Entities")).getAll());
-        this.NBTtiles = new ObjectArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("TileEntities")).getAll());
+        this.NBTentities = new ArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("Entities")).getAll());
+        this.NBTtiles = new ArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("TileEntities")).getAll());
 
         if (this.nbt.contains("Biomes")) {
             this.checkOldBiomes(this.nbt.getByteArray("Biomes"));

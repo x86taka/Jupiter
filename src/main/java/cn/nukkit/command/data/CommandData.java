@@ -1,13 +1,13 @@
 package cn.nukkit.command.data;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandData implements Cloneable {
 
     public String[] aliases = new String[0];
     public String description = "description";
-    public Object2ObjectMap<String, CommandOverload> overloads = new Object2ObjectOpenHashMap<>();
+    public Map<String, CommandOverload> overloads = new HashMap<>();
     public String permission = "any";
 
     @Override

@@ -19,8 +19,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.network.protocol.InventoryContentPacket;
 import cn.nukkit.network.protocol.InventorySlotPacket;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -38,7 +36,7 @@ public abstract class BaseInventory implements Inventory {
 
     protected final String title;
 
-    public final Int2ObjectMap<Item> slots = new Int2ObjectOpenHashMap<>();
+    public final Map<Integer, Item> slots = new HashMap<>();
 
     protected final Set<Player> viewers = new HashSet<>();
 

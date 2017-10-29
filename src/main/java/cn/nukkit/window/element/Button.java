@@ -2,13 +2,13 @@ package cn.nukkit.window.element;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import cn.nukkit.utils.MainLogger;
-import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
 
 public class Button {
 
@@ -61,10 +61,10 @@ public class Button {
                 g.dispose();
             }
 
-            FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, file.getName().substring(file.getName().lastIndexOf(".") + 1), baos);
 
-            return baos.array;
+            return baos.toByteArray();
         } catch (IOException e) {
             MainLogger.getLogger().logException(e);
         }

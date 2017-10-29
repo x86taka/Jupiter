@@ -38,8 +38,6 @@ import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.ChunkException;
 import cn.nukkit.utils.LevelException;
 import cn.nukkit.utils.Utils;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -194,7 +192,7 @@ public class LevelDB implements LevelProvider {
             }
         }
 
-        Int2IntMap extra = new Int2IntOpenHashMap(chunk.getBlockExtraDataArray());
+        Map<Integer, Integer> extra = new HashMap<>(chunk.getBlockExtraDataArray());
         BinaryStream extraData;
         if (!extra.isEmpty()) {
             extraData = new BinaryStream();

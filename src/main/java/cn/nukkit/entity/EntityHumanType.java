@@ -21,7 +21,7 @@ import cn.nukkit.nbt.tag.ListTag;
 
 public abstract class EntityHumanType extends EntityCreature implements InventoryHolder {
 
-    protected PlayerInventory inventory;
+    protected PlayerInventory inventory = new PlayerInventory(this);
     protected PlayerEnderChestInventory enderChestInventory;
 
     public EntityHumanType(FullChunk chunk, CompoundTag nbt) {
@@ -39,8 +39,6 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
 
     @Override
     protected void initEntity() {
-        this.inventory = new PlayerInventory(this);
-
         if (this.namedTag.contains("Inventory") && this.namedTag.get("Inventory") instanceof ListTag) {
             ListTag<CompoundTag> inventoryList = this.namedTag.getList("Inventory", CompoundTag.class);
             for (CompoundTag item : inventoryList.getAll()) {

@@ -3,18 +3,18 @@ package cn.nukkit.window;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.window.element.Element;
-import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 
 
 public class ServerSettingsWindow extends CustomFormWindow {
@@ -66,10 +66,10 @@ public class ServerSettingsWindow extends CustomFormWindow {
                 g.dispose();
             }
 
-            FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image, file.getName().substring(file.getName().lastIndexOf(".") + 1), baos);
 
-            return baos.array;
+            return baos.toByteArray();
         } catch (IOException e) {
             MainLogger.getLogger().logException(e);
         }
@@ -92,7 +92,7 @@ public class ServerSettingsWindow extends CustomFormWindow {
             });
         }
 
-        ObjectList<Element> elements = new ObjectArrayList<Element>();
+        List<Element> elements = new ArrayList<Element>();
         for (Element e : this.elements) {
             elements.add(e);
         }

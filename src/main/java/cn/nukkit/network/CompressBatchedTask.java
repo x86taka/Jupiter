@@ -1,12 +1,11 @@
 package cn.nukkit.network;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.nukkit.Server;
 import cn.nukkit.scheduler.AsyncTask;
 import cn.nukkit.utils.Zlib;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * author: MagicDroidX
@@ -18,7 +17,7 @@ public class CompressBatchedTask extends AsyncTask {
     public byte[] data;
     public byte[] finalData;
     public int channel = 0;
-    public ObjectList<String> targets = new ObjectArrayList<>();
+    public List<String> targets = new ArrayList<>();
 
     public CompressBatchedTask(byte[] data, List<String> targets) {
         this(data, targets, 7);
@@ -30,7 +29,7 @@ public class CompressBatchedTask extends AsyncTask {
 
     public CompressBatchedTask(byte[] data, List<String> targets, int level, int channel) {
         this.data = data;
-        this.targets = new ObjectArrayList(targets);
+        this.targets = new ArrayList<>(targets);
         this.level = level;
         this.channel = channel;
     }

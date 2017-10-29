@@ -1,10 +1,11 @@
 package cn.nukkit.level.format.generic;
 
+import java.util.ArrayList;
+
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.format.LevelProvider;
 import cn.nukkit.level.format.anvil.Chunk;
 import cn.nukkit.level.format.anvil.ChunkSection;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 public class ChunkConverter {
 
@@ -72,9 +73,9 @@ public class ChunkConverter {
         }
         System.arraycopy(chunk.getBiomeColorArray(), 0, result.biomeColors, 0, 256);
         System.arraycopy(chunk.getHeightMapArray(), 0, result.heightMap, 0, 256);
-        result.NBTentities = new ObjectArrayList<>();
+        result.NBTentities = new ArrayList<>();
         chunk.NBTentities.forEach((nbt) -> result.NBTentities.add(nbt.copy()));
-        result.NBTtiles = new ObjectArrayList<>();
+        result.NBTtiles = new ArrayList<>();
         chunk.NBTtiles.forEach((nbt) -> result.NBTtiles.add(nbt.copy()));
         result.setGenerated();
         result.setPopulated();

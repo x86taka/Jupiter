@@ -3,6 +3,7 @@ package cn.nukkit.raknet.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,12 +28,6 @@ import cn.nukkit.raknet.protocol.packet.PONG_DataPacket;
 import cn.nukkit.raknet.protocol.packet.SERVER_HANDSHAKE_DataPacket;
 import cn.nukkit.utils.Binary;
 import cn.nukkit.utils.BinaryStream;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 
 /**
  * author: MagicDroidX
@@ -69,16 +64,16 @@ public class Session {
 
     private boolean isTemporal = true;
 
-    private final ObjectList<DataPacket> packetToSend = new ObjectArrayList<>();
+    private final List<DataPacket> packetToSend = new ArrayList<>();
 
     private boolean isActive;
 
-    private Int2IntMap ACKQueue = new Int2IntOpenHashMap();
-    private Int2IntMap NACKQueue = new Int2IntOpenHashMap();
+    private Map<Integer, Integer> ACKQueue = new HashMap<>();
+    private Map<Integer, Integer> NACKQueue = new HashMap<>();
 
     private final Map<Integer, DataPacket> recoveryQueue = new TreeMap<>();
 
-    private final Int2ObjectMap<Int2ObjectMap<EncapsulatedPacket>> splitPackets = new Int2ObjectOpenHashMap<>();
+    private final Map<Integer, Map<Integer, EncapsulatedPacket>> splitPackets = new HashMap<>();
 
     private final Map<Integer, Map<Integer, Integer>> needACK = new TreeMap<>();
 
@@ -136,14 +131,14 @@ public class Session {
             ACK pk = new ACK();
             pk.packets = new TreeMap<>(this.ACKQueue);
             this.sendPacket(pk);
-            this.ACKQueue = new Int2IntOpenHashMap();
+            this.ACKQueue = new HashMap<>();
         }
 
         if (!this.NACKQueue.isEmpty()) {
             NACK pk = new NACK();
             pk.packets = new TreeMap<>(this.NACKQueue);
             this.sendPacket(pk);
-            this.NACKQueue = new Int2IntOpenHashMap();
+            this.NACKQueue = new HashMap<>();
         }
 
         if (!this.packetToSend.isEmpty()) {
@@ -321,7 +316,7 @@ public class Session {
             if (this.splitPackets.size() >= MAX_SPLIT_COUNT) {
                 return;
             }
-            this.splitPackets.put((int) packet.splitID, new Int2ObjectOpenHashMap<EncapsulatedPacket>() {{
+            this.splitPackets.put((int) packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {{
                 put((int) packet.splitIndex, packet);
             }});
         } else {

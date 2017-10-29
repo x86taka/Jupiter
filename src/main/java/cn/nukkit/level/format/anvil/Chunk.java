@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,6 @@ import cn.nukkit.utils.BinaryStream;
 import cn.nukkit.utils.BlockUpdateEntry;
 import cn.nukkit.utils.ChunkException;
 import cn.nukkit.utils.Zlib;
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
  * author: MagicDroidX
@@ -127,7 +126,7 @@ public class Chunk extends BaseChunk {
             }
         }
 
-        Int2IntMap extraData = new Int2IntOpenHashMap();
+        Map<Integer, Integer> extraData = new HashMap<>();
 
         if (!this.nbt.contains("ExtraData") || !(this.nbt.get("ExtraData") instanceof ByteArrayTag)) {
             this.nbt.putByteArray("ExtraData", Binary.writeInt(0));
@@ -169,8 +168,8 @@ public class Chunk extends BaseChunk {
 
         this.extraData = extraData;
 
-        this.NBTentities = this.nbt.getList("Entities", CompoundTag.class).getAllFast();
-        this.NBTtiles = this.nbt.getList("TileEntities", CompoundTag.class).getAllFast();
+        this.NBTentities = this.nbt.getList("Entities", CompoundTag.class).getAll();
+        this.NBTtiles = this.nbt.getList("TileEntities", CompoundTag.class).getAll();
 
         ListTag<CompoundTag> updateEntries = nbt.getList("TileTicks", CompoundTag.class);
 
@@ -186,7 +185,7 @@ public class Chunk extends BaseChunk {
                         @SuppressWarnings("unchecked")
                         Class<? extends Block> clazz = (Class<? extends Block>) Class.forName("cn.nukkit.block." + name);
 
-                        Constructor constructor = clazz.getDeclaredConstructor(int.class);
+                        Constructor<? extends Block> constructor = clazz.getDeclaredConstructor(int.class);
                         constructor.setAccessible(true);
                         block = (Block) constructor.newInstance(0);
                     }

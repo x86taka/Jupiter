@@ -7,6 +7,7 @@ import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -197,17 +199,6 @@ import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
 import cn.nukkit.window.ServerSettingsWindow;
 import co.aikar.timings.Timings;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
-import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 /**
  * @author MagicDroidX
@@ -304,7 +295,7 @@ public class Server implements ActionListener{
     private final String pluginPath;
     private String defaultplugin = null;
 
-    private final ObjectSet<UUID> uniquePlayers = new ObjectOpenHashSet<>();
+    private final Set<UUID> uniquePlayers = new HashSet<>();
 
     private QueryHandler queryHandler;
 
@@ -313,23 +304,23 @@ public class Server implements ActionListener{
     private Config properties;
     private Config config;
 
-    private final Object2ObjectMap<String, Player> players = new Object2ObjectOpenHashMap<>();
+    private final Map<String, Player> players = new HashMap<>();
 
-    private final Object2ObjectMap<UUID, Player> playerList = new Object2ObjectOpenHashMap<>();
+    private final Map<UUID, Player> playerList = new HashMap<>();
 
-    private final Int2ObjectMap<String> identifier = new Int2ObjectOpenHashMap<>();
+    private final Map<Integer, String> identifier = new HashMap<>();
 
-    private final Int2ObjectMap<Level> levels = new Int2ObjectOpenHashMap<>();
+    private final Map<Integer, Level> levels = new HashMap<>();
 
     private final ServiceManager serviceManager = new NKServiceManager();
 
     private Level defaultLevel = null;
 
     private Thread currentThread;
-    private Object2ObjectMap<String, Object> jupiterconfig;
-    private ObjectList<Player> loggedInPlayers = new ObjectArrayList<>();
+    private Map<String, Object> jupiterconfig;
+    private List<Player> loggedInPlayers = new ArrayList<>();
 
-    private Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> defaultServerSettings = new Int2ObjectLinkedOpenHashMap<>();
+    private LinkedHashMap<Integer, ServerSettingsWindow> defaultServerSettings = new LinkedHashMap<>();
 
     private boolean printPackets = false;
 
@@ -384,7 +375,7 @@ public class Server implements ActionListener{
             new File(dataPath + "compileOrder/").mkdirs();
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "compileOrder/  を作成しました。"));
         }
-        
+
         if (!new File(dataPath + "makeOrder/").exists()) {
             new File(dataPath + "makeOrder/").mkdirs();
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "makeOrder/  を作成しました。"));
@@ -647,7 +638,7 @@ public class Server implements ActionListener{
                     seed = System.currentTimeMillis();
                 }
 
-                Object2ObjectMap<String, Object> options = new Object2ObjectOpenHashMap<>();
+                Map<String, Object> options = new HashMap<>();
                 String[] opts = ((String) this.getConfig(FastAppender.get("worlds.", name, ".generator"), Generator.getGenerator("default").getSimpleName())).split(":");
                 Class<? extends Generator> generator = Generator.getGenerator(opts[0]);
                 int len = opts.length;
@@ -718,7 +709,7 @@ public class Server implements ActionListener{
         if(!this.checkingUsingGUI()) return null;
         TrayIcon icon = null;
         try {
-            icon = new TrayIcon(ImageIO.read(new FastBufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"))));
+            icon = new TrayIcon(ImageIO.read(new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"))));
         } catch (IOException e) {
             this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
         } catch (UnsupportedOperationException e) {
@@ -766,7 +757,7 @@ public class Server implements ActionListener{
         if(event.isCancelled()){
             return;
         }
-        trayMessage(FastAppender.get("参加人数:", getFastOnlinePlayers().size(), "/", getPropertyInt("max-players")));
+        trayMessage(FastAppender.get("参加人数:", getOnlinePlayers().size(), "/", getPropertyInt("max-players")));
     }
 
     /**
@@ -878,7 +869,7 @@ public class Server implements ActionListener{
 
 
     public int broadcast(String message, String permissions) {
-        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
+        Set<CommandSender> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -896,7 +887,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcast(TextContainer message, String permissions) {
-        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
+        Set<CommandSender> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -914,7 +905,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastPopup(String message, String permissions) {
-        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
+        Set<Player> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -932,7 +923,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastTip(String message, String permissions) {
-        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
+        Set<Player> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -950,7 +941,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastTitle(String message, String permissions) {
-        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
+        Set<Player> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -968,7 +959,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastSubtitle(String message, String permissions) {
-        ObjectSet<Player> recipients = new ObjectOpenHashSet<>();
+        Set<Player> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -986,7 +977,7 @@ public class Server implements ActionListener{
     }
 
     public int broadcastImportantMessage(String message, String permissions) {
-        ObjectSet<CommandSender> recipients = new ObjectOpenHashSet<>();
+        Set<CommandSender> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
             for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
@@ -1055,7 +1046,7 @@ public class Server implements ActionListener{
         byte[] data;
         data = Binary.appendBytes(payload);
 
-        ObjectList<String> targets = new ObjectArrayList<>();
+        List<String> targets = new ArrayList<>();
         for (Player p : players) {
             if (p.isConnected()) {
                 targets.add(this.identifier.get(p.rawHashCode()));
@@ -1351,7 +1342,7 @@ public class Server implements ActionListener{
 
     public void addOnlinePlayer(Player player) {
         this.playerList.put(player.getUniqueId(), player);
-        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin());
+        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin(), player.getLoginChainData().getXUID()); 
     }
 
     public void removeOnlinePlayer(Player player) {
@@ -1370,21 +1361,29 @@ public class Server implements ActionListener{
     }
 
     public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin) {
-        this.updatePlayerListData(uuid, entityId, name, skin, this.playerList.values());
+        this.updatePlayerListData(uuid, entityId, name, skin, "", this.playerList.values());
+    }
+
+    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, String xboxUserId) {
+        this.updatePlayerListData(uuid, entityId, name, skin, xboxUserId, this.playerList.values());
     }
 
     public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, Player[] players) {
+        this.updatePlayerListData(uuid, entityId, name, skin, "", players);
+    }
+
+    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, String xboxUserId, Player[] players) {
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
-        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityId, name, skin)};
+        pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid, entityId, name, skin, xboxUserId)};
         Server.broadcastPacket(players, pk);
     }
 
-    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, Collection<Player> players) {
-        this.updatePlayerListData(uuid, entityId, name, skin,
+    public void updatePlayerListData(UUID uuid, long entityId, String name, Skin skin, String xboxUserId, Collection<Player> players) {
+        this.updatePlayerListData(uuid, entityId, name, skin, xboxUserId,
                 players.stream()
-                .filter(p -> !p.getUniqueId().equals(uuid))
-                .toArray(Player[]::new));
+                        .filter(p -> !p.getUniqueId().equals(uuid))
+                        .toArray(Player[]::new));
     }
 
     public void removePlayerListData(UUID uuid) {
@@ -1396,7 +1395,6 @@ public class Server implements ActionListener{
         pk.type = PlayerListPacket.TYPE_REMOVE;
         pk.entries = new PlayerListPacket.Entry[]{new PlayerListPacket.Entry(uuid)};
         Server.broadcastPacket(players, pk);
-
     }
 
     public void removePlayerListData(UUID uuid, Collection<Player> players) {
@@ -1404,26 +1402,16 @@ public class Server implements ActionListener{
     }
 
     public void sendFullPlayerListData(Player player) {
-        final UUID uuid = player.getUniqueId();
         PlayerListPacket pk = new PlayerListPacket();
         pk.type = PlayerListPacket.TYPE_ADD;
-        pk.entries = this.playerList.values()
-                .stream()
-                .filter(p -> !p.getUniqueId().equals(uuid))
+        pk.entries = this.playerList.values().stream()
                 .map(p -> new PlayerListPacket.Entry(
                         p.getUniqueId(),
                         p.getId(),
                         p.getDisplayName(),
-                        p.getSkin()))
+                        p.getSkin(),
+                        p.getLoginChainData().getXUID()))
                 .toArray(PlayerListPacket.Entry[]::new);
-        /*
-        int i = 0;
-        pk.entries = new PlayerListPacket.Entry[this.playerList.values().size() + 1];
-        for(Player p : this.playerList.values()){
-            pk.entries[i] = new PlayerListPacket.Entry(p.getUniqueId(), p.getId(), p.getName(), p.getSkin());
-            i++;
-        }
-        */
 
         player.dataPacket(pk);
     }
@@ -2052,10 +2040,6 @@ public class Server implements ActionListener{
         return new HashMap<>(playerList);
     }
 
-    public Object2ObjectMap<UUID, Player> getFastOnlinePlayers() {
-        return playerList;
-    }
-
     public void addRecipe(Recipe recipe) {
         this.craftingManager.registerRecipe(recipe);
     }
@@ -2125,7 +2109,7 @@ public class Server implements ActionListener{
                 if (async) {
                     this.getScheduler().scheduleAsyncTask(new FileWriteTask(FastAppender.get(this.getDataPath() + "players/", name.toLowerCase(), ".dat"), NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 } else {
-                    Utils.writeFile(FastAppender.get(this.getDataPath(), "players/", name.toLowerCase(), ".dat"), new FastByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
+                    Utils.writeFile(FastAppender.get(this.getDataPath(), "players/", name.toLowerCase(), ".dat"), new ByteArrayInputStream(NBTIO.writeGZIPCompressed(tag, ByteOrder.BIG_ENDIAN)));
                 }
             } catch (Exception e) {
                 this.logger.critical(this.getLanguage().translateString("nukkit.data.saveError", new String[]{name, e.getMessage()}));
@@ -2145,7 +2129,7 @@ public class Server implements ActionListener{
         Player found = null;
         name = name.toLowerCase();
         int delta = Integer.MAX_VALUE;
-        for (Player player : this.getFastOnlinePlayers().values()) {
+        for (Player player : this.getOnlinePlayers().values()) {
             if (player.getName().toLowerCase().startsWith(name)) {
                 int curDelta = player.getName().length() - name.length();
                 if (curDelta < delta) {
@@ -2163,7 +2147,7 @@ public class Server implements ActionListener{
 
     public Player getPlayerExact(String name) {
         name = name.toLowerCase();
-        for (Player player : this.getFastOnlinePlayers().values()) {
+        for (Player player : this.getOnlinePlayers().values()) {
             if (player.getName().toLowerCase().equals(name)) {
                 return player;
             }
@@ -2175,7 +2159,7 @@ public class Server implements ActionListener{
     public Player[] matchPlayer(String partialName) {
         partialName = partialName.toLowerCase();
         List<Player> matchedPlayer = new ArrayList<>();
-        for (Player player : this.getFastOnlinePlayers().values()) {
+        for (Player player : this.getOnlinePlayers().values()) {
             if (player.getName().toLowerCase().equals(partialName)) {
                 return new Player[]{player};
             } else if (player.getName().toLowerCase().contains(partialName)) {
@@ -2205,10 +2189,6 @@ public class Server implements ActionListener{
     }
 
     public Map<Integer, Level> getLevels() {
-        return levels;
-    }
-
-    public Int2ObjectMap<Level> getFastLevels() {
         return levels;
     }
 
@@ -2587,7 +2567,7 @@ public class Server implements ActionListener{
      * @return void
      */
     public void loadJupiterConfig(){
-        this.jupiterconfig = new Object2ObjectOpenHashMap<String, Object>(this.getJupiterConfig().getAll());
+        this.jupiterconfig = new HashMap<String, Object>(this.getJupiterConfig().getAll());
     }
 
     /**
@@ -2789,7 +2769,7 @@ public class Server implements ActionListener{
         return (Boolean) this.getConfig("player.save-player-data", true);
     }
 
-    public Int2ObjectLinkedOpenHashMap<ServerSettingsWindow> getDefaultServerSettings() {
+    public LinkedHashMap<Integer, ServerSettingsWindow> getDefaultServerSettings() {
         return this.defaultServerSettings;
     }
 

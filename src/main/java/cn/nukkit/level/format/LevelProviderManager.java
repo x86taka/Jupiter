@@ -1,15 +1,16 @@
 package cn.nukkit.level.format;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.nukkit.Server;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
 public abstract class LevelProviderManager {
-    protected static final Object2ObjectMap<String, Class<? extends LevelProvider>> providers = new Object2ObjectOpenHashMap<>();
+    protected static final Map<String, Class<? extends LevelProvider>> providers = new HashMap<>();
 
     public static void addProvider(Server server, Class<? extends LevelProvider> clazz) {
         try {

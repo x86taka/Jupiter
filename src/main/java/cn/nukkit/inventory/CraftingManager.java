@@ -25,11 +25,11 @@ public class CraftingManager {
 
     public final Map<UUID, Recipe> recipes = new HashMap<UUID, Recipe>();
 
-    protected final Map<String, Map<String, Recipe>> recipeLookup = new HashMap<String, Map<String, Recipe>>();
+    protected final Map<String, Map<String, Recipe>> recipeLookup = new HashMap<>();
 
-    public final Map<String, FurnaceRecipe> furnaceRecipes = new HashMap<String, FurnaceRecipe>();
+    public final Map<String, FurnaceRecipe> furnaceRecipes = new HashMap<>();
 
-    public final Map<String, BrewingRecipe> brewingRecipes = new HashMap<String, BrewingRecipe>();
+    public final Map<String, BrewingRecipe> brewingRecipes = new HashMap<>();
 
     private static int RECIPE_COUNT = 0;
 

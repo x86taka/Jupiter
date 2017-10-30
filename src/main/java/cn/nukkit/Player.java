@@ -5392,6 +5392,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.setDataFlag(DATA_FLAGS, DATA_FLAG_ACTION, value);
     }
 
+    /**
+     * フォームウィンドウをプレイヤーに送信します。
+     * @param window FormWindow
+     * @return void
+     */
     public void sendWindow(FormWindow window){
         ModalFormRequestPacket pk = new ModalFormRequestPacket();
         pk.data = window.toJson();
@@ -5421,7 +5426,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      * プレイヤーのスポーン地点からの距離を取得します。
      * @return double
      */
-    public double getPlainDistanceFromSpawn(){
+    public double getPlaneDistanceFromSpawn(){
         return this.distance(this.level.getSafeSpawn());
     }
 }

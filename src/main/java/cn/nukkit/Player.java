@@ -4777,7 +4777,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         Location from = this.getLocation();
         if (super.teleport(location, cause)) {
 
-            for (Inventory window : this.windowIndex.values()) {
+            for (Inventory window : new ArrayList<>(this.windowIndex.values())) {
                 if (window == this.inventory) {
                     continue;
                 }
@@ -5416,7 +5416,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.breakingBlock != null;
     }
 
-    public void showXboxProfile(String xuid) {
+    public void showXboxProfile() {
         ShowProfilePacket pk = new ShowProfilePacket();
         pk.xuid = getLoginChainData().getXUID();
         this.dataPacket(pk);

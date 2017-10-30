@@ -29,7 +29,7 @@ public class CompressBatchedTask extends AsyncTask {
 
     public CompressBatchedTask(byte[] data, List<String> targets, int level, int channel) {
         this.data = data;
-        this.targets = new ArrayList<>(targets);
+        this.targets = targets;
         this.level = level;
         this.channel = channel;
     }

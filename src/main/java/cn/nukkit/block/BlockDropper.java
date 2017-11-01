@@ -4,7 +4,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
-import cn.nukkit.blockentity.BlockEntityDispenser;
 import cn.nukkit.blockentity.BlockEntityDropper;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
@@ -125,8 +124,8 @@ public class BlockDropper extends BlockSolid {
         if (type == Level.BLOCK_UPDATE_REDSTONE) {
             if (this.getLevel().isBlockPowered(this)) {
                 BlockEntity blockEntity = this.level.getBlockEntity(this);
-                if (blockEntity instanceof BlockEntityDispenser) {
-                    ((BlockEntityDispenser) blockEntity).activate();
+                if (blockEntity instanceof BlockEntityDropper) {
+                    ((BlockEntityDropper) blockEntity).activate();
                 }
             }
         }

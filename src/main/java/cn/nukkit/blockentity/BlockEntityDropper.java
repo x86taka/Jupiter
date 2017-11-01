@@ -1,5 +1,8 @@
 package cn.nukkit.blockentity;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
 import cn.nukkit.inventory.DropperInventory;
@@ -8,6 +11,8 @@ import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.level.format.FullChunk;
+import cn.nukkit.level.particle.SmokeParticle;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -127,5 +132,73 @@ public class BlockEntityDropper extends BlockEntitySpawnable implements Inventor
         }
 
         return nbt;
+    }
+
+    public Vector3 getMotion() {
+        switch (this.getBlock().getDamage()) {
+            case 0:
+                return new Vector3(0, -1, 0);
+            case 1:
+                return new Vector3(0, 1, 0);
+            case 2:
+                return new Vector3(0, 0, -1);
+            case 3:
+                return new Vector3(0, 0, 1);
+            case 4:
+                return new Vector3(-1, 0, 0);
+            case 5:
+                return new Vector3(1, 0, 0);
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
+
+    public void activate() {
+        ArrayList<Integer> itemIndex = new ArrayList<Integer>();
+        for (int index = 0; index < this.getSize(); index++) {
+            Item item = this.getInventory().getItem(index);
+            if (item.getId() != 0) {
+                itemIndex.add(index);
+            }
+        }
+        Item item = null;
+        int index;
+        int max = itemIndex.size() - 1;
+        if (max < 0) {
+            return;
+        } else if (max == 0) {
+            index = itemIndex.get(0);
+            item = this.getInventory().getItem(index);
+        } else {
+            index = itemIndex.get(new Random().nextInt(itemIndex.size()));
+            item = this.getInventory().getItem(index);
+        }
+        if (item == null) {
+            return;
+        }
+        item.setCount(item.getCount() - 1);
+        this.getInventory().setItem(index, item.getCount() > 0 ? item : Item.get(0));
+        Item dropItem = Item.get(item.getId(), item.getDamage(), 1);
+        Vector3 motion = this.getMotion();
+        Block block = this.getLevel().getBlock(new Vector3(this.x + motion.x, this.y + motion.y, this.z + motion.z));
+        switch (block.getId()) {
+            case Block.CHEST:
+            case Block.TRAPPED_CHEST:
+            case Block.DROPPER:
+            case Block.DISPENSER:
+            case Block.BREWING_STAND_BLOCK:
+            case Block.FURNACE:
+                BlockEntity blockEntity = this.getLevel().getBlockEntity(block);
+                if (blockEntity instanceof InventoryHolder) {
+                    if (((InventoryHolder) blockEntity).getInventory().canAddItem(dropItem)) {
+                        ((InventoryHolder) blockEntity).getInventory().addItem(dropItem);
+                        return;
+                    }
+                }
+        }
+        this.getLevel().dropItem(new Vector3(this.x + motion.x * 2 + 0.5, this.y + (motion.y < 0 ? motion.y : 0.5), this.z + motion.z * 2 + 0.5), dropItem, motion.multiply(0.3));
+        for (int i = 0; i < 10; i++) {
+            this.getLevel().addParticle(new SmokeParticle(motion.add(motion.x * i * 0.3 + 0.5, motion.y == 0 ? 0.5 : motion.y * i * 0.3, motion.z * i * 0.3 + 0.5)));
+        }
     }
 }

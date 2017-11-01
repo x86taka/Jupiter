@@ -43,43 +43,25 @@ public class BlockCommand extends BlockSolid {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-    	if (!(player.isOp() && player.isCreative())) {
-    		return false;
-    	}
+        if (!(player.isOp() && player.isCreative())) {
+            return false;
+        }
         int f = 0;
-        if (player != null) {
-        	double pitch = player.pitch;
-        	if (Math.abs(pitch) >= 60) {
-        		if (pitch < 0) {
-        			f = 4;
-        		} else {
-        			f = 5;
-        		}
-        	} else {
-        		f = (player.getDirection().getIndex() - 1) & 0x03;
-        	}
+        if (player instanceof Player) {
+            double pitch = player.getPitch();
+            if (Math.abs(pitch) >= 45) {
+                if (pitch < 0) {
+                    f = 4;
+                } else {
+                    f = 5;
+                }
+            } else {
+                f = player.getDirection().getHorizontalIndex();
+            }
         }
-        switch (f) {
-        	case 0:
-        		this.meta = 3;
-        		break;
-        	case 1:
-        		this.meta = 5;
-        		break;
-        	case 2:
-        		this.meta = 4;
-        		break;
-        	case 3:
-        		this.meta = 2;
-        		break;
-        	case 4:
-        		this.meta = 0;
-        		break;
-        	case 5:
-        		this.meta = 1;
-        		break;
-        }
-        this.level.setBlock(this, this);
+        int[] faces = new int[]{4, 2, 5, 3, 0, 1};
+        this.meta = faces[f];
+        this.getLevel().setBlock(block, this, true, true);
         CompoundTag nbt = new CompoundTag()
                 .putString("id", BlockEntity.COMMAND_BLOCK)
                 .putInt("x", this.getFloorX())
@@ -95,7 +77,7 @@ public class BlockCommand extends BlockSolid {
     @Override
     public boolean onActivate(Item item, Player player) {
         if (!(player.isOp() && player.isCreative())) {
-        	return false;
+            return false;
         }
         BlockEntityCommandBlock blockEntity = this.getBlockEntity();
         if (blockEntity == null) {
@@ -105,10 +87,10 @@ public class BlockCommand extends BlockSolid {
                     .putInt("y", this.getFloorY())
                     .putInt("z", this.getFloorZ())
                     .putInt("commandBlockMode", this.getMode());
-        	blockEntity = new BlockEntityCommandBlock(this.level.getChunk(this.getFloorX() >> 4, this.getFloorZ() >> 4), nbt);
+            blockEntity = new BlockEntityCommandBlock(this.level.getChunk(this.getFloorX() >> 4, this.getFloorZ() >> 4), nbt);
         }
-    	blockEntity.spawnTo(player);
-    	blockEntity.show(player);
+        blockEntity.spawnTo(player);
+        blockEntity.show(player);
         return true;
     }
 
@@ -117,9 +99,9 @@ public class BlockCommand extends BlockSolid {
         if (type == Level.BLOCK_UPDATE_NORMAL || type == Level.BLOCK_UPDATE_REDSTONE) {
             BlockEntityCommandBlock blockEntity = this.getBlockEntity();
             if (blockEntity == null) {
-            	return 0;
+                return 0;
             }
-        	blockEntity.updatePower(this.level.isBlockPowered(this));
+            blockEntity.updatePower(this.level.isBlockPowered(this));
             return 1;
         }
         return 0;
@@ -138,13 +120,13 @@ public class BlockCommand extends BlockSolid {
     public BlockEntityCommandBlock getBlockEntity() {
         BlockEntity blockEntity = this.level.getBlockEntity(this);
         if (blockEntity instanceof BlockEntityCommandBlock) {
-        	return (BlockEntityCommandBlock) blockEntity;
+            return (BlockEntityCommandBlock) blockEntity;
         } else {
-        	return null;
+            return null;
         }
     }
 
     public int getMode() {
-    	return 0;
+        return 0;
     }
 }

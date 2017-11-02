@@ -356,11 +356,6 @@ public class Server implements ActionListener{
             this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "plugins/  を作成しました。"));
         }
 
-        if (!new File(dataPath + "players/").exists()) {
-            new File(dataPath + "players/").mkdirs();
-            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "players/  を作成しました。"));
-        }
-
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "  を作成しました。"));
@@ -1342,7 +1337,7 @@ public class Server implements ActionListener{
 
     public void addOnlinePlayer(Player player) {
         this.playerList.put(player.getUniqueId(), player);
-        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin(), player.getLoginChainData().getXUID()); 
+        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin(), player.getLoginChainData().getXUID());
     }
 
     public void removeOnlinePlayer(Player player) {

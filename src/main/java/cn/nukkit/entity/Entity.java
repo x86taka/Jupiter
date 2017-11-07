@@ -717,6 +717,8 @@ public abstract class Entity extends Location implements Metadatable {
 
             }
         }
+        
+        //server.getAI().addAIQueue(entity);
 
         return entity;
     }

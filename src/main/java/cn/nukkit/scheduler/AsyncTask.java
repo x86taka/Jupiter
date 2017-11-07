@@ -1,14 +1,16 @@
 package cn.nukkit.scheduler;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import cn.nukkit.Server;
 import cn.nukkit.utils.ThreadStore;
 import co.aikar.timings.Timings;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
  * @author Nukkit Project Team
+ * 
+ * <p>非同期タスクです。</p>
  */
 public abstract class AsyncTask implements Runnable {
 

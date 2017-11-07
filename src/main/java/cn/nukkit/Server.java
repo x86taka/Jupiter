@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 
 import com.google.common.base.Preconditions;
 
+import cn.nukkit.ai.AI;
 import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityBanner;
@@ -210,6 +211,8 @@ public class Server implements ActionListener{
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
 
     private static Server instance = null;
+    
+    private AI ai = null;
 
     private BanList banByName = null;
 
@@ -551,6 +554,11 @@ public class Server implements ActionListener{
         Effect.init();
         Potion.init();
         Attribute.init();
+        
+        /* TODO AI
+        this.ai = new AI(this);
+        ai.initAI();
+        */
 
         this.craftingManager = new CraftingManager();
 
@@ -2916,4 +2924,10 @@ public class Server implements ActionListener{
     public boolean printPackets(){
         return this.printPackets;
     }
+    
+    /*TODO getAI()
+    public AI getAI() {
+        return this.ai;
+    }
+     */
 }

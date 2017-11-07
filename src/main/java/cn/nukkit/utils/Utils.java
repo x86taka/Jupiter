@@ -20,19 +20,81 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
+/**
+ * 
+ * Utils - Jupiter
+ * 
+ * <p>IO関連をはじめ、様々な処理を行えるユーティリティクラスです。</p>
+ * 
+ * Jupiter by Jupiter Development Team
+ * 
+ */
+
 public class Utils {
+	
+	/**
+	 * 
+	 * @param filename ファイルパス
+	 * @param content 書き込む内容
+	 * 
+	 * <p>writeFile - Utils</p>
+	 * 
+	 * <p>contentで指定した内容をファイルに書き込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static void writeFile(String fileName, String content) throws IOException {
         writeFile(fileName, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
+    
+	/**
+	 * 
+	 * @param filename ファイルパス
+	 * @param content 書き込む内容(InputStream)
+	 * 
+	 * <p>writeFile - Utils</p>
+	 * 
+	 * <p>contentで指定した内容をファイルに書き込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static void writeFile(String fileName, InputStream content) throws IOException {
         writeFile(new File(fileName), content);
     }
+    
+	/**
+	 * 
+	 * @param file 書き込み先のファイルオブジェクト
+	 * @param content 書き込む内容
+	 * 
+	 * <p>writeFile - Utils</p>
+	 * 
+	 * <p>contentで指定した内容をファイルに書き込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static void writeFile(File file, String content) throws IOException {
         writeFile(file, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
+    
+	/**
+	 * 
+	 * @param file 書き込み先のファイルオブジェクト
+	 * @param content 書き込む内容(InputStream)
+	 * 
+	 * <p>writeFile - Utils</p>
+	 * 
+	 * <p>contentで指定した内容をファイルに書き込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static void writeFile(File file, InputStream content) throws IOException {
         if (content == null) {
@@ -50,6 +112,20 @@ public class Utils {
         stream.close();
         content.close();
     }
+    
+	/**
+	 * 
+	 * @param file 読み込み先のファイルオブジェクト
+	 * 
+	 * @return ファイルの内容
+	 * 
+	 * <p>readFile - Utils</p>
+	 * 
+	 * <p>fileで指定したファイルを読み込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static String readFile(File file) throws IOException {
         if (!file.exists() || file.isDirectory()) {
@@ -57,6 +133,20 @@ public class Utils {
         }
         return readFile(new FileInputStream(file));
     }
+    
+	/**
+	 * 
+	 * @param filename 読み込み先のファイルパス
+	 * 
+	 * @return ファイルの内容
+	 * 
+	 * <p>readFile - Utils</p>
+	 * 
+	 * <p>fileで指定したファイルを読み込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static String readFile(String filename) throws IOException {
         File file = new File(filename);
@@ -65,12 +155,40 @@ public class Utils {
         }
         return readFile(new FileInputStream(file));
     }
+    
+	/**
+	 * 
+	 * @param inputStream 読み込み先のInputStream
+	 * 
+	 * @return ファイルの内容
+	 * 
+	 * <p>readFile - Utils</p>
+	 * 
+	 * <p>fileで指定したファイルを読み込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static String readFile(InputStream inputStream) throws IOException {
         return readFile(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     }
+    
+	/**
+	 * 
+	 * @param reader リーダー
+	 * 
+	 * @return ファイルの内容
+	 * 
+	 * <p>readFile - Utils</p>
+	 * 
+	 * <p>fileで指定したファイルを読み込みます。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
-    private static String readFile(Reader reader) throws IOException {
+    public static String readFile(Reader reader) throws IOException {
         BufferedReader br = new BufferedReader(reader);
         String temp;
         StringBuilder stringBuilder = new StringBuilder();
@@ -86,6 +204,19 @@ public class Utils {
         reader.close();
         return stringBuilder.toString();
     }
+    
+	/**
+	 * 
+	 * @param from ファイルのコピー元
+	 * @param to ファイルのコピー先
+	 * 
+	 * <p>copyFile - Utils</p>
+	 * 
+	 * <p>fromで指定したファイルをtoで指定したところにコピーします。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static void copyFile(File from, File to) throws IOException {
         if (!from.exists()) {
@@ -114,6 +245,18 @@ public class Utils {
             if (out != null) out.close();
         }
     }
+    
+	/**
+	 * 
+	 * @return ダンプ内容
+	 * 
+	 * <p>getAllThreadDumps - Utils</p>
+	 * 
+	 * <p>すべてのスレッドのダンプを取得します。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static String getAllThreadDumps() {
         ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(true, true);
@@ -194,6 +337,18 @@ public class Utils {
         }
         return arrays;
     }
+    
+	/**
+	 * 
+	 * @return 結果
+	 * 
+	 * <p>toInt - Utils</p>
+	 * 
+	 * <p>引数で指定したオブジェクトのint表現を返します。</p>
+	 * 
+	 * Jupiter by Jupiter Development Team
+	 * 
+	 */
 
     public static int toInt(Object number) {
         return (int) Math.round((double) number);

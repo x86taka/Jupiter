@@ -71,7 +71,6 @@ import cn.nukkit.event.inventory.CraftItemEvent;
 import cn.nukkit.event.inventory.InventoryCloseEvent;
 import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
 import cn.nukkit.event.inventory.InventoryPickupItemEvent;
-import cn.nukkit.event.player.PlayerAchievementAwardedEvent;
 import cn.nukkit.event.player.PlayerAnimationEvent;
 import cn.nukkit.event.player.PlayerBedEnterEvent;
 import cn.nukkit.event.player.PlayerBedLeaveEvent;
@@ -1356,34 +1355,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         }
     }
 
-    public boolean awardAchievement(String achievementId) {
-        if (!Server.getInstance().getPropertyBoolean("achievements", true)) {
-            return false;
-        }
-
-        Achievement achievement = Achievement.achievements.get(achievementId);
-
-        if (achievement == null || hasAchievement(achievementId)) {
-            return false;
-        }
-
-        for (String id : achievement.requires) {
-            if (!this.hasAchievement(id)) {
-                return false;
-            }
-        }
-        PlayerAchievementAwardedEvent event = new PlayerAchievementAwardedEvent(this, achievementId);
-        this.server.getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return false;
-        }
-
-        this.achievements.add(achievementId);
-        achievement.broadcast(this);
-        return true;
-    }
-
     /**
      * プレイヤーのゲームモードを取得します。
      * <br>0:サバイバルモード
@@ -1458,7 +1429,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         if (!clientSide) {
             SetPlayerGameTypePacket pk = new SetPlayerGameTypePacket();
-            pk.gamemode = gamemode & 0x01;
+            pk.gamemode = getClientFriendlyGamemode(gamemode);
             this.dataPacket(pk);
         }
 
@@ -2129,13 +2100,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         StartGamePacket startGamePacket = new StartGamePacket();
         startGamePacket.entityUniqueId = this.id;
         startGamePacket.entityRuntimeId = this.id;
-        //startGamePacket.playerGamemode = this.getGamemode();
+        startGamePacket.playerGamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.x = (float) this.x;
         startGamePacket.y = (float) this.y;
         startGamePacket.z = (float) this.z;
         startGamePacket.yaw = (float) this.yaw;
         startGamePacket.pitch = (float) this.pitch;
         startGamePacket.seed = -1;
+        startGamePacket.dimension = (byte) (spawnPosition.level.getDimension() & 0xff);
+        startGamePacket.worldGamemode = getClientFriendlyGamemode(this.gamemode);
         startGamePacket.difficulty = this.server.getDifficulty();
         startGamePacket.spawnX = (int) spawnPosition.x;
         startGamePacket.spawnY = (int) spawnPosition.y + (int) this.getEyeHeight();
@@ -2206,18 +2179,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         try (Timing timing = Timings.getReceiveDataPacketTiming(packet)) {
             DataPacketReceiveEvent ev = new DataPacketReceiveEvent(this, packet);
             this.server.getPluginManager().callEvent(ev);
-            /*
-            InteractPacket確認用
-            1.1.0現在:ACTION_MOUSEOVERが断続的に発生している模様。
-            これを実行すると4が出力される。
 
-            if(packet.pid() == ProtocolInfo.INTERACT_PACKET){
-                InteractPacket pkpk = (InteractPacket)packet;
-                System.out.println(pkpk.action);
+            if(this.printPackets) {
+                this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getName());
             }
-            */
-            if(this.printPackets)
-                this.getServer().getLogger().info(TextFormat.AQUA + "[RECEIVE] " + TextFormat.WHITE + packet.getClass().getSimpleName());
+
             if (ev.isCancelled()) {
                 timing.stopTiming();
                 return;
@@ -3374,43 +3340,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     }
 
                     this.inventory.addItem(recipe.getResult());
-
-                    switch (recipe.getResult().getId()) {
-                        case Item.WORKBENCH:
-                            this.awardAchievement("buildWorkBench");
-                            break;
-                        case Item.WOODEN_PICKAXE:
-                            this.awardAchievement("buildPickaxe");
-                            break;
-                        case Item.FURNACE:
-                            this.awardAchievement("buildFurnace");
-                            break;
-                        case Item.WOODEN_HOE:
-                            this.awardAchievement("buildHoe");
-                            break;
-                        case Item.BREAD:
-                            this.awardAchievement("makeBread");
-                            break;
-                        case Item.CAKE:
-                            //TODO: detect complex recipes like cake that leave remains
-                            this.awardAchievement("bakeCake");
-                            this.inventory.addItem(new ItemBucket(0, 3));
-                            break;
-                        case Item.STONE_PICKAXE:
-                        case Item.GOLD_PICKAXE:
-                        case Item.IRON_PICKAXE:
-                        case Item.DIAMOND_PICKAXE:
-                            this.awardAchievement("buildBetterPickaxe");
-                            break;
-                        case Item.WOODEN_SWORD:
-                            this.awardAchievement("buildSword");
-                            break;
-                        case Item.DIAMOND:
-                            this.awardAchievement("diamond");
-                            break;
-                        default:
-                            break;
-                    }
 
                     break;
 
@@ -5181,25 +5110,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         if (ev.isCancelled()) {
                             return false;
                         }
-
-                        switch (item.getId()) {
-                            case Item.WOOD:
-                            case Item.WOOD2:
-                                this.awardAchievement("mineWood");
-                                break;
-                            case Item.DIAMOND:
-                                this.awardAchievement("diamond");
-                                break;
-                        }
-                        /*switch (item.getId()) {
-
-                            case Item.WOOD:
-                                this.awardAchievement("mineWood");
-                                break;
-                            case Item.DIAMOND:
-                                this.awardAchievement("diamond");
-                                break;
-                        }*/
 
                         TakeItemEntityPacket pk = new TakeItemEntityPacket();
                         pk.entityRuntimeId = this.getId();

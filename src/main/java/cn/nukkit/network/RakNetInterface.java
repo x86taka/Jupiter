@@ -219,6 +219,10 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
                         info.getMaxPlayerCount()));
     }
 
+    @Override
+    public void updatePing(String identifier, int pingMS) {
+    }
+
     public void setPortCheck(boolean value) {
         this.handler.sendOption("portChecking", String.valueOf(value));
     }

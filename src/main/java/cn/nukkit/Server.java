@@ -533,6 +533,7 @@ public class Server implements ActionListener{
 
         this.network = new Network(this);
         this.network.setName(this.getMotd());
+        this.network.setSubName(this.getSubMotd());
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.license", this.getName()));
 

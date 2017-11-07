@@ -1,7 +1,5 @@
 package cn.nukkit.inventory.transaction.action;
 
-import java.util.Set;
-
 import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
@@ -51,10 +49,7 @@ public class SlotChangeAction extends InventoryAction {
      * Sends inventorySlot changes to other viewers of the inventory. This will not send any change back to the source Player.
      */
     public void onExecuteSuccess(Player source) {
-        Set<Player> viewers = this.inventory.getViewers();
-        viewers.remove(source);
-
-        this.inventory.sendSlot(this.inventorySlot, viewers);
+        this.inventory.sendSlot(this.inventorySlot, this.inventory.getViewers());
     }
 
     /**

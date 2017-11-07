@@ -7,6 +7,7 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityDropper;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
+import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
@@ -49,6 +50,21 @@ public class BlockDropper extends BlockSolid {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        int f = 0;
+        if (player instanceof Player) {
+            double pitch = player.getPitch();
+            if (Math.abs(pitch) >= 45) {
+                if (pitch < 0) {
+                    f = 4;
+                } else {
+                    f = 5;
+                }
+            } else {
+                f = player.getDirection().getHorizontalIndex();
+            }
+        }
+        int[] faces = new int[]{4, 2, 5, 3, 0, 1};
+        this.meta = faces[f];
         this.getLevel().setBlock(block, this, true, true);
 
         CompoundTag nbt = new CompoundTag()
@@ -101,6 +117,19 @@ public class BlockDropper extends BlockSolid {
         }
 
         return true;
+    }
+
+    @Override
+    public int onUpdate(int type) {
+        if (type == Level.BLOCK_UPDATE_REDSTONE) {
+            if (this.getLevel().isBlockPowered(this)) {
+                BlockEntity blockEntity = this.level.getBlockEntity(this);
+                if (blockEntity instanceof BlockEntityDropper) {
+                    ((BlockEntityDropper) blockEntity).activate();
+                }
+            }
+        }
+        return 0;
     }
 
     @Override

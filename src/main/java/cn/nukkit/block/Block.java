@@ -74,6 +74,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int PISTON = 33;
     public static final int PISTON_HEAD = 34;
     public static final int WOOL = 35;
+
     public static final int DANDELION = 37;
     public static final int POPPY = 38;
     public static final int ROSE = 38;
@@ -194,7 +195,6 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int DRAGON_EGG = 122;
     public static final int REDSTONE_LAMP = 123;
     public static final int LIT_REDSTONE_LAMP = 124;
-    //Note: dropper CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
     public static final int DROPPER = 125;
     public static final int ACTIVATOR_RAIL = 126;
     public static final int COCOA = 127;
@@ -284,15 +284,13 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int JUNGLE_DOOR_BLOCK = 195;
     public static final int ACACIA_DOOR_BLOCK = 196;
     public static final int DARK_OAK_DOOR_BLOCK = 197;
-    //TODO GRASS_PATH
     public static final int GRASS_PATH = 198;
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
+    public static final int PURPUR_STAIRS = 202;
 
-    public static final int PURPUR_STAIRS = 203;
-    public static final int DOUBLE_PURPUR_SLAB = 204;
-    public static final int PURPUR_SLAB = 205;
+    public static final int UNDYED_SHULKER_BOX = 205;
     public static final int END_BRICKS = 206;
     //Note: frosted ice CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
     public static final int ICE_FROSTED = 207;
@@ -326,19 +324,18 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
     public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
+
     public static final int PODZOL = 243;
     public static final int BEETROOT_BLOCK = 244;
     public static final int STONECUTTER = 245;
     public static final int GLOWING_OBSIDIAN = 246;
-    public static final int NETHER_REACTOR = 247; //Should not be removed
+    public static final int NETHER_REACTOR = 247;
 
     public static final int PISTON_EXTENSION = 250;
-
     public static final int OBSERVER = 251;
     public static final int STRUCTURE_BLOCK  = 252;
 
-
-    public static Class[] list = null;
+    public static Class<? extends Block>[] list = null;
     public static Block[] fullList = null;
     public static int[] light = null;
     public static int[] lightFilter = null;
@@ -400,6 +397,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[PISTON] = BlockPiston.class; //33
             list[PISTON_HEAD] = BlockPistonHead.class; //34
             list[WOOL] = BlockWool.class; //35
+
             list[DANDELION] = BlockDandelion.class; //37
             list[FLOWER] = BlockFlower.class; //38
             list[BROWN_MUSHROOM] = BlockMushroomBrown.class; //39
@@ -447,7 +445,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[CACTUS] = BlockCactus.class; //81
             list[CLAY_BLOCK] = BlockClay.class; //82
             list[SUGARCANE_BLOCK] = BlockSugarcane.class; //83
-
+            list[JUKEBOX] = BlockJukeBox.class; //84
             list[FENCE] = BlockFence.class; //85
             list[PUMPKIN] = BlockPumpkin.class; //86
             list[NETHERRACK] = BlockNetherrack.class; //87
@@ -523,8 +521,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[DOUBLE_WOOD_SLAB] = BlockDoubleSlabWood.class; //157
             list[WOOD_SLAB] = BlockSlabWood.class; //158
             list[STAINED_CLAY] = BlockClayStained.class; //159
-            //TODO: list[STAINED_GLASS_PANE] = BlockGlassPaneStained.class; //160
-
+            list[STAINED_GLASS_PANE] = BlockGlassPaneStained.class; //160
             list[LEAVES2] = BlockLeaves2.class; //161
             list[WOOD2] = BlockWood2.class; //162
             list[ACACIA_WOOD_STAIRS] = BlockStairsAcacia.class; //163
@@ -553,7 +550,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[FENCE_GATE_DARK_OAK] = BlockFenceGateDarkOak.class; //186
             list[FENCE_GATE_ACACIA] = BlockFenceGateAcacia.class; //187
             list[REPEATING_COMMAND_BLOCK] = BlockCommandRepeating.class; //188
-            list[CHAIN_COMMAND_BLOCK] = BlockCommandChain.class; //188
+            list[CHAIN_COMMAND_BLOCK] = BlockCommandChain.class; //189
 
             list[SPRUCE_DOOR_BLOCK] = BlockDoorSpruce.class; //193
             list[BIRCH_DOOR_BLOCK] = BlockDoorBirch.class; //194
@@ -567,10 +564,16 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
             list[PURPUR_STAIRS] = BlockStairsPurpur.class; //203
 
+            list[UNDYED_SHULKER_BOX] = BlockShulkerBoxUndyed.class; //205
             list[END_BRICKS] = BlockBricksEndStone.class; //206
-
+            list[ICE_FROSTED] = BlockIceFrosted.class; //207
             list[END_ROD] = BlockEndRod.class; //208
             list[END_GATEWAY] = BlockEndGateway.class; //209
+
+            list[MAGMA_BLOCK] = BlockMagma.class; //213
+            list[NETHER_WART_BLOCK2] = BlockNetherWartBlock.class; //214
+            list[RED_NETHER_BRICKS] = BlockNetherBrickRed.class; //215
+            list[BONE_BLOCK] = BlockBone.class; //216
 
             list[SHULKER_BOX] = BlockShulkerBox.class; //218
             list[PURPLE_GLAZED_TERRACOTTA] = BlockTerracottaGlazedPurple.class; //219
@@ -662,9 +665,9 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static Block get(int id, Integer meta, Position pos) {
         Block block;
         try {
-            Class c = list[id];
+            Class<? extends Block> c = list[id];
             if (c != null) {
-                Constructor constructor = c.getDeclaredConstructor(int.class);
+                Constructor<? extends Block> constructor = c.getDeclaredConstructor(int.class);
                 constructor.setAccessible(true);
                 block = (Block) constructor.newInstance(meta);
             } else {

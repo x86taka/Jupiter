@@ -87,6 +87,8 @@ public class Session {
     private int reliableWindowEnd;
     private final Map<Integer, EncapsulatedPacket> reliableWindow = new TreeMap<>();
     private int lastReliableIndex = -1;
+    private long lastPingTime = -1;
+    private int lastPingMeasure = 0;
 
     public Session(SessionManager sessionManager, String address, int port) {
         this.sessionManager = sessionManager;
@@ -187,6 +189,11 @@ public class Session {
             } else {
                 break;
             }
+        }
+
+        if (this.lastPingTime + 5 < time) {
+            //this.sendPing();
+            this.lastPingTime = time;
         }
 
         this.sendQueue();

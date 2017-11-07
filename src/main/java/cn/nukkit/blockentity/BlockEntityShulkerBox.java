@@ -26,7 +26,7 @@ public class BlockEntityShulkerBox extends BlockEntitySpawnable implements Inven
             this.namedTag.putList(new ListTag<CompoundTag>("Items"));
         }
 
-        ListTag<CompoundTag> list = (ListTag<CompoundTag>) this.namedTag.getList("Items");
+        ListTag<CompoundTag> list = this.namedTag.getList("Items", CompoundTag.class);
         for (CompoundTag compound : list.getAll()) {
             Item item = NBTIO.getItemHelper(compound);
             this.inventory.slots.put(compound.getByte("Slot"), item);

@@ -136,6 +136,7 @@ public class Network {
     private double download = 0;
 
     private String name;
+    private String subName;
 
     public Network(Server server) {
         this.registerPackets();
@@ -169,9 +170,7 @@ public class Network {
             try {
                 interfaz.process();
             } catch (Exception e) {
-                if (Nukkit.DEBUG > 1) {
-                    this.server.getLogger().logException(e);
-                }
+                this.server.getLogger().logException(e);
 
                 interfaz.emergencyShutdown();
                 this.unregisterInterface(interfaz);
@@ -212,8 +211,16 @@ public class Network {
 
     public void updateName() {
         for (SourceInterface interfaz : this.interfaces) {
-            interfaz.setName(this.name);
+            interfaz.setName(this.name + "!@#" + this.subName);
         }
+    }
+
+    public String getSubName() {
+        return subName;
+    }
+
+    public void setSubName(String subName) {
+        this.subName = subName;
     }
 
     public void registerPacket(byte id, Class<? extends DataPacket> clazz) {
@@ -303,7 +310,7 @@ public class Network {
     private void registerPackets() {
         this.packetPool = new Class[256];
 
-        
+
         this.registerPacket(ProtocolInfo.ADD_BEHAVIOR_TREE_PACKET, AddBehaviorTreePacket.class);//new
         this.registerPacket(ProtocolInfo.ADD_ENTITY_PACKET, AddEntityPacket.class);
         this.registerPacket(ProtocolInfo.ADD_ITEM_ENTITY_PACKET, AddItemEntityPacket.class);

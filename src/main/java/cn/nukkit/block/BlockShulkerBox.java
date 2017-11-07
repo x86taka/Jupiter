@@ -9,7 +9,6 @@ import cn.nukkit.Player;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityShulkerBox;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemTool;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.StringTag;
@@ -17,19 +16,14 @@ import cn.nukkit.nbt.tag.Tag;
 import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.DyeColor;
 
-public class BlockShulkerBox extends BlockTransparent {
+public class BlockShulkerBox extends BlockShulkerBoxUndyed {
 
     public BlockShulkerBox() {
-        this(DyeColor.PURPLE.getDyedData());
+        this(0);
     }
 
     public BlockShulkerBox(int meta) {
         super(meta);
-    }
-
-    @Override
-    public boolean canBeActivated() {
-        return true;
     }
 
     @Override
@@ -43,21 +37,6 @@ public class BlockShulkerBox extends BlockTransparent {
     }
 
     @Override
-    public double getHardness() {
-        return 6;
-    }
-
-    @Override
-    public double getResistance() {
-        return 30;
-    }
-
-    @Override
-    public int getToolType() {
-        return ItemTool.TYPE_PICKAXE;
-    }
-
-    @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
         this.getLevel().setBlock(block, this, true, true);
         CompoundTag nbt = new CompoundTag("")
@@ -67,7 +46,7 @@ public class BlockShulkerBox extends BlockTransparent {
                 .putInt("z", (int) this.z);
 
         if (item.getNamedTag() != null && item.getNamedTag().contains("List")){
-        	nbt.putList(item.getNamedTag().getList("Items"));
+            nbt.putList(item.getNamedTag().getList("Items"));
         }
 
         if (item.hasCustomName()) {
@@ -143,8 +122,8 @@ public class BlockShulkerBox extends BlockTransparent {
                 lore.add(i.getName() + " x" + i.getCount());
                 ++count;
                 if (count == 5 && items.size() - count > 0){
-                	lore.add("and " + (items.size() - count) + " more...");
-                	break;
+                    lore.add("and " + (items.size() - count) + " more...");
+                    break;
                 }
             }
             item.setLore((String[])lore.toArray(new String[lore.size()]));

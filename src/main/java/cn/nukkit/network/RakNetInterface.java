@@ -20,7 +20,6 @@ import cn.nukkit.raknet.server.RakNetServer;
 import cn.nukkit.raknet.server.ServerHandler;
 import cn.nukkit.raknet.server.ServerInstance;
 import cn.nukkit.utils.Binary;
-import cn.nukkit.utils.FastAppender;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.Utils;
 import cn.nukkit.utils.Zlib;
@@ -210,13 +209,21 @@ public class RakNetInterface implements ServerInstance, AdvancedSourceInterface 
     @Override
     public void setName(String name) {
         QueryRegenerateEvent info = this.server.getQueryInformation();
+        String[] names = name.split("!@#");  //Split double names within the program
+        this.handler.sendOption("name",
+                "MCPE;" + Utils.rtrim(names[0].replace(";", "\\;"), '\\') + ";" +
+                        ProtocolInfo.CURRENT_PROTOCOL + ";" +
+                        ProtocolInfo.MINECRAFT_VERSION_NETWORK + ";" +
+                        info.getPlayerCount() + ";" +
+                        info.getMaxPlayerCount() + ";" +
+                        this.server.getServerUniqueId().toString() + ";" +
+                        (names.length > 1 ? Utils.rtrim(names[1].replace(";", "\\;"), '\\') : "") + ";" +
+                        Server.getGamemodeString(this.server.getDefaultGamemode(), true) + ";");
+    }
 
-        this.handler.sendOption("name", FastAppender.get(
-                "MCPE;" , Utils.rtrim(name.replace(";", "\\;"), '\\'), ";",
-                        ProtocolInfo.CURRENT_PROTOCOL, ";",
-                        ProtocolInfo.MINECRAFT_VERSION_NETWORK, ";",
-                        info.getPlayerCount(), ";",
-                        info.getMaxPlayerCount()));
+    @Override
+    public void updatePing(String identifier, int pingMS) {
+        
     }
 
     public void setPortCheck(boolean value) {

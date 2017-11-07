@@ -356,11 +356,6 @@ public class Server implements ActionListener{
             this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "plugins/  を作成しました。"));
         }
 
-        if (!new File(dataPath + "players/").exists()) {
-            new File(dataPath + "players/").mkdirs();
-            this.logger.info(FastAppender.get(TextFormat.AQUA, dataPath, "players/  を作成しました。"));
-        }
-
         if (!new File(pluginPath).exists()) {
             new File(pluginPath).mkdirs();
             this.logger.info(FastAppender.get(TextFormat.AQUA, pluginPath, "  を作成しました。"));
@@ -426,7 +421,8 @@ public class Server implements ActionListener{
         this.logger.info(FastAppender.get(TextFormat.GREEN, "server.properties", TextFormat.WHITE, "を読み込んでいます..."));
         this.properties = new Config(this.dataPath + "server.properties", Config.PROPERTIES, new ConfigSection() {
             {
-                put("motd", "Jupiter Server For Minecraft: PE");
+                put("motd", "Jupiter Server For Minecraft: BE");
+                put("sub-motd", "Powered by Jupiter");
                 put("server-port", 19132);
                 put("server-ip", "0.0.0.0");
                 put("view-distance", 10);
@@ -537,6 +533,7 @@ public class Server implements ActionListener{
 
         this.network = new Network(this);
         this.network.setName(this.getMotd());
+        this.network.setSubName(this.getSubMotd());
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.license", this.getName()));
 
@@ -1342,7 +1339,7 @@ public class Server implements ActionListener{
 
     public void addOnlinePlayer(Player player) {
         this.playerList.put(player.getUniqueId(), player);
-        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin(), player.getLoginChainData().getXUID()); 
+        this.updatePlayerListData(player.getUniqueId(), player.getId(), player.getDisplayName(), player.getSkin(), player.getLoginChainData().getXUID());
     }
 
     public void removeOnlinePlayer(Player player) {
@@ -1782,18 +1779,23 @@ public class Server implements ActionListener{
      * <br>スペクテイターモード(3)
      * <br>UNKNOWN(0-3以外の数値を入力した場合)
      * @param mode 名前に変換したいゲームモードの番号(0, 1, 2, 3)
+     * @param direct ダイレクトかどうか
      * @return String ゲームモード
      */
     public static String getGamemodeString(int mode) {
+        return getGamemodeString(mode, false);
+    }
+
+    public static String getGamemodeString(int mode, boolean direct) {
         switch (mode) {
             case Player.SURVIVAL:
-                return "%gameMode.survival";
+                return direct ? "Survival" : "%gameMode.survival";
             case Player.CREATIVE:
-                return "%gameMode.creative";
+                return direct ? "Creative" : "%gameMode.creative";
             case Player.ADVENTURE:
-                return "%gameMode.adventure";
+                return direct ? "Adventure" : "%gameMode.adventure";
             case Player.SPECTATOR:
-                return "%gameMode.spectator";
+                return direct ? "Spectator" : "%gameMode.spectator";
         }
         return "UNKNOWN";
     }
@@ -1911,10 +1913,19 @@ public class Server implements ActionListener{
     /**
      * サーバー名を取得します。
      * <br>server.propertiesのmotdの値です。
-     * @return String 難易度
+     * @return String サーバー名
      */
     public String getMotd() {
-        return this.getPropertyString("motd", "Nukkit Server For Minecraft: PE");
+        return this.getPropertyString("motd", "Nukkit Server For Minecraft: BE");
+    }
+
+    /**
+     * サブサーバー名を取得します。
+     * <br>server.propertiesのmotdの値です。
+     * @return String サブサーバー名
+     */
+    public String getSubMotd() {
+        return this.getPropertyString("sub-motd", "Powered by Jupiter");
     }
 
     public boolean getForceResources() {

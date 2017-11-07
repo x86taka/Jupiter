@@ -455,18 +455,13 @@ public class PlayerInventory extends BaseInventory {
         pk.item = this.getItem(index).clone();
 
         for (Player player : players) {
-            if (player.equals(this.getHolder())) {
-                pk.inventoryId = ContainerIds.INVENTORY;
-                player.dataPacket(pk);
-            } else {
-                int id = player.getWindowId(this);
-                if (id == -1) {
-                    this.close(player);
-                    continue;
-                }
-                pk.inventoryId = id;
-                player.dataPacket(pk.clone());
+            int id = player.getWindowId(this);
+            if (id == -1) {
+                this.close(player);
+                continue;
             }
+            pk.inventoryId = id;
+            player.dataPacket(pk.clone());
         }
     }
 

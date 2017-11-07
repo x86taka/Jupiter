@@ -172,6 +172,12 @@ public class ServerHandler {
                 offset += len;
                 int identifierACK = Binary.readInt(Binary.subBytes(packet, offset, 4));
                 this.instance.notifyACK(identifier, identifierACK);
+            } else if (id == RakNet.PACKET_REPORT_PING) {
+                int len = packet[offset++];
+                String identifier = new String(Binary.subBytes(packet, offset, len), StandardCharsets.UTF_8);
+                offset += len;
+                int pingMs = Binary.readInt(Binary.subBytes(packet, offset, 4));
+                this.instance.notifyACK(identifier, pingMs);
             }
             return true;
         }

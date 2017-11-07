@@ -1,5 +1,7 @@
 package cn.nukkit.blockentity;
 
+import java.util.HashSet;
+
 import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
@@ -14,8 +16,6 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.ListTag;
-
-import java.util.HashSet;
 
 /**
  * author: MagicDroidX
@@ -38,8 +38,8 @@ public class BlockEntityChest extends BlockEntitySpawnable implements InventoryH
         /* for (int i = 0; i < this.getSize(); i++) {
             this.inventory.setItem(i, this.getItem(i));
         } */
-        
-        ListTag<CompoundTag> list = (ListTag<CompoundTag>) this.namedTag.getList("Items");
+
+        ListTag<CompoundTag> list = this.namedTag.getList("Items", CompoundTag.class);
         for (CompoundTag compound : list.getAll()) {
             Item item = NBTIO.getItemHelper(compound);
             this.inventory.slots.put(compound.getByte("Slot"), item);
@@ -104,7 +104,7 @@ public class BlockEntityChest extends BlockEntitySpawnable implements InventoryH
     @Override
     public void setItem(int index, Item item) {
         int i = this.getSlotIndex(index);
-        
+
         CompoundTag d = NBTIO.putItemHelper(item, index);
 
         // If item is air or count less than 0, remove the item from the "Items" list

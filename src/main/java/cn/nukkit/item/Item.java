@@ -48,7 +48,6 @@ public class Item implements Cloneable {
         }
     }
 
-    //All Block IDs are here too
     public static final int AIR = 0;
     public static final int STONE = 1;
     public static final int GRASS = 2;
@@ -94,6 +93,7 @@ public class Item implements Cloneable {
     public static final int PISTON = 33;
     public static final int PISTON_HEAD = 34;
     public static final int WOOL = 35;
+
     public static final int DANDELION = 37;
     public static final int POPPY = 38;
     public static final int ROSE = 38;
@@ -283,7 +283,8 @@ public class Item implements Cloneable {
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
-
+    public static final int STANDING_BANNER = 176;
+    public static final int WALL_BANNER = 177;
     public static final int DAYLIGHT_DETECTOR_INVERTED = 178;
     public static final int RED_SANDSTONE = 179;
     public static final int RED_SANDSTONE_STAIRS = 180;
@@ -306,12 +307,12 @@ public class Item implements Cloneable {
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
-
-    public static final int PURPUR_STAIRS = 203;
+    public static final int PURPUR_STAIRS = 202;
 
     public static final int UNDYED_SHULKER_BOX = 205;
     public static final int END_BRICKS = 206;
-
+    //Note: frosted ice CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
+    public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
 
@@ -342,15 +343,16 @@ public class Item implements Cloneable {
 
     public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
+
     public static final int PODZOL = 243;
     public static final int BEETROOT_BLOCK = 244;
     public static final int STONECUTTER = 245;
     public static final int GLOWING_OBSIDIAN = 246;
-    public static final int NETHER_REACTOR = 247; //Should not be removed
+    public static final int NETHER_REACTOR = 247;
 
     public static final int PISTON_EXTENSION = 250;
-
     public static final int OBSERVER = 251;
+    public static final int STRUCTURE_BLOCK  = 252;
 
     //Normal Item IDs
 
@@ -559,6 +561,7 @@ public class Item implements Cloneable {
 
     public static final int LINGERING_POTION = 441;
 
+    public static final int MINECRAT_COMMAND_BLOCK = 443;
     public static final int ELYTRA = 444;
     public static final int SHULKER_SHELL = 445;
     public static final int BANNER = 446;
@@ -784,7 +787,8 @@ public class Item implements Cloneable {
             list[CARROT_ON_A_STICK] = ItemCarrotOnAStick.class; //398
             list[NETHER_STAR] = ItemNetherStar.class; //399
             list[PUMPKIN_PIE] = ItemPumpkinPie.class; //400
-
+            list[FIREWORKS] = ItemFireWorks.class; //401
+            list[FIREWORKS_CHARGE] = ItemFireWorksCharge.class; //402
             list[ENCHANTED_BOOK] = ItemBookEnchanted.class; //403
             list[COMPARATOR] = ItemRedstoneComparator.class; //404
             list[NETHER_BRICK] = ItemNetherBrick.class; //405

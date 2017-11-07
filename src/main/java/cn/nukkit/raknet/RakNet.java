@@ -105,6 +105,14 @@ public abstract class RakNet {
     public static final byte PACKET_UNBLOCK_ADDRESS = 0x10;
 
     /*
+     * REPORT_PING payload:
+     * byte (identifier length)
+     * byte[] (identifier)
+     * int32 (measured latency in MS)
+     */
+    public static final byte PACKET_REPORT_PING = 0x11;
+
+    /*
      * No payload
      *
      * Sends the disconnect message, removes sessions correctly, closes sockets.

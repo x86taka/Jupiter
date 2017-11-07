@@ -169,9 +169,7 @@ public class Network {
             try {
                 interfaz.process();
             } catch (Exception e) {
-                if (Nukkit.DEBUG > 1) {
-                    this.server.getLogger().logException(e);
-                }
+                this.server.getLogger().logException(e);
 
                 interfaz.emergencyShutdown();
                 this.unregisterInterface(interfaz);

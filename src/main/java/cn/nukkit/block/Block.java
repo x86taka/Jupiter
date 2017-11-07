@@ -288,8 +288,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
-
-    public static final int PURPUR_STAIRS = 203;
+    public static final int PURPUR_STAIRS = 202;
 
     public static final int UNDYED_SHULKER_BOX = 205;
     public static final int END_BRICKS = 206;
@@ -336,8 +335,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int OBSERVER = 251;
     public static final int STRUCTURE_BLOCK  = 252;
 
-
-    public static Class[] list = null;
+    public static Class<? extends Block>[] list = null;
     public static Block[] fullList = null;
     public static int[] light = null;
     public static int[] lightFilter = null;
@@ -574,7 +572,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
 
             list[MAGMA_BLOCK] = BlockMagma.class; //213
             list[NETHER_WART_BLOCK2] = BlockNetherWartBlock.class; //214
-            list[RED_NETHER_BRICKS] = BlockRedNetherBricks.class; //215
+            list[RED_NETHER_BRICKS] = BlockNetherBrickRed.class; //215
             list[BONE_BLOCK] = BlockBone.class; //216
 
             list[SHULKER_BOX] = BlockShulkerBox.class; //218
@@ -667,9 +665,9 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static Block get(int id, Integer meta, Position pos) {
         Block block;
         try {
-            Class c = list[id];
+            Class<? extends Block> c = list[id];
             if (c != null) {
-                Constructor constructor = c.getDeclaredConstructor(int.class);
+                Constructor<? extends Block> constructor = c.getDeclaredConstructor(int.class);
                 constructor.setAccessible(true);
                 block = (Block) constructor.newInstance(meta);
             } else {

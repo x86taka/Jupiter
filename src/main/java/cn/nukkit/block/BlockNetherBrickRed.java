@@ -3,34 +3,24 @@ package cn.nukkit.block;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 
-public class BlockMagma extends BlockSolid {
+public class BlockNetherBrickRed extends BlockNetherBrick {
 
-    public BlockMagma() {
+    public BlockNetherBrickRed() {
         this(0);
     }
 
-    public BlockMagma(int meta) {
+    public BlockNetherBrickRed(int meta) {
         super(meta);
     }
 
     @Override
     public String getName() {
-        return "Magma Block";
+        return "Red Nether Bricks";
     }
 
     @Override
     public int getId() {
-        return MAGMA_BLOCK;
-    }
-
-    @Override
-    public int getToolType() {
-        return ItemTool.TYPE_PICKAXE;
-    }
-
-    @Override
-    public double getResistance() {
-        return 2.5;
+        return RED_NETHER_BRICKS;
     }
 
     @Override

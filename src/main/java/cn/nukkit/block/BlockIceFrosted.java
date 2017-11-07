@@ -1,6 +1,6 @@
 package cn.nukkit.block;
 
-public class BlockIceFrosted extends BlockSolid{
+public class BlockIceFrosted extends BlockSolid {
 
     public BlockIceFrosted() {
         this(0);

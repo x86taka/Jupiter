@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import cn.nukkit.item.Item;
+
 public class BlockGlassPaneStained extends BlockGlassPane {
 
     public BlockGlassPaneStained() {
@@ -7,7 +9,7 @@ public class BlockGlassPaneStained extends BlockGlassPane {
     }
 
     public BlockGlassPaneStained(int meta) {
-        super(0);
+        super(meta);
     }
 
     @Override
@@ -18,5 +20,10 @@ public class BlockGlassPaneStained extends BlockGlassPane {
     @Override
     public int getId() {
         return STAINED_GLASS_PANE;
+    }
+
+    @Override
+    public Item[] getDrops(Item item) {
+        return item.isSilkTouch() ? new Item[]{this.toItem()} : new Item[0];
     }
 }

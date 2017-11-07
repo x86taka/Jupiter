@@ -48,7 +48,6 @@ public class Item implements Cloneable {
         }
     }
 
-    //All Block IDs are here too
     public static final int AIR = 0;
     public static final int STONE = 1;
     public static final int GRASS = 2;
@@ -308,11 +307,11 @@ public class Item implements Cloneable {
     public static final int ITEM_FRAME_BLOCK = 199;
     public static final int CHORUS_FLOWER = 200;
     public static final int PURPUR_BLOCK = 201;
-
-    public static final int PURPUR_STAIRS = 203;
+    public static final int PURPUR_STAIRS = 202;
 
     public static final int UNDYED_SHULKER_BOX = 205;
     public static final int END_BRICKS = 206;
+    //Note: frosted ice CAN NOT BE HARVESTED WITH HAND -- canHarvestWithHand method should be overridden FALSE.
     public static final int ICE_FROSTED = 207;
     public static final int END_ROD = 208;
     public static final int END_GATEWAY = 209;
@@ -334,7 +333,6 @@ public class Item implements Cloneable {
     public static final int GRAY_GLAZED_TERRACOTTA = 227;
     public static final int SILVER_GLAZED_TERRACOTTA = 228;
     public static final int CYAN_GLAZED_TERRACOTTA = 229;
-
     public static final int BLUE_GLAZED_TERRACOTTA = 231;
     public static final int BROWN_GLAZED_TERRACOTTA = 232;
     public static final int GREEN_GLAZED_TERRACOTTA = 233;
@@ -345,6 +343,7 @@ public class Item implements Cloneable {
 
     public static final int CHORUS_PLANT = 240;
     public static final int STAINED_GLASS = 241;
+
     public static final int PODZOL = 243;
     public static final int BEETROOT_BLOCK = 244;
     public static final int STONECUTTER = 245;

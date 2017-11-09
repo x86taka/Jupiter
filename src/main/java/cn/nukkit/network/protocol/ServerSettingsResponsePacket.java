@@ -2,12 +2,14 @@ package cn.nukkit.network.protocol;
 
 public class ServerSettingsResponsePacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.SERVER_SETTINGS_RESPONSE_PACKET;
+
     public int formId;
     public String data;
 
     @Override
     public byte pid() {
-        return ProtocolInfo.SERVER_SETTINGS_RESPONSE_PACKET;
+        return NETWORK_ID;
     }
 
     @Override

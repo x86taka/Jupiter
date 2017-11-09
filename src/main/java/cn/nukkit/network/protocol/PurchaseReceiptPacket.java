@@ -5,11 +5,13 @@ package cn.nukkit.network.protocol;
  */
 public class PurchaseReceiptPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.PURCHASE_RECEIPT_PACKET;
+
     public String[] unknownStringArray;
 
     @Override
     public byte pid() {
-        return ProtocolInfo.PURCHASE_RECEIPT_PACKET;
+        return NETWORK_ID;
     }
 
     @Override

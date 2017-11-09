@@ -7,11 +7,6 @@ public class TextPacket extends DataPacket {
 
     public static final byte NETWORK_ID = ProtocolInfo.TEXT_PACKET;
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
-
     public static final byte TYPE_RAW = 0;
     public static final byte TYPE_CHAT = 1;
     public static final byte TYPE_TRANSLATION = 2;
@@ -27,6 +22,11 @@ public class TextPacket extends DataPacket {
     public String message = "";
     public String[] parameters = new String[0];
     public boolean isLocalized = false;
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {

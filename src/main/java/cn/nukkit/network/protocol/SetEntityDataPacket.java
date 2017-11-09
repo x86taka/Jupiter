@@ -8,15 +8,16 @@ import cn.nukkit.utils.Binary;
  * Nukkit Project
  */
 public class SetEntityDataPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.SET_ENTITY_DATA_PACKET;
+
+    public long entityRuntimeId;
+    public EntityMetadata metadata;
 
     @Override
     public byte pid() {
         return NETWORK_ID;
     }
-
-    public long entityRuntimeId;
-    public EntityMetadata metadata;
 
     @Override
     public void decode() {

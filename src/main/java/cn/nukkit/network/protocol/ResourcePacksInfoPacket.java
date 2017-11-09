@@ -11,6 +11,11 @@ public class ResourcePacksInfoPacket extends DataPacket {
     public ResourcePack[] resourcePackEntries = new ResourcePack[0];
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -37,8 +42,4 @@ public class ResourcePacksInfoPacket extends DataPacket {
         }
     }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
 }

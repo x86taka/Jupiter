@@ -10,6 +10,11 @@ public class SetDifficultyPacket extends DataPacket {
     public int difficulty;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -18,11 +23,6 @@ public class SetDifficultyPacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putUnsignedVarInt(this.difficulty);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

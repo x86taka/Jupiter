@@ -39,4 +39,5 @@ public class MobEffectPacket extends DataPacket {
         this.putBoolean(this.particles);
         this.putVarInt(this.duration);
     }
+
 }

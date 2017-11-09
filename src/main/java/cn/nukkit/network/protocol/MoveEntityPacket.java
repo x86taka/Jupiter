@@ -7,6 +7,7 @@ import cn.nukkit.math.Vector3f;
  * Nukkit Project
  */
 public class MoveEntityPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.MOVE_ENTITY_PACKET;
 
     public long entityRuntimeId;

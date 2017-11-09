@@ -18,6 +18,11 @@ public class PlayerListPacket extends DataPacket {
     public Entry[] entries = new Entry[0];
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -42,11 +47,6 @@ public class PlayerListPacket extends DataPacket {
             }
         }
 
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
     public static class Entry {

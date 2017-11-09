@@ -1,10 +1,12 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.entity.data.Skin;
-
 import java.util.UUID;
 
+import cn.nukkit.entity.data.Skin;
+
 public class PlayerSkinPacket extends DataPacket {
+
+    public static final byte NETWORK_ID = ProtocolInfo.PLAYER_SKIN_PACKET;
 
     public UUID uuid;
     public Skin skin;
@@ -15,7 +17,7 @@ public class PlayerSkinPacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return ProtocolInfo.PLAYER_SKIN_PACKET;
+        return NETWORK_ID;
     }
 
     @Override

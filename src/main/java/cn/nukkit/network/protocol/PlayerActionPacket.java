@@ -36,6 +36,10 @@ public class PlayerActionPacket extends DataPacket {
     public int z;
     public int face;
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {
@@ -55,11 +59,6 @@ public class PlayerActionPacket extends DataPacket {
         this.putVarInt(this.action);
         this.putBlockVector3(this.x, this.y, this.z);
         this.putVarInt(this.face);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

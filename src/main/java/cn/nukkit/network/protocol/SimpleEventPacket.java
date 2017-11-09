@@ -2,16 +2,18 @@ package cn.nukkit.network.protocol;
 
 public class SimpleEventPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.SIMPLE_EVENT_PACKET;
+
     public short unknown;
 
     @Override
     public byte pid() {
-        return ProtocolInfo.SIMPLE_EVENT_PACKET;
+        return NETWORK_ID;
     }
 
     @Override
     public void decode() {
-
+        this.unknown = (short) this.getShort();
     }
 
     @Override

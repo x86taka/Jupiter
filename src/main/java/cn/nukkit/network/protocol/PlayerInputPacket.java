@@ -14,6 +14,11 @@ public class PlayerInputPacket extends DataPacket {
     public boolean unknownBool2;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.motionX = this.getLFloat();
         this.motionY = this.getLFloat();
@@ -24,11 +29,6 @@ public class PlayerInputPacket extends DataPacket {
     @Override
     public void encode() {
 
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

@@ -13,6 +13,11 @@ public class ResourcePackClientResponsePacket extends DataPacket {
     public String[] packIds;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.responseStatus = (byte) this.getByte();
         this.packIds = new String[this.getLShort()];
@@ -31,8 +36,4 @@ public class ResourcePackClientResponsePacket extends DataPacket {
         }
     }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
 }

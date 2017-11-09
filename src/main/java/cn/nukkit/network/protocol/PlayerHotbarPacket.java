@@ -5,6 +5,8 @@ import cn.nukkit.utils.Binary;
 
 public class PlayerHotbarPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.PLAYER_HOTBAR_PACKET;
+
     public int selectedHotbarSlot;
     public int windowId = ContainerIds.INVENTORY;
 
@@ -14,7 +16,7 @@ public class PlayerHotbarPacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return ProtocolInfo.PLAYER_HOTBAR_PACKET;
+        return NETWORK_ID;
     }
 
     @Override

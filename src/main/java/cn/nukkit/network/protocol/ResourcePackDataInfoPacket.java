@@ -11,6 +11,11 @@ public class ResourcePackDataInfoPacket extends DataPacket {
     public byte[] sha256;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.packId = this.getString();
         this.maxChunkSize = this.getLInt();
@@ -29,8 +34,4 @@ public class ResourcePackDataInfoPacket extends DataPacket {
         this.putByteArray(this.sha256);
     }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
 }

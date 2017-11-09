@@ -30,4 +30,5 @@ public class LoginPacket extends DataPacket {
     public int getProtocol() {
         return protocol;
     }
+
 }

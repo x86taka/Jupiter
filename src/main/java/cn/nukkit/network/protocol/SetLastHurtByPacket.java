@@ -5,11 +5,13 @@ package cn.nukkit.network.protocol;
  */
 public class SetLastHurtByPacket extends DataPacket {
 
+    public final static byte NETWORK_ID = ProtocolInfo.SET_LAST_HURT_BY_PACKET;
+
     public int unknownVarInt;
 
     @Override
     public byte pid() {
-        return ProtocolInfo.SET_LAST_HURT_BY_PACKET;
+        return NETWORK_ID;
     }
 
     @Override

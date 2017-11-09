@@ -28,6 +28,11 @@ public class MovePlayerPacket extends DataPacket {
     public int int2 = 0;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.entityRuntimeId = this.getEntityRuntimeId();
         Vector3f v = this.getVector3f();
@@ -61,11 +66,6 @@ public class MovePlayerPacket extends DataPacket {
             this.putLInt(this.int1);
             this.putLInt(this.int2);
         }
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

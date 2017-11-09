@@ -5,11 +5,16 @@ package cn.nukkit.network.protocol;
  */
 public class PhotoTransferPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.PHOTO_TRANSFER_PACKET;
+
     public String photoName;
     public String photoData;
     public String bookId;
 
-    public static final byte NETWORK_ID = ProtocolInfo.PHOTO_TRANSFER_PACKET;
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {
@@ -21,11 +26,6 @@ public class PhotoTransferPacket extends DataPacket {
     @Override
     public void encode() {
 
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

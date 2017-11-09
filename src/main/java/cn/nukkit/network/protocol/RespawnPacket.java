@@ -12,6 +12,11 @@ public class RespawnPacket extends DataPacket {
     public float z;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -20,11 +25,6 @@ public class RespawnPacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putVector3f(this.x, this.y, this.z);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

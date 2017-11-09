@@ -1,7 +1,7 @@
 package cn.nukkit.block;
 
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.vehicle.EntityMinecartAbstract;
+import cn.nukkit.entity.item.EntityMinecartAbstract;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;

@@ -7,7 +7,7 @@ import cn.nukkit.network.protocol.AddEntityPacket;
 
 public class EntityEnderDragon extends EntityBoss {
 
-	public static final int NETWORK_ID = 53;
+    public static final int NETWORK_ID = 53;
 
     @Override
     public int getNetworkId() {

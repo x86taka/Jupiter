@@ -9,7 +9,7 @@ import cn.nukkit.network.protocol.AddEntityPacket;
 
 public class EntityWither extends EntityBoss {
 
-	public static final int NETWORK_ID = 52;
+    public static final int NETWORK_ID = 52;
 
     @Override
     public int getNetworkId() {

@@ -13,7 +13,7 @@ import cn.nukkit.network.protocol.AddEntityPacket;
 
 public class EntityElderGuardian extends EntityBoss {
 
-	public static final int NETWORK_ID = 50;
+    public static final int NETWORK_ID = 50;
 
     @Override
     public int getNetworkId() {

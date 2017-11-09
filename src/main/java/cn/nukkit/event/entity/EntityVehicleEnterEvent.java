@@ -1,7 +1,7 @@
 package cn.nukkit.event.entity;
 
 import cn.nukkit.entity.Entity;
-import cn.nukkit.entity.vehicle.EntityVehicle;
+import cn.nukkit.entity.item.EntityVehicle;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 

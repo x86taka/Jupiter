@@ -8,9 +8,9 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
-import cn.nukkit.entity.animal.EntityWaterAnimal;
 import cn.nukkit.entity.data.ShortEntityData;
-import cn.nukkit.entity.vehicle.EntityVehicle;
+import cn.nukkit.entity.item.EntityVehicle;
+import cn.nukkit.entity.passive.EntityWaterAnimal;
 import cn.nukkit.event.entity.EntityDamageByChildEntityEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
@@ -92,7 +92,7 @@ public abstract class EntityLiving extends Entity implements EntityDamageable {
         return true;
     }
 
-    public void collidingWith(cn.nukkit.entity.vehicle.EntityVehicle ent) { // can override (IronGolem|Bats)
+    public void collidingWith(EntityVehicle ent) { // can override (IronGolem|Bats)
         ent.applyEntityCollision(this);
     }
 

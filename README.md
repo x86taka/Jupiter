@@ -10,8 +10,10 @@ Jupiterは無料のMinecraft Pocket Edition用のサーバーソフトウェア�
 
 * Nukkitプラグインはもちろん、Jupiterの独自メソッドを使ったプラグインも使用できます   
   
-なお、WindowsとMacOSで正常な動作を確認しております。
-
+なお、WindowsとMacOSで正常な動作を確認しております。  
+  
+Jupiterの機能の詳細については[Wiki](https://github.com/JupiterDevelopmentTeam/Jupiter/wiki)をご覧ください。  
+  
 ビルドステータス
 --------------------
 [![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)

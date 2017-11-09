@@ -174,13 +174,7 @@ public class Network {
 
                 interfaz.emergencyShutdown();
                 this.unregisterInterface(interfaz);
-                
-                //XXXXによってYYYYのインターフェイスが停止しましたというエラーを吐く。
-                //大体はNumberFormatExceptionによるもの。
-                //For input Stringやempty Stringはそれにあたる。
-                //
-                //デバッグ
-                //e.printStackTrace();
+
                 this.server.getLogger().critical(this.server.getLanguage().translateString("nukkit.server.networkError", new String[]{interfaz.getClass().getName(), e.getMessage()}));
             }
         }

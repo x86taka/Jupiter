@@ -8,11 +8,10 @@ public class BossEventPacket extends DataPacket {
     public static final byte NETWORK_ID = ProtocolInfo.BOSS_EVENT_PACKET;
 
     public static final int TYPE_SHOW = 0;
-    public static final int TYPE_REGISTER_PLAYER = 1;
     public static final int TYPE_UPDATE = 1;
     public static final int TYPE_HIDE = 2;
 
-    public long bossEid;
+    public long entityRuntimeId;
     public int type;
 
     @Override
@@ -22,14 +21,13 @@ public class BossEventPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.bossEid = this.getEntityUniqueId();
-        this.type = (int) this.getUnsignedVarInt();
+
     }
 
     @Override
     public void encode() {
         this.reset();
-        this.putEntityUniqueId(this.bossEid);
+        this.putEntityUniqueId(this.entityRuntimeId);
         this.putUnsignedVarInt(this.type);
     }
 }

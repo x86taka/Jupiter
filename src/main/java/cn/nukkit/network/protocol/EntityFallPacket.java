@@ -1,11 +1,17 @@
 package cn.nukkit.network.protocol;
 
 public class EntityFallPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.ENTITY_FALL_PACKET;
 
     public long entityRuntimeId;
     public float fallDistance;
     public boolean unknown;
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {
@@ -19,8 +25,4 @@ public class EntityFallPacket extends DataPacket {
 
     }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
 }

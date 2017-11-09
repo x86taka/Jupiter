@@ -11,6 +11,11 @@ public class TakeItemEntityPacket extends DataPacket {
     public long target;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
     }
 
@@ -19,11 +24,6 @@ public class TakeItemEntityPacket extends DataPacket {
         this.reset();
         this.putVarLong(this.target);
         this.putVarLong(this.entityRuntimeId);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

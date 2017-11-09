@@ -4,6 +4,7 @@ package cn.nukkit.network.protocol;
  * Created by on 15-10-12.
  */
 public class DisconnectPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.DISCONNECT_PACKET;
 
     public boolean hideDisconnectionScreen = false;
@@ -16,8 +17,7 @@ public class DisconnectPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.hideDisconnectionScreen = this.getBoolean();
-        this.message = this.getString();
+        
     }
 
     @Override
@@ -28,6 +28,5 @@ public class DisconnectPacket extends DataPacket {
             this.putString(this.message);
         }
     }
-
 
 }

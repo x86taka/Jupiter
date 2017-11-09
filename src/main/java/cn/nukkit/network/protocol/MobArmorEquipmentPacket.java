@@ -7,15 +7,16 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class MobArmorEquipmentPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.MOB_ARMOR_EQUIPMENT_PACKET;
+
+    public long eid;
+    public Item[] slots = new Item[4];
 
     @Override
     public byte pid() {
         return NETWORK_ID;
     }
-
-    public long eid;
-    public Item[] slots = new Item[4];
 
     @Override
     public void decode() {

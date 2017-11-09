@@ -5,6 +5,7 @@ package cn.nukkit.network.protocol;
  * Nukkit Project
  */
 public class FullChunkDataPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.FULL_CHUNK_DATA_PACKET;
 
     @Override

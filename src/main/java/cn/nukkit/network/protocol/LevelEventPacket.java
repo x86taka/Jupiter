@@ -7,6 +7,7 @@ import cn.nukkit.math.Vector3f;
  * Nukkit Project
  */
 public class LevelEventPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.LEVEL_EVENT_PACKET;
 
     public static final int EVENT_SOUND_CLICK = 1000;

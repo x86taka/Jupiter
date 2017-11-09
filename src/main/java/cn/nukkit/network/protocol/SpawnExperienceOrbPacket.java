@@ -10,6 +10,11 @@ public class SpawnExperienceOrbPacket extends DataPacket {
     public int amount;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -19,10 +24,5 @@ public class SpawnExperienceOrbPacket extends DataPacket {
         this.reset();
         this.putVector3f(this.x, this.y, this.z);
         this.putUnsignedVarInt(this.amount);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 }

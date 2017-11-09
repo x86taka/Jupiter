@@ -7,18 +7,19 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class MobEquipmentPacket extends DataPacket {
-    public static final byte NETWORK_ID = ProtocolInfo.MOB_EQUIPMENT_PACKET;
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
+    public static final byte NETWORK_ID = ProtocolInfo.MOB_EQUIPMENT_PACKET;
 
     public long entityRuntimeId;
     public Item item;
     public int inventorySlot;
     public int hotbarSlot;
     public int windowId;
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {

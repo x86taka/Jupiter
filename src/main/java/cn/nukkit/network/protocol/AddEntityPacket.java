@@ -3,12 +3,14 @@ package cn.nukkit.network.protocol;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.data.EntityMetadata;
 import cn.nukkit.utils.Binary;
+import cn.nukkit.utils.Link;
 
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
 public class AddEntityPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.ADD_ENTITY_PACKET;
 
     @Override
@@ -29,7 +31,7 @@ public class AddEntityPacket extends DataPacket {
     public float pitch;
     public EntityMetadata metadata = new EntityMetadata();
     public Attribute[] attributes = new Attribute[0];
-    public final Object[][] links = new Object[0][3];
+    public final Link[] links = new Link[0];
 
     @Override
     public void decode() {
@@ -49,10 +51,11 @@ public class AddEntityPacket extends DataPacket {
         this.putAttributeList(this.attributes);
         this.put(Binary.writeMetadata(this.metadata));
         this.putUnsignedVarInt(this.links.length);
-        for (Object[] link : this.links) {
-            this.putVarLong((long) link[0]);
-            this.putVarLong((long) link[1]);
-            this.putByte((byte) link[2]);
+        for (Link link : this.links) {
+            this.putVarLong(link.from);
+            this.putVarLong(link.to);
+            this.putByte((byte) link.action);
+            this.putByte((byte) link.unknownByte);
         }
     }
 }

@@ -14,7 +14,7 @@ public class PurchaseReceiptPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+        //TODO
     }
 
     @Override

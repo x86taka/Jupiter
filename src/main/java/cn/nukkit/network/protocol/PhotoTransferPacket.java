@@ -20,9 +20,7 @@ public class PhotoTransferPacket extends DataPacket {
 
     @Override
     public void encode() {
-    	this.putString(this.photoName);
-    	this.putString(this.photoData);
-    	this.putString(this.bookId);
+
     }
 
     @Override

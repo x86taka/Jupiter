@@ -1,5 +1,7 @@
 package cn.nukkit.network.protocol;
 
+import cn.nukkit.math.Vector3f;
+
 /**
  * Created on 15-10-15.
  */
@@ -14,23 +16,25 @@ public class InteractPacket extends DataPacket {
 
     public int action;
     public long target;
+    public Vector3f targetPosition;
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public void decode() {
         this.action = this.getByte();
         this.target = this.getEntityRuntimeId();
+        if(this.action == ACTION_MOUSEOVER) {
+            this.targetPosition = this.getVector3f();
+        }
     }
 
     @Override
     public void encode() {
-        this.reset();
-        this.putByte((byte) this.action);
-        this.putEntityRuntimeId(this.target);
-    }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

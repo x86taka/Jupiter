@@ -1,9 +1,9 @@
 package cn.nukkit.network.protocol;
 
 
-import cn.nukkit.item.Item;
-
 import java.util.UUID;
+
+import cn.nukkit.item.Item;
 
 /**
  * @author Nukkit Project Team
@@ -27,6 +27,11 @@ public class CraftingEventPacket extends DataPacket {
     public Item[] output;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.windowId = this.getByte();
         this.type = this.getVarInt();
@@ -48,11 +53,6 @@ public class CraftingEventPacket extends DataPacket {
     @Override
     public void encode() {
 
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

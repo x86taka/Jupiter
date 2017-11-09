@@ -4,13 +4,13 @@ public class BookEditPacket extends DataPacket {
 
     //本を編集するためのパケットです
 
-	public static final byte TYPE_REPLACE_PAGE = 0;
-	public static final byte TYPE_ADD_PAGE = 1;
-	public static final byte TYPE_DELETE_PAGE = 2;
-	public static final byte TYPE_SWAP_PAGES = 3;
-	public static final byte TYPE_SIGN_BOOK = 4;
+    public static final byte TYPE_REPLACE_PAGE = 0;
+    public static final byte TYPE_ADD_PAGE = 1;
+    public static final byte TYPE_DELETE_PAGE = 2;
+    public static final byte TYPE_SWAP_PAGES = 3;
+    public static final byte TYPE_SIGN_BOOK = 4;
 
-    public byte type;
+    public int type;
     public int inventorySlot;
     public int pageNumber;
     public int secondaryPageNumber;
@@ -53,7 +53,7 @@ public class BookEditPacket extends DataPacket {
     @Override
     public void encode() {
         this.reset();
-        this.putByte(this.type);
+        this.putByte((byte) this.type);
         this.putByte((byte) this.inventorySlot);
 
         switch (this.type) {

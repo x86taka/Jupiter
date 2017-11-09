@@ -1,5 +1,9 @@
 package cn.nukkit.network.protocol;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import cn.nukkit.inventory.FurnaceRecipe;
 import cn.nukkit.inventory.ShapedRecipe;
 import cn.nukkit.inventory.ShapelessRecipe;
@@ -8,10 +12,6 @@ import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.item.enchantment.EnchantmentEntry;
 import cn.nukkit.item.enchantment.EnchantmentList;
 import cn.nukkit.utils.BinaryStream;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Nukkit Project Team
@@ -29,6 +29,11 @@ public class CraftingDataPacket extends DataPacket {
 
     public List<Object> entries = new ArrayList<>();
     public boolean cleanRecipes;
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     private static int writeEntry(Object entry, BinaryStream stream) {
         if (entry instanceof ShapelessRecipe) {
@@ -152,11 +157,6 @@ public class CraftingDataPacket extends DataPacket {
         }
 
         this.putBoolean(cleanRecipes);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

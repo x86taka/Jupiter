@@ -10,6 +10,11 @@ public class HurtArmorPacket extends DataPacket {
     public int health;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -18,11 +23,6 @@ public class HurtArmorPacket extends DataPacket {
     public void encode() {
         this.reset();
         this.putVarInt(this.health);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

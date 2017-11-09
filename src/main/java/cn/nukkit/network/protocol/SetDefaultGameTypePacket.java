@@ -11,7 +11,7 @@ public class SetDefaultGameTypePacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.gamemode = (int) this.getUnsignedVarInt();
+
     }
 
     @Override

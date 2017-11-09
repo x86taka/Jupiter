@@ -22,6 +22,7 @@ public class ShowCreditsPacket extends DataPacket {
 
     @Override
     public void encode() {
+        this.reset();
         this.putEntityRuntimeId(this.entityRuntimeId);
         this.putVarInt(this.status);
     }

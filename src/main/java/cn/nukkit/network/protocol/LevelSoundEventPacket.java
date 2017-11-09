@@ -4,6 +4,7 @@ package cn.nukkit.network.protocol;
 import cn.nukkit.math.Vector3f;
 
 public class LevelSoundEventPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.LEVEL_SOUND_EVENT_PACKET;
 
     public static final int SOUND_ITEM_USE_ON = 0;
@@ -178,6 +179,11 @@ public class LevelSoundEventPacket extends DataPacket {
     public boolean isGlobal;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.sound = this.getByte();
         Vector3f v = this.getVector3f();
@@ -201,8 +207,4 @@ public class LevelSoundEventPacket extends DataPacket {
         this.putBoolean(this.isGlobal);
     }
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
 }

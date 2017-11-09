@@ -1,18 +1,12 @@
 package cn.nukkit.network.protocol;
 
-import cn.nukkit.math.BlockVector3;
-
 /**
  * author: MagicDroidX
  * Nukkit Project
  */
 public class ContainerOpenPacket extends DataPacket {
-    public static final byte NETWORK_ID = ProtocolInfo.CONTAINER_OPEN_PACKET;
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
+    public static final byte NETWORK_ID = ProtocolInfo.CONTAINER_OPEN_PACKET;
 
     public int windowId;
     public int type;
@@ -22,14 +16,13 @@ public class ContainerOpenPacket extends DataPacket {
     public long entityRuntimeId = -1;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
-        this.windowId = this.getByte();
-        this.type = this.getByte();
-        BlockVector3 v = this.getBlockVector3();
-        this.x = v.x;
-        this.y = v.y;
-        this.z = v.z;
-        this.entityRuntimeId = this.getEntityUniqueId();
+
     }
 
     @Override

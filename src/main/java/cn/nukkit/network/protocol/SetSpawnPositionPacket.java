@@ -17,6 +17,11 @@ public class SetSpawnPositionPacket extends DataPacket {
     public boolean spawnForced = false;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -28,10 +33,4 @@ public class SetSpawnPositionPacket extends DataPacket {
         this.putBlockVector3(this.x, this.y, this.z);
         this.putBoolean(this.spawnForced);
     }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
-
 }

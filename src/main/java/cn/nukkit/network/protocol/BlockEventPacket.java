@@ -5,6 +5,7 @@ package cn.nukkit.network.protocol;
  * Nukkit Project
  */
 public class BlockEventPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.BLOCK_EVENT_PACKET;
 
     @Override

@@ -11,6 +11,11 @@ public class ChunkRadiusUpdatedPacket extends DataPacket {
     public int radius;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
         this.radius = this.getVarInt();
     }
@@ -19,11 +24,6 @@ public class ChunkRadiusUpdatedPacket extends DataPacket {
     public void encode() {
         super.reset();
         this.putVarInt(this.radius);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

@@ -7,12 +7,8 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class InventoryContentPacket extends DataPacket {
-    public static final byte NETWORK_ID = ProtocolInfo.INVENTORY_CONTENT_PACKET;
 
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
-    }
+    public static final byte NETWORK_ID = ProtocolInfo.INVENTORY_CONTENT_PACKET;
 
     public static final int SPECIAL_INVENTORY = 0;
     public static final int SPECIAL_OFFHAND = 0x77;
@@ -23,6 +19,11 @@ public class InventoryContentPacket extends DataPacket {
 
     public int inventoryId;
     public Item[] slots = new Item[0];
+
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
 
     @Override
     public DataPacket clean() {

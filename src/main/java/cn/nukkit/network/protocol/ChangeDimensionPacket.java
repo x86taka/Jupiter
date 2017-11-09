@@ -17,6 +17,11 @@ public class ChangeDimensionPacket extends DataPacket {
     public boolean respawn;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -27,10 +32,5 @@ public class ChangeDimensionPacket extends DataPacket {
         this.putVarInt(this.dimension);
         this.putVector3f(this.x, this.y, this.z);
         this.putBoolean(this.respawn);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 }

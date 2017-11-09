@@ -5,8 +5,8 @@ package cn.nukkit.network.protocol;
  * Nukkit Project
  */
 public class EntityEventPacket extends DataPacket {
-    public static final int NETWORK_ID = ProtocolInfo.ENTITY_EVENT_PACKET;
 
+    public static final int NETWORK_ID = ProtocolInfo.ENTITY_EVENT_PACKET;
 
     public static final int HURT_ANIMATION = 2;
     public static final int DEATH_ANIMATION = 3;
@@ -31,14 +31,14 @@ public class EntityEventPacket extends DataPacket {
 
     public static final byte UNKNOWN1 = 66;
 
+    public long entityRuntimeId;
+    public int event;
+    public long itemId;
+
     @Override
     public byte pid() {
         return NETWORK_ID;
     }
-
-    public long entityRuntimeId;
-    public int event;
-    public long itemId;
 
     @Override
     public void decode() {

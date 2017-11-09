@@ -43,6 +43,7 @@ public class AvailableCommandsPacket extends DataPacket {
 
     @Override
     public void decode() {
+
     }
 
     int aliasCommands = 0;

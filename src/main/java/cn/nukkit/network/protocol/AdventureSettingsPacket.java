@@ -50,6 +50,11 @@ public class AdventureSettingsPacket extends DataPacket {
 
     public long entityUniqueId; //This is a little-endian long, NOT a var-long. (WTF Mojang)
 
+    @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
     public void decode() {
         this.flags = getUnsignedVarInt();
         this.commandPermission = getUnsignedVarInt();
@@ -92,10 +97,5 @@ public class AdventureSettingsPacket extends DataPacket {
                 this.flags &= ~flag;
             }
         }
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 }

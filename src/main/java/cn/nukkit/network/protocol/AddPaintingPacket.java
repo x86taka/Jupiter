@@ -16,6 +16,11 @@ public class AddPaintingPacket extends DataPacket {
     public String title;
 
     @Override
+    public byte pid() {
+        return NETWORK_ID;
+    }
+
+    @Override
     public void decode() {
 
     }
@@ -28,11 +33,6 @@ public class AddPaintingPacket extends DataPacket {
         this.putBlockVector3(this.x, this.y, this.z);
         this.putVarInt(this.direction);
         this.putString(this.title);
-    }
-
-    @Override
-    public byte pid() {
-        return NETWORK_ID;
     }
 
 }

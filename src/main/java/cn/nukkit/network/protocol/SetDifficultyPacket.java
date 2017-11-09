@@ -11,7 +11,7 @@ public class SetDifficultyPacket extends DataPacket {
 
     @Override
     public void decode() {
-        this.difficulty = (int) this.getUnsignedVarInt();
+
     }
 
     @Override

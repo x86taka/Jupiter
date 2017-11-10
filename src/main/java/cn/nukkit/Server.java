@@ -117,6 +117,7 @@ import cn.nukkit.entity.passive.EntityPolarBear;
 import cn.nukkit.entity.passive.EntityRabbit;
 import cn.nukkit.entity.passive.EntitySheep;
 import cn.nukkit.entity.passive.EntitySkeletonHorse;
+import cn.nukkit.entity.passive.EntitySnowGolem;
 import cn.nukkit.entity.passive.EntitySquid;
 import cn.nukkit.entity.passive.EntityVillager;
 import cn.nukkit.entity.passive.EntityWolf;
@@ -2850,6 +2851,7 @@ public class Server implements ActionListener{
         Entity.registerEntity("Rabbit", EntityRabbit.class);
         Entity.registerEntity("Sheep", EntitySheep.class);
         Entity.registerEntity("SkeletonHorse", EntitySkeletonHorse.class);
+        Entity.registerEntity("SnowGolem", EntitySnowGolem.class);
         Entity.registerEntity("Squid", EntitySquid.class);
         Entity.registerEntity("Villager", EntityVillager.class);
         Entity.registerEntity("Wolf", EntityWolf.class);

@@ -25,7 +25,7 @@ public abstract class BlockPistonBase extends BlockSolid {
     public BlockPistonBase() {
         this(0);
     }
-    
+
     @Override
     public BlockColor getColor(){
     	return BlockColor.STONE_BLOCK_COLOR;
@@ -103,7 +103,6 @@ public abstract class BlockPistonBase extends BlockSolid {
                 BlockEntityPistonArm arm = (BlockEntityPistonArm) blockEntity;
                 boolean powered = this.isPowered();
                 if (arm.powered != powered) {
-                    this.level.getServer().getPluginManager().callEvent(new BlockPistonChangeEvent(this, powered ? 0 : 15, powered ? 15 : 0));
                     arm.powered = !arm.powered;
                     if (arm.chunk != null) {
                         arm.chunk.setChanged();

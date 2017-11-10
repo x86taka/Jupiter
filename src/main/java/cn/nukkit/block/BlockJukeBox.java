@@ -1,42 +1,32 @@
 package cn.nukkit.block;
 
 import cn.nukkit.Player;
+import cn.nukkit.blockentity.BlockEntity;
+import cn.nukkit.blockentity.BlockEntityJukebox;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemTool;
+import cn.nukkit.item.ItemRecord;
+import cn.nukkit.math.BlockFace;
+import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.nbt.tag.ListTag;
 
-public class BlockJukeBox extends BlockSolid {
+public class BlockJukebox extends BlockSolid {
 
-    public BlockJukeBox() {
+    public BlockJukebox() {
         this(0);
     }
 
-    public BlockJukeBox(int meta) {
-        super(meta);
+    public BlockJukebox(int meta) {
+        super(0);
     }
 
     @Override
     public String getName() {
-        return "JukeBox";
+        return "Jukebox";
     }
 
     @Override
     public int getId() {
         return JUKEBOX;
-    }
-
-    @Override
-    public double getHardness() {
-        return 2;
-    }
-
-    @Override
-    public double getResistance() {
-        return 30;
-    }
-
-    @Override
-    public int getToolType() {
-        return ItemTool.TYPE_AXE;
     }
 
     @Override
@@ -46,12 +36,40 @@ public class BlockJukeBox extends BlockSolid {
 
     @Override
     public boolean onActivate(Item item, Player player) {
-        //TODO
-        return true;
+        BlockEntity blockEntity = this.getLevel().getBlockEntity(this);
+        if (blockEntity == null || !(blockEntity instanceof BlockEntityJukebox)) {
+            blockEntity = this.createBlockEntity();
+        }
+
+        BlockEntityJukebox jukebox = (BlockEntityJukebox) blockEntity;
+        if (jukebox.getRecordItem().getId() != 0) {
+            jukebox.dropItem();
+        } else if (item instanceof ItemRecord) {
+            jukebox.setRecordItem(item);
+            jukebox.play();
+        }
+
+        return false;
     }
 
     @Override
-    public Item[] getDrops(Item item) {
-        return new Item[]{ toItem() };
+    public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
+        if (super.place(item, block, target, face, fx, fy, fz, player)) {
+            createBlockEntity();
+            return true;
+        }
+
+        return false;
+    }
+
+    private BlockEntity createBlockEntity() {
+        CompoundTag nbt = new CompoundTag()
+                .putList(new ListTag<>("Items"))
+                .putString("id", BlockEntity.JUKEBOX)
+                .putInt("x", getFloorX())
+                .putInt("y", getFloorY())
+                .putInt("z", getFloorZ());
+
+        return BlockEntity.createBlockEntity(BlockEntity.JUKEBOX, this.level.getChunk(getFloorX() >> 4, getFloorZ() >> 4), nbt);
     }
 }

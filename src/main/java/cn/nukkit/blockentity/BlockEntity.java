@@ -43,6 +43,7 @@ public abstract class BlockEntity extends Position {
     public static final String SHULKER_BOX = "ShulkerBox";
     public static final String COMMAND_BLOCK = "CommandBlock";
     public static final String BANNER = "Banner";
+    public static final String JUKEBOX = "Jukebox";
 
     public static long count = 1;
 
@@ -53,8 +54,7 @@ public abstract class BlockEntity extends Position {
     public String name;
     public long id;
 
-//    public boolean movable = this.namedTag.getBoolean("isMovable");
-    public boolean movable = false;
+    public boolean movable = true;
     public boolean closed = false;
     public CompoundTag namedTag;
     protected long lastUpdate;
@@ -77,6 +77,7 @@ public abstract class BlockEntity extends Position {
         this.x = this.namedTag.getInt("x");
         this.y = this.namedTag.getInt("y");
         this.z = this.namedTag.getInt("z");
+        this.movable = this.namedTag.getBoolean("isMovable");
 
         this.chunk.addBlockEntity(this);
         this.getLevel().addBlockEntity(this);
@@ -162,7 +163,7 @@ public abstract class BlockEntity extends Position {
     }
 
     public Block getBlock() {
-        return this.level.getBlock(this);
+        return this.getLevelBlock();
     }
 
     public abstract boolean isBlockEntityValid();

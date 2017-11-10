@@ -176,4 +176,9 @@ public abstract class BlockPressurePlateBase extends BlockFlowable {
     public Item toItem() {
         return new ItemBlock(this, 0, 1);
     }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
+    }
 }

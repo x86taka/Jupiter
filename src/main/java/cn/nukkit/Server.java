@@ -60,69 +60,77 @@ import cn.nukkit.command.SimpleCommandMap;
 import cn.nukkit.entity.Attribute;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityHuman;
-import cn.nukkit.entity.animal.EntityBat;
-import cn.nukkit.entity.animal.EntityChicken;
-import cn.nukkit.entity.animal.EntityCow;
-import cn.nukkit.entity.animal.EntityDonkey;
-import cn.nukkit.entity.animal.EntityHorse;
-import cn.nukkit.entity.animal.EntityLlama;
-import cn.nukkit.entity.animal.EntityMooshroom;
-import cn.nukkit.entity.animal.EntityMule;
-import cn.nukkit.entity.animal.EntityOcelot;
-import cn.nukkit.entity.animal.EntityPig;
-import cn.nukkit.entity.animal.EntityPolarBear;
-import cn.nukkit.entity.animal.EntityRabbit;
-import cn.nukkit.entity.animal.EntitySheep;
-import cn.nukkit.entity.animal.EntitySkeletonHorse;
-import cn.nukkit.entity.animal.EntitySquid;
-import cn.nukkit.entity.animal.EntityVillager;
-import cn.nukkit.entity.animal.EntityWolf;
-import cn.nukkit.entity.animal.EntityZombieHorse;
-import cn.nukkit.entity.boss.EntityElderGuardian;
-import cn.nukkit.entity.boss.EntityEnderDragon;
-import cn.nukkit.entity.boss.EntityWither;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.entity.item.EntityArmorStand;
+import cn.nukkit.entity.item.EntityBoat;
 import cn.nukkit.entity.item.EntityEnderCrystal;
-import cn.nukkit.entity.item.EntityExpBottle;
 import cn.nukkit.entity.item.EntityFallingBlock;
-import cn.nukkit.entity.item.EntityItem;
+import cn.nukkit.entity.item.EntityMinecartChest;
+import cn.nukkit.entity.item.EntityMinecartEmpty;
+import cn.nukkit.entity.item.EntityMinecartHopper;
+import cn.nukkit.entity.item.EntityMinecartTNT;
 import cn.nukkit.entity.item.EntityPainting;
-import cn.nukkit.entity.item.EntityPotion;
 import cn.nukkit.entity.item.EntityPrimedTNT;
 import cn.nukkit.entity.item.EntityXPOrb;
-import cn.nukkit.entity.monster.EntityBlaze;
-import cn.nukkit.entity.monster.EntityCaveSpider;
-import cn.nukkit.entity.monster.EntityCreeper;
-import cn.nukkit.entity.monster.EntityEnderman;
-import cn.nukkit.entity.monster.EntityEndermite;
-import cn.nukkit.entity.monster.EntityEvoker;
-import cn.nukkit.entity.monster.EntityGhast;
-import cn.nukkit.entity.monster.EntityGuardian;
-import cn.nukkit.entity.monster.EntityHask;
-import cn.nukkit.entity.monster.EntityMagmaCube;
-import cn.nukkit.entity.monster.EntityShulker;
-import cn.nukkit.entity.monster.EntitySilverfish;
-import cn.nukkit.entity.monster.EntitySkeleton;
-import cn.nukkit.entity.monster.EntitySlime;
-import cn.nukkit.entity.monster.EntitySpider;
-import cn.nukkit.entity.monster.EntityStray;
-import cn.nukkit.entity.monster.EntityVex;
-import cn.nukkit.entity.monster.EntityVindicator;
-import cn.nukkit.entity.monster.EntityWitch;
-import cn.nukkit.entity.monster.EntityWitherSkeleton;
-import cn.nukkit.entity.monster.EntityZombie;
-import cn.nukkit.entity.monster.EntityZombiePigman;
-import cn.nukkit.entity.monster.EntityZombieVillager;
+import cn.nukkit.entity.mob.EntityBlaze;
+import cn.nukkit.entity.mob.EntityCaveSpider;
+import cn.nukkit.entity.mob.EntityCreeper;
+import cn.nukkit.entity.mob.EntityElderGuardian;
+import cn.nukkit.entity.mob.EntityEnderDragon;
+import cn.nukkit.entity.mob.EntityEnderman;
+import cn.nukkit.entity.mob.EntityEndermite;
+import cn.nukkit.entity.mob.EntityEvoker;
+import cn.nukkit.entity.mob.EntityGhast;
+import cn.nukkit.entity.mob.EntityGuardian;
+import cn.nukkit.entity.mob.EntityHask;
+import cn.nukkit.entity.mob.EntityMagmaCube;
+import cn.nukkit.entity.mob.EntityShulker;
+import cn.nukkit.entity.mob.EntitySilverfish;
+import cn.nukkit.entity.mob.EntitySkeleton;
+import cn.nukkit.entity.mob.EntitySlime;
+import cn.nukkit.entity.mob.EntitySpider;
+import cn.nukkit.entity.mob.EntityStray;
+import cn.nukkit.entity.mob.EntityVex;
+import cn.nukkit.entity.mob.EntityVindicator;
+import cn.nukkit.entity.mob.EntityWitch;
+import cn.nukkit.entity.mob.EntityWither;
+import cn.nukkit.entity.mob.EntityWitherSkeleton;
+import cn.nukkit.entity.mob.EntityZombie;
+import cn.nukkit.entity.mob.EntityZombiePigman;
+import cn.nukkit.entity.mob.EntityZombieVillager;
+import cn.nukkit.entity.passive.EntityBat;
+import cn.nukkit.entity.passive.EntityChicken;
+import cn.nukkit.entity.passive.EntityCow;
+import cn.nukkit.entity.passive.EntityDonkey;
+import cn.nukkit.entity.passive.EntityHorse;
+import cn.nukkit.entity.passive.EntityIronGolem;
+import cn.nukkit.entity.passive.EntityLlama;
+import cn.nukkit.entity.passive.EntityMooshroom;
+import cn.nukkit.entity.passive.EntityMule;
+import cn.nukkit.entity.passive.EntityOcelot;
+import cn.nukkit.entity.passive.EntityParrot;
+import cn.nukkit.entity.passive.EntityPig;
+import cn.nukkit.entity.passive.EntityPolarBear;
+import cn.nukkit.entity.passive.EntityRabbit;
+import cn.nukkit.entity.passive.EntitySheep;
+import cn.nukkit.entity.passive.EntitySkeletonHorse;
+import cn.nukkit.entity.passive.EntitySnowGolem;
+import cn.nukkit.entity.passive.EntitySquid;
+import cn.nukkit.entity.passive.EntityVillager;
+import cn.nukkit.entity.passive.EntityWolf;
+import cn.nukkit.entity.passive.EntityZombieHorse;
 import cn.nukkit.entity.projectile.EntityArrow;
+import cn.nukkit.entity.projectile.EntityDragonFireball;
+import cn.nukkit.entity.projectile.EntityEgg;
 import cn.nukkit.entity.projectile.EntityEnderPearl;
+import cn.nukkit.entity.projectile.EntityExpBottle;
+import cn.nukkit.entity.projectile.EntityFireball;
+import cn.nukkit.entity.projectile.EntityFireworkRocket;
 import cn.nukkit.entity.projectile.EntityFishingHook;
+import cn.nukkit.entity.projectile.EntityPotion;
+import cn.nukkit.entity.projectile.EntityPotionLingering;
+import cn.nukkit.entity.projectile.EntityShulkerBullet;
 import cn.nukkit.entity.projectile.EntitySnowball;
-import cn.nukkit.entity.vehicle.EntityBoat;
-import cn.nukkit.entity.vehicle.EntityMinecartChest;
-import cn.nukkit.entity.vehicle.EntityMinecartEmpty;
-import cn.nukkit.entity.vehicle.EntityMinecartHopper;
-import cn.nukkit.entity.vehicle.EntityMinecartTNT;
 import cn.nukkit.entity.weather.EntityLightning;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.level.LevelInitEvent;
@@ -211,7 +219,7 @@ public class Server implements ActionListener{
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
 
     private static Server instance = null;
-    
+
     private AI ai = null;
 
     private BanList banByName = null;
@@ -554,7 +562,7 @@ public class Server implements ActionListener{
         Effect.init();
         Potion.init();
         Attribute.init();
-        
+
         /* TODO AI
         this.ai = new AI(this);
         ai.initAI();
@@ -2807,16 +2815,7 @@ public class Server implements ActionListener{
     }
 
     private void registerEntities() {
-        Entity.registerEntity("Arrow", EntityArrow.class);
-        Entity.registerEntity("Item", EntityItem.class);
-        Entity.registerEntity("FallingSand", EntityFallingBlock.class);
-        Entity.registerEntity("PrimedTnt", EntityPrimedTNT.class);
-        Entity.registerEntity("Snowball", EntitySnowball.class);
-        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
-        Entity.registerEntity("Painting", EntityPainting.class);
-        Entity.registerEntity("FishingHook", EntityFishingHook.class);
-        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
-        //Monsters
+        //mob
         Entity.registerEntity("Blaze", EntityBlaze.class);
         Entity.registerEntity("CaveSpider", EntityCaveSpider.class);
         Entity.registerEntity("Creeper", EntityCreeper.class);
@@ -2840,45 +2839,66 @@ public class Server implements ActionListener{
         Entity.registerEntity("Zombie", EntityZombie.class);
         Entity.registerEntity("ZombiePigman", EntityZombiePigman.class);
         Entity.registerEntity("ZombieVillager", EntityZombieVillager.class);
-        //Animals
+        //passive
         Entity.registerEntity("Bat", EntityBat.class);
         Entity.registerEntity("Chicken", EntityChicken.class);
         Entity.registerEntity("Cow", EntityCow.class);
         Entity.registerEntity("Donkey", EntityDonkey.class);
         Entity.registerEntity("Horse", EntityHorse.class);
+        Entity.registerEntity("IronGolem", EntityIronGolem.class);
         Entity.registerEntity("Llama", EntityLlama.class);
         Entity.registerEntity("Mooshroom", EntityMooshroom.class);
         Entity.registerEntity("Mule", EntityMule.class);
         Entity.registerEntity("Ocelot", EntityOcelot.class);
+        Entity.registerEntity("Parrot", EntityParrot.class);
         Entity.registerEntity("Pig", EntityPig.class);
         Entity.registerEntity("PolarBear", EntityPolarBear.class);
         Entity.registerEntity("Rabbit", EntityRabbit.class);
         Entity.registerEntity("Sheep", EntitySheep.class);
         Entity.registerEntity("SkeletonHorse", EntitySkeletonHorse.class);
+        Entity.registerEntity("SnowGolem", EntitySnowGolem.class);
         Entity.registerEntity("Squid", EntitySquid.class);
         Entity.registerEntity("Villager", EntityVillager.class);
         Entity.registerEntity("Wolf", EntityWolf.class);
         Entity.registerEntity("ZombieHorse", EntityZombieHorse.class);
+
         //Bosses
         Entity.registerEntity("ElderGuardian", EntityElderGuardian.class);
         Entity.registerEntity("EnderDragon", EntityEnderDragon.class);
         Entity.registerEntity("EnderWither", EntityWither.class);
 
-        Entity.registerEntity("ThrownExpBottle", EntityExpBottle.class);
+        //item
+        Entity.registerEntity("ArmorStand", EntityArmorStand.class);
+        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
+        Entity.registerEntity("FallingSand", EntityFallingBlock.class);
+        Entity.registerEntity("PrimedTnt", EntityPrimedTNT.class);
+        Entity.registerEntity("Painting", EntityPainting.class);
         Entity.registerEntity("XpOrb", EntityXPOrb.class);
-        Entity.registerEntity("ThrownPotion", EntityPotion.class);
-
-        Entity.registerEntity("Human", EntityHuman.class, true);
-
         Entity.registerEntity("MinecartRideable", EntityMinecartEmpty.class);
         Entity.registerEntity("MinecartChest", EntityMinecartChest.class);
         Entity.registerEntity("MinecartHopper", EntityMinecartHopper.class);
         Entity.registerEntity("MinecartTnt", EntityMinecartTNT.class);
         Entity.registerEntity("Boat", EntityBoat.class);
 
+        //projectile
+        Entity.registerEntity("Arrow", EntityArrow.class);
+        Entity.registerEntity("DragonFireball", EntityDragonFireball.class);
+        Entity.registerEntity("Egg", EntityEgg.class);
+        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
+        Entity.registerEntity("ThrownExpBottle", EntityExpBottle.class);
+        Entity.registerEntity("Fireball", EntityFireball.class);
+        Entity.registerEntity("FireworkRocket", EntityFireworkRocket.class);
+        Entity.registerEntity("FishingHook", EntityFishingHook.class);
+        Entity.registerEntity("ThrownPotion", EntityPotion.class);
+        Entity.registerEntity("ThrownLingeringPotion", EntityPotionLingering.class);
+        Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
+        Entity.registerEntity("Snowball", EntitySnowball.class);
+
+        //weather
         Entity.registerEntity("Lightning", EntityLightning.class);
 
-        Entity.registerEntity("ArmorStand", EntityArmorStand.class);
+        //other
+        Entity.registerEntity("Human", EntityHuman.class, true);
     }
 
     private void registerBlockEntities() {
@@ -2924,7 +2944,7 @@ public class Server implements ActionListener{
     public boolean printPackets(){
         return this.printPackets;
     }
-    
+
     /*TODO getAI()
     public AI getAI() {
         return this.ai;

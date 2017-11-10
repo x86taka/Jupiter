@@ -38,6 +38,7 @@ public abstract class ProjectileItem extends Item {
                         .add(new FloatTag("", (float) player.yaw))
                         .add(new FloatTag("", (float) player.pitch)));
 
+        this.correctNBT(nbt);
         Entity projectile = Entity.createEntity(this.getProjectileEntityType(), player.getLevel().getChunk(player.getFloorX() >> 4, player.getFloorZ() >> 4), nbt, player);
         if (projectile != null) {
             projectile.setMotion(projectile.getMotion().multiply(this.getThrowForce()));
@@ -65,5 +66,9 @@ public abstract class ProjectileItem extends Item {
     @Override
     public boolean canBeActivated() {
         return true;
+    }
+
+    protected void correctNBT(CompoundTag nbt) {
+
     }
 }

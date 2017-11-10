@@ -23,7 +23,7 @@ import cn.nukkit.entity.data.LongEntityData;
 import cn.nukkit.entity.data.ShortEntityData;
 import cn.nukkit.entity.data.StringEntityData;
 import cn.nukkit.entity.data.Vector3fEntityData;
-import cn.nukkit.entity.vehicle.EntityVehicle;
+import cn.nukkit.entity.item.EntityVehicle;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;

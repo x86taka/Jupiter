@@ -4,7 +4,12 @@ import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
 
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * @author CreeperFace
+ */
 public class SlotChangeAction extends InventoryAction {
 
     protected Inventory inventory;
@@ -35,6 +40,7 @@ public class SlotChangeAction extends InventoryAction {
      */
     public boolean isValid(Player source) {
         Item check = inventory.getItem(this.inventorySlot);
+
         return check.equalsExact(this.sourceItem);
     }
 
@@ -49,7 +55,10 @@ public class SlotChangeAction extends InventoryAction {
      * Sends inventorySlot changes to other viewers of the inventory. This will not send any change back to the source Player.
      */
     public void onExecuteSuccess(Player source) {
-        this.inventory.sendSlot(this.inventorySlot, this.inventory.getViewers());
+        Set<Player> viewers = new HashSet<>(this.inventory.getViewers());
+        viewers.remove(source);
+
+        this.inventory.sendSlot(this.inventorySlot, viewers);
     }
 
     /**

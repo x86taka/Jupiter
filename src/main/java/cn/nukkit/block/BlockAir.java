@@ -52,6 +52,11 @@ public class BlockAir extends BlockTransparent {
         return true;
     }
 
+	@Override
+    public boolean canHarvestWithHand() {
+        return false;
+    }
+
     @Override
     public boolean isSolid() {
         return false;

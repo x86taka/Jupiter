@@ -3,6 +3,9 @@ package cn.nukkit.inventory.transaction.action;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 
+/**
+ * @author CreeperFace
+ */
 public class CreativeInventoryAction extends InventoryAction {
     /**
      * Player put an item into the creative window to destroy it.

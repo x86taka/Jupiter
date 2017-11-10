@@ -19,7 +19,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.network.protocol.InventoryContentPacket;
 import cn.nukkit.network.protocol.InventorySlotPacket;
-import cn.nukkit.network.protocol.types.ContainerIds;
 
 /**
  * author: MagicDroidX
@@ -278,7 +277,7 @@ public abstract class BaseInventory implements Inventory {
 
         for (int i = 0; i < this.getSize(); ++i) {
             Item item = this.getItem(i);
-            if (item.isNull() || item.getId() == Item.AIR || item.getCount() <= 0) {
+            if (item.getId() == Item.AIR || item.getCount() <= 0) {
                 emptySlots.add(i);
             }
 
@@ -531,7 +530,7 @@ public abstract class BaseInventory implements Inventory {
 
         for (Player player : players) {
             int id = player.getWindowId(this);
-            if (id == ContainerIds.NONE) {
+            if (id == -1) {
                 this.close(player);
                 continue;
             }
@@ -540,6 +539,7 @@ public abstract class BaseInventory implements Inventory {
         }
     }
 
+    @Override
     public void sendSlot(int index, Collection<Player> players) {
         this.sendSlot(index, players.stream().toArray(Player[]::new));
     }

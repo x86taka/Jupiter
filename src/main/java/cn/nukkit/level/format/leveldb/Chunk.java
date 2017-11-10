@@ -107,9 +107,9 @@ public class Chunk extends BaseFullChunk {
             this.heightMap = ints;
         }
 
-        this.NBTentities = entityData == null ? new ArrayList<>() : new ArrayList<>(entityData);
-        this.NBTtiles = tileData == null ? new ArrayList<>() : new ArrayList<>(tileData);
-        this.extraData = extraData == null ? new HashMap<>() : new HashMap<>(extraData);
+        this.NBTentities = entityData == null ? new ArrayList<>() : entityData;
+        this.NBTtiles = tileData == null ? new ArrayList<>() : tileData;
+        this.extraData = extraData == null ? new HashMap<>() : extraData;
     }
 
     @Override
@@ -467,9 +467,9 @@ public class Chunk extends BaseFullChunk {
                 ExtraDataKey extraDataKey = ExtraDataKey.create(this.getX(), this.getZ());
                 if (!this.getBlockExtraDataArray().isEmpty()) {
                     BinaryStream extraData = new BinaryStream();
-                    Map<Integer, Integer> extraDataArray = new HashMap(this.getBlockExtraDataArray());
+                    Map<Integer, Integer> extraDataArray = this.getBlockExtraDataArray();
                     extraData.putInt(extraDataArray.size());
-                    for (int key : extraDataArray.keySet()) {
+                    for (Integer key : extraDataArray.keySet()) {
                         extraData.putInt(key);
                         extraData.putShort(extraDataArray.get(key));
                     }

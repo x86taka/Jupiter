@@ -26,10 +26,10 @@ public class BlockWall extends BlockTransparent {
     public int getId() {
         return STONE_WALL;
     }
-    
+
     @Override
     public BlockColor getColor(){
-    	return BlockColor.STONE_BLOCK_COLOR;
+        return BlockColor.STONE_BLOCK_COLOR;
     }
 
     @Override
@@ -94,5 +94,10 @@ public class BlockWall extends BlockTransparent {
     @Override
     public int getToolType() {
         return ItemTool.TYPE_PICKAXE;
+    }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
     }
 }

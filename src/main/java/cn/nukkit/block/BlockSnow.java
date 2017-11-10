@@ -61,4 +61,9 @@ public class BlockSnow extends BlockSolid {
     public BlockColor getColor() {
         return BlockColor.SNOW_BLOCK_COLOR;
     }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
+    }
 }

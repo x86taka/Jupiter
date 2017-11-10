@@ -241,7 +241,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int WOODEN_SLAB = 158;
     public static final int WOOD_SLABS = 158;
     public static final int WOODEN_SLABS = 158;
-    public static final int STAINED_CLAY = 159;
+    public static final int STAINED_TERRACOTTA = 159;
     public static final int STAINED_HARDENED_CLAY = 159;
     public static final int STAINED_GLASS_PANE = 160;
     public static final int LEAVES2 = 161;
@@ -260,7 +260,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int SEA_LANTERN = 169;
     public static final int HAY_BALE = 170;
     public static final int CARPET = 171;
-    public static final int HARDENED_CLAY = 172;
+    public static final int TERRACOTTA = 172;
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;
@@ -445,7 +445,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[CACTUS] = BlockCactus.class; //81
             list[CLAY_BLOCK] = BlockClay.class; //82
             list[SUGARCANE_BLOCK] = BlockSugarcane.class; //83
-            list[JUKEBOX] = BlockJukeBox.class; //84
+            list[JUKEBOX] = BlockJukebox.class; //84
             list[FENCE] = BlockFence.class; //85
             list[PUMPKIN] = BlockPumpkin.class; //86
             list[NETHERRACK] = BlockNetherrack.class; //87
@@ -520,7 +520,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[QUARTZ_STAIRS] = BlockStairsQuartz.class; //156
             list[DOUBLE_WOOD_SLAB] = BlockDoubleSlabWood.class; //157
             list[WOOD_SLAB] = BlockSlabWood.class; //158
-            list[STAINED_CLAY] = BlockClayStained.class; //159
+            list[STAINED_TERRACOTTA] = BlockTerracottaStained.class; //159
             list[STAINED_GLASS_PANE] = BlockGlassPaneStained.class; //160
             list[LEAVES2] = BlockLeaves2.class; //161
             list[WOOD2] = BlockWood2.class; //162
@@ -533,7 +533,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[SEA_LANTERN] = BlockSeaLantern.class; //169
             list[HAY_BALE] = BlockHayBale.class; //170
             list[CARPET] = BlockCarpet.class; //171
-            list[HARDENED_CLAY] = BlockClayHardened.class; //172
+            list[TERRACOTTA] = BlockTerracotta.class; //172
             list[COAL_BLOCK] = BlockCoal.class; //173
             list[PACKED_ICE] = BlockIcePacked.class; //174
             list[DOUBLE_PLANT] = BlockDoublePlant.class; //175

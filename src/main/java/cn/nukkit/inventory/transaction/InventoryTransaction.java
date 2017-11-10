@@ -1,9 +1,9 @@
 package cn.nukkit.inventory.transaction;
 
-import java.util.Set;
-
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
+
+import java.util.Set;
 
 /**
  * @author CreeperFace

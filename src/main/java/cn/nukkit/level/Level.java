@@ -197,9 +197,9 @@ public class Level implements ChunkManager, Metadatable {
 
     private final Map<Integer, Integer>loaderCounter = new HashMap<>();
 
-    private final Map<Long, HashMap<Integer, ChunkLoader>> chunkLoaders = new HashMap<>();
+    private final Map<Long, Map<Integer, ChunkLoader>> chunkLoaders = new HashMap<>();
 
-    private final Map<Long, HashMap<Integer, Player>> playerLoaders = new HashMap<>();
+    private final Map<Long, Map<Integer, Player>> playerLoaders = new HashMap<>();
 
     private Map<Long, List<DataPacket>> chunkPackets = new HashMap<>();
 
@@ -217,11 +217,11 @@ public class Level implements ChunkManager, Metadatable {
     private Vector3 mutableBlock;
 
     // Avoid OOM, gc'd references result in whole chunk being sent (possibly higher cpu)
-    private HashMap<Long, SoftReference<Map<Short, Object>>> changedBlocks = new HashMap<>();
+    private Map<Long, SoftReference<Map<Short, Object>>> changedBlocks = new HashMap<>();
     // Storing the vector is redundant
     private final Object changeBlocksPresent = new Object();
     // Storing extra blocks past 512 is redundant
-    private final HashMap<Short, Object> changeBlocksFullMap = new HashMap<Short, Object>() {
+    private final Map<Short, Object> changeBlocksFullMap = new HashMap<Short, Object>() {
         @Override
         public int size() {
             return 32768;
@@ -655,7 +655,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public Map<Integer, Player> getChunkPlayers(int chunkX, int chunkZ) {
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (this.playerLoaders.containsKey(index)) {
             return new HashMap<>(this.playerLoaders.get(index));
         } else {
@@ -664,7 +664,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public ChunkLoader[] getChunkLoaders(int chunkX, int chunkZ) {
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (this.chunkLoaders.containsKey(index)) {
             return this.chunkLoaders.get(index).values().stream().toArray(ChunkLoader[]::new);
         } else {
@@ -673,7 +673,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void addChunkPacket(int chunkX, int chunkZ, DataPacket packet) {
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (!this.chunkPackets.containsKey(index)) {
             this.chunkPackets.put(index, new ArrayList<>());
         }
@@ -686,10 +686,10 @@ public class Level implements ChunkManager, Metadatable {
 
     public void registerChunkLoader(ChunkLoader loader, int chunkX, int chunkZ, boolean autoLoad) {
         int hash = loader.getLoaderId();
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (!this.chunkLoaders.containsKey(index)) {
-            this.chunkLoaders.put(index, new HashMap<Integer, ChunkLoader>());
-            this.playerLoaders.put(index, new HashMap<Integer, Player>());
+            this.chunkLoaders.put(index, new HashMap<>());
+            this.playerLoaders.put(index, new HashMap<>());
         } else if (this.chunkLoaders.get(index).containsKey(hash)) {
             return;
         }
@@ -715,7 +715,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void unregisterChunkLoader(ChunkLoader loader, int chunkX, int chunkZ) {
         int hash = loader.getLoaderId();
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (this.chunkLoaders.containsKey(index) && this.chunkLoaders.get(index).containsKey(hash)) {
             this.chunkLoaders.get(index).remove(hash);
             this.playerLoaders.get(index).remove(hash);
@@ -894,9 +894,9 @@ public class Level implements ChunkManager, Metadatable {
 
         if (!this.changedBlocks.isEmpty()) {
             if (!this.players.isEmpty()) {
-                Map<Long, SoftReference<Map<Short, Object>>> changed;
-                for (long index : (changed = changedBlocks).keySet()) {
-                    Map<Short, Object> blocks = changed.get(index).get();
+                for (Map.Entry<Long, SoftReference<Map<Short, Object>>> entry : changedBlocks.entrySet()) {
+                    long index = entry.getKey();
+                    Map<Short, Object> blocks = entry.getValue().get();
                     this.chunkCache.remove(index);
                     int chunkX = Level.getHashX(index);
                     int chunkZ = Level.getHashZ(index);
@@ -1757,11 +1757,11 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     private void addBlockChange(long index, int x, int y, int z) {
-        SoftReference<Map<Short, Object>> current = changedBlocks.computeIfAbsent(index, k -> new SoftReference<Map<Short, Object>>(new HashMap<Short, Object>()));
+        SoftReference<Map<Short, Object>> current = changedBlocks.computeIfAbsent(index, k -> new SoftReference<>(new HashMap<>()));
         Map<Short, Object> currentMap = current.get();
         if (currentMap != changeBlocksFullMap && currentMap != null) {
             if (currentMap.size() > MAX_BLOCK_CACHE) {
-                this.changedBlocks.put(index, new SoftReference<Map<Short, Object>>(changeBlocksFullMap));
+                this.changedBlocks.put(index, new SoftReference<>(changeBlocksFullMap));
             } else {
                 currentMap.put(Level.localBlockHash(x, y, z), changeBlocksPresent);
             }
@@ -2352,7 +2352,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public BaseFullChunk getChunk(int chunkX, int chunkZ, boolean create) {
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         if (this.chunks.containsKey(index)) {
             return this.chunks.get(index);
         } else if (this.loadChunk(chunkX, chunkZ, create)) {
@@ -2364,7 +2364,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void generateChunkCallback(int x, int z, BaseFullChunk chunk) {
         Timings.generationCallbackTimer.startTiming();
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (this.chunkPopulationQueue.containsKey(index)) {
             FullChunk oldChunk = this.getChunk(x, z, false);
             for (int xx = -1; xx <= 1; ++xx) {
@@ -2411,7 +2411,7 @@ public class Level implements ChunkManager, Metadatable {
             return;
         }
 
-        long index = Level.chunkHash(chunkX, chunkZ);
+        Long index = Level.chunkHash(chunkX, chunkZ);
         FullChunk oldChunk = this.getChunk(chunkX, chunkZ, false);
         if (unload && oldChunk != null) {
             this.unloadChunk(chunkX, chunkZ, false, false);
@@ -2504,7 +2504,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public void requestChunk(int x, int z, Player player) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (player.getGamemode() == Player.SPECTATOR && isChunkGenerated(x, z)) {
             return;
         }
@@ -2517,7 +2517,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     private void sendChunkFromCache(int x, int z) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (this.chunkSendTasks.containsKey(index)) {
             for (Player player : this.chunkSendQueue.get(index).values()) {
                 if (player.isConnected() && player.usedChunks.containsKey(index)) {
@@ -2533,7 +2533,7 @@ public class Level implements ChunkManager, Metadatable {
     private void processChunkRequest() {
         if (!this.chunkSendQueue.isEmpty()) {
             this.timings.syncChunkSendTimer.startTiming();
-            for (long index : new ArrayList<>(this.chunkSendQueue.keySet())) {
+            for (Long index : new ArrayList<>(this.chunkSendQueue.keySet())) {
                 if (this.chunkSendTasks.containsKey(index)) {
                     continue;
                 }
@@ -2557,7 +2557,7 @@ public class Level implements ChunkManager, Metadatable {
 
     public void chunkRequestCallback(int x, int z, byte[] payload) {
         this.timings.syncChunkSendTimer.startTiming();
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
 
         if (this.cacheChunks && !this.chunkCache.containsKey(index)) {
             this.chunkCache.put(index, Player.getChunkCacheFromData(x, z, payload));
@@ -2624,7 +2624,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean isChunkInUse(int x, int z) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         return this.chunkLoaders.containsKey(index) && !this.chunkLoaders.get(index).isEmpty();
     }
 
@@ -2633,7 +2633,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean loadChunk(int x, int z, boolean generate) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (this.chunks.containsKey(index)) {
             return true;
         }
@@ -2679,7 +2679,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     private void queueUnloadChunk(int x, int z) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         this.unloadQueue.put(index, System.currentTimeMillis());
         this.chunkTickList.remove(index);
     }
@@ -2721,7 +2721,7 @@ public class Level implements ChunkManager, Metadatable {
 
         this.timings.doChunkUnload.startTiming();
 
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
 
         BaseFullChunk chunk = this.getChunk(x, z);
 
@@ -2878,7 +2878,7 @@ public class Level implements ChunkManager, Metadatable {
     }
 
     public boolean populateChunk(int x, int z, boolean force) {
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (this.chunkPopulationQueue.containsKey(index) || this.chunkPopulationQueue.size() >= this.chunkPopulationQueueSize && !force) {
             return false;
         }
@@ -2927,7 +2927,7 @@ public class Level implements ChunkManager, Metadatable {
             return;
         }
 
-        long index = Level.chunkHash(x, z);
+        Long index = Level.chunkHash(x, z);
         if (!this.chunkGenerationQueue.containsKey(index)) {
             Timings.generationTimer.startTiming();
             this.chunkGenerationQueue.put(index, true);
@@ -2960,7 +2960,7 @@ public class Level implements ChunkManager, Metadatable {
             be.close();
         }
 
-        for (long index : this.chunks.keySet()) {
+        for (Long index : this.chunks.keySet()) {
 
             if (!this.unloadQueue.containsKey(index)) {
                 int X = getHashX(index);
@@ -2990,7 +2990,7 @@ public class Level implements ChunkManager, Metadatable {
             int maxUnload = 96;
             long now = System.currentTimeMillis();
 
-            for (long index : new ArrayList<>(this.unloadQueue.keySet())) {
+            for (Long index : new ArrayList<>(this.unloadQueue.keySet())) {
                 long time = this.unloadQueue.get(index);
 
                 int X = getHashX(index);

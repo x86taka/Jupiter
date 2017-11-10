@@ -33,6 +33,11 @@ public class BlockFurnace extends BlockFurnaceBurning {
     
     @Override
     public BlockColor getColor(){
-    	return BlockColor.STONE_BLOCK_COLOR;
+        return BlockColor.STONE_BLOCK_COLOR;
+    }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
     }
 }

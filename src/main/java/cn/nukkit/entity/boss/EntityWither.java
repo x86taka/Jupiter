@@ -26,6 +26,21 @@ public class EntityWither extends EntityBoss {
     }
 
     @Override
+    public float getWidth() {
+        return 0.9f;
+    }
+
+    @Override
+    public float getLength() {
+        return 0.9f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 3.5f;
+    }
+
+    @Override
     public void spawnTo(Player player) {
         AddEntityPacket pk = new AddEntityPacket();
         pk.type = this.getNetworkId();

@@ -9,4 +9,8 @@ public abstract class EntityBoss extends EntityMob {
     public EntityBoss(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
+
+    protected void sendBossBar() {
+
+    }
 }

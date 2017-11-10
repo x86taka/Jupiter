@@ -22,12 +22,17 @@ public class EntityEnderDragon extends EntityBoss {
     	this.setMaxHealth(200);
         super.initEntity();
     }
-    
+
     @Override
     public float getWidth() {
         return 13f;
     }
-    
+
+    @Override
+    public float getLength() {
+        return 13f;
+    }
+
     @Override
     public float getHeight(){
         return 4f;

@@ -36,7 +36,7 @@ public class EntityEvoker extends EntityMob {
 
     @Override
     public float getHeight() {
-        return 0f;
+        return 1.95f;
     }
 
     @Override
@@ -66,6 +66,5 @@ public class EntityEvoker extends EntityMob {
     @Override
     public Item[] getDrops() {
         return new Item[]{new ItemEmerald(0, random.nextRange(0, 1))};
-        //TODO: totem of undying
     }
 }

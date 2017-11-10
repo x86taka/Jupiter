@@ -28,17 +28,12 @@ public class EntityEndermite extends EntityMob {
     
     @Override
     public float getWidth() {
-        return 1.0f;
-    }
-
-    @Override
-    public float getLength() {
-        return 1.0f;
+        return 0.4f;
     }
 
     @Override
     public float getHeight() {
-        return 0.5f;
+        return 0.3f;
     }
 
     @Override

@@ -23,9 +23,25 @@ public class EntityElderGuardian extends EntityBoss {
     public EntityElderGuardian(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
     }
+
+    @Override
+    public float getWidth() {
+        return 1.9975f;
+    }
+
+    @Override
+    public float getLength() {
+        return 1.9975f;
+    }
+
+    @Override
+    public float getHeight() {
+        return 1.9975f;
+    }
+
     @Override
     protected void initEntity() {
-    	this.setMaxHealth(80);
+        this.setMaxHealth(80);
         super.initEntity();
     }
 

@@ -37,7 +37,7 @@ public class EntityVindicator extends EntityMob {
 
     @Override
     public float getHeight() {
-        return 0;
+        return 1.95f;
     }
 
     @Override

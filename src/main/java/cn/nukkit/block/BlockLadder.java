@@ -157,4 +157,9 @@ public class BlockLadder extends BlockTransparent {
     public BlockColor getColor() {
         return BlockColor.AIR_BLOCK_COLOR;
     }
+
+    @Override
+    public boolean canBeClimbed() {
+        return true;
+    }
 }

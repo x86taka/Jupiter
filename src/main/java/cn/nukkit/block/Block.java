@@ -241,7 +241,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int WOODEN_SLAB = 158;
     public static final int WOOD_SLABS = 158;
     public static final int WOODEN_SLABS = 158;
-    public static final int STAINED_CLAY = 159;
+    public static final int STAINED_TERRACOTTA = 159;
     public static final int STAINED_HARDENED_CLAY = 159;
     public static final int STAINED_GLASS_PANE = 160;
     public static final int LEAVES2 = 161;
@@ -260,7 +260,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
     public static final int SEA_LANTERN = 169;
     public static final int HAY_BALE = 170;
     public static final int CARPET = 171;
-    public static final int HARDENED_CLAY = 172;
+    public static final int TERRACOTTA = 172;
     public static final int COAL_BLOCK = 173;
     public static final int PACKED_ICE = 174;
     public static final int DOUBLE_PLANT = 175;

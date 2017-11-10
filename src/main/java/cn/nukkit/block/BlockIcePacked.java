@@ -41,4 +41,9 @@ public class BlockIcePacked extends BlockIce {
     public Item[] getDrops(Item item) {
         return item.isSilkTouch() ? new Item[]{this.toItem()} : new Item[0];
     }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
+    }
 }

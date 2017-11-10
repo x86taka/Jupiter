@@ -60,10 +60,14 @@ public class BlockPrismarine extends BlockSolid {
             return new Item[0];
         }
     }
-    
+
     @Override
     public BlockColor getColor(){
-    	return BlockColor.LIGHT_BLUE_BLOCK_COLOR;
+        return BlockColor.LIGHT_BLUE_BLOCK_COLOR;
     }
 
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
+    }
 }

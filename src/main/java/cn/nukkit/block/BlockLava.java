@@ -1,5 +1,7 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
@@ -13,8 +15,6 @@ import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.potion.Effect;
 import cn.nukkit.utils.BlockColor;
-
-import java.util.Random;
 
 /**
  * author: MagicDroidX
@@ -78,7 +78,7 @@ public class BlockLava extends BlockLiquid {
     public int onUpdate(int type) {
         int result = super.onUpdate(type);
 
-        if (type == Level.BLOCK_UPDATE_RANDOM) {
+        if (type == Level.BLOCK_UPDATE_RANDOM && this.level.gameRules.getBoolean("dofiretick")) {
 
             Random random = this.getLevel().rand;
 

@@ -1,5 +1,8 @@
 package cn.nukkit.block;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.block.BlockFromToEvent;
 import cn.nukkit.item.Item;
@@ -9,9 +12,6 @@ import cn.nukkit.level.sound.FizzSound;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
-
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * author: MagicDroidX
@@ -516,5 +516,10 @@ public abstract class BlockLiquid extends BlockTransparent {
     @Override
     public void onEntityCollide(Entity entity) {
         entity.resetFallDistance();
+    }
+
+    @Override
+    public boolean canHarvestWithHand() {
+        return false;
     }
 }

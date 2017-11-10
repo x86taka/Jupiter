@@ -61,32 +61,36 @@ public class BlockSkull extends BlockTransparent {
 
     @Override
     public boolean place(Item item, Block block, Block target, BlockFace face, double fx, double fy, double fz, Player player) {
-        if (face != BlockFace.DOWN) {
-            this.meta = item.getDamage();
-            int rot = face == BlockFace.UP ? (int) Math.floor((player.yaw * 16 / 360) + 0.5) & 0x0f : face.getIndex();
+        switch (face) {
+            case NORTH:
+            case SOUTH:
+            case EAST:
+            case WEST:
+            case UP:
+                this.meta = face.getIndex();
+                break;
+            case DOWN:
+            default:
+                return false;
+        }
+        this.getLevel().setBlock(block, this, true, true);
 
-            this.getLevel().setBlock(block, this, true, true);
-
-            CompoundTag nbt = new CompoundTag()
-                    .putString("id", BlockEntity.SKULL)
-                    .putByte("SkullType", item.getDamage())
-                    .putInt("x", block.getFloorX())
-                    .putInt("y", block.getFloorY())
-                    .putInt("z", block.getFloorZ())
-                    .putByte("Rot", rot);
-            if (item.hasCustomBlockData()) {
-                for (Tag aTag : item.getCustomBlockData().getAllTags()) {
-                    nbt.put(aTag.getName(), aTag);
-                }
+        CompoundTag nbt = new CompoundTag()
+                .putString("id", BlockEntity.SKULL)
+                .putByte("SkullType", item.getDamage())
+                .putInt("x", block.getFloorX())
+                .putInt("y", block.getFloorY())
+                .putInt("z", block.getFloorZ())
+                .putByte("Rot", (int) Math.floor((player.yaw * 16 / 360) + 0.5) & 0x0f);
+        if (item.hasCustomBlockData()) {
+            for (Tag aTag : item.getCustomBlockData().getAllTags()) {
+                nbt.put(aTag.getName(), aTag);
             }
-            new BlockEntitySkull(getLevel().getChunk((int) block.x >> 4, (int) block.z >> 4), nbt);
-
-            // TODO: 2016/2/3 SPAWN WITHER
-
-            return true;
         }
 
-        return false;
+        new BlockEntitySkull(getLevel().getChunk((int) block.x >> 4, (int) block.z >> 4), nbt);
+
+        return true;
     }
 
     @Override

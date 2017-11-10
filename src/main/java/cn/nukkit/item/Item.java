@@ -2381,7 +2381,18 @@ public class Item implements Cloneable {
     }
 
     public final boolean equals(Item item, boolean checkDamage, boolean checkCompound) {
-        return this.getId() == item.getId() && (!checkDamage || this.getDamage() == item.getDamage()) && (!checkCompound || Arrays.equals(this.getCompoundTag(), item.getCompoundTag()));
+        if (this.getId() == item.getId() && (!checkDamage || this.getDamage() == item.getDamage())) {
+            if (checkCompound) {
+                if (Arrays.equals(this.getCompoundTag(), item.getCompoundTag())) {
+                    return true;
+                } else if (this.hasCompoundTag() && item.hasCompoundTag()) {
+                    return this.getNamedTag().equals(item.getNamedTag());
+                }
+            } else {
+            	return true;
+            }
+        }
+        return false;
     }
 
     public final boolean deepEquals(Item item) {

@@ -1,6 +1,6 @@
 package cn.nukkit.event.potion;
 
-import cn.nukkit.entity.item.EntityPotion;
+import cn.nukkit.entity.projectile.EntityPotion;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.potion.Potion;

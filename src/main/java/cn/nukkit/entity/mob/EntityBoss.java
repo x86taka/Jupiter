@@ -1,6 +1,5 @@
-package cn.nukkit.entity.boss;
+package cn.nukkit.entity.mob;
 
-import cn.nukkit.entity.mob.EntityMob;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 

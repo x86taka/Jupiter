@@ -1,11 +1,12 @@
 package cn.nukkit.entity.item;
 
 import cn.nukkit.Player;
+import cn.nukkit.entity.Entity;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 
-public class EntityEnderCrystal extends EntityVehicle {
+public class EntityEnderCrystal extends Entity {
 
     public static final int NETWORK_ID = 71;
 

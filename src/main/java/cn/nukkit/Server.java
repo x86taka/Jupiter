@@ -106,10 +106,12 @@ import cn.nukkit.entity.passive.EntityChicken;
 import cn.nukkit.entity.passive.EntityCow;
 import cn.nukkit.entity.passive.EntityDonkey;
 import cn.nukkit.entity.passive.EntityHorse;
+import cn.nukkit.entity.passive.EntityIronGolem;
 import cn.nukkit.entity.passive.EntityLlama;
 import cn.nukkit.entity.passive.EntityMooshroom;
 import cn.nukkit.entity.passive.EntityMule;
 import cn.nukkit.entity.passive.EntityOcelot;
+import cn.nukkit.entity.passive.EntityParrot;
 import cn.nukkit.entity.passive.EntityPig;
 import cn.nukkit.entity.passive.EntityPolarBear;
 import cn.nukkit.entity.passive.EntityRabbit;
@@ -2807,16 +2809,7 @@ public class Server implements ActionListener{
     }
 
     private void registerEntities() {
-        Entity.registerEntity("Arrow", EntityArrow.class);
-        Entity.registerEntity("Item", EntityItem.class);
-        Entity.registerEntity("FallingSand", EntityFallingBlock.class);
-        Entity.registerEntity("PrimedTnt", EntityPrimedTNT.class);
-        Entity.registerEntity("Snowball", EntitySnowball.class);
-        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
-        Entity.registerEntity("Painting", EntityPainting.class);
-        Entity.registerEntity("FishingHook", EntityFishingHook.class);
-        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
-        //Monsters
+        //mob
         Entity.registerEntity("Blaze", EntityBlaze.class);
         Entity.registerEntity("CaveSpider", EntityCaveSpider.class);
         Entity.registerEntity("Creeper", EntityCreeper.class);
@@ -2840,16 +2833,18 @@ public class Server implements ActionListener{
         Entity.registerEntity("Zombie", EntityZombie.class);
         Entity.registerEntity("ZombiePigman", EntityZombiePigman.class);
         Entity.registerEntity("ZombieVillager", EntityZombieVillager.class);
-        //Animals
+        //passive
         Entity.registerEntity("Bat", EntityBat.class);
         Entity.registerEntity("Chicken", EntityChicken.class);
         Entity.registerEntity("Cow", EntityCow.class);
         Entity.registerEntity("Donkey", EntityDonkey.class);
         Entity.registerEntity("Horse", EntityHorse.class);
+        Entity.registerEntity("IronGolem", EntityIronGolem.class);
         Entity.registerEntity("Llama", EntityLlama.class);
         Entity.registerEntity("Mooshroom", EntityMooshroom.class);
         Entity.registerEntity("Mule", EntityMule.class);
         Entity.registerEntity("Ocelot", EntityOcelot.class);
+        Entity.registerEntity("Parrot", EntityParrot.class);
         Entity.registerEntity("Pig", EntityPig.class);
         Entity.registerEntity("PolarBear", EntityPolarBear.class);
         Entity.registerEntity("Rabbit", EntityRabbit.class);
@@ -2864,21 +2859,28 @@ public class Server implements ActionListener{
         Entity.registerEntity("EnderDragon", EntityEnderDragon.class);
         Entity.registerEntity("EnderWither", EntityWither.class);
 
+      //item
+        Entity.registerEntity("Arrow", EntityArrow.class);
+        Entity.registerEntity("Item", EntityItem.class);
+        Entity.registerEntity("FallingSand", EntityFallingBlock.class);
+        Entity.registerEntity("PrimedTnt", EntityPrimedTNT.class);
+        Entity.registerEntity("Snowball", EntitySnowball.class);
+        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
+        Entity.registerEntity("Painting", EntityPainting.class);
+        Entity.registerEntity("FishingHook", EntityFishingHook.class);
+        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
         Entity.registerEntity("ThrownExpBottle", EntityExpBottle.class);
         Entity.registerEntity("XpOrb", EntityXPOrb.class);
         Entity.registerEntity("ThrownPotion", EntityPotion.class);
-
-        Entity.registerEntity("Human", EntityHuman.class, true);
-
         Entity.registerEntity("MinecartRideable", EntityMinecartEmpty.class);
         Entity.registerEntity("MinecartChest", EntityMinecartChest.class);
         Entity.registerEntity("MinecartHopper", EntityMinecartHopper.class);
         Entity.registerEntity("MinecartTnt", EntityMinecartTNT.class);
         Entity.registerEntity("Boat", EntityBoat.class);
-
         Entity.registerEntity("Lightning", EntityLightning.class);
-
         Entity.registerEntity("ArmorStand", EntityArmorStand.class);
+
+        Entity.registerEntity("Human", EntityHuman.class, true);
     }
 
     private void registerBlockEntities() {

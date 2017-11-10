@@ -11,6 +11,8 @@ public class EntityHorse extends EntityAnimal {
 
     public EntityHorse(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.setMaxHealth(random.nextRange(15, 30));
+        this.setHealth(this.getMaxHealth());
     }
 
     @Override

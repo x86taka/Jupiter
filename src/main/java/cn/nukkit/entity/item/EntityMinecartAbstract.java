@@ -117,6 +117,8 @@ public abstract class EntityMinecartAbstract extends EntityVehicle {
 
     @Override
     public void initEntity() {
+        this.setMaxHealth(6);
+
         super.initEntity();
 
         prepareDataProperty();

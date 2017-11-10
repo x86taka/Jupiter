@@ -10,6 +10,8 @@ public class EntityLlama extends EntityAnimal {
 
     public EntityLlama(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+        this.setMaxHealth(random.nextRange(15, 30));
+        this.setHealth(this.getMaxHealth());
     }
 
     @Override
@@ -40,7 +42,6 @@ public class EntityLlama extends EntityAnimal {
 
     @Override
     public void initEntity() {
-        this.setMaxHealth(22);
         super.initEntity();
     }
 

@@ -2,6 +2,8 @@ package cn.nukkit.network.protocol;
 
 public class UpdateEquipmentPacket extends DataPacket {
 
+    public static final byte NETWORK_ID = ProtocolInfo.UPDATE_EQUIPMENT_PACKET;
+
     public int windowId;
     public int windowType;
     public int unknown; //TODO: find out what this is (vanilla always sends 0)
@@ -11,7 +13,7 @@ public class UpdateEquipmentPacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return ProtocolInfo.UPDATE_EQUIPMENT_PACKET;
+        return NETWORK_ID;
     }
 
     @Override
@@ -21,6 +23,7 @@ public class UpdateEquipmentPacket extends DataPacket {
 
     @Override
     public void encode() {
+        this.reset();
         this.putByte((byte) this.windowId);
         this.putByte((byte) this.windowType);
         this.putEntityUniqueId(this.entityRuntimeId);

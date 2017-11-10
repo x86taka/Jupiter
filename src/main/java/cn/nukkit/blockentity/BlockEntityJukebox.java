@@ -1,4 +1,6 @@
-+package cn.nukkit.blockentity;
+package cn.nukkit.blockentity;
+
+import java.util.Objects;
 
 import cn.nukkit.Server;
 import cn.nukkit.block.Block;
@@ -8,8 +10,6 @@ import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
-
-import java.util.Objects;
 
 /**
  * @author CreeperFace

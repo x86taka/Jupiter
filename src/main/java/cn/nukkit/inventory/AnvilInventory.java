@@ -33,12 +33,12 @@ public class AnvilInventory extends ContainerInventory {
         Item local = getItem(TARGET);
         Item second = getItem(SACRIFICE);
 
-        if (!resultItem.deepEquals(local, true, false) || resultItem.getCount() != local.getCount()) {
+        if (!resultItem.equals(local, true, false) || resultItem.getCount() != local.getCount()) {
             //Item does not match target item. Everything must match except the tags.
             return false;
         }
 
-        if (local.deepEquals(resultItem)) {
+        if (local.equals(resultItem)) {
             //just item transaction
             return true;
         }

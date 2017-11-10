@@ -173,7 +173,7 @@ public class Anvil extends BaseLevelProvider {
         for (Chunk chunk : new ArrayList<>(this.chunks.values())) {
             this.unloadChunk(chunk.getX(), chunk.getZ(), false);
         }
-        this.chunks = new HashMap<Long, Chunk>();
+        this.chunks = new HashMap<>();
     }
 
     @Override

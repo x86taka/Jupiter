@@ -89,7 +89,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
         for (Item needItem : new ArrayList<>(needItems)) {
             for (Item haveItem : new ArrayList<>(haveItems)) {
-                if (needItem.deepEquals(haveItem)) {
+                if (needItem.equals(haveItem)) {
                     int amount = Math.min(haveItem.getCount(), needItem.getCount());
                     needItem.setCount(needItem.getCount() - amount);
                     haveItem.setCount(haveItem.getCount() - amount);
@@ -178,6 +178,10 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                         lastTargetItem = action.getTargetItem();
                         list.remove(i);
                         sortedThisLoop++;
+                    } else if (actionSource.equals(lastTargetItem)) {
+                        lastTargetItem.count -= actionSource.count;
+                        list.remove(i);
+                        if (lastTargetItem.count == 0) sortedThisLoop++;
                     }
                 }
             } while (sortedThisLoop > 0);

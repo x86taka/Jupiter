@@ -246,7 +246,7 @@ public class PopulatorCaves extends Populator {
         }
 
         // Few hardcoded cases
-        if (218 <= block && block >= 235) {
+        if (block == Block.TERRACOTTA) {
             return true;
         }
 

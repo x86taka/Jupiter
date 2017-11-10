@@ -1,42 +1,37 @@
 package cn.nukkit.level.generator;
 
-import cn.nukkit.block.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import cn.nukkit.block.Block;
+import cn.nukkit.block.BlockDirt;
+import cn.nukkit.block.BlockGravel;
+import cn.nukkit.block.BlockOreCoal;
+import cn.nukkit.block.BlockOreDiamond;
+import cn.nukkit.block.BlockOreGold;
+import cn.nukkit.block.BlockOreIron;
+import cn.nukkit.block.BlockOreLapis;
+import cn.nukkit.block.BlockOreRedstone;
+import cn.nukkit.block.BlockStone;
 import cn.nukkit.level.ChunkManager;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.generator.biome.Biome;
 import cn.nukkit.level.generator.biome.BiomeSelector;
 import cn.nukkit.level.generator.noise.Simplex;
 import cn.nukkit.level.generator.object.ore.OreType;
-import cn.nukkit.level.generator.populator.*;
+import cn.nukkit.level.generator.populator.Populator;
+import cn.nukkit.level.generator.populator.PopulatorCaves;
+import cn.nukkit.level.generator.populator.PopulatorGroundCover;
+import cn.nukkit.level.generator.populator.PopulatorOre;
+import cn.nukkit.level.generator.populator.PopulatorRavines;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.math.Vector3;
 
-import java.util.*;
-
 /**
- * This generator was written by Creeperface and Nycuro
- * <p>
- * The following classes are theirs and are intended for NUKKIT USAGE and should not be copied/translated to other software
- * such as BukkitPE, ClearSky, Genisys , Pocketmine-MP
- * <p>
- * Normal.java
- * MushroomPopulator.java
- * DarkOakTreePopulator.java
- * JungleBigTreePopulator.java
- * JungleTreePopulaotr.java
- * SavannaTreePopulator.java
- * SwampTreePopulator.java
- * BasicPopulator.java
- * MesaBiome.java
- * JungleBiome.java
- * SavannaBiome.java
- * RoofedForestBiome.java
- * RoofedForestMBiome.java
- * MushroomIsland.java
- * TreeGenerator.java
- * HugeTreesGenerator.java
- * <p>
- * Created by CreeperFace on 26. 10. 2016.
+ * NycuRO was killed by Jupiter on 2017.
  */
 public class Normal extends Generator {
 

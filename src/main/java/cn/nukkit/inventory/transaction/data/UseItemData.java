@@ -6,6 +6,9 @@ import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.math.Vector3f;
 
+/**
+ * @author CreeperFace
+ */
 public class UseItemData implements TransactionData {
 
     public int actionType;

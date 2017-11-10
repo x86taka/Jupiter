@@ -119,8 +119,8 @@ public class Chunk extends BaseFullChunk {
 
         this.extraData = extraData;
 
-        this.NBTentities = new ArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("Entities")).getAll());
-        this.NBTtiles = new ArrayList<CompoundTag>(((ListTag<CompoundTag>) this.nbt.getList("TileEntities")).getAll());
+        this.NBTentities = ((ListTag<CompoundTag>) this.nbt.getList("Entities")).getAll();
+        this.NBTtiles = ((ListTag<CompoundTag>) this.nbt.getList("TileEntities")).getAll();
 
         if (this.nbt.contains("Biomes")) {
             this.checkOldBiomes(this.nbt.getByteArray("Biomes"));

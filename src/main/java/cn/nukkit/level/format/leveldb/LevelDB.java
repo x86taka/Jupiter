@@ -192,12 +192,12 @@ public class LevelDB implements LevelProvider {
             }
         }
 
-        Map<Integer, Integer> extra = new HashMap<>(chunk.getBlockExtraDataArray());
+        Map<Integer, Integer> extra = chunk.getBlockExtraDataArray();
         BinaryStream extraData;
         if (!extra.isEmpty()) {
             extraData = new BinaryStream();
             extraData.putLInt(extra.size());
-            for (int key : extra.values()) {
+            for (Integer key : extra.values()) {
                 extraData.putLInt(key);
                 extraData.putLShort(extra.get(key));
             }

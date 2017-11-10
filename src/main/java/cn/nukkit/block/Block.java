@@ -445,7 +445,7 @@ public abstract class Block extends Position implements Metadatable, Cloneable {
             list[CACTUS] = BlockCactus.class; //81
             list[CLAY_BLOCK] = BlockClay.class; //82
             list[SUGARCANE_BLOCK] = BlockSugarcane.class; //83
-            list[JUKEBOX] = BlockJukeBox.class; //84
+            list[JUKEBOX] = BlockJukebox.class; //84
             list[FENCE] = BlockFence.class; //85
             list[PUMPKIN] = BlockPumpkin.class; //86
             list[NETHERRACK] = BlockNetherrack.class; //87

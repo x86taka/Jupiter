@@ -65,7 +65,6 @@ import cn.nukkit.entity.item.EntityArmorStand;
 import cn.nukkit.entity.item.EntityBoat;
 import cn.nukkit.entity.item.EntityEnderCrystal;
 import cn.nukkit.entity.item.EntityFallingBlock;
-import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.entity.item.EntityMinecartChest;
 import cn.nukkit.entity.item.EntityMinecartEmpty;
 import cn.nukkit.entity.item.EntityMinecartHopper;
@@ -121,10 +120,16 @@ import cn.nukkit.entity.passive.EntityVillager;
 import cn.nukkit.entity.passive.EntityWolf;
 import cn.nukkit.entity.passive.EntityZombieHorse;
 import cn.nukkit.entity.projectile.EntityArrow;
+import cn.nukkit.entity.projectile.EntityDragonFireball;
+import cn.nukkit.entity.projectile.EntityEgg;
 import cn.nukkit.entity.projectile.EntityEnderPearl;
 import cn.nukkit.entity.projectile.EntityExpBottle;
+import cn.nukkit.entity.projectile.EntityFireball;
+import cn.nukkit.entity.projectile.EntityFireworkRocket;
 import cn.nukkit.entity.projectile.EntityFishingHook;
 import cn.nukkit.entity.projectile.EntityPotion;
+import cn.nukkit.entity.projectile.EntityPotionLingering;
+import cn.nukkit.entity.projectile.EntityShulkerBullet;
 import cn.nukkit.entity.projectile.EntitySnowball;
 import cn.nukkit.entity.weather.EntityLightning;
 import cn.nukkit.event.HandlerList;
@@ -214,7 +219,7 @@ public class Server implements ActionListener{
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
 
     private static Server instance = null;
-    
+
     private AI ai = null;
 
     private BanList banByName = null;
@@ -557,7 +562,7 @@ public class Server implements ActionListener{
         Effect.init();
         Potion.init();
         Attribute.init();
-        
+
         /* TODO AI
         this.ai = new AI(this);
         ai.initAI();
@@ -2856,32 +2861,43 @@ public class Server implements ActionListener{
         Entity.registerEntity("Villager", EntityVillager.class);
         Entity.registerEntity("Wolf", EntityWolf.class);
         Entity.registerEntity("ZombieHorse", EntityZombieHorse.class);
+
         //Bosses
         Entity.registerEntity("ElderGuardian", EntityElderGuardian.class);
         Entity.registerEntity("EnderDragon", EntityEnderDragon.class);
         Entity.registerEntity("EnderWither", EntityWither.class);
 
-      //item
-        Entity.registerEntity("Arrow", EntityArrow.class);
-        Entity.registerEntity("Item", EntityItem.class);
+        //item
+        Entity.registerEntity("ArmorStand", EntityArmorStand.class);
+        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
         Entity.registerEntity("FallingSand", EntityFallingBlock.class);
         Entity.registerEntity("PrimedTnt", EntityPrimedTNT.class);
-        Entity.registerEntity("Snowball", EntitySnowball.class);
-        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
         Entity.registerEntity("Painting", EntityPainting.class);
-        Entity.registerEntity("FishingHook", EntityFishingHook.class);
-        Entity.registerEntity("EnderCrystal", EntityEnderCrystal.class);
-        Entity.registerEntity("ThrownExpBottle", EntityExpBottle.class);
         Entity.registerEntity("XpOrb", EntityXPOrb.class);
-        Entity.registerEntity("ThrownPotion", EntityPotion.class);
         Entity.registerEntity("MinecartRideable", EntityMinecartEmpty.class);
         Entity.registerEntity("MinecartChest", EntityMinecartChest.class);
         Entity.registerEntity("MinecartHopper", EntityMinecartHopper.class);
         Entity.registerEntity("MinecartTnt", EntityMinecartTNT.class);
         Entity.registerEntity("Boat", EntityBoat.class);
-        Entity.registerEntity("Lightning", EntityLightning.class);
-        Entity.registerEntity("ArmorStand", EntityArmorStand.class);
 
+        //projectile
+        Entity.registerEntity("Arrow", EntityArrow.class);
+        Entity.registerEntity("DragonFireball", EntityDragonFireball.class);
+        Entity.registerEntity("Egg", EntityEgg.class);
+        Entity.registerEntity("EnderPearl", EntityEnderPearl.class);
+        Entity.registerEntity("ThrownExpBottle", EntityExpBottle.class);
+        Entity.registerEntity("Fireball", EntityFireball.class);
+        Entity.registerEntity("FireworkRocket", EntityFireworkRocket.class);
+        Entity.registerEntity("FishingHook", EntityFishingHook.class);
+        Entity.registerEntity("ThrownPotion", EntityPotion.class);
+        Entity.registerEntity("ThrownLingeringPotion", EntityPotionLingering.class);
+        Entity.registerEntity("ShulkerBullet", EntityShulkerBullet.class);
+        Entity.registerEntity("Snowball", EntitySnowball.class);
+
+        //weather
+        Entity.registerEntity("Lightning", EntityLightning.class);
+
+        //other
         Entity.registerEntity("Human", EntityHuman.class, true);
     }
 
@@ -2928,7 +2944,7 @@ public class Server implements ActionListener{
     public boolean printPackets(){
         return this.printPackets;
     }
-    
+
     /*TODO getAI()
     public AI getAI() {
         return this.ai;

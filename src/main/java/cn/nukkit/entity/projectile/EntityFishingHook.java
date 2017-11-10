@@ -13,7 +13,7 @@ import cn.nukkit.network.protocol.AddEntityPacket;
 public class EntityFishingHook extends EntityProjectile {
 
     public static final int NETWORK_ID = 77;
-	public Tag data;
+    public Tag data;
 
     @Override
     public float getWidth() {

@@ -11,6 +11,7 @@ import cn.nukkit.event.entity.EntityDamageEvent.DamageModifier;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerEnderChestInventory;
 import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.inventory.PlayerOffhandInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.enchantment.Enchantment;
@@ -23,6 +24,7 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
 
     protected PlayerInventory inventory = new PlayerInventory(this);
     protected PlayerEnderChestInventory enderChestInventory;
+    protected PlayerOffhandInventory offhandInventory = new PlayerOffhandInventory(this);
 
     public EntityHumanType(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -35,6 +37,10 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
 
     public PlayerEnderChestInventory getEnderChestInventory() {
         return enderChestInventory;
+    }
+
+    public PlayerOffhandInventory getOffhandInventory() {
+    	return this.offhandInventory;
     }
 
     @Override
@@ -60,6 +66,13 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
             ListTag<CompoundTag> inventoryList = this.namedTag.getList("EnderItems", CompoundTag.class);
             for (CompoundTag item : inventoryList.getAll()) {
                 this.enderChestInventory.setItem(item.getByte("Slot"), NBTIO.getItemHelper(item));
+            }
+        }
+
+        if (this.namedTag.contains("OffhandItems") && this.namedTag.get("OffhandItems") instanceof ListTag) {
+            ListTag<CompoundTag> inventoryList = this.namedTag.getList("OffhandItems", CompoundTag.class);
+            for (CompoundTag item : inventoryList.getAll()) {
+                this.offhandInventory.setItem(item.getByte("Slot"), NBTIO.getItemHelper(item));
             }
         }
 
@@ -102,6 +115,16 @@ public abstract class EntityHumanType extends EntityCreature implements Inventor
                 Item item = this.enderChestInventory.getItem(slot);
                 if (item != null && item.getId() != Item.AIR) {
                     this.namedTag.getList("EnderItems", CompoundTag.class).add(NBTIO.putItemHelper(item, slot));
+                }
+            }
+        }
+
+        this.namedTag.putList(new ListTag<CompoundTag>("OffhandItems"));
+        if (this.offhandInventory != null) {
+            for (int slot = 0; slot < 27; ++slot) {
+                Item item = this.offhandInventory.getItem(slot);
+                if (item != null && item.getId() != Item.AIR) {
+                    this.namedTag.getList("OffhandItems", CompoundTag.class).add(NBTIO.putItemHelper(item, slot));
                 }
             }
         }

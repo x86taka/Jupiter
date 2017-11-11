@@ -1076,6 +1076,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.inventory.sendContents(this);
         this.inventory.sendArmorContents(this);
 
+        this.offhandInventory.sendContents(this);
+        this.offhandInventory.sendOffhandItem(this);
+
         SetTimePacket setTimePacket = new SetTimePacket();
         setTimePacket.time = this.level.getTime();
         this.dataPacket(setTimePacket);
@@ -2430,6 +2433,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             this.getAdventureSettings().update();
                             this.inventory.sendContents(this);
                             this.inventory.sendArmorContents(this);
+
+                            this.offhandInventory.sendContents(this);
+                            this.offhandInventory.sendOffhandItem(this);
 
                             this.spawnToAll();
                             this.scheduleUpdate();
@@ -5254,6 +5260,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.cursorInventory = new PlayerCursorInventory(this);
         this.addWindow(this.cursorInventory, ContainerIds.CURSOR, true);
+
+        this.addWindow(this.offhandInventory, ContainerIds.OFFHAND, true);
 
         this.craftingGrid = new CraftingGrid(this);
 

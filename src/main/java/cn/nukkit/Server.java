@@ -1139,7 +1139,7 @@ public class Server implements ActionListener{
             return true;
         }
 
-        sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.notFound"));
+        sender.sendMessage(TextFormat.RED + this.getLanguage().translateString("commands.generic.notFound"));
 
         return false;
     }

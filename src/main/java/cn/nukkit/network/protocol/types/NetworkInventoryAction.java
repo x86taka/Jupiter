@@ -2,8 +2,6 @@ package cn.nukkit.network.protocol.types;
 
 import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
-import cn.nukkit.inventory.transaction.action.CraftingTakeResultAction;
-import cn.nukkit.inventory.transaction.action.CraftingTransferMaterialAction;
 import cn.nukkit.inventory.transaction.action.CreativeInventoryAction;
 import cn.nukkit.inventory.transaction.action.DropItemAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
@@ -136,16 +134,20 @@ public class NetworkInventoryAction {
                 switch (this.windowId) {
                     case SOURCE_TYPE_CRAFTING_ADD_INGREDIENT:
                     case SOURCE_TYPE_CRAFTING_REMOVE_INGREDIENT:
+                        System.out.println("crafting change ingredient, old: " + this.oldItem + "   new: " + this.newItem + "    slot: " + this.inventorySlot);
                         window = player.getCraftingGrid();
                         return new SlotChangeAction(window, this.inventorySlot, this.oldItem, this.newItem);
                     case SOURCE_TYPE_CRAFTING_RESULT:
                         window = player.getCraftingGrid();
-                        return new CraftingTakeResultAction(this.oldItem, this.newItem);
+
+                        System.out.println("crafting result, old: " + this.oldItem + "   new: " + this.newItem + "    slot: " + this.inventorySlot);
+                        break;
                     case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-                        window = player.getCraftingGrid();
-                        return new CraftingTransferMaterialAction(this.oldItem, this.newItem, this.inventorySlot);
+                        System.out.println("crafting use ingredient, old: " + this.oldItem + "   new: " + this.newItem + "    slot: " + this.inventorySlot);
+                        break;
                     case SOURCE_TYPE_CONTAINER_DROP_CONTENTS:
                         window = player.getCraftingGrid();
+
                         inventorySlot = window.first(this.oldItem, true);
                         if (inventorySlot == -1) {
                             throw new RuntimeException("Fake container " + window.getClass().getName() + " for " + player.getName() + " does not contain " + this.oldItem);

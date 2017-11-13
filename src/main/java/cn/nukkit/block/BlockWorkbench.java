@@ -1,7 +1,6 @@
 package cn.nukkit.block;
 
 import cn.nukkit.Player;
-import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemTool;
 import cn.nukkit.utils.BlockColor;
@@ -52,7 +51,6 @@ public class BlockWorkbench extends BlockSolid {
     @Override
     public boolean onActivate(Item item, Player player) {
         if (player != null) {
-            player.setCraftingGrid(new BigCraftingGrid(player));
             player.craftingType = Player.CRAFTING_BIG;
         }
         return true;

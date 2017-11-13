@@ -160,8 +160,6 @@ public class EntityHuman extends EntityHumanType {
 
             this.inventory.sendArmorContents(player);
 
-            this.offhandInventory.sendOffhandItem(player);
-
             if (!(this instanceof Player)) {
                 this.server.removePlayerListData(this.getUniqueId(), new Player[]{player});
             }

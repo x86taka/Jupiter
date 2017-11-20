@@ -96,11 +96,17 @@ public class EntityHuman extends EntityHumanType {
                 if (!this.namedTag.getCompound("Skin").contains("Transparent")) {
                     this.namedTag.getCompound("Skin").putBoolean("Transparent", false);
                 }
-                this.setSkin(new Skin(this.namedTag.getCompound("Skin").getByteArray("Data"), this.namedTag.getCompound("Skin").getString("ModelId")));
+                this.setSkin(new Skin(
+                        this.namedTag.getCompound("Skin").getString("skinId"),
+                        this.namedTag.getCompound("Skin").getByteArray("skinData"),
+                        this.namedTag.getCompound("Skin").getCompound("capeData").getByteArray("capeData"),
+                        this.namedTag.getCompound("Skin").getString("geometryName"),
+                        this.namedTag.getCompound("Skin").getCompound("geometryData").getString("geometryData")
+                ));
             }
 
             this.uuid = Utils.dataToUUID(String.valueOf(this.getId()).getBytes(StandardCharsets.UTF_8), this.getSkin()
-                    .getData(), this.getNameTag().getBytes(StandardCharsets.UTF_8));
+                    .getSkinData(), this.getNameTag().getBytes(StandardCharsets.UTF_8));
         }
 
         super.initEntity();
@@ -119,12 +125,13 @@ public class EntityHuman extends EntityHumanType {
     public void saveNBT() {
         super.saveNBT();
 
-        if (this.getSkin().getData().length > 0) {
-            this.namedTag.putCompound("Skin", new CompoundTag()
-                    .putByteArray("Data", this.getSkin().getData())
-                    .putString("ModelId", this.getSkin().getModel())
-            );
-        }
+        this.namedTag.putCompound("Skin", new CompoundTag()
+                .putString("skinId", this.getSkin().getSkinId())
+                .putByteArray("skinData", this.getSkin().getSkinData())
+                .putCompound("capeData", new CompoundTag().putByteArray("capeData", this.getSkin().getCapeData()))
+                .putString("geometryName", this.getSkin().getGeometryName())
+                .putCompound("geometryData", new CompoundTag().putString("geometryData", this.getSkin().getGeometryData()))
+        );
     }
 
     @Override
@@ -132,7 +139,7 @@ public class EntityHuman extends EntityHumanType {
         if (this != player && !this.hasSpawned.containsKey(player.getLoaderId())) {
             this.hasSpawned.put(player.getLoaderId(), player);
 
-            if (this.skin.getData().length < 64 * 32 * 4) {
+            if (this.skin.getSkinData().length < 64 * 32 * 4) {
                 throw new IllegalStateException(this.getClass().getSimpleName() + " must have a valid skin set");
             }
 

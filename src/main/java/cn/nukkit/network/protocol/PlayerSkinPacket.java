@@ -10,10 +10,8 @@ public class PlayerSkinPacket extends DataPacket {
 
     public UUID uuid;
     public Skin skin;
-    public String skinName;
-    public String serializeName;
-    public String geometryModel;
-    public String geometryData;
+    public String oldSkinName = "";
+    public String newSkinName = "";
 
     @Override
     public byte pid() {
@@ -24,28 +22,27 @@ public class PlayerSkinPacket extends DataPacket {
     public void decode() {
         this.uuid = this.getUUID();
         String skinId = this.getString();
-        this.skinName = this.getString();
-        this.serializeName = this.getString();
-        byte[] data = this.getByteArray();
-        byte[] cape = this.getByteArray();
+        this.newSkinName = this.getString();
+        this.oldSkinName = this.getString();
+        byte[] skinData = this.getByteArray();
+        byte[] capeData = this.getByteArray();
+        String geometryModel = this.getString();
+        String geometryData = this.getString();
 
-        this.skin = new Skin(data, skinId);
-        this.skin.setCape(this.skin.new Cape(cape));
-
-        this.geometryModel = this.getString();
-        this.geometryData = this.getString();
+        this.skin = new Skin(skinId, skinData, capeData, geometryModel, geometryData);
     }
 
     @Override
     public void encode() {
         this.reset();
         this.putUUID(this.uuid);
-        this.putString(this.skin.getModel());
-        this.putString(this.skinName);
-        this.putString(this.serializeName);
-        this.putByteArray(this.skin.getData());
-        this.putByteArray(this.skin.getCape().getData());
-        this.putString(this.geometryModel);
-        this.putString(this.geometryData);
+        this.putString(this.skin.getSkinId());
+        this.putString(this.newSkinName);
+        this.putString(this.oldSkinName);
+        this.putByteArray(this.skin.getSkinData());
+        this.putByteArray(this.skin.getCapeData());
+        this.putString(this.skin.getGeometryName());
+        this.putString(this.skin.getGeometryData());
     }
+
 }

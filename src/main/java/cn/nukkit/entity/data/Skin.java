@@ -24,9 +24,19 @@ public class Skin {
     public static final String MODEL_STEVE = "Standard_Steve";
     public static final String MODEL_ALEX = "Standard_Alex";
 
-    private byte[] data = new byte[SINGLE_SKIN_SIZE];
-    private String model;
-    private Cape cape = new Cape(new byte[0]);  //default no cape
+    private String skinId;
+    private byte[] skinData;
+    private byte[] capeData;
+    private String geometryName;
+    private String geometryData;
+
+    public Skin(String skinId, byte[] skinData, byte[] capeData, String geometryName, String geometryData) {
+        this.skinId = skinId;
+        this.skinData = skinData;
+        this.capeData = capeData;
+        this.geometryName = geometryName;
+        this.geometryData = geometryData;
+    }
 
     public Skin(byte[] data) {
         this(data, MODEL_STEVE);
@@ -53,8 +63,8 @@ public class Skin {
     }
 
     public Skin(byte[] data, String model) {
-        this.setData(data);
-        this.setModel(model);
+        this.setSkinData(data);
+        this.setSkinId(model);
     }
 
     public Skin(InputStream inputStream, String model) {
@@ -65,7 +75,7 @@ public class Skin {
             throw new RuntimeException(e);
         }
         this.parseBufferedImage(image);
-        this.setModel(model);
+        this.setSkinId(model);
     }
 
     public Skin(ImageInputStream inputStream, String model) {
@@ -76,7 +86,7 @@ public class Skin {
             throw new RuntimeException(e);
         }
         this.parseBufferedImage(image);
-        this.setModel(model);
+        this.setSkinId(model);
     }
 
     public Skin(File file, String model) {
@@ -87,7 +97,7 @@ public class Skin {
             throw new RuntimeException(e);
         }
         this.parseBufferedImage(image);
-        this.setModel(model);
+        this.setSkinId(model);
     }
 
     public Skin(URL url, String model) {
@@ -98,12 +108,12 @@ public class Skin {
             throw new RuntimeException(e);
         }
         this.parseBufferedImage(image);
-        this.setModel(model);
+        this.setSkinId(model);
     }
 
     public Skin(BufferedImage image, String model) {
         this.parseBufferedImage(image);
-        this.setModel(model);
+        this.setSkinId(model);
     }
 
     public Skin(String base64) {
@@ -126,122 +136,57 @@ public class Skin {
             }
         }
         image.flush();
-        this.setData(outputStream.toByteArray());
+        this.setSkinData(outputStream.toByteArray());
     }
 
-    public byte[] getData() {
-        return data;
+    public String getSkinId() {
+        return this.skinId;
     }
 
-    public String getModel() {
-        return model;
+    public void setSkinId(String skinId) {
+        if (skinId == null || skinId.trim().isEmpty()) {
+            skinId = MODEL_STEVE;
+        }
+        this.skinId = skinId;
     }
 
-    public void setData(byte[] data) {
-        if (data.length != SINGLE_SKIN_SIZE && data.length != DOUBLE_SKIN_SIZE) {
+    public byte[] getSkinData() {
+        return this.skinData;
+    }
+
+    public void setSkinData(byte[] skinData) {
+        if (skinData.length != SINGLE_SKIN_SIZE && skinData.length != DOUBLE_SKIN_SIZE) {
             throw new IllegalArgumentException("Invalid skin");
         }
-        this.data = data;
+        this.skinData = skinData;
     }
 
-    public void setModel(String model) {
-        if (model == null || model.trim().isEmpty()) {
-            model = MODEL_STEVE;
-        }
-
-        this.model = model;
+    public byte[] getCapeData() {
+        return this.capeData;
     }
 
-    public Cape getCape() {
-        return cape;
+    public void setCapeData(byte[] capeData) {
+        this.capeData = capeData;
     }
 
-    public void setCape(Cape cape) {
-        this.cape = cape;
+    public String getGeometryName() {
+        return this.geometryName;
+    }
+
+    public void setGeometryName(String geometryName) {
+        this.geometryName = geometryName;
+    }
+
+    public String getGeometryData() {
+        return this.geometryData;
+    }
+
+    public void setGeometryData(String geometryData) {
+        this.geometryData = geometryData;
     }
 
     public boolean isValid() {
-        return this.data.length == SINGLE_SKIN_SIZE || this.data.length == DOUBLE_SKIN_SIZE;
+        return this.skinData.length == SINGLE_SKIN_SIZE || this.skinData.length == DOUBLE_SKIN_SIZE;
     }
 
-    public class Cape {
-
-        public byte[] data;
-
-        public Cape(byte[] data) {
-            this.setData(data);
-        }
-
-        public Cape(InputStream inputStream) {
-            BufferedImage image;
-            try {
-                image = ImageIO.read(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            this.parseBufferedImage(image);
-        }
-
-        public Cape(ImageInputStream inputStream) {
-            BufferedImage image;
-            try {
-                image = ImageIO.read(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            this.parseBufferedImage(image);
-        }
-
-        public Cape(File file, String model) {
-            BufferedImage image;
-            try {
-                image = ImageIO.read(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            this.parseBufferedImage(image);
-        }
-
-        public Cape(URL url) {
-            BufferedImage image;
-            try {
-                image = ImageIO.read(url);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            this.parseBufferedImage(image);
-        }
-
-        public Cape(BufferedImage image) {
-            this.parseBufferedImage(image);
-        }
-
-        public Cape(String base64) {
-            this(Base64.getDecoder().decode(base64));
-        }
-
-        public void setData(byte[] data) {
-            this.data = data;
-        }
-
-        public byte[] getData() {
-            return data;
-        }
-
-        public void parseBufferedImage(BufferedImage image) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            for (int y = 0; y < image.getHeight(); y++) {
-                for (int x = 0; x < image.getWidth(); x++) {
-                    Color color = new Color(image.getRGB(x, y), true);
-                    outputStream.write(color.getRed());
-                    outputStream.write(color.getGreen());
-                    outputStream.write(color.getBlue());
-                    outputStream.write(color.getAlpha());
-                }
-            }
-            image.flush();
-            this.setData(outputStream.toByteArray());
-        }
-    }
 }

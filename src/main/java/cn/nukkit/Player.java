@@ -186,6 +186,7 @@ import cn.nukkit.network.protocol.PlayStatusPacket;
 import cn.nukkit.network.protocol.PlayerActionPacket;
 import cn.nukkit.network.protocol.PlayerHotbarPacket;
 import cn.nukkit.network.protocol.PlayerInputPacket;
+import cn.nukkit.network.protocol.PlayerSkinPacket;
 import cn.nukkit.network.protocol.ProtocolInfo;
 import cn.nukkit.network.protocol.RemoveEntityPacket;
 import cn.nukkit.network.protocol.RequestChunkRadiusPacket;
@@ -933,7 +934,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             }
 
             this.usedChunks = new HashMap<>();
-            
+
             SetTimePacket pk = new SetTimePacket();
             pk.time = this.level.getTime();
             this.dataPacket(pk);
@@ -3593,6 +3594,11 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         re.data = window.toJson();
                         this.dataPacket(re);
                     });
+                    break;
+
+                case ProtocolInfo.PLAYER_SKIN_PACKET:
+                    PlayerSkinPacket skin = (PlayerSkinPacket) packet;
+                    this.setSkin(skin.skin);
                     break;
 
                 default:

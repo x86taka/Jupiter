@@ -33,7 +33,7 @@ public final class ClientChainData {
     public final static int GUI_SCALE_MINIMUM = -2;
     public final static int GUI_SCALE_MEDIUM = -1;
     public final static int GUI_SCALE_MAXIMUM = 0;
-    
+
     public final static int INPUT_MODE_KEYBOARD = 1;
     public final static int INPUT_MODE_TOUCH = 2;
     public final static int INPUT_MODE_CONTROLLER = 3;
@@ -126,7 +126,7 @@ public final class ClientChainData {
             /* TODO 1.2 Xbox OneとNintendo Switch追加
             case DEVICE_OS_XBOXONE:
                 return "Xbox One";
-                
+
             case DEVICE_OS_NINTENDOSWITCH:
                 return "Nintendo Switch";
              */
@@ -175,7 +175,7 @@ public final class ClientChainData {
     public byte getGameEdition() {
         return this.gameEdition;
     }
-    
+
     public String getCapeData() {
     	 return capeData;
     }
@@ -225,7 +225,7 @@ public final class ClientChainData {
 
     private void decodeSkinData() {
         JsonObject skinToken = decodeToken(new String(bs.get(bs.getLInt())));
-        if(skinToken == null) return;
+        if (skinToken == null) return;
         if (skinToken.has("ClientRandomId")) this.clientId = skinToken.get("ClientRandomId").getAsLong();
         if (skinToken.has("ServerAddress")) this.serverAddress = skinToken.get("ServerAddress").getAsString();
         if (skinToken.has("DeviceModel")) this.deviceModel = skinToken.get("DeviceModel").getAsString();
@@ -236,12 +236,17 @@ public final class ClientChainData {
         if (skinToken.has("CurrentInputMode")) this.currentInputMode = skinToken.get("CurrentInputMode").getAsInt();
         if (skinToken.has("DefaultInputMode")) this.defaultInputMode = skinToken.get("DefaultInputMode").getAsInt();
         if (skinToken.has("UIProfile")) this.UIProfile = skinToken.get("UIProfile").getAsInt();
-        if (skinToken.has("CapeData")) this.capeData = skinToken.get("CapeData").getAsString();
-        String skinId = null;
+        byte[] capeData = new byte[]{};
+        String skinId = "";
+        String geometryName = "";
+        String geometryData = "";
+        byte[] skinData = new byte[]{};
+        if (skinToken.has("CapeData")) capeData = Base64.getDecoder().decode(skinToken.get("CapeData").getAsString());
         if (skinToken.has("SkinId")) skinId = skinToken.get("SkinId").getAsString();
-        if (skinToken.has("SkinGeometryName")) this.skinGeometryName = skinToken.get("SkinGeometryName").getAsString();
-        if (skinToken.has("SkinGeometry")) this.skinGeometry = Base64.getDecoder().decode(skinToken.get("SkinGeometry").getAsString());
-        if (skinToken.has("SkinData")) this.skin = new Skin(skinToken.get("SkinData").getAsString(), skinId);
+        if (skinToken.has("SkinGeometryName")) geometryName = skinToken.get("SkinGeometryName").getAsString();
+        if (skinToken.has("SkinGeometry")) geometryData = new String(Base64.getDecoder().decode(skinToken.get("SkinGeometry").getAsString()), StandardCharsets.UTF_8);
+        if (skinToken.has("SkinData")) skinData = Base64.getDecoder().decode(skinToken.get("SkinData").getAsString());
+        this.skin = new Skin(skinId, skinData, capeData, geometryName, geometryData);
     }
 
     private JsonObject decodeToken(String token) {

@@ -256,8 +256,8 @@ public class BinaryStream {
     }
 
     public void putSkin(Skin skin) {
-        this.putString(skin.getModel());
-        this.putByteArray(skin.getData());
+        this.putString(skin.getSkinId());
+        this.putByteArray(skin.getSkinData());
     }
 
     public Skin getSkin() {
@@ -438,7 +438,7 @@ public class BinaryStream {
     public void putEntityRuntimeId(long eid) {
         this.putUnsignedVarLong(eid);
     }
-    
+
     public BlockVector3 getSignedBlockPosition() {
         return new BlockVector3(getVarInt(), getVarInt(), getVarInt());
     }

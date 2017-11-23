@@ -47,11 +47,22 @@ public class Nukkit {
     public static boolean ANSI = true;
     public static boolean shortTitle = false;
     public static int DEBUG = 1;
+    
+    public static final String JAVA_VERSION = System.getProperty("java.version");
 
     private static Collection<Callable<Server>> jobs = new ArrayList<Callable<Server>>();
     private static ExecutorService threadpool = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
+    	
+        if(!(JAVA_VERSION.startsWith("1.8"))){
+            System.out.println("[CRITICAL] This program runs on JRE(JRE) 1.8");
+            System.out.println("[CRITICAL] You must use JRE(JDK) 1.8.");
+            System.out.println("[CRITICAL] Java version: " + JAVA_VERSION);
+
+            System.exit(0);
+        }
+        
         //Shorter title for windows 8/2012
         String osName = System.getProperty("os.name").toLowerCase();
         if (osName.contains("windows")) {

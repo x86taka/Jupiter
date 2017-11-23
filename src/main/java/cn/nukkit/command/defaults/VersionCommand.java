@@ -31,7 +31,7 @@ public class VersionCommand extends VanillaCommand {
             return true;
         }
         if (args.length == 0) {
-            sender.sendMessage(new TranslationContainer("nukkit.server.info.extended", new String[]{
+            sender.sendMessage(sender.getServer().getLanguage().translateString("nukkit.server.info.extended", new String[]{
                     sender.getServer().getName(),
                     sender.getServer().getNukkitVersion(),
                     sender.getServer().getCodename(),

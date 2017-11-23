@@ -7,7 +7,7 @@ public class Dropdown implements Element{
 
     public final String type = "dropdown";
     private String text;
-    private List<String> options = new ArrayList<String>();;
+    private List<String> options = new ArrayList<String>();
     private int defaultOptionIndex = 0;
 
     public Dropdown(String text, List<String> options){

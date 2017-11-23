@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -14,8 +16,7 @@ public class Button {
 
     private final String type = "button";
     private String text;
-    private String imageType;
-    private Object imageData;
+    private Map<String, Object> image = new HashMap<>();
 
     public Button(String text) {
         this.text = text;
@@ -23,13 +24,23 @@ public class Button {
 
     public Button(String text, String imageType, String imageData) {
         this.text = text;
+        
         if (imageType.equals("path")) {
-            this.imageData = this.getImageByteArray(new File(imageData));
+            this.image.put("type", "path");
+            this.image.put("data", this.getImageByteArray(new File(imageData)));
+            
+        } else if(imageType.equals("url")){
+        	this.image.put("type", "url");
+            this.image.put("data", imageData);
+            
         } else {
-            this.imageData = imageData;
+        	try {
+				throw new Exception("許可されていないタイプの画像です！pathもしくはurlのみが許可されています！");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
-
-        this.imageType = imageType;
+        
     }
 
     public void setImage(String imageType, String imageData){
@@ -42,12 +53,14 @@ public class Button {
         }
 
         if (imageType.equals("path")) {
-            this.imageData = this.getImageByteArray(new File(imageData));
-        } else {
-            this.imageData = imageData;
+            this.image.put("type", "path");
+            this.image.put("data", this.getImageByteArray(new File(imageData)));
+            
+        } else if(imageType.equals("url")){
+        	this.image.put("type", "url");
+            this.image.put("data", imageData);
+            
         }
-
-        this.imageType = imageType;
     }
 
     public byte[] getImageByteArray(File file) {

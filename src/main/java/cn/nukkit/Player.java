@@ -34,6 +34,7 @@ import cn.nukkit.block.BlockDoor;
 import cn.nukkit.block.BlockEnderChest;
 import cn.nukkit.block.BlockNoteblock;
 import cn.nukkit.blockentity.BlockEntity;
+import cn.nukkit.blockentity.BlockEntityBeacon;
 import cn.nukkit.blockentity.BlockEntityCommandBlock;
 import cn.nukkit.blockentity.BlockEntityItemFrame;
 import cn.nukkit.blockentity.BlockEntitySign;
@@ -104,6 +105,7 @@ import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
+import cn.nukkit.inventory.BeaconInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.CraftingGrid;
 import cn.nukkit.inventory.Inventory;
@@ -3414,6 +3416,25 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             }
 
                         }
+                    } else if (t instanceof BlockEntityBeacon) {
+                        CompoundTag nbt;
+                        try {
+                            nbt = NBTIO.read(blockEntityDataPacket.namedTag, ByteOrder.LITTLE_ENDIAN, true);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        if (!BlockEntity.BEACON.equals(nbt.getString("id"))) {
+                            ((BlockEntitySign) t).spawnTo(this);
+                        } else {
+                            BlockEntityBeacon beacon = (BlockEntityBeacon) t;
+                            beacon.setPrimary(nbt.getInt("primary"));
+                            beacon.setSecondary(nbt.getInt("secondary"));
+                            BeaconInventory inventory = this.getBeacoInventory();
+                            if (inventory != null) {
+                                inventory.setItem(0, Item.get(0));
+                            }
+                        }
                     }
                     break;
                 case ProtocolInfo.REQUEST_CHUNK_RADIUS_PACKET:
@@ -5358,5 +5379,14 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
      */
     public double getPlaneDistanceFromSpawn(){
         return this.distance(this.level.getSafeSpawn());
+    }
+
+    public BeaconInventory getBeacoInventory() {
+        for (Inventory inventory : this.windows.keySet()) {
+            if (inventory instanceof BeaconInventory) {
+                return (BeaconInventory) inventory;
+            }
+        }
+        return null;
     }
 }

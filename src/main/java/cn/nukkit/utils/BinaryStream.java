@@ -12,6 +12,7 @@ import cn.nukkit.item.Item;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.BlockVector3;
 import cn.nukkit.math.Vector3f;
+import cn.nukkit.network.protocol.types.CommandOriginData;
 
 /**
  * author: MagicDroidX
@@ -482,5 +483,29 @@ public class BinaryStream {
         return (minCapacity > MAX_ARRAY_SIZE) ?
                 Integer.MAX_VALUE :
                 MAX_ARRAY_SIZE;
+    }
+    
+    public CommandOriginData getCommandOriginData() {
+    	CommandOriginData result = new CommandOriginData();
+    	
+    	result.type = this.getUnsignedVarInt();
+    	result.uuid = this.getUUID();
+    	result.requestId = this.getString();
+    	
+    	if(result.type == CommandOriginData.ORIGIN_DEV_CONSOLE || result.type == CommandOriginData.ORIGIN_TEST) {
+    		result.varLong1 = this.getVarLong();
+    	}
+    	
+    	return result;
+    }
+    
+    public void putCommandOriginData(CommandOriginData data) {
+    	this.putUnsignedVarInt(data.type);
+    	this.putUUID(data.uuid);
+    	this.putString(data.requestId);
+    	
+    	if(data.type == CommandOriginData.ORIGIN_DEV_CONSOLE || data.type == CommandOriginData.ORIGIN_TEST) {
+    		this.putVarLong(data.varLong1);
+    	}
     }
 }

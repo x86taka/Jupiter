@@ -144,6 +144,14 @@ public class NetworkInventoryAction {
                     case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
                         window = player.getCraftingGrid();
                         return new CraftingTransferMaterialAction(this.oldItem, this.newItem, this.inventorySlot);
+
+                    case SOURCE_TYPE_BEACON:
+                        window = player.getBeacoInventory();
+                        if (window != null) {
+                            return new SlotChangeAction(window, this.inventorySlot, this.oldItem, this.newItem);
+                        }
+                        break;
+
                     case SOURCE_TYPE_CONTAINER_DROP_CONTENTS:
                         window = player.getCraftingGrid();
                         inventorySlot = window.first(this.oldItem, true);

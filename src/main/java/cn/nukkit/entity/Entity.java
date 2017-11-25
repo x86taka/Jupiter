@@ -99,7 +99,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_AIR = 7; //short
     public static final int DATA_POTION_COLOR = 8; //int (ARGB!)
     public static final int DATA_POTION_AMBIENT = 9; //byte
-    public static final int DATA_JUMP_DURATION = 10; //long 
+    public static final int DATA_JUMP_DURATION = 10; //long
     public static final int DATA_HURT_TIME = 11; //int (minecart/boat)
     public static final int DATA_HURT_DIRECTION = 12; //int (minecart/boat)
     public static final int DATA_PADDLE_TIME_LEFT = 13; //float
@@ -113,7 +113,7 @@ public abstract class Entity extends Location implements Metadatable {
     public static final int DATA_ENDERMAN_HELD_ITEM_DAMAGE = 24; //short
     public static final int DATA_ENTITY_AGE = 25; //short
     public static final int DATA_PLAYER_FLAGS = 29; //byte
-    /* 28 (int) player "index"? */ 
+    /* 28 (int) player "index"? */
     public static final int DATA_PLAYER_BED_POSITION = 29;
     public static final int DATA_FIREBALL_POWER_X = 30; //float
     public static final int DATA_FIREBALL_POWER_Y = 31;
@@ -277,7 +277,7 @@ public abstract class Entity extends Location implements Metadatable {
 
     protected float health = 20;
     private int maxHealth = 20;
-    protected float absorption = 0; 
+    protected float absorption = 0;
 
     protected float ySize = 0;
     public boolean keepMovement = false;
@@ -717,7 +717,7 @@ public abstract class Entity extends Location implements Metadatable {
 
             }
         }
-        
+
         //server.getAI().addAIQueue(entity);
 
         return entity;
@@ -892,11 +892,11 @@ public abstract class Entity extends Location implements Metadatable {
         if (source.isCancelled()) {
             return false;
         }
-        if (this.absorption > 0) {  //Damage Absorption 
-            float absorptionHealth = this.absorption - source.getFinalDamage() > 0 ? source.getFinalDamage() : this.absorption; 
-            this.setAbsorption(this.absorption - absorptionHealth); 
+        if (this.absorption > 0) {  //Damage Absorption
+            float absorptionHealth = this.absorption - source.getFinalDamage() > 0 ? source.getFinalDamage() : this.absorption;
+            this.setAbsorption(this.absorption - absorptionHealth);
             source.setDamage(-absorptionHealth, EntityDamageEvent.DamageModifier.ABSORPTION);
-        } 
+        }
         setLastDamageCause(source);
         setHealth(getHealth() - source.getFinalDamage());
         return true;
@@ -1085,7 +1085,7 @@ public abstract class Entity extends Location implements Metadatable {
         }
 
         if (!this.effects.isEmpty()) {
-            for (Effect effect : this.effects.values()) {
+            for (Effect effect : new ArrayList<>(this.effects.values())) {
                 if (effect.canTick()) {
                     effect.applyEffect(this);
                 }
@@ -1322,18 +1322,18 @@ public abstract class Entity extends Location implements Metadatable {
         }
     }
 
-    public float getAbsorption() { 
-        return absorption; 
-    } 
+    public float getAbsorption() {
+        return absorption;
+    }
 
-    public void setAbsorption(float absorption) { 
-        if (absorption != this.absorption) { 
-            this.absorption = absorption; 
+    public void setAbsorption(float absorption) {
+        if (absorption != this.absorption) {
+            this.absorption = absorption;
             if (this instanceof Player) {
                 ((Player) this).setAttribute(Attribute.getAttribute(Attribute.ABSORPTION).setValue(absorption));
             }
-        } 
-    } 
+        }
+    }
 
     public BlockFace getDirection() {
         double rotation = (this.yaw - 90) % 360;

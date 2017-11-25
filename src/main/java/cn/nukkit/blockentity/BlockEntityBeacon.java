@@ -1,10 +1,16 @@
 package cn.nukkit.blockentity;
 
+import cn.nukkit.Player;
 import cn.nukkit.block.Block;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.potion.Effect;
 
 public class BlockEntityBeacon extends BlockEntitySpawnable {
+
+    private static final int POWER_LEVEL_MAX = 4;
+
+    private long currentTick = 0;
 
     public BlockEntityBeacon(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
@@ -30,8 +36,7 @@ public class BlockEntityBeacon extends BlockEntitySpawnable {
 
     @Override
     public boolean isBlockEntityValid() {
-        int blockID = getBlock().getId();
-        return blockID == Block.BEACON;
+        return this.level.getBlockIdAt((int) this.x, (int) this.y, (int) this.z) == Block.BEACON;
     }
 
     @Override
@@ -47,8 +52,6 @@ public class BlockEntityBeacon extends BlockEntitySpawnable {
                 .putInt("Secondary", this.namedTag.getInt("Secondary"));
     }
 
-    private long currentTick = 0;
-
     @Override
     public boolean onUpdate() {
         //Only check every 100 ticks
@@ -56,12 +59,68 @@ public class BlockEntityBeacon extends BlockEntitySpawnable {
             return true;
         }
 
-        setPowerLevel(calculatePowerLevel());
+        int level = this.calculatePowerLevel();
+        int id = 0;
+
+        if (level > 0) {
+            if (this.getPrimary() != 0) {
+                id = this.getPrimary();
+                double range = (level + 1) * 10;
+                Effect effect = Effect.getEffect(id);
+                effect.setDuration(10 * 30);
+                effect.setAmplifier(0);
+                for (Player player : this.level.getPlayers().values()) {
+                    if (this.distance(player) <= range) {
+                        player.addEffect(effect);
+                    }
+                }
+            }
+            if (this.getSecondary() != 0) {
+                if (this.getSecondary() == id) {
+                    double range = (level + 1) * 10;
+                    Effect effect = Effect.getEffect(id);
+                    effect.setDuration(10 * 30);
+                    effect.setAmplifier(1);
+                    for (Player player : this.level.getPlayers().values()) {
+                        if (this.distance(player) <= range) {
+                            player.addEffect(effect);
+                        }
+                    }
+                } else {
+                    id = this.getSecondary();
+                    double range = (level + 1) * 10;
+                    Effect effect = Effect.getEffect(id);
+                    effect.setDuration(10 * 30);
+                    effect.setAmplifier(0);
+                    for (Player player : this.level.getPlayers().values()) {
+                        if (this.distance(player) <= range) {
+                            player.addEffect(effect);
+                        }
+                    }
+                }
+            }
+        }
+
+        this.namedTag.putInt("Levels", level);
 
         return true;
     }
 
-    private static final int POWER_LEVEL_MAX = 4;
+    public int getPrimary() {
+        return this.namedTag.getInt("Primary");
+    }
+
+    public void setPrimary(int primary) {
+        this.namedTag.putInt("Primary", primary);
+    }
+
+    public int getSecondary() {
+        return this.namedTag.getInt("Secondary");
+    }
+
+    public void setSecondary(int secondary) {
+        this.namedTag.putInt("Secondary", secondary);
+    }
 
     private int calculatePowerLevel() {
         int tileX = getFloorX();
@@ -90,18 +149,5 @@ public class BlockEntityBeacon extends BlockEntitySpawnable {
         }
 
         return POWER_LEVEL_MAX;
-    }
-
-    public int getPowerLevel() {
-        return namedTag.getInt("Level");
-    }
-
-    public void setPowerLevel(int level) {
-        int currentLevel = getPowerLevel();
-        if (level != currentLevel) {
-            namedTag.putInt("Level", level);
-            chunk.setChanged();
-            this.spawnToAll();
-        }
     }
 }

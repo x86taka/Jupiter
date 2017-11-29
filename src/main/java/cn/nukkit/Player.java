@@ -108,15 +108,18 @@ import cn.nukkit.event.server.DataPacketSendEvent;
 import cn.nukkit.inventory.BeaconInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.CraftingGrid;
+import cn.nukkit.inventory.EnchantInventory;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerCursorInventory;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.inventory.transaction.CraftingTransaction;
+import cn.nukkit.inventory.transaction.EnchantTransaction;
 import cn.nukkit.inventory.transaction.InventoryTransaction;
 import cn.nukkit.inventory.transaction.SimpleInventoryTransaction;
 import cn.nukkit.inventory.transaction.action.CraftingTakeResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTransferMaterialAction;
+import cn.nukkit.inventory.transaction.action.EnchantOutputAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.data.ReleaseItemData;
 import cn.nukkit.inventory.transaction.data.UseItemData;
@@ -2557,6 +2560,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                     InventoryTransactionPacket transactionPacket = (InventoryTransactionPacket) packet;
 
                     boolean isCrafting = false;
+                    boolean isEnchanting = false;
                     List<InventoryAction> actions = new ArrayList<>();
                     for (NetworkInventoryAction networkInventoryAction : transactionPacket.actions) {
                         try {
@@ -2564,6 +2568,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             if (a != null) {
                                 if (a instanceof CraftingTakeResultAction || a instanceof CraftingTransferMaterialAction) {
                                     isCrafting = true;
+                                } else if (a instanceof EnchantOutputAction) {
+                                    isEnchanting = true;
                                 }
                                 actions.add(a);
                             }
@@ -2581,6 +2587,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         }
 
                         craftingTransaction.execute();
+                        break packetswitch;
+                    } else if (isEnchanting) {
+                        EnchantTransaction enchantTransaction = new EnchantTransaction(this, actions);
+                        enchantTransaction.execute();
                         break packetswitch;
                     }
 
@@ -5385,6 +5395,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         for (Inventory inventory : this.windows.keySet()) {
             if (inventory instanceof BeaconInventory) {
                 return (BeaconInventory) inventory;
+            }
+        }
+        return null;
+    }
+
+    public EnchantInventory getEnchantInventory() {
+        for (Inventory inventory : this.windows.keySet()) {
+            if (inventory instanceof EnchantInventory) {
+                return (EnchantInventory) inventory;
             }
         }
         return null;

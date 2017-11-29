@@ -65,7 +65,7 @@ public abstract class InventoryAction {
     /**
      * Performs additional actions when this inventory-action completed successfully.
      */
-    abstract public void onExecuteSuccess(Player $source);
+    abstract public void onExecuteSuccess(Player source);
 
     /**
      * Performs additional actions when this inventory-action did not complete successfully.

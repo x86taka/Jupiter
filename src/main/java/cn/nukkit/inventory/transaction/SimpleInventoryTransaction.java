@@ -13,6 +13,7 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.Inventory;
+import cn.nukkit.inventory.transaction.action.EnchantMaterialAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
@@ -36,7 +37,16 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         creationTime = System.currentTimeMillis();
         this.source = source;
 
+        EnchantMaterialAction check = null;
         for (InventoryAction action : actions) {
+            if (action instanceof EnchantMaterialAction) {
+                if (check == null) {
+                    check = (EnchantMaterialAction) action;
+                } else {
+                    check.setSourceItem(action.getSourceItem());
+                    continue;
+                }
+            }
             this.addAction(action);
         }
     }

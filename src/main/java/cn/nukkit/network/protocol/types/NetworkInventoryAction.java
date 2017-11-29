@@ -6,6 +6,9 @@ import cn.nukkit.inventory.transaction.action.CraftingTakeResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTransferMaterialAction;
 import cn.nukkit.inventory.transaction.action.CreativeInventoryAction;
 import cn.nukkit.inventory.transaction.action.DropItemAction;
+import cn.nukkit.inventory.transaction.action.EnchantInputAction;
+import cn.nukkit.inventory.transaction.action.EnchantMaterialAction;
+import cn.nukkit.inventory.transaction.action.EnchantOutputAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
@@ -144,6 +147,15 @@ public class NetworkInventoryAction {
                     case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
                         window = player.getCraftingGrid();
                         return new CraftingTransferMaterialAction(this.oldItem, this.newItem, this.inventorySlot);
+
+                    case SOURCE_TYPE_ENCHANT_INPUT:
+                        window = player.getEnchantInventory();
+                        return new EnchantInputAction(window, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_ENCHANT_MATERIAL:
+                        window = player.getEnchantInventory();
+                        return new EnchantMaterialAction(window, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_ENCHANT_OUTPUT:
+                        return new EnchantOutputAction(this.oldItem, this.newItem);
 
                     case SOURCE_TYPE_BEACON:
                         window = player.getBeacoInventory();

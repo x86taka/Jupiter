@@ -58,6 +58,9 @@ public class BlockEntityBeacon extends BlockEntitySpawnable {
         if (currentTick++ % 100 != 0) {
             return true;
         }
+        if (this.level.getBlockIdAt(this.getFloorX(), this.getFloorY() + 1, this.getFloorZ()) != 0) {
+            return true;
+        }
 
         int level = this.calculatePowerLevel();
         int id = 0;

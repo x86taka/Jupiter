@@ -20,27 +20,29 @@ public class Button {
 
     public Button(String text) {
         this.text = text;
+        image.put("data", "");
+        image.put("type", "");
     }
 
     public Button(String text, String imageType, String imageData) {
         this.text = text;
-        
+
         if (imageType.equals("path")) {
-            this.image.put("type", "path");
-            this.image.put("data", this.getImageByteArray(new File(imageData)));
-            
+            if(!image.containsKey("type")) this.image.put("type", "path");
+            if(!image.containsKey("data")) this.image.put("data", this.getImageByteArray(new File(imageData)));
+
         } else if(imageType.equals("url")){
-        	this.image.put("type", "url");
-            this.image.put("data", imageData);
-            
+            if(!image.containsKey("type")) this.image.put("type", "url");
+            if(!image.containsKey("data")) this.image.put("data", imageData);
+
         } else {
-        	try {
-				throw new Exception("許可されていないタイプの画像です！pathもしくはurlのみが許可されています！");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+            try {
+                throw new Exception("許可されていないタイプの画像です！pathもしくはurlのみが許可されています！");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        
+
     }
 
     public void setImage(String imageType, String imageData){
@@ -55,11 +57,11 @@ public class Button {
         if (imageType.equals("path")) {
             this.image.put("type", "path");
             this.image.put("data", this.getImageByteArray(new File(imageData)));
-            
+
         } else if(imageType.equals("url")){
-        	this.image.put("type", "url");
+            this.image.put("type", "url");
             this.image.put("data", imageData);
-            
+
         }
     }
 

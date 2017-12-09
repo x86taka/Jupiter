@@ -1,16 +1,22 @@
 package cn.nukkit.entity.item;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.event.entity.ItemDespawnEvent;
 import cn.nukkit.event.entity.ItemSpawnEvent;
+import cn.nukkit.event.inventory.InventoryPickupItemEvent;
+import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddItemEntityPacket;
+import cn.nukkit.network.protocol.TakeItemEntityPacket;
+
+import static com.sun.tools.doclint.Entity.or;
 
 /**
  * @author MagicDroidX
@@ -259,5 +265,33 @@ public class EntityItem extends Entity {
         this.sendData(player);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public void onCollideWithPlayer(Player player) {
+        if(this.getPickupDelay() > 0) {
+            return;
+        }
+
+        Item item = this.getItem();
+        PlayerInventory playerInventory = player.getInventory();
+
+        if(!(item instanceof Item) || (player.isSurvival() && !playerInventory.canAddItem(item))) {
+            return;
+        }
+
+        InventoryPickupItemEvent ev;
+        this.server.getPluginManager().callEvent(ev = new InventoryPickupItemEvent(playerInventory, this));
+        if(ev.isCancelled()) {
+            return;
+        }
+
+        TakeItemEntityPacket pk = new TakeItemEntityPacket();
+        pk.entityRuntimeId = player.getId();
+        pk.target = this.getId();
+        Server.broadcastPacket(this.getViewers().values(), pk);
+
+        playerInventory.addItem(item);
+        this.kill();
     }
 }

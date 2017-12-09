@@ -5119,64 +5119,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return false;
         }
 
-        if (near) {
-            if (entity instanceof EntityArrow && ((EntityArrow) entity).hadCollision) {
-                ItemArrow item = new ItemArrow();
-                if (this.isSurvival() && !this.inventory.canAddItem(item)) {
-                    return false;
-                }
-
-                InventoryPickupArrowEvent ev;
-                this.server.getPluginManager().callEvent(ev = new InventoryPickupArrowEvent(this.inventory, (EntityArrow) entity));
-                if (ev.isCancelled()) {
-                    return false;
-                }
-
-                TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.getId();
-                pk.target = entity.getId();
-                Server.broadcastPacket(entity.getViewers().values(), pk);
-
-                pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.id;
-                pk.target = entity.getId();
-                this.dataPacket(pk);
-
-                this.inventory.addItem(item.clone());
-                entity.kill();
-                return true;
-            } else if (entity instanceof EntityItem) {
-                if (((EntityItem) entity).getPickupDelay() <= 0) {
-                    Item item = ((EntityItem) entity).getItem();
-
-                    if (item != null) {
-                        if (this.isSurvival() && !this.inventory.canAddItem(item)) {
-                            return false;
-                        }
-
-                        InventoryPickupItemEvent ev;
-                        this.server.getPluginManager().callEvent(ev = new InventoryPickupItemEvent(this.inventory, (EntityItem) entity));
-                        if (ev.isCancelled()) {
-                            return false;
-                        }
-
-                        TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.getId();
-                        pk.target = entity.getId();
-                        Server.broadcastPacket(entity.getViewers().values(), pk);
-
-                        pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.id;
-                        pk.target = entity.getId();
-                        this.dataPacket(pk);
-
-                        this.inventory.addItem(item.clone());
-                        entity.kill();
-                        return true;
-                    }
-                }
-            }
-        }
+        entity.onCollideWithPlayer(this);
 
         int tick = this.getServer().getTick();
 

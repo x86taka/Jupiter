@@ -1,13 +1,18 @@
 package cn.nukkit.entity.projectile;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.entity.Entity;
+import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
+import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.item.Item;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.particle.CriticalParticle;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.math.NukkitRandom;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
+import cn.nukkit.network.protocol.TakeItemEntityPacket;
 
 /**
  * author: MagicDroidX
@@ -119,5 +124,33 @@ public class EntityArrow extends EntityProjectile {
         player.dataPacket(pk);
 
         super.spawnTo(player);
+    }
+
+    @Override
+    public void onCollideWithPlayer(Player player) {
+        if(!this.hadCollision) {
+            return;
+        }
+
+        Item item = new Item(Item.ARROW, 0, 1);
+        PlayerInventory playerInventory = player.getInventory();
+
+        if(player.isSurvival() && playerInventory.canAddItem(item)) {
+            return;
+        }
+
+        InventoryPickupArrowEvent ev;
+        this.server.getPluginManager().callEvent(ev = new InventoryPickupArrowEvent(playerInventory, this));
+        if(ev.isCancelled()) {
+            return;
+        }
+
+        TakeItemEntityPacket pk = new TakeItemEntityPacket();
+        pk.entityRuntimeId = player.getId();
+        pk.target = this.getId();
+        Server.broadcastPacket(this.getViewers().values(), pk);
+
+        playerInventory.addItem(item);
+        this.kill();
     }
 }

@@ -1,0 +1,33 @@
+# Java Maven CircleCI 2.0 configuration file
+version: 2
+jobs:
+  build:
+    docker:
+
+    working_directory: ~/repo
+
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run: mvn install:install-file -Dfile=lib/leveldb.jar -DgroupId=com.tinfoiled.mcpe.leveldb -DartifactId=leveldb -Dversion=0.8 -Dpackaging=jar
+      - run: mvn install
+      - restore_cache:
+          key: repo-{{ checksum "pom.xml" }}
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: repo-{{ checksum "pom.xml" }}
+      - run: mvn package
+      - store_test_results:
+          path: target/surefire-reports
+      - store_artifacts:
+          path: target/nukkit-1.0-SNAPSHOT.jar

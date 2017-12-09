@@ -32,7 +32,7 @@ import cn.nukkit.utils.ServerKiller;
 public class Nukkit {
 
     public final static String VERSION = "1.0dev";
-    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".0";
+    public final static String JUPITER_VERSION = ProtocolInfo.MINECRAFT_VERSION_NETWORK + ".1";
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "Jupiter";
     @Deprecated

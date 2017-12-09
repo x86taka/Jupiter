@@ -16,8 +16,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddItemEntityPacket;
 import cn.nukkit.network.protocol.TakeItemEntityPacket;
 
-import static com.sun.tools.doclint.Entity.or;
-
 /**
  * @author MagicDroidX
  */

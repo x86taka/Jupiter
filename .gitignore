@@ -55,3 +55,4 @@ target/inputFiles.lst
 /target/
 /.settings/
 /lib/
+*.xml

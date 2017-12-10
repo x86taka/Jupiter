@@ -69,8 +69,6 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageCause;
 import cn.nukkit.event.entity.EntityDamageEvent.DamageModifier;
 import cn.nukkit.event.inventory.InventoryCloseEvent;
-import cn.nukkit.event.inventory.InventoryPickupArrowEvent;
-import cn.nukkit.event.inventory.InventoryPickupItemEvent;
 import cn.nukkit.event.player.PlayerAnimationEvent;
 import cn.nukkit.event.player.PlayerBedEnterEvent;
 import cn.nukkit.event.player.PlayerBedLeaveEvent;
@@ -125,7 +123,6 @@ import cn.nukkit.inventory.transaction.data.ReleaseItemData;
 import cn.nukkit.inventory.transaction.data.UseItemData;
 import cn.nukkit.inventory.transaction.data.UseItemOnEntityData;
 import cn.nukkit.item.Item;
-import cn.nukkit.item.ItemArrow;
 import cn.nukkit.item.ItemBlock;
 import cn.nukkit.item.ItemBucket;
 import cn.nukkit.item.ItemGlassBottle;
@@ -211,7 +208,6 @@ import cn.nukkit.network.protocol.SetTimePacket;
 import cn.nukkit.network.protocol.SetTitlePacket;
 import cn.nukkit.network.protocol.ShowProfilePacket;
 import cn.nukkit.network.protocol.StartGamePacket;
-import cn.nukkit.network.protocol.TakeItemEntityPacket;
 import cn.nukkit.network.protocol.TextPacket;
 import cn.nukkit.network.protocol.TransferPacket;
 import cn.nukkit.network.protocol.UpdateAttributesPacket;
@@ -5133,65 +5129,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             return false;
         }
 
-        if (near) {
-            if (entity instanceof EntityArrow && ((EntityArrow) entity).hadCollision) {
-                ItemArrow item = new ItemArrow();
-                if (this.isSurvival() && !this.inventory.canAddItem(item)) {
-                    return false;
-                }
-
-                InventoryPickupArrowEvent ev;
-                this.server.getPluginManager().callEvent(ev = new InventoryPickupArrowEvent(this.inventory, (EntityArrow) entity));
-                if (ev.isCancelled()) {
-                    return false;
-                }
-
-                TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.getId();
-                pk.target = entity.getId();
-                Server.broadcastPacket(entity.getViewers().values(), pk);
-
-                pk = new TakeItemEntityPacket();
-                pk.entityRuntimeId = this.id;
-                pk.target = entity.getId();
-                this.dataPacket(pk);
-
-                this.inventory.addItem(item.clone());
-                entity.kill();
-                return true;
-            } else if (entity instanceof EntityItem) {
-                if (((EntityItem) entity).getPickupDelay() <= 0) {
-                    Item item = ((EntityItem) entity).getItem();
-
-                    if (item != null) {
-                        if (this.isSurvival() && !this.inventory.canAddItem(item)) {
-                            return false;
-                        }
-
-                        InventoryPickupItemEvent ev;
-                        this.server.getPluginManager().callEvent(ev = new InventoryPickupItemEvent(this.inventory, (EntityItem) entity));
-                        if (ev.isCancelled()) {
-                            return false;
-                        }
-
-                        TakeItemEntityPacket pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.getId();
-                        pk.target = entity.getId();
-                        Server.broadcastPacket(entity.getViewers().values(), pk);
-
-                        pk = new TakeItemEntityPacket();
-                        pk.entityRuntimeId = this.id;
-                        pk.target = entity.getId();
-                        this.dataPacket(pk);
-
-                        this.inventory.addItem(item.clone());
-                        
-                        entity.kill();
-                        return true;
-                    }
-                }
-            }
-        }
+        entity.onCollideWithPlayer(this);
 
         int tick = this.getServer().getTick();
 

@@ -1428,7 +1428,7 @@ public abstract class Entity extends Location implements Metadatable {
         }
     }
 
-    public void onCollideWithPlayer(EntityHuman entityPlayer) {
+    public void onCollideWithPlayer(Player player) {
 
     }
 

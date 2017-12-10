@@ -205,6 +205,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntitySkull.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntityBeacon.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\block\DoorToggleEvent.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\transaction\action\EnchantInputAction.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\format\leveldb\LevelDB.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockBookshelf.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\CraftingEventPacket.java
@@ -1043,6 +1044,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\particle\SmokeParticle.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\projectile\EntitySnowball.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\ShowProfilePacket.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\BeaconInventory.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\PING_DataPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockOreRedstoneGlowing.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\data\StringEntityData.java
@@ -1176,6 +1178,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\metadata\LevelMetadataStore.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockNetherWartBlock.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\blockentity\BlockEntityBrewingStand.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\transaction\EnchantTransaction.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemMapEmpty.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\ExplodePacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\raknet\protocol\packet\UNCONNECTED_PONG.java
@@ -1188,6 +1191,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\PurchaseReceiptPacket.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\item\ItemSeedsWheat.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerEvent.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\transaction\action\EnchantOutputAction.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\block\BlockPiston.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\populator\PopulatorLava.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\passive\EntityIronGolem.java
@@ -1242,6 +1246,7 @@ C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\mai
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\entity\mob\EntityEndermite.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerMapInfoRequestEvent.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\event\player\PlayerModalFormCloseEvent.java
+C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\inventory\transaction\action\EnchantMaterialAction.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\level\generator\noise\Perlin.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\command\defaults\HelpCommand.java
 C:\Users\itsu0\OneDrive\ドキュメント\GitHub\JupiterDevelopmentTeam\src\main\java\cn\nukkit\network\protocol\UpdateEquipmentPacket.java

@@ -9,8 +9,8 @@ import cn.nukkit.network.protocol.types.NetworkInventoryAction;
 public class InventoryTransactionPacket extends DataPacket {
 
     public static final int TYPE_NORMAL = 0;
-    public static final int TYPE_USE_ITEM = 2;//2
-    public static final int TYPE_MISMATCH = 1;//1
+    public static final int TYPE_MISMATCH = 1;
+    public static final int TYPE_USE_ITEM = 2;
     public static final int TYPE_USE_ITEM_ON_ENTITY = 3;
     public static final int TYPE_RELEASE_ITEM = 4;
 
@@ -23,7 +23,6 @@ public class InventoryTransactionPacket extends DataPacket {
 
     public static final int USE_ITEM_ON_ENTITY_ACTION_INTERACT = 0;
     public static final int USE_ITEM_ON_ENTITY_ACTION_ATTACK = 1;
-    public static final int USE_ITEM_ON_ENTITY_ACTION_ITEM_INTERACT = 2;
 
 
     public static final int ACTION_MAGIC_SLOT_DROP_ITEM = 0;

@@ -21,6 +21,7 @@ public class EntityPickRequestPacket extends DataPacket {
 
     @Override
     public void encode() {
-
+    	this.putLong(this.entityType);
+    	this.putByte((byte) this.slot);
     }
 }

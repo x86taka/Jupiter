@@ -1142,6 +1142,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         //FoodLevel
         this.getFoodData().sendFoodLevel();
+        
+        if (this.isSpectator()) {
+            InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
+            inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
+            this.dataPacket(inventoryContentPacket);
+            
+        } else if(this.isCreative()) {
+            InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
+            inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
+            inventoryContentPacket.slots = Item.getCreativeItems().stream().toArray(Item[]::new);
+            this.dataPacket(inventoryContentPacket);
+            
+        }
+        
     }
 
     protected boolean orderChunks() {

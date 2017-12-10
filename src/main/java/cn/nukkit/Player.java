@@ -5185,6 +5185,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                         this.dataPacket(pk);
 
                         this.inventory.addItem(item.clone());
+                        
                         entity.kill();
                         return true;
                     }

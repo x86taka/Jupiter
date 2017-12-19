@@ -7,6 +7,7 @@ import cn.nukkit.entity.Entity;
  * Nukkit Project
  */
 public class EnchantmentFireAspect extends Enchantment {
+
     protected EnchantmentFireAspect() {
         super(ID_FIRE_ASPECT, "fire", 2, EnchantmentType.SWORD);
     }
@@ -30,4 +31,13 @@ public class EnchantmentFireAspect extends Enchantment {
     public void doPostAttack(Entity attacker, Entity entity) {
         entity.setOnFire(Math.max(entity.fireTicks * 20, getLevel() * 4));
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

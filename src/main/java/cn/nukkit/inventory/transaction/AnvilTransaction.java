@@ -15,49 +15,52 @@ import cn.nukkit.event.inventory.InventoryTransactionEvent;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.transaction.action.AnvilInputAction;
 import cn.nukkit.inventory.transaction.action.AnvilMaterialAction;
-import cn.nukkit.inventory.transaction.action.EnchantInputAction;
-import cn.nukkit.inventory.transaction.action.EnchantMaterialAction;
+import cn.nukkit.inventory.transaction.action.AnvilResultAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.ItemBookEnchanted;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.utils.MainLogger;
 
-/**
- * @author CreeperFace
- */
-public class SimpleInventoryTransaction implements InventoryTransaction {
+public class AnvilTransaction  implements InventoryTransaction {
 
     private long creationTime;
-    protected boolean hasExecuted;
+    private boolean hasExecuted;
 
-    protected Player source;
+    private Player source;
 
-    protected Set<Inventory> inventories = new HashSet<>();
+    private Set<Inventory> inventories = new HashSet<>();
 
-    protected Set<InventoryAction> actions = new HashSet<>();
+    private Set<InventoryAction> actions = new HashSet<>();
 
-    public SimpleInventoryTransaction(Player source, List<InventoryAction> actions) {
+    private Item result;
+    private Item useInput;
+    private Item useMaterial;
+
+    private Inventory inventory;
+
+    public AnvilTransaction(Player source, List<InventoryAction> actions) {
         creationTime = System.currentTimeMillis();
         this.source = source;
 
-        InventoryAction check = null;
         for (InventoryAction action : actions) {
-            if (check != null) {
-                if (check instanceof EnchantInputAction && action instanceof EnchantInputAction) {
-                    ((EnchantInputAction) check).setSourceItem(action.getSourceItem());
-                    continue;
-                } else if (check instanceof EnchantMaterialAction && action instanceof EnchantMaterialAction) {
-                    ((EnchantMaterialAction) check).setSourceItem(action.getSourceItem());
-                    continue;
-                } else if (check instanceof AnvilInputAction && action instanceof AnvilInputAction) {
-                    ((AnvilInputAction) check).setSourceItem(action.getSourceItem());
-                    continue;
-                } else if (check instanceof AnvilMaterialAction && action instanceof AnvilMaterialAction) {
-                    ((AnvilMaterialAction) check).setSourceItem(action.getSourceItem());
-                    continue;
+            if (action instanceof AnvilResultAction) {
+                if (this.result == null) {
+                    this.result = action.getSourceItem();
+                    this.inventory = ((AnvilResultAction) action).getInventory();
                 }
+            } else if (action instanceof AnvilInputAction) {
+                if (this.useInput == null) {
+                    this.useInput = action.getSourceItem();
+                }
+                continue;
+            } else if (action instanceof AnvilMaterialAction) {
+                if (this.useMaterial == null) {
+                    this.useMaterial = action.getTargetItem();
+                }
+                continue;
             }
-            check = action;
             this.addAction(action);
         }
     }
@@ -262,6 +265,48 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             }
         }
 
+        this.inventory.setItem(0, Item.get(0), false);
+        if (this.useMaterial != null) {
+            Item item = this.inventory.getItem(1);
+            if (item.getCount() - this.useMaterial.getCount() < 1) {
+                item = Item.get(0);
+            } else {
+                item = item.setCount(item.getCount() - this.useMaterial.getCount());
+            }
+            this.inventory.setItem(1, item, false);
+        }
+
+        int cost = this.useInput.getRepairCost();
+        if (!this.useInput.getCustomName().equals(this.result.getCustomName())) {
+            cost++;
+        }
+        if (this.useMaterial != null) {
+            cost += this.useMaterial.getRepairCost();
+            if (this.useMaterial instanceof ItemBookEnchanted) {
+                for (Enchantment enchant : this.result.getEnchantments()) {
+                    Enchantment inputEnchant = this.useInput.getEnchantment(enchant.getId());
+                    if (inputEnchant == null) {
+                        cost += enchant.getRepairCost(true);
+                    } else if (enchant.getLevel() != inputEnchant.getLevel()) {
+                        Enchantment check = Enchantment.get(enchant.getId()).setLevel(enchant.getLevel() - inputEnchant.getLevel());
+                        cost += check.getRepairCost(true);
+                    }
+                }
+            } else if (this.useMaterial.isTool()) {
+                int ench = 0;
+                for (Enchantment enchant : this.result.getEnchantments()) {
+                    ench += enchant.getRepairCost(false);
+                }
+                for (Enchantment enchant : this.useInput.getEnchantments()) {
+                    ench -= enchant.getRepairCost(false);
+                }
+                cost += ench;
+            } else {
+            	cost += this.useMaterial.getCount();
+            }
+        }
+        this.source.setExperience(this.source.getExperience(), this.source.getExperienceLevel() - cost);
+
         this.hasExecuted = true;
         return true;
     }
@@ -274,5 +319,27 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
     public boolean hasExecuted() {
         return this.hasExecuted;
+    }
+
+    public int a(int b) {
+        switch (b) {
+            case 1:
+                return 1;
+
+            case 2:
+                return 3;
+
+            case 3:
+                return 6;
+
+            case 4:
+                return 10;
+
+            case 5:
+                return 15;
+
+            default:
+                return 0;
+        }
     }
 }

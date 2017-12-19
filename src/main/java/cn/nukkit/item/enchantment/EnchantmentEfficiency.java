@@ -7,6 +7,7 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class EnchantmentEfficiency extends Enchantment {
+
     protected EnchantmentEfficiency() {
         super(ID_EFFICIENCY, "digging", 10, EnchantmentType.DIGGER);
     }
@@ -29,6 +30,10 @@ public class EnchantmentEfficiency extends Enchantment {
     @Override
     public boolean canEnchant(Item item) {
         return item.isShears() || super.canEnchant(item);
+    }
+
+    public int getRepairCost(boolean isBook) {
+        return 1 * this.getLevel();
     }
 
 }

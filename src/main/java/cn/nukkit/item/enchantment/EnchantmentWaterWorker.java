@@ -5,6 +5,7 @@ package cn.nukkit.item.enchantment;
  * Nukkit Project
  */
 public class EnchantmentWaterWorker extends Enchantment {
+
     protected EnchantmentWaterWorker() {
         super(ID_WATER_WORKER, "waterWorker", 2, EnchantmentType.ARMOR_HEAD);
     }
@@ -23,4 +24,13 @@ public class EnchantmentWaterWorker extends Enchantment {
     public int getMaxLevel() {
         return 1;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

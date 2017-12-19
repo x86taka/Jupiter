@@ -30,4 +30,13 @@ public class EnchantmentDamageSmite extends EnchantmentDamage {
 
         return 0;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 1 * this.getLevel();
+        } else {
+            return 2 * this.getLevel();
+        }
+    }
+
 }

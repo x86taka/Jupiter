@@ -5,6 +5,7 @@ package cn.nukkit.item.enchantment;
  * Nukkit Project
  */
 public class EnchantmentWaterBreath extends Enchantment {
+
     protected EnchantmentWaterBreath() {
         super(ID_WATER_BREATHING, "oxygen", 2, EnchantmentType.ARMOR_TORSO);
     }
@@ -23,4 +24,13 @@ public class EnchantmentWaterBreath extends Enchantment {
     public int getMaxLevel() {
         return 3;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

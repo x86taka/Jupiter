@@ -7,6 +7,7 @@ import cn.nukkit.item.enchantment.Enchantment;
  * Nukkit Project
  */
 public class EnchantmentBowInfinity extends EnchantmentBow {
+
     public EnchantmentBowInfinity() {
         super(Enchantment.ID_BOW_INFINITY, "arrowInfinite", 1);
     }
@@ -25,4 +26,13 @@ public class EnchantmentBowInfinity extends EnchantmentBow {
     public int getMaxLevel() {
         return 1;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 4 * this.getLevel();
+        } else {
+            return 8 * this.getLevel();
+        }
+    }
+
 }

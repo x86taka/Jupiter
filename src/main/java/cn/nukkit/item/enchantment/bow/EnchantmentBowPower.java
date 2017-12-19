@@ -7,6 +7,7 @@ import cn.nukkit.item.enchantment.Enchantment;
  * Nukkit Project
  */
 public class EnchantmentBowPower extends EnchantmentBow {
+
     public EnchantmentBowPower() {
         super(Enchantment.ID_BOW_POWER, "arrowDamage", 10);
     }
@@ -25,4 +26,9 @@ public class EnchantmentBowPower extends EnchantmentBow {
     public int getMaxLevel() {
         return 5;
     }
+
+    public int getRepairCost(boolean isBook) {
+        return 1 * this.getLevel();
+    }
+
 }

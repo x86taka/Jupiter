@@ -5,6 +5,7 @@ package cn.nukkit.item.enchantment;
  * Nukkit Project
  */
 public class EnchantmentLure extends Enchantment {
+
     protected EnchantmentLure() {
         super(ID_LURE, "fishingSpeed", 2, EnchantmentType.FISHING_ROD);
     }
@@ -22,6 +23,14 @@ public class EnchantmentLure extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 3;
+    }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
     }
 
 }

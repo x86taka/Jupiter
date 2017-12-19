@@ -7,6 +7,7 @@ import cn.nukkit.item.enchantment.Enchantment;
  * Nukkit Project
  */
 public class EnchantmentBowKnockback extends EnchantmentBow {
+
     public EnchantmentBowKnockback() {
         super(Enchantment.ID_BOW_KNOCKBACK, "arrowKnockback", 2);
     }
@@ -25,4 +26,13 @@ public class EnchantmentBowKnockback extends EnchantmentBow {
     public int getMaxLevel() {
         return 2;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

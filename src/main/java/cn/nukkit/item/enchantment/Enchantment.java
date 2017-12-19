@@ -212,6 +212,8 @@ public abstract class Enchantment implements Cloneable {
         return false;
     }
 
+    public abstract int getRepairCost(boolean isBook);
+
     @Override
     protected Enchantment clone() {
         try {

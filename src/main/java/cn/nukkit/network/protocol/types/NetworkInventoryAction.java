@@ -2,6 +2,9 @@ package cn.nukkit.network.protocol.types;
 
 import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
+import cn.nukkit.inventory.transaction.action.AnvilInputAction;
+import cn.nukkit.inventory.transaction.action.AnvilMaterialAction;
+import cn.nukkit.inventory.transaction.action.AnvilResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTakeResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTransferMaterialAction;
 import cn.nukkit.inventory.transaction.action.CreativeInventoryAction;
@@ -147,6 +150,18 @@ public class NetworkInventoryAction {
                     case SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
                         window = player.getCraftingGrid();
                         return new CraftingTransferMaterialAction(this.oldItem, this.newItem, this.inventorySlot);
+
+                    case SOURCE_TYPE_ANVIL_INPUT:
+                        window = player.getAnvilInventory();
+                        return new AnvilInputAction(window, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_ANVIL_MATERIAL:
+                        window = player.getAnvilInventory();
+                        return new AnvilMaterialAction(window, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_ANVIL_RESULT:
+                        window = player.getAnvilInventory();
+                        return new AnvilResultAction(window, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_ANVIL_OUTPUT:
+                        throw new RuntimeException("Anvil inventory source type OUTPUT");
 
                     case SOURCE_TYPE_ENCHANT_INPUT:
                         window = player.getEnchantInventory();

@@ -39,4 +39,9 @@ public class EnchantmentProtectionAll extends EnchantmentProtection {
 
         return (float) (getLevel() * getTypeModifier());
     }
+
+    public int getRepairCost(boolean isBook) {
+        return 1 * this.getLevel();
+    }
+
 }

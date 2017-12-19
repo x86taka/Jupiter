@@ -8,7 +8,17 @@ import cn.nukkit.item.enchantment.EnchantmentType;
  * Nukkit Project
  */
 public class EnchantmentLootFishing extends EnchantmentLoot {
+
     public EnchantmentLootFishing() {
         super(Enchantment.ID_FORTUNE_FISHING, "lootBonusFishing", 2, EnchantmentType.FISHING_ROD);
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

@@ -103,6 +103,7 @@ import cn.nukkit.event.player.PlayerToggleSneakEvent;
 import cn.nukkit.event.player.PlayerToggleSprintEvent;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.event.server.DataPacketSendEvent;
+import cn.nukkit.inventory.AnvilInventory;
 import cn.nukkit.inventory.BeaconInventory;
 import cn.nukkit.inventory.BigCraftingGrid;
 import cn.nukkit.inventory.CraftingGrid;
@@ -111,10 +112,12 @@ import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerCursorInventory;
 import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.inventory.transaction.AnvilTransaction;
 import cn.nukkit.inventory.transaction.CraftingTransaction;
 import cn.nukkit.inventory.transaction.EnchantTransaction;
 import cn.nukkit.inventory.transaction.InventoryTransaction;
 import cn.nukkit.inventory.transaction.SimpleInventoryTransaction;
+import cn.nukkit.inventory.transaction.action.AnvilResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTakeResultAction;
 import cn.nukkit.inventory.transaction.action.CraftingTransferMaterialAction;
 import cn.nukkit.inventory.transaction.action.EnchantOutputAction;
@@ -1138,20 +1141,20 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         //FoodLevel
         this.getFoodData().sendFoodLevel();
-        
+
         if (this.isSpectator()) {
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
             this.dataPacket(inventoryContentPacket);
-            
+
         } else if(this.isCreative()) {
             InventoryContentPacket inventoryContentPacket = new InventoryContentPacket();
             inventoryContentPacket.inventoryId = InventoryContentPacket.SPECIAL_CREATIVE;
             inventoryContentPacket.slots = Item.getCreativeItems().stream().toArray(Item[]::new);
             this.dataPacket(inventoryContentPacket);
-            
+
         }
-        
+
     }
 
     protected boolean orderChunks() {
@@ -2571,6 +2574,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
                     boolean isCrafting = false;
                     boolean isEnchanting = false;
+                    boolean isAnvil = false;
                     List<InventoryAction> actions = new ArrayList<>();
                     for (NetworkInventoryAction networkInventoryAction : transactionPacket.actions) {
                         try {
@@ -2580,6 +2584,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                                     isCrafting = true;
                                 } else if (a instanceof EnchantOutputAction) {
                                     isEnchanting = true;
+                                } else if (a instanceof AnvilResultAction) {
+                                    isAnvil = true;
                                 }
                                 actions.add(a);
                             }
@@ -2596,11 +2602,21 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             craftingTransaction.addAction(action);
                         }
 
-                        craftingTransaction.execute();
+                        if (!craftingTransaction.execute()) {
+                            this.sendAllInventories();
+                        }
                         break packetswitch;
                     } else if (isEnchanting) {
                         EnchantTransaction enchantTransaction = new EnchantTransaction(this, actions);
-                        enchantTransaction.execute();
+                        if (!enchantTransaction.execute()) {
+                            this.sendAllInventories();
+                        }
+                        break packetswitch;
+                    } else if (isAnvil) {
+                        AnvilTransaction anvilTransaction = new AnvilTransaction(this, actions);
+                        if (!anvilTransaction.execute()) {
+                            this.sendAllInventories();
+                        }
                         break packetswitch;
                     }
 
@@ -5357,6 +5373,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         for (Inventory inventory : this.windows.keySet()) {
             if (inventory instanceof EnchantInventory) {
                 return (EnchantInventory) inventory;
+            }
+        }
+        return null;
+    }
+
+    public AnvilInventory getAnvilInventory() {
+        for (Inventory inventory : this.windows.keySet()) {
+            if (inventory instanceof AnvilInventory) {
+                return (AnvilInventory) inventory;
             }
         }
         return null;

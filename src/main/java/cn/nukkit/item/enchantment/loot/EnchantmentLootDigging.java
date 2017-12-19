@@ -8,7 +8,17 @@ import cn.nukkit.item.enchantment.EnchantmentType;
  * Nukkit Project
  */
 public class EnchantmentLootDigging extends EnchantmentLoot {
+
     public EnchantmentLootDigging() {
         super(Enchantment.ID_FORTUNE_DIGGING, "lootBonusDigger", 2, EnchantmentType.DIGGER);
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

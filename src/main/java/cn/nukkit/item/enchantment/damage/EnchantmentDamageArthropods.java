@@ -1,10 +1,10 @@
 package cn.nukkit.item.enchantment.damage;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.potion.Effect;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * author: MagicDroidX
@@ -42,4 +42,13 @@ public class EnchantmentDamageArthropods extends EnchantmentDamage {
             entity.addEffect(Effect.getEffect(Effect.SLOWNESS).setDuration(duration).setAmplifier(3));
         }
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 1 * this.getLevel();
+        } else {
+            return 2 * this.getLevel();
+        }
+    }
+
 }

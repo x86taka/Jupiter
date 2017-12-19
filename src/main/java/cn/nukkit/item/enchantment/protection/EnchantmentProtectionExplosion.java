@@ -38,4 +38,13 @@ public class EnchantmentProtectionExplosion extends EnchantmentProtection {
 
         return (float) (getLevel() * getTypeModifier());
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

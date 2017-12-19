@@ -172,8 +172,8 @@ public class Network {
             } catch (Exception e) {
                 this.server.getLogger().logException(e);
 
-                interfaz.emergencyShutdown();
-                this.unregisterInterface(interfaz);
+//                interfaz.emergencyShutdown();
+//                this.unregisterInterface(interfaz);
 
                 this.server.getLogger().critical(this.server.getLanguage().translateString("nukkit.server.networkError", new String[]{interfaz.getClass().getName(), e.getMessage()}));
             }

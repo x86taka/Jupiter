@@ -13,6 +13,7 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class EnchantmentThorns extends Enchantment {
+
     protected EnchantmentThorns() {
         super(ID_THORNS, "thorns", 2, EnchantmentType.ARMOR_TORSO);
     }
@@ -63,4 +64,13 @@ public class EnchantmentThorns extends Enchantment {
             attacker.attack(new EntityDamageEvent(attacker, DamageCause.MAGIC, rnd.nextInt(4) + 1));
         }
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 4 * this.getLevel();
+        } else {
+            return 8 * this.getLevel();
+        }
+    }
+
 }

@@ -35,4 +35,9 @@ public class EnchantmentDamageAll extends EnchantmentDamage {
 
         return 0.5 + getLevel() * 0.5;
     }
+
+    public int getRepairCost(boolean isBook) {
+        return 1 * this.getLevel();
+    }
+
 }

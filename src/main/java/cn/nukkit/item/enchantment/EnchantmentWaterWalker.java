@@ -5,6 +5,7 @@ package cn.nukkit.item.enchantment;
  * Nukkit Project
  */
 public class EnchantmentWaterWalker extends Enchantment {
+
     protected EnchantmentWaterWalker() {
         super(ID_WATER_WALKER, "waterWalker", 2, EnchantmentType.ARMOR_FEET);
     }
@@ -23,4 +24,13 @@ public class EnchantmentWaterWalker extends Enchantment {
     public int getMaxLevel() {
         return 3;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

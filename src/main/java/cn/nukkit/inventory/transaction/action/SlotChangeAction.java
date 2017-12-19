@@ -1,11 +1,11 @@
 package cn.nukkit.inventory.transaction.action;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author CreeperFace

@@ -14,4 +14,13 @@ public class EnchantmentFrostWalker extends Enchantment{
     public int getMaxLevel() {
         return 2;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
+    }
+
 }

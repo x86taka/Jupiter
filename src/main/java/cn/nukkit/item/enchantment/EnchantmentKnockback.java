@@ -5,6 +5,7 @@ package cn.nukkit.item.enchantment;
  * Nukkit Project
  */
 public class EnchantmentKnockback extends Enchantment {
+
     protected EnchantmentKnockback() {
         super(ID_KNOCKBACK, "knockback", 5, EnchantmentType.SWORD);
     }
@@ -23,4 +24,13 @@ public class EnchantmentKnockback extends Enchantment {
     public int getMaxLevel() {
         return 2;
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 1 * this.getLevel();
+        } else {
+            return 2 * this.getLevel();
+        }
+    }
+
 }

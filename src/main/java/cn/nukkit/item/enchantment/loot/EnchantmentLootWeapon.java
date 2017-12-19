@@ -8,7 +8,16 @@ import cn.nukkit.item.enchantment.EnchantmentType;
  * Nukkit Project
  */
 public class EnchantmentLootWeapon extends EnchantmentLoot {
+
     public EnchantmentLootWeapon() {
         super(Enchantment.ID_LOOTING, "lootBonus", 2, EnchantmentType.SWORD);
+    }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 2 * this.getLevel();
+        } else {
+            return 4 * this.getLevel();
+        }
     }
 }

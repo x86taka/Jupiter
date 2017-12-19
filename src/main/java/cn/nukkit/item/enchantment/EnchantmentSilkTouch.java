@@ -7,6 +7,7 @@ import cn.nukkit.item.Item;
  * Nukkit Project
  */
 public class EnchantmentSilkTouch extends Enchantment {
+
     protected EnchantmentSilkTouch() {
         super(ID_SILK_TOUCH, "untouching", 1, EnchantmentType.DIGGER);
     }
@@ -35,4 +36,13 @@ public class EnchantmentSilkTouch extends Enchantment {
     public boolean canEnchant(Item item) {
         return item.isShears() || super.canEnchant(item);
     }
+
+    public int getRepairCost(boolean isBook) {
+        if (isBook) {
+            return 4 * this.getLevel();
+        } else {
+            return 8 * this.getLevel();
+        }
+    }
+
 }

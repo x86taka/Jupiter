@@ -1290,6 +1290,28 @@ public class Item implements Cloneable {
         return this;
     }
 
+    public int getRepairCost() {
+        if (!this.hasCompoundTag()) {
+            return 0;
+        }
+        if (!this.getNamedTag().contains("RepairCost")) {
+            return 0;
+        }
+        return this.getNamedTag().getInt("RepairCost");
+    }
+
+    public Item setRepairCost(int cost) {
+    	CompoundTag tag;
+        if (this.hasCompoundTag()) {
+            tag = this.getNamedTag();
+        } else {
+        	tag = new CompoundTag();
+        }
+        tag.putInt("RepairCost", cost);
+        this.setNamedTag(tag);
+        return this;
+    }
+
     public Tag getNamedTagEntry(String name) {
         CompoundTag tag = this.getNamedTag();
         if (tag != null) {

@@ -21,7 +21,7 @@ before_deploy:
   - export JAR_FILE=$(ls target/nukkit-1.0-SNAPSHOT.jar)
   - git config --global user.name "Travis CI"
   - git config --global user.email "travis@travis-ci-org"
-  - git tag $GIT_TAG -a -m "Commit from Travis CI build $TRAVIS_BUILD_NUMBER"
+  - git tag -a -m "Commit from Travis CI build $TRAVIS_BUILD_NUMBER" $GIT_TAG
   - git push --quiet https://$GH_TOKEN@github.com/JupiterDevelopmentTeam/Jupiter.git --tags 2> /dev/null
 deploy: 
   provider: releases

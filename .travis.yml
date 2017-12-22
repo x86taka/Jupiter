@@ -18,7 +18,7 @@ install:
 
 before_deploy: 
   - mkdir packages
-  - jar cp -R ./target/nukkit-1.0-SNAPSHOT.jar packages $(ls -I package)
+  - cp -R ./target/nukkit-1.0-SNAPSHOT.jar packages $(ls -I package)
   - tar czf packages/release-$GIT_TAG.tar.gz $(ls -I package)
   - zip -q packages/release-$GIT_TAG.zip -r $(ls -I package)
   - git config --global user.name "Travis CI"

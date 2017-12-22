@@ -14,6 +14,7 @@ import cn.nukkit.inventory.transaction.action.EnchantMaterialAction;
 import cn.nukkit.inventory.transaction.action.EnchantOutputAction;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.inventory.transaction.action.SlotChangeAction;
+import cn.nukkit.inventory.transaction.action.TradingAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.network.protocol.InventoryTransactionPacket;
 
@@ -171,6 +172,19 @@ public class NetworkInventoryAction {
                         return new EnchantMaterialAction(window, this.oldItem, this.newItem);
                     case SOURCE_TYPE_ENCHANT_OUTPUT:
                         return new EnchantOutputAction(this.oldItem, this.newItem);
+
+                    case SOURCE_TYPE_TRADING_INPUT_1:
+                        window = player.getTradingInventory();
+                        return new SlotChangeAction(window, 0, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_TRADING_INPUT_2:
+                        window = player.getTradingInventory();
+                        return new SlotChangeAction(window, 1, this.oldItem, this.newItem);
+                    case SOURCE_TYPE_TRADING_USE_INPUTS:
+                        window = player.getTradingInventory();
+                        return new TradingAction(this.oldItem, this.newItem);
+                    case SOURCE_TYPE_TRADING_OUTPUT:
+                        window = player.getTradingInventory();
+                        return new TradingAction(this.oldItem, this.newItem);
 
                     case SOURCE_TYPE_BEACON:
                         window = player.getBeacoInventory();

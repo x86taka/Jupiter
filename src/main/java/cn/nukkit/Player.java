@@ -112,6 +112,7 @@ import cn.nukkit.inventory.Inventory;
 import cn.nukkit.inventory.InventoryHolder;
 import cn.nukkit.inventory.PlayerCursorInventory;
 import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.inventory.TradingInventory;
 import cn.nukkit.inventory.transaction.AnvilTransaction;
 import cn.nukkit.inventory.transaction.CraftingTransaction;
 import cn.nukkit.inventory.transaction.EnchantTransaction;
@@ -5382,6 +5383,15 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         for (Inventory inventory : this.windows.keySet()) {
             if (inventory instanceof AnvilInventory) {
                 return (AnvilInventory) inventory;
+            }
+        }
+        return null;
+    }
+
+    public TradingInventory getTradingInventory() {
+        for (Inventory inventory : this.windows.keySet()) {
+            if (inventory instanceof TradingInventory) {
+                return (TradingInventory) inventory;
             }
         }
         return null;

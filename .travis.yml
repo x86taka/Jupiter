@@ -6,15 +6,33 @@ jdk:
 branches:
   only:
   - master
+  
+env: 
+  global: 
+    - GIT_TAG=1.0
+    - secure: $GH_TOKEN
 
 install:
 - mvn clean
 - mvn package
 
-deploy:
-- provider: script
+before_deploy: 
+  - mkdir packages
+  - jar cp -R ./target/nukkit-1.0-SNAPSHOT.jar packages $(ls -I package)
+  - tar czf packages/release-$GIT_TAG.tar.gz $(ls -I package)
+  - zip -q packages/release-$GIT_TAG.zip -r $(ls -I package)
+  - git config --global user.name "Travis CI"
+  - git config --glonal user.email "travis@travis-ci-org"
+  - git tag $GIT_TAG -a -m "Commit from Travis CI build $TRAVIS_BUILD_NUMBER"
+  - git push --quiet https://$GH_TOKEN@github.com/JupiterDevelopmentTeam/Jupiter.git --tags 2> /dev/null
+deploy: 
+  provider: release
   skip_cleanup: true
-  github_token: $GH_TOKEN
-  script: 'bash ./travis-deploy.sh'
-  on:
+  api_key: 
+    secure: $GH_RELEASE_TOKEN
+  file:
+    - packages/nukkit-1.0-SNAPSHOT.jar
+    - packages/release-$GIT_TAG.tar.gz
+    - packages/release-$GIT_TAG.zip
+  on: 
     branch: master

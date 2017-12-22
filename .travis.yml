@@ -24,7 +24,7 @@ before_deploy:
   - git tag $GIT_TAG -a -m "Commit from Travis CI build $TRAVIS_BUILD_NUMBER"
   - git push --quiet https://$GH_TOKEN@github.com/JupiterDevelopmentTeam/Jupiter.git --tags 2> /dev/null
 deploy: 
-  provider: release
+  provider: releases
   skip_cleanup: true
   api_key: 
     secure: $GH_RELEASE_TOKEN

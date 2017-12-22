@@ -9,7 +9,7 @@ branches:
   
 env: 
   global: 
-    - GIT_TAG=1.0
+    - GIT_TAG= 'Jupiter(nukkit)-1.0-$TRAVIS_BUILD_NUMBER'
     - secure: $GH_TOKEN
 
 install:

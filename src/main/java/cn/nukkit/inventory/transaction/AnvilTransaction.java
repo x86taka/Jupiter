@@ -247,13 +247,13 @@ public class AnvilTransaction  implements InventoryTransaction {
         Server.getInstance().getPluginManager().callEvent(ev);
         if (ev.isCancelled()) {
             this.handleFailed();
-            return true;
+            return false;
         }
 
         for (InventoryAction action : this.actions) {
             if (!action.onPreExecute(this.source)) {
                 this.handleFailed();
-                return true;
+                return false;
             }
         }
 

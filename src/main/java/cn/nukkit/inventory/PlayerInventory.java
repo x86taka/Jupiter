@@ -248,7 +248,7 @@ public class PlayerInventory extends BaseInventory {
             }
             item = ev.getNewItem();
         } else {
-            EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent(this.getHolder(), this.getItem(index), item, index);
+            EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent(this.getHolder(), this, this.getItem(index), item, index);
             Server.getInstance().getPluginManager().callEvent(ev);
             if (ev.isCancelled()) {
                 this.sendSlot(index, this.getViewers());
@@ -280,7 +280,7 @@ public class PlayerInventory extends BaseInventory {
                 }
                 item = ev.getNewItem();
             } else {
-                EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent(this.getHolder(), old, item, index);
+                EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent(this.getHolder(), this, old, item, index);
                 Server.getInstance().getPluginManager().callEvent(ev);
                 if (ev.isCancelled()) {
                     if (index >= this.size) {

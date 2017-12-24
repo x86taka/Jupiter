@@ -3,6 +3,7 @@ package cn.nukkit.event.entity;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
+import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
 
 /**
@@ -16,12 +17,14 @@ public class EntityInventoryChangeEvent extends EntityEvent implements Cancellab
         return handlers;
     }
 
+    private final Inventory inventory;
     private final Item oldItem;
     private Item newItem;
     private final int slot;
 
-    public EntityInventoryChangeEvent(Entity entity, Item oldItem, Item newItem, int slot) {
+    public EntityInventoryChangeEvent(Entity entity, Inventory inventory, Item oldItem, Item newItem, int slot) {
         this.entity = entity;
+        this.inventory = inventory;
         this.oldItem = oldItem;
         this.newItem = newItem;
         this.slot = slot;
@@ -41,5 +44,9 @@ public class EntityInventoryChangeEvent extends EntityEvent implements Cancellab
 
     public Item getOldItem() {
         return oldItem;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

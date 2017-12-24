@@ -156,7 +156,7 @@ public abstract class BaseInventory implements Inventory {
 
         InventoryHolder holder = this.getHolder();
         if (holder instanceof Entity) {
-            EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent((Entity) holder, this.getItem(index), item, index);
+            EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent((Entity) holder, this, this.getItem(index), item, index);
             Server.getInstance().getPluginManager().callEvent(ev);
             if (ev.isCancelled()) {
                 this.sendSlot(index, this.getViewers());
@@ -363,7 +363,7 @@ public abstract class BaseInventory implements Inventory {
             Item old = this.slots.get(index);
             InventoryHolder holder = this.getHolder();
             if (holder instanceof Entity) {
-                EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent((Entity) holder, old, item, index);
+                EntityInventoryChangeEvent ev = new EntityInventoryChangeEvent((Entity) holder, this, old, item, index);
                 Server.getInstance().getPluginManager().callEvent(ev);
                 if (ev.isCancelled()) {
                     this.sendSlot(index, this.getViewers());

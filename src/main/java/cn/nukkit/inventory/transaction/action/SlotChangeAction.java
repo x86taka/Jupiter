@@ -39,7 +39,7 @@ public class SlotChangeAction extends InventoryAction {
      * Checks if the item in the inventory at the specified inventorySlot is the same as this action's source item.
      */
     public boolean isValid(Player source) {
-        if((this.inventorySlot >= 0) && (this.inventorySlot < this.inventory.getSize()) && (this.inventory.getItem(this.inventorySlot).equalsExact(this.getSourceItem()))) {
+        if((this.inventorySlot >= 0) && (this.inventory.getItem(this.inventorySlot).equalsExact(this.getSourceItem()))) {
             return true;
         } else {
             return false;

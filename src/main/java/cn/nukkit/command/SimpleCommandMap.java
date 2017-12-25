@@ -45,6 +45,7 @@ import cn.nukkit.command.defaults.SetWorldSpawnCommand;
 import cn.nukkit.command.defaults.SpawnpointCommand;
 import cn.nukkit.command.defaults.StatusCommand;
 import cn.nukkit.command.defaults.StopCommand;
+import cn.nukkit.command.defaults.StopSoundCommand;
 import cn.nukkit.command.defaults.SummonCommand;
 import cn.nukkit.command.defaults.TeleportCommand;
 import cn.nukkit.command.defaults.TellCommand;
@@ -129,6 +130,7 @@ public class SimpleCommandMap implements CommandMap {
         this.register("nukkit", new XpCommand("xp"));
         this.register("nukkit", new MakePluginCommand("makeplugin"));
         this.register("nukkit", new PlaySoundCommand("playsound"));
+        this.register("nukkit", new StopSoundCommand("stopsound"));
 
 
         if ((boolean) this.server.getConfig("debug.commands", false)) {

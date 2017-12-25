@@ -18,7 +18,12 @@ public class PlaySoundPacket extends DataPacket {
 
     @Override
     public void decode() {
-
+    	this.name = this.getString();
+    	this.x = this.getBlockVector3().x;
+    	this.y = this.getBlockVector3().y;
+    	this.z = this.getBlockVector3().z;
+    	this.volume = this.getLFloat();
+    	this.pitch = this.getLFloat();
     }
 
     @Override

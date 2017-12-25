@@ -33,6 +33,7 @@ import cn.nukkit.command.defaults.OpCommand;
 import cn.nukkit.command.defaults.PardonCommand;
 import cn.nukkit.command.defaults.PardonIpCommand;
 import cn.nukkit.command.defaults.ParticleCommand;
+import cn.nukkit.command.defaults.PlaySoundCommand;
 import cn.nukkit.command.defaults.PluginsCommand;
 import cn.nukkit.command.defaults.ReloadCommand;
 import cn.nukkit.command.defaults.SaveCommand;
@@ -127,6 +128,7 @@ public class SimpleCommandMap implements CommandMap {
         this.register("nukkit", new WeatherCommand("weather"));
         this.register("nukkit", new XpCommand("xp"));
         this.register("nukkit", new MakePluginCommand("makeplugin"));
+        this.register("nukkit", new PlaySoundCommand("playsound"));
 
 
         if ((boolean) this.server.getConfig("debug.commands", false)) {

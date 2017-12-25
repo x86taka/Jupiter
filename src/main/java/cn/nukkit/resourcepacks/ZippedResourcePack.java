@@ -1,8 +1,5 @@
 package cn.nukkit.resourcepacks;
 
-import cn.nukkit.Server;
-import com.google.gson.JsonParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +9,10 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import com.google.gson.JsonParser;
+
+import cn.nukkit.Server;
 
 public class ZippedResourcePack extends AbstractResourcePack {
     private File file;
@@ -25,9 +26,11 @@ public class ZippedResourcePack extends AbstractResourcePack {
 
         this.file = file;
 
-        try (ZipFile zip = new ZipFile(file)) {
+        try {
+        	ZipFile zip = new ZipFile(file);
             ZipEntry entry = zip.getEntry("manifest.json");
             if (entry == null) {
+                zip.close();
                 throw new IllegalArgumentException(Server.getInstance().getLanguage()
                         .translateString("nukkit.resources.zip.no-manifest"));
             } else {
@@ -35,6 +38,7 @@ public class ZippedResourcePack extends AbstractResourcePack {
                         .parse(new InputStreamReader(zip.getInputStream(entry), StandardCharsets.UTF_8))
                         .getAsJsonObject();
             }
+            zip.close();
         } catch (IOException e) {
             Server.getInstance().getLogger().logException(e);
         }

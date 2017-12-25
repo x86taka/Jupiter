@@ -16,7 +16,7 @@ Jupiterの機能の詳細については[Wiki](https://github.com/JupiterDevelop
   
 ビルドステータス
 --------------------
-[![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter)
+<!-- [![travisCI](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter.svg?branch=master)](https://travis-ci.org/JupiterDevelopmentTeam/Jupiter) -->
 [![CircleCI](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master.svg?style=svg)](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)
   
 開発に至ったきっかけ
@@ -29,7 +29,7 @@ Jupiterはこのようなきっかけを持つために、__日本語に特化__
 ダウンロード & インフォメーション / Download & Information
 -------------
 
-* __[最新ビルドのjarファイルをダウンロード](https://github.com/JupiterDevelopmentTeam/Jupiter/blob/master/artifact/nukkit-1.0-SNAPSHOT.jar?raw=true)__
+* __[最新ビルドのjarファイルをダウンロード](https://circleci.com/gh/JupiterDevelopmentTeam/Jupiter/tree/master)__
 
 * __[公式サイト](https://jupiterdevelopmentteam.github.io/)__
 * __[Lobiグループ](https://web.lobi.co/group/5f56c6d4c43cdb8c63541731b2ea8533ac4b50f1)__
@@ -53,12 +53,12 @@ __Jupiterプラグインの作り方__
 #### ローカルMavenリポジトリの構築  
 ```xml:pom.xml
 <dependencies>
-		<dependency>
-			<groupId>cn.nukkit</groupId>
-			<artifactId>nukkit</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>\path\jupiter.jar</systemPath>
-		</dependency>
+    <dependency>
+        <groupId>cn.nukkit</groupId>
+        <artifactId>nukkit</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <scope>system</scope>
+        <systemPath>\path\jupiter.jar</systemPath>
+    </dependency>
 </dependencies>
 ```

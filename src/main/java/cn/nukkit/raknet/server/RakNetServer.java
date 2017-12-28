@@ -1,6 +1,5 @@
 package cn.nukkit.raknet.server;
 
-import java.awt.TrayIcon.MessageType;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import cn.nukkit.Server;
@@ -89,7 +88,6 @@ public class RakNetServer extends Thread {
         public void run() {
             if (!shutdown) {
                 logger.emergency("RakNet(サーバー)がクラッシュしました。");
-                Server.getInstance().trayMessage("RakNet(サーバー)がクラッシュしました。", MessageType.ERROR);
             }
         }
     }

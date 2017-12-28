@@ -1,11 +1,5 @@
 package cn.nukkit;
 
-import java.awt.AWTException;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-import java.awt.TrayIcon.MessageType;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -26,8 +20,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-
-import javax.imageio.ImageIO;
 
 import com.google.common.base.Preconditions;
 
@@ -136,7 +128,6 @@ import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.level.LevelInitEvent;
 import cn.nukkit.event.level.LevelLoadEvent;
 import cn.nukkit.event.server.QueryRegenerateEvent;
-import cn.nukkit.event.server.TrayIconClickEvent;
 import cn.nukkit.inventory.CraftingManager;
 import cn.nukkit.inventory.FurnaceRecipe;
 import cn.nukkit.inventory.Recipe;
@@ -146,7 +137,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.lang.BaseLang;
 import cn.nukkit.lang.TextContainer;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.level.format.LevelProvider;
@@ -213,7 +203,7 @@ import co.aikar.timings.Timings;
  * @author MagicDroidX
  * @author Box
  */
-public class Server implements ActionListener{
+public class Server {
 
     public static final String BROADCAST_CHANNEL_ADMINISTRATIVE = "nukkit.broadcast.admin";
     public static final String BROADCAST_CHANNEL_USERS = "nukkit.broadcast.user";
@@ -344,8 +334,6 @@ public class Server implements ActionListener{
 
         this.console = new CommandReader();
 
-        this.console.start();
-
         this.logger.info("");
         this.logger.info(FastAppender.get(TextFormat.BLUE, "Jupiter", TextFormat.WHITE, " by JupiterDevelopmentTeam"));
         this.logger.info("");
@@ -424,7 +412,8 @@ public class Server implements ActionListener{
             }
 
         }
-
+        
+        this.console.start();
 
         this.logger.info(FastAppender.get(TextFormat.GREEN, "nukkit.yml", TextFormat.WHITE, "を読み込んでいます..."));
         this.config = new Config(this.dataPath + "nukkit.yml", Config.YAML);
@@ -583,14 +572,6 @@ public class Server implements ActionListener{
 
         this.printPackets = this.getJupiterConfigBoolean("print-packets");
 
-        if(this.checkingUsingGUI()){
-            try {
-                this.loadTrayIcon();
-            } catch (AWTException e) {
-                this.getLogger().critical("TrayIconを実行できませんでした！");
-            }
-        }
-
         Calendar now = Calendar.getInstance();
 
         int y = now.get(Calendar.YEAR);
@@ -716,61 +697,6 @@ public class Server implements ActionListener{
         this.logger.info("");
 
         this.start();
-    }
-
-    public TrayIcon getTrayIcon(){
-        if(!this.checkingUsingGUI()) return null;
-        TrayIcon icon = null;
-        try {
-            icon = new TrayIcon(ImageIO.read(new BufferedInputStream(this.getClass().getClassLoader().getResourceAsStream("images/Jupiter.png"))));
-        } catch (IOException e) {
-            this.getLogger().critical("ソースにTrayイメージを確認できませんでした！");
-        } catch (UnsupportedOperationException e) {
-            this.getLogger().notice("Trayに対応していないOSの為、表示しませんでした。(エラーではありません)");
-        }
-        return icon;
-    }
-
-    public void trayMessage(String message){
-        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
-        this.trayMessage(message, MessageType.INFO);
-    }
-
-    public void trayMessage(String message, MessageType type){
-        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
-        this.trayMessage("Jupiter", message, type);
-    }
-
-    public void trayMessage(String title, String message, MessageType type){
-        if(!this.checkingUsingGUI() || this.getTrayIcon() == null) return;
-        if (this.getTrayIcon() != null){
-            this.getTrayIcon().displayMessage(title, message, type);
-        }
-    }
-
-    private void loadTrayIcon() throws AWTException{
-        if(!this.checkingUsingGUI()) return;
-        SystemTray.getSystemTray().remove(getTrayIcon());
-
-        TrayIcon icon = this.getTrayIcon();
-        if (icon == null) {
-            return;
-        }
-
-        icon.removeActionListener(this);
-        icon.addActionListener(this);
-
-        SystemTray.getSystemTray().add(icon);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        TrayIconClickEvent event = new TrayIconClickEvent(getTrayIcon());
-        getPluginManager().callEvent(event);
-        if(event.isCancelled()){
-            return;
-        }
-        trayMessage(FastAppender.get("参加人数:", getOnlinePlayers().size(), "/", getPropertyInt("max-players")));
     }
 
     /**
@@ -1260,7 +1186,6 @@ public class Server implements ActionListener{
         } catch (Exception e) {
             this.logger.logException(e); //todo remove this?
             this.logger.emergency("Exception happened while shutting down, exit the process");
-            this.trayMessage("サーバーシャットダウン中にエラーが発生したため、強制終了しました。", MessageType.ERROR);
             System.exit(1);
         }
     }
@@ -1284,7 +1209,6 @@ public class Server implements ActionListener{
 
         this.logger.info(this.getLanguage().translateString("nukkit.server.defaultGameMode", getGamemodeString(this.getDefaultGamemode())));
         this.logger.info(this.getLanguage().translateString("nukkit.server.startFinished", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000)));
-        this.trayMessage(FastAppender.get("サーバー起動完了(", String.valueOf((double) (System.currentTimeMillis() - Nukkit.START_TIME) / 1000), "秒)"), MessageType.INFO);
 
         this.tickProcessor();
         this.forceShutdown();

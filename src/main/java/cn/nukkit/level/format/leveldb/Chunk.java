@@ -378,7 +378,6 @@ public class Chunk extends BaseFullChunk {
                     CompoundTag ct = new CompoundTag();
                     ListTag<CompoundTag> entityList = new ListTag<>("entities");
                     ListTag<CompoundTag> tileList = new ListTag<>("blockEntities");
-
                     entityList.list = entities;
                     tileList.list = blockEntities;
                     ct.putList(entityList);

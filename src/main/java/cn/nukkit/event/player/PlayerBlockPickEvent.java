@@ -6,6 +6,9 @@ import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.item.Item;
 
+/**
+ * @author CreeperFace
+ */
 public class PlayerBlockPickEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();

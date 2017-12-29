@@ -1,7 +1,5 @@
 package cn.nukkit.utils;
 
-import cn.nukkit.Server;
-
 /**
  * author: MagicDroidX
  * Nukkit Project
@@ -27,7 +25,6 @@ public class ServerKiller extends Thread {
             // ignore
         }
         System.out.println("\nTook too long to stop, server was killed forcefully!\n");
-        Server.getInstance().trayMessage("サーバーシャットダウン中に時間がかかりましたが、終了しました。");
         System.exit(1);
     }
 

@@ -47,6 +47,7 @@ public class ResourcePackManager {
             } catch (IllegalArgumentException e) {
                 Server.getInstance().getLogger().warning(Server.getInstance().getLanguage()
                         .translateString("nukkit.resources.fail", pack.getName(), e.getMessage()));
+                e.printStackTrace();
             }
         }
 
